@@ -1,0 +1,104 @@
+---
+title: "Lab10: Population Genomics using the 1000 Genomes Dataset"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Lab 10: Population Genomics using the 1000 Genomes Dataset
+
+####Today you will be working with human population genomics data from the [1000 genomes project](https://www.internationalgenome.org/). The goal of this exercise is to provide real world experience using bioinformatics to examine genetic differences within and between populations. 
+
+#####First, you will be assigned one of five regions (~2-10 Mb each) that have been targeted due to known signatures of importance in human evolution. Then, in Part 1, you will explore between population divergence specific to your region. The examination of these plots and statistics will be important in selecting populations to examine further for within population diversity and selection as part of Part 2. Finally, in Part 3, you will explore your region on the UCSC genome browser to examine potential genes that may contribute to the population genetic signal you see in your plots.
+
+##Part 1: Examine region and identify target populations 
+
+1.	The 1000 genomes project sampled individuals from 26 human population, but today we will only be working with the four listed below. Each population has a unique three letter abbreviation:
+	- CEU:	Utah Residents (CEPH) w/ Northern & Western European Ancestry
+	- YRI:	Yoruba in Ibadan, Nigeria
+	- CHB:	Han Chinese in Bejing, China
+	- PEL:	Peruvians from Lima, Peru
+
+2. For today's exercise, I have created an [R shiny app](https://lstevison.shinyapps.io/Lab10-PopGen/). Go to this link and in the "Between Populations" tab, select your assigned region from the drop down menu and click the button "Plot Fst". 
+
+2.	Examine the initial plot for your assigned region. What are the X and Y axes? These plots are based on a 100kb sliding window. How do you think different window sizes might influence the plot you are seeing?
+
+3.  Based on what you learned in class or find online, what is [Fst](https://en.wikipedia.org/wiki/Fixation_index)? What does the estimate in the plot tell you about this region? What are the typical upper and lower bounds for Fst and why? 
+
+4.	Next, use the second drop down menu "Select Population Comparison" to examine FST statistics for each comparison for the whole region. These values represent the weighted Weir FST estimate from a bioinformatics software [VCFtools](https://vcftools.github.io/man_latest.html). Write down the max and average values for each pairwise comparison in the table below:
+
+  | Metric|CEU vs. YRI|YRI vs. CHB|CEU vs. CHB|YRI vs. PEL|CEU vs. PEL|CHB vs. PEL|
+  |----|----|----|----|----|----|----|
+  |Average Fst|||||||
+  |Max Fst|||||||
+
+
+5. In examining the 6 different plots, which two populations are most different across your region (consider both peak height and width)? Based on the Fst and the known upper/lower bounds, how important is this difference likely to be? 
+>If multiple populations have similar values, select the two comparisons that you want to investigate further for the next part of this assignment based on the overall peak height of the highest value in your plot. 
+
+ - Max Fst difference: ______ v. ______	
+
+6. Where (roughly) in this region is the peak of differentiation?
+
+ - Region of max Fst: __________
+
+7. Right click on the Fst plot for the selected pair of populations to include in your submitted assignment that you will turn in.
+
+##Part 2: Investigate selected populations further
+
+1. For Part 2, select the tab labeled "Within Populations".
+
+2. Use the drop down menus to select your region and the two populations that you selected at the end of Part 1 to move forward with. 
+
+3. Click the button "Plot Pi and Tajima's D". 
+
+4. Scroll to the table at the bottom of the page. **How many individuals are in each of these two populations?** 
+
+ - Pop 1 Size: __________
+ - Pop 2 Size: __________
+ 
+5.	This set of four plots were generated again using the output of VCFtools, which was used here to calculate within population diversity, known as [pi](https://en.wikipedia.org/wiki/Nucleotide_diversity) plotted in blue. What is pi? 
+
+6.	In addition to Pi, you should also see two sets of plots with [Tajima’s D](https://youtu.be/wiyay4YMq2A?si=LlrqVCvglyxwKDhq) in red across the region in both populations. [Vcftools](https://vcftools.github.io/man_latest.html#OUTPUT%20OPTIONS) was also used to generate the data used for these plots. What does Tajima's D tell you about the populations? What does a positive value mean? Negative value?
+
+7. Like Fst, these statistics are also estimated based on 100kb windows? Do you think the results would be different in the window size were bigger? Smaller?  
+
+8. Based on the number of individuals in your two selected populations, how reliable do you feel these estimates are in capturing the population genetic signatures? How does sample size influence estimates of pi and Tajima's D? Why?
+
+9. Examine the four plots considering also the plots you examined in Part 1. 
+
+ a. What similarities do you see between these plots and the one you made earlier? 
+
+
+ b. Does the sub-region you recorded at the end of Part 1 stand out in either of these plots? 
+
+
+ c. Make a hypothesis as to which population may be driving this result? Hint: which population has the lowest value of Tajima's D? 
+
+ d. Based on [this video](https://youtu.be/wiyay4YMq2A?si=LlrqVCvglyxwKDhq), interpret the results of the Tajima’s D statistic in this plot.
+ 
+10. Right click on the image of Pi and Tajima's D for this population to include in your submitted assignment that you will turn in.
+
+##Part 3: Examine region in Genome Browser
+
+1.	For Part 3, click the third tab in the app titled "Explore". Again, select your region from the drop down menu and click on the button "Load Region".
+
+2. Record the chromosome and genomic coordinates of your region below and then click the link to [View in UCSC](https://genome.ucsc.edu/) which will take you to the UCSC Genome Browser. These data were mapped to the human genome reference hg19. 
+
+3. Zoom into the region from Part 1 of Max Fst (~500kb window is fine). Look at the genes present. Make a list of the genes present in the region:
+
+4. Take a screen shot to include with your submitted assignment that you will turn in.
+
+5. Is there anything special about any of the genes in your sub-region that can explain why they differ? Click on the genes and read about them, but also do some google investigative work to find out!
+
+
+ - Based on what you know about human evolution, does any particular gene support your hypothesis in Part 2 as to which of the two populations might be driving this pattern? What are some known differences about these two human populations?
+
+
+
+6.	Based on what you know about human evolution, what additional regions/genes in the human genome would you like to analyze like this in the future?
+
+
+7.	When you are done, compare your results to others in the class and the other regions. When you are done, write up a short (<200 words) summary of what you did in this lab and what you learned from your region. Include the plots from Part 1 with your selected pair of populations, and the 2 plots from Part 2 for the population you hypothesize to be driving this signature. Finally, include the screen shot of your zoomed in region with the selected gene from the UCSC. 
+
+
+#####This exercise should provide a sense of how sliding window approaches are used to identify regions of interest in population genetics studies. Typically, these scans are done genome-wide along with other statistics to identify regions of interest. Then, gene annotations are used to find overlapping functional regions that can explain the genetic patterns. This can be done programmatically by downloading annotations from UCSC and using `bedtools` to intersect with the regions of interest. Then, [custom tracks](https://genome.ucsc.edu/goldenPath/help/customTrack.html) can be used to upload FST, pi, and Tajima's D results to the genome browser. We will discuss sliding window analyses in more depth in two weeks.

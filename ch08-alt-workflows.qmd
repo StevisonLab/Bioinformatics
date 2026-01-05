@@ -1,5 +1,5 @@
 ---
-title: "Ch. 11 – Structural Variation, CNVs, and Other Post‑Alignment Workflows"
+title: "Alternative Post‑Alignment Workflows"
 ---
 
 ## Overview

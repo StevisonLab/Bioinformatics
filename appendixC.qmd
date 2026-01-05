@@ -1,157 +1,55 @@
 ---
-title: "Appendix: How to Read Scientific Literature"
+title: "Appendix: Yeast Experimental Evolution Dataset"
 bibliography: references.bib
 csl: nature.csl
 ---
 
-## Reading Primary Scientific Literature {#sec-papers}
+## Overview of the yeast dataset {#sec-yeast}
 
-This appendix is a refresher on how to read and interpret original research articles. It is especially relevant for Lab01 (finding and describing a genome analysis paper) and for later labs and projects where you will evaluate genomics studies in the context of the three perspectives from Chapter 1 and the ethical themes introduced there [@pevsner2015; @hotaling2021; @marks2021].
+In the labs, you will work with whole-genome sequencing data from a single *Saccharomyces cerevisiae* population that was part of an experimental evolution study on standing genetic variation and adaptation in outcrossing yeast. The dataset you will analyze is one run from this experiment deposited in the NCBI Sequence Read Archive (SRA) under accession **SRR1693691**. This sample represents pooled genomic DNA from many yeast cells, capturing allele frequency changes that occurred over hundreds of generations under defined selection conditions in the original study. @burke_standing_2014
 
-Sharing the results of scientific experiments is one of the most important aspects of science. Early scientists shared their observations and results in open letters to their colleagues that were hand copied and passed from person to person. Pretty soon, scientists developed better ways of sharing their results with each other, and our current knowledge of science and the world around us is dependent upon current scientists sharing their results.
+The reference genome used throughout the course is the sacCer3 build of the *S. cerevisiae* S288C genome (NCBI assembly R64), which is a compact, well-annotated eukaryotic genome of roughly 12 Mb spread across 16 chromosomes plus mitochondrial DNA. The small genome size makes it feasible to run a full variant-calling workflow (alignment, post-processing, GATK variant calling, and filtering) on the high-performance computing (HPC) system within a single semester, while still exposing you to tools and file formats that are standard in modern human and biomedical genomics.
 
-Scientists share their discoveries with each other in several ways. Informally, scientific colleagues may call or email each other about their latest research. But once the experiments have been done and the analysis carried out, a scientist needs to share this new information with a wider audience in a more formal manner. Other scientists can then find this information to help them design their own experiments, to put their own research in context, and to add to our knowledge of the world.
+## Where the data come from
 
-One of the most common ways for scientists to formally share their research is to publish a “journal article.” The journal article is a part of the formal written record of the scientific process, and you’ve probably come across them before. The typical format includes a discussion of the authors’ original research, offers thoughtful analysis of the results, and cites relevant papers from other authors that relate to the research. When the authors are discussing research and experiments that they carried out, and giving you an outline of the experiment, this is called an original research article. We will discuss other types of writing in part 3 of this assignment.
+The sequencing data for SRR1693691 were generated as part of an “evolve-and-resequence” experiment in which yeast populations were founded from a genetically diverse base population and then propagated for many generations with periodic outcrossing.\@burke_standing_2014 In this design, recombination reshuffles standing genetic variants across the genome, allowing adaptation to proceed from existing variation rather than relying primarily on new mutations, and making evolutionary responses more repeatable across replicate populations.
 
-## Part 1: Breaking down the paper
+The original publication (“Standing Genetic Variation Drives Repeatable Experimental Evolution in Outcrossing Populations of *Saccharomyces cerevisiae*”) used whole-genome resequencing of evolved populations to identify genomic regions where allele frequencies changed consistently across replicates under selection. In this course, you will not attempt to fully reproduce the paper’s population-genetic analyses; instead, you will focus on learning how to process raw sequencing reads into high-quality variant calls and then interpret those variants in a biological and biomedical context using a subset of the data.
 
-In this activity, you will read and interpret an original research article. You will be asked to identify the hypothesis and the main ideas. From that, you will work to make a "concept map" of the experiment. Finally, you will think of ideas for follow up experiments based on these results.
+## Core files and formats you will see
 
-The article you will read was published in 2012 in the Journal of Heredity. It can be accessed via the web for [@Migaloo1]. If you haven't already done so, read over the paper. This quick guide [@carey_ten_2020] can be reference for how to approach scientific literature.
+You will repeatedly encounter a small set of core file types as you move from raw data to filtered variants, and part of the course goal is to help you learn to “read” these files as biological objects as well as technical ones.
 
-### Step 1: Hypothesis
+-   **Raw sequencing reads (FASTQ)**:\
+    The SRA run SRR1693691 can be converted into one or more compressed FASTQ files (for example, `SRR1693691.fastq.gz` or lane-split files) that contain the raw read sequences and their per-base quality scores. In Lab 4 you will download the reads from NCBI using provided scripts, inspect the FASTQ structure, and run **FastQC** to assess base quality, GC content, adapter contamination, and other quality metrics before and after trimming.
 
-A scientific hypothesis (plural hypotheses) is the initial building block in the scientific method. It is a proposed explanation for an observation. In other words, it is a prediction or explanation that can be tested by an experiment. Observations and experiments may support a scientific hypothesis, but can never entirely prove one.
+-   **Reference genome (FASTA and index files)**:\
+    The sacCer3 reference genome is provided as a FASTA file (for example, `sacCer3.masked.fa`), which you will index with **bwa** and **samtools** to support alignment and downstream operations. Index files such as `sacCer3.masked.fa.bwt` (for BWA) and `sacCer3.masked.fa.fai` (for samtools) allow fast lookups of sequence coordinates, and you will use the `.fai` file to compute the total genome size and estimate coverage in Lab 4.
 
-Typically, a hypothesis is an if-then proposition, written in the form, "If X, then Y." Spend a few minutes reading through the article and try to write out what you think the hypothesis is based on the article.
+-   **Aligned reads (BAM and BAI)**:\
+    After trimming, you will align the reads to sacCer3 using BWA and convert the output into a coordinate-sorted BAM file, for example `SRR1693691.sorted.bam`, plus an index file `SRR1693691.sorted.bam.bai` that enables rapid random access to specific genomic regions. Later, as part of the GATK post-processing workflow, you will mark PCR and optical duplicates to produce a duplicate-marked BAM (for example, `SRR1693691.markdup.bam`) that better reflects the true independent read depth at each site.
 
-### Step 2: Concept Map
+-   **Variant calls (VCF)**:\
+    GATK will be used to call single nucleotide variants, producing a VCF file such as `SRR1693691.SNPs.vcf` (or a compressed `SRR1693691.SNPs.vcf.gz`) that lists putative variant sites along with quality scores and annotations. You will then apply hard filters with GATK (using recommended thresholds and your own adjustments) to generate one or more filtered VCFs (for example, `SRR1693691.SNPs.filtered.vcf` and `SRR1693691.SNPs.filtered2.vcf`) and compare how filtering choices affect the number and quality of retained variants.
 
-A concept map is a visual tool that helps show the relationship between ideas. Concept maps begin with a main idea and then branch out to show how the idea can be broken down into sub-topics. Concept maps can help you organize information from your reading. The concept map arranges related ideas in a hierarchy. You start off broad and the sub-topics will get more and more specific. Watch the following [brief video](https://www.youtube.com/watch?v=sZJj6DwCqSU&t=3s) on concept mapping.
+-   **Quality summary files (flagstat, depth, MultiQC, plots)**:\
+    Along the way you will generate summary text files from `samtools flagstat`, depth-of-coverage summaries from **vcftools**, and an integrated **MultiQC** HTML report that aggregates QC metrics across the workflow. Custom scripts will also create density plots of key variant-quality metrics (for example, quality-by-depth or mapping quality) to help you decide on appropriate filtering thresholds.
 
-After reading the paper, try to identify the main ideas. On scratch paper, make a list of these ideas and start to construct a concept map of how these are related. First, you’ll want to start with a central idea from your list. Next, what is that central idea related to from your list? Your concept map can be as small or big as you need it to be in order to cover your topic. If your concept map ends up being too big, don’t worry! The purpose of the map was to help you organize your ideas to better understand the article.
+## How the dataset flows through the labs
 
-### Step 3: What's Missing
+The genome dataset SRR1693691 is the thread that ties together multiple labs into a coherent end-to-end workflow, from raw data to interpretation. Each lab revisits the same sample and reference genome but focuses on a different set of tools and questions, so that by the end of the course you will have seen every major step of a standard variant-calling pipeline in the context of a real experimental evolution dataset.
 
-Sometimes, we can have difficulty interpreting a scientific article. First, look up anything you don't understand. This may require additional reading, but the more you read, the less you will look up and over time you will get more and more comfortable with this process. Second, accept that this may not be your fault! Often scientists may leave out details they assume readers will know making it harder for people to understand. This is not to say this work is not properly vetted. A typical scholarly, scientific journal article is undergoes a rigorous editing process known as peer review (more on this later). Remember, your ability to critique scientific work is directly related to your ability to understand the findings. It is important that you take the time needed to look up what you don't know and try to identify additional pieces of information you need to properly assess the work.
+-   In **[Lab 4](Lab04.qmd) (Genome Sequence Indexing and Alignment)**, you will:
+    -   Index the sacCer3 reference genome with BWA and samtools and examine the `.fai` index to calculate total genome size.\
+    -   Download the SRR1693691 reads from NCBI using a provided shell script, inspect the FASTQ files, and run FastQC before and after trimming.\
+    -   Trim the reads and align them to sacCer3, producing a sorted BAM file plus coverage estimates and initial alignment QC metrics.
+-   In **[Lab 7](Lab07.qmd) (Variant Calling via GATK Best Practices)**, you will:
+    -   Start from the aligned BAM and run GATK’s post-processing and variant-calling steps using a provided script, including duplicate marking and variant calling for SNPs.\
+    -   Add additional QC steps (such as `samtools flagstat`, vcftools depth summaries, and MultiQC) and inspect density plots of variant-quality metrics to decide how stringent your filters should be.
+    -   Generate multiple filtered VCFs with different cutoff choices and compare the resulting sets of SNPs using VCFtools and an UpSet plot, learning how filtering decisions trade off between retaining true variants and excluding noise.
+-   In **[Lab 9](Lab09.qmd) (Genome Visualization with IGV)**, you will:
+    -   Load the sacCer3 genome, the pre-filtering BAM (`SRR1693691.sorted.bam`), the duplicate-marked BAM (`SRR1693691.markdup.bam`), and the VCF into IGV, configuring track coloring and display options to highlight read strand, duplicates, and amino acid translations.\
+    -   Navigate to specific genomic windows that contain called SNPs and visually evaluate the evidence for each variant: read depth, base quality patterns, strand balance, and consistency across reads.
+    -   Use coordinate-based searches in both IGV and the filtered VCF to decide whether certain variants are likely real biological changes, consider whether they fall in protein-coding regions, and reason about possible amino acid changes and functional impacts.
 
-***In re-reading the article, what were some pieces you felt were missing that would have made it easier to read had they been included? Your list need not be exhaustive, but try to think of 1 or 2 things that would help you read the article better.***
-
-### Step 4: What's Next
-
-After reading a scientific article, you may have lots of follow up questions. Every scientific experiment is just one step in a larger puzzle. Perhaps one of the most exciting (or maybe exhausting?) parts of scientific research is that there is always more to uncover. Our work is never done! In this spirit, one way to reflect on reading can be to think about what you would do next if you were the researcher? Design a follow-up experiment to this study based on what you learned.
-
-On your scratch paper, write out how you would conduct the experiment. Be sure to apply the scientific method. Present a clearly defined hypothesis and how you would go about testing that hypothesis.
-
-Some questions to think about in designing your experiment:
-
--   What resources would you need to conduct the study?
--   How long would it take to get results?
--   Who might be interested in your findings?
-
-Your experiment does not have to be 100% related to this study, but it should be inspired to some degree by reading and discussing this work.
-
-## Part 2: Further Exploration
-
-Now that you've read the paper over and made a concept map, take some time to explore the findings further to reinforce your understanding.
-
-For this part of the activity, you will explore OCA on OMIM, learn about other animal models for this disease, explore other databases, download and annotate the tyrosinase gene, and finally, find out what's happening with Migaloo the whale.
-
-### Step 1: Oculocutaneous Albinism (OCA)
-
-In the article, it lists the MIM number for OCA. Look this number up in the paper and go to the [OMIM database](https://www.omim.org/) and type it in. As you may recall from an earlier in-class activity, OMIM is a comprehensive, authoritative compendium of human genes and genetic phenotypes that is freely available and updated daily. The overviews in OMIM contain information on all known mendelian disorders and over 15,000 genes with references to additional primary literature. OMIM focuses on the relationship between phenotype and genotype. Once you find the record with OCA corresponding to the number in the paper, click it.
-
-*What is the cytogenetic location for the gene, tyrosinase?*
-
-### Step 2: Animal Models
-
-While OMIM is focused on Human Diseases, it has a section for animal models. On the left-hand side of the page, navigate to the Animal Model section. Notice that Migaloo is listed here in reference to this study!
-
-*In addition to Migaloo, what other animal models for OCA1 are listed?*
-
-### Step 3: Albinism database
-
-In the third paragraph, the article also references the albinism database. Remove the date from the URL and go to the website. You'll notice that you get rerouted. Explore this website.
-
-*Is this database likely to have different information since the publication of this article?*
-
-### Step 4: Gene Annotation
-
-GenBank is a nucleotide database curated as part of the NCBI. The journal article provides a GenBank Accession number for the tyrosinase gene. Navigate to GenBank and pull up the accession listed in the article. Walk through the following steps to annotate the PCR primer sequence from the article to see where it is located in the gene sequence. 1. Copy and paste the mRNA sequence into a word document on your computer. 2. Using the search function, find the forward PCR primer listed in the article in this pasted mRNA sequence. You may need to only search 5-6 base pairs at a time as the sequence has space gaps in this format making it impossible to find the full-length sequence without some tedious edits. Also note that the primer sequence has an R in it. You may want to change that to a G. This is what is called DNA code ambiguity (learn more [here](https://droog.gs.washington.edu/parc/images/iupac.html)!). 3. Once you find the primer in the larger sequence, mark it in some way with word edits (e.g. bold, italic, highlight, change text color, etc.). 4. Return to the GenBank website and look at the FEATURES section of the record for this sequence. Here, you will see the location of each attribute of the gene. For example, the full-length gene can be found from position 1 to 2096. 5. Identify the feature that overlaps the primer sequence you annotated in Step 2.
-
-*Based on where the PCR primer is located in the sequence, which feature of the mRNA does this primer include?*
-
-### Step 5: Migaloo, where are you?
-
-Migaloo the white whale is rather famous now. He even has his own twitter handle [\\\@Migaloo1](https://twitter.com/migaloo1) with over 10,000 followers! There are also several other websites dedicated to following Migaloo and other white whales. Do a bit of internet research of Migaloo sightings.
-
-*Based on your research, when was Migaloo last sighted?*
-
-## Part 3: Publishing & types of scientific writing
-
-In Part 1 of this activity, we focused on original or primary scientific literature. A slightly different type of journal article (called a “REVIEW ARTICLE”) will not report on original research, but will outline the current state of research in a particular field, citing the appropriate literature and connecting the various pieces of research together. Like primary research articles, review articles are generally peer reviewed.
-
-Review articles and original research articles can often look the same at first glance, and most search engines or databases won’t tell you what type of an article it is. To tell them apart, you need to identify whether the authors are discussing their own research and experiments or someone else’s. Often, the “Materials and methods” section (aka “Experimental procedures” or something similar) will be your best clue. This section is occasionally stored online, separate from the article as a part of the “supplementary materials”. A review article may also read more like a textbook chapter than an experiment.
-
-Both type of journal articles can be found online and/or in print.
-
-When you are searching for information on a research topic, you may also run across some other types of information. Shorter news articles (1-2 pages) may appear in some scientific and popular publications reporting on recent developments in a particular field, or reporting on a particular piece of research. These news articles are not peer reviewed, and are normally written by science journalists, not researchers. The news articles may be easier to read, but since they are normally one or two steps removed from the original research, a news article may not be the best source for your paper or project. However, news articles can lead you to a piece of original research, and can help you easily stay informed about recent research developments.
-
-If you conduct your searches online, via Google, Yahoo or another popular search engine, you may find journal articles, but you may also come across other scientific information that can take many forms. Wikis, blogs and personal websites can often contain a lot of scientific information, but these resources are generally very far removed from the original research where the ideas were first developed. Each of these sources needs to be evaluated very carefully to determine if the information is credible, and these sources won’t be suitable for a research paper. There is a lot of great scientific information on the web, but there is also a lot of bad science, pseudo-science, and non-science-pretending-to-be-science available and distinguishing them can be tricky. We will talk more on finding credible sources in the next part of this activity.
-
-For this part of the activity, you will be provided a popular news article on the same topic as the original article you read in Part 1. You will be asked to compare and contrast the two types of writing.
-
-### Step 1: Compare and Contrast
-
-Watch this [brief video](https://www.youtube.com/watch?v=TRfu48motcQ&t=108s) on the difference between journals versus magazines.
-
-*What are some of the key differences between magazines and journals?*
-
-### Step 2: See the Difference?
-
-Now, read this [blog article](https://www.pacificwhale.org/blog/migaloo/) on Migaloo the whale. Afterward, think about how this work compares to the journal article you read in Part 1.
-
-Using the differences listed in response to the last question, how do some of these compare for this specific set of journal versus magazine article? You may also want to contrast each piece with the style of writing in textbooks.
-
-### Step 3: Peer Review
-
-Peer review is the process that allows scientists to trust the reliability of published journal articles. Here’s how it works:
-
-1.  A scientist submits an article to a journal saying “please publish this article.”
-2.  The journal finds 2 or 3 people who know a lot about the research topic, called REVIEWERS or REFEREES, and asks them to look at the article.
-3.  The reviewers look at the article carefully. They check to see if the experiment is designed and conducted well, they look at the analysis of the data, they see whether the conclusions are justified by the data, and they make sure the article can be understood by other scientists. They also make a judgment about how “important” the article is. Some journals only accept really innovative and important research, other journals accept research that advances the field just a little bit.
-4.  The reviewers say “yes, we should publish this article”, “no, we shouldn’t publish this article” or “if the author makes some changes, maybe we should publish this article”
-5.  If the article is published, we can say that it has been PEER REVIEWED.
-
-Scientists rely on their colleagues, the reviewers, to make sure that good science is given a wide audience and that not-so-good science stays out of the science journals. Because blogs, wikis and personal websites don’t automatically have this expert filter, you have to do a lot more digging to determine if the information is reliable.
-
-The only way to tell if a journal article has been peer reviewed is to look for information about the journal itself, normally on the publishers website. Most databases won’t indicate if an article is peer reviewed or not.
-
-For the article you read in Part 1, go to the [journal's website](https://academic.oup.com/jhered/pages/Policies) and read over their peer review process. It can be slightly different for different journals.
-
-*Continue reading about this journal on their website. When was the Journal of Heredity established?*
-
-### Step 4: Timeline to Publication
-
-The information on peer review is usually included with the original article. Explore the article history to see how long the article spent in peer review.
-
-*Based on when the article was received versus when it was accepted, how many months did it spend before being accepted?*
-
-## Concluding Remarks
-
-This activity was designed to familiarize you with reading and understanding scientific literature. In your research in our lab at Auburn, you will need to read scientific articles for your project and for lab meeting paper discussions. Hopefully this introduction makes that task seem less daunting.
-
-One thing not covered here was how to find scientific literature on your own. This process of vetting articles is also important. To help get you started, I recommend attending the [Research Savvy Bootcamps](https://libguides.auburn.edu/savvy_researcher/workshops) offered every semester.
-
-From here, you can find the resources to help continue your journey in reading, understanding, and finding scientific literature.
-
-Additionally, you can request a meeting with a [subject librarian](https://libguides.auburn.edu/subjectlibrarians) if you want to learn more about the resources available through the library and how best to use them.
-
-As you move into Lab01 and later assignments, you can reuse the same skills:
-
--   Identify hypotheses and concept maps for genomics papers you select.
--   Ask “what’s missing?” when authors gloss over methods or QC details.
--   Propose follow‑up experiments or analyses that build on published genomics work.
-
-This is exactly the kind of reading and reasoning you will need for the semester‑long PRDM9 project (Appendix: Semester Research Project) and for your own future research [@burke_standing_2014; @hotaling2021; @marks2021].
+Throughout these labs, most of the heavy lifting is handled by template shell scripts that you will lightly edit and submit to the HPC queue, so you can concentrate on understanding the logic of each step and interpreting the outputs rather than on writing a full pipeline from scratch. By repeatedly touching the same dataset at different stages—raw reads, alignments, unfiltered and filtered variants, and visual inspection in IGV—you will gain practical experience with how real genomic data look and behave and how bioinformatics decisions shape the final set of variants that biologists use to draw conclusions about evolution and disease.

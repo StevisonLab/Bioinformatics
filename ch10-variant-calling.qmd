@@ -1,5 +1,5 @@
 ---
-title: "Ch. 10 – Variant Calling and Evaluation"
+title: "Variant Calling and Evaluation"
 ---
 
 ## Overview

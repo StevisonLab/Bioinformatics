@@ -1,5 +1,5 @@
 ---
-title: "Ch. 3 – File Formats, Quality Scores, and Experimental Design"
+title: "Sequence Motif Analysis"
 ---
 
 ## Overview

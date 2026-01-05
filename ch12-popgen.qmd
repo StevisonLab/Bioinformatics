@@ -1,5 +1,5 @@
 ---
-title: "Ch. 12 – Population Genomics and Genome Scans"
+title: "Population Genomics and Genome Scans"
 ---
 
 ## Overview

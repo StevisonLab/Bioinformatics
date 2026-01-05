@@ -1,5 +1,5 @@
 ---
-title: "Ch. 13 – Where to Go Next"
+title: "Genome Alignment and Genome Assembly"
 ---
 
 ## Overview

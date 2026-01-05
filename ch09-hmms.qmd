@@ -1,5 +1,5 @@
 ---
-title: "Ch. 7 – Genome Alignment and Genome Assembly"
+title: "Hidden Markov Models in Biology"
 ---
 
 ## Overview

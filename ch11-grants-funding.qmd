@@ -1,5 +1,5 @@
 ---
-title: "Ch. 9 – Gene Annotation, Homology, and HMMs"
+title: "Grants, Funding, and Scientific Communication "
 ---
 
 ## Overview

@@ -1,5 +1,5 @@
 ---
-title: "Lab03: Design a Genome Project"
+title: "Lab02: Design a Genome Project"
 bibliography: references.bib
 csl: nature.csl
 ---
@@ -8,7 +8,7 @@ csl: nature.csl
 
 In Chapter 1, we introduced three broad perspectives on bioinformatics and genomics (cell, organism, tree of life) [@pevsner2015]. Later in the textbook, Pevsner expands these 3 perspectives into five basic perspectives on genome sequencing.
 
-For this lab, you will use these 5 perspectives, along with your new understanding of sequencing technologies from Chapter 2, to sketch a 1–2 page proposal for a hypothetical genome project [@pevsner2015; @vandijk2018; @vandijk2023].
+For this lab, you will use these 5 perspectives, along with your new understanding of sequencing technologies from Chapter 2, to sketch a 1–2 page narrative for a hypothetical genome project [@pevsner2015; @vandijk2018; @vandijk2023]. More information on Grant writing and review will be covered later in Chapter 5 to give you plenty of time to work on this lab assignment outside of class while we move to other topics in the course.
 
 The five perspectives on genomics discussed in Pevsner Chapter 15 can be summarized as:
 
@@ -19,3 +19,26 @@ The five perspectives on genomics discussed in Pevsner Chapter 15 can be summari
 -   **Bioinformatics aspects**: databases, software, and visualization tools that make genome analysis possible.
 
 These map naturally onto the three perspectives in Chapter 1: cell‑scale questions, organism‑level questions, and tree‑of‑life/comparative questions [@pevsner2015].
+
+### The Assignment
+
+Write a 1–2 page narrative of the genome analysis project you have designed. To guide you, begin by reflecting on the following questions:
+
+- _If you could sequence the genomes of 100 individuals from any species, which species would you choose?_ 
+- _What hypotheses would you test, how would you perform data analyses, and what resources would you require in terms of hardware, software, and collaborators?_ 
+- _What ethical issues might arise in sequencing these genomes?_
+
+Specifically, think about: 
+
+- Which sequencing platforms and coverage would you choose (Chapter 2)? 
+- Which file formats and QC steps would your workflow rely on (Chapter 3)? [@pevsner2015; @vandijk2018; @vandijk2023]
+
+For your design narrative: 
+
+- Choose a species and justify why 100 genomes from this species would be informative. - State one or two main hypotheses, or guiding questions if discovery-based. 
+- Identify which of the five perspectives (and which of the three Chapter 1 perspectives) your project emphasizes. 
+- Outline your sequencing strategy (platforms, approximate coverage, sample types) using concepts from Chapter 2. 
+- Sketch the main analysis steps (from raw FASTQ through alignment/assembly and downstream analyses) using ideas from Chapters 1 and 3. 
+- Briefly note any major ethical issues if humans or other sensitive species are involved.
+
+The focus of your design narrative should be on **motivation and approach**. You may refer to assigned readings (e.g., @hotaling2021; @marks2021; @bogan2025) in your narrative, but you do not need a formal reference list.

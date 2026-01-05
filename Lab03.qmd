@@ -1,39 +1,130 @@
 ---
-title: "Lab03: Design a Genome Project"
+title: "Lab03: Genome Browsers and Databases"
 bibliography: references.bib
 csl: nature.csl
 ---
 
-## Lab 3 {#sec-lab03}
+## Lab 3: Exploration of Genome Browsers and Databases {#sec-lab03}
 
-In Chapter 1, we introduced three broad perspectives on bioinformatics and genomics (cell, organism, tree of life) [@pevsner2015]. Later in the textbook, Pevsner expands these 3 perspectives into five basic perspectives on genome sequencing.
+### 1. Using the Jump-2-gene (J2G) feature on FlyBase
 
-For this lab, you will use these 5 perspectives, along with your new understanding of sequencing technologies from Chapter 2, to sketch a 1–2 page narrative for a hypothetical genome project [@pevsner2015; @vandijk2018; @vandijk2023]. More information on Grant writing and review will be covered later in Chapter 5 to give you plenty of time to work on this lab assignment outside of class while we move to other topics in the course.
+1. Search for the **DSX** gene using the search box in the top-right corner.
+2. Answer the following questions:
 
-The five perspectives on genomics discussed in Pevsner Chapter 15 can be summarized as:
+3. What chromosome is this gene on?
+4. What do you think the “R” in the chromosome name means?
+1. Find the section **Genomic Location** and use jBrowse to view DSX in the genome browser.
+2. On the left, turn on the **RNA** and **CDS** tracks, then answer:
+    - How many different transcripts does this gene have?
+    - How many exons are in each protein?
+    - What strand of DNA is it on? (Hint: Right click on features to get details.)
+3. Click on one of the protein isoforms and identify which protein domains are present.
+4. Scroll down to **Transcript Level Features** and turn on these tracks, clicking the `?` for each to read about the evidence:
+    - TSS (modENCODE, embryo)
+    - RNA-Seq exon junctions
+    - What evidence has been used to confirm the different genetic features of this gene?
+5. View these evidence tracks in the genome browser and hover over features to see read counts, then answer:
+    - How many genomic “reads” support each prediction?
+    - TSS (modENCODE, embryo)
+    - RNA-Seq exon junctions
+6. In the **Expression** section under **RNA-Seq → Tissues**, turn on expression for **Gonads and male accessory glands**. Configure and maximize vertical spacing as in the lab handout, then answer:
+    - Based on the expression data, what predictions do you make about this gene?
 
--   **Catalog genomic information**: basic genome features (size, chromosomes, GC content, repeats, gene counts), based on sequencing, assembly, and annotation.
--   **Catalog comparative genomic information**: whole‑genome comparisons to related species, orthologs, divergence times, lateral gene transfer, using whole‑genome alignments and genome browsers.
--   **Biological principles**: how genome structure and variation underlie development, metabolism, behavior, and evolutionary processes (e.g., genome size evolution, polyploidization, gene birth/death).
--   **Human disease relevance**: how genomes relate to disease in humans or plants, including SNPs, linkage and association studies, and host–pathogen interactions.
--   **Bioinformatics aspects**: databases, software, and visualization tools that make genome analysis possible.
+***
 
-These map naturally onto the three perspectives in Chapter 1: cell‑scale questions, organism‑level questions, and tree‑of‑life/comparative questions [@pevsner2015].
+### 2. Compare orthologous sequences using two-way BLAST at NCBI
 
-### The Assignment
+1. In the NCBI **Gene** database, find the **ADH** gene in *Drosophila grimshawi*.
+2. From the gene page, under **Genomic regions, transcripts, and products**, click **FASTA** to obtain the ADH sequence for *D. grimshawi*.
+3. Repeat the previous step for *D. melanogaster*.
+4. Go to **blast2seq** and:
+    - Paste *D. melanogaster* ADH into the **Query**.
+    - Paste *D. grimshawi* ADH into the **Subject**.
+    - Under **Program Selection**, choose **blastn** for somewhat similar sequences.
+5. From the BLAST output, record:
+    - Percent identity between the two species: ________
+    - Percent query cover: ________
+6. Under the **Alignment** tab, find the alignment with the highest percent identity and record:
+    - Total length of highest hit: ________
+    - Query length: __________
+    - Subject length: __________
+    - Expect value: _________
+    - Orientation: _________
+7. Now select the **Dot plot** tab and describe:
+    - How do your calculations above compare to the visual of hits in the dot plot?
+8. In a new tab, return to FlyBase. At the top, under **Species**, select **Sequenced Species** and answer:
+    - Based on the evolutionary distance between *D. melanogaster* and *D. grimshawi*, does the observed percent identity make sense?
+9. Predict whether you expect a higher or lower percent difference between *D. pseudoobscura* and *D. melanogaster*.
+    - If time permits, test this by repeating the two-way BLAST with ADH from *D. pseudoobscura* as the subject and *D. melanogaster* as the query.
 
-Write a 1–2 page narrative of the genome analysis project you have designed. To guide you, begin by reflecting on the following question: "If you could sequence the genomes of 100 individuals from any species, which species would you choose? What hypotheses would you test, how would you perform data analyses, and what resources would you require in terms of hardware, software, and collaborators? What ethical issues might arise in sequencing these genomes?"
+***
 
-Specifically, think about: 
-- Which sequencing platforms and coverage would you choose (Chapter 2)? 
-- Which file formats and QC steps would your workflow rely on (Chapter 3)? [@pevsner2015; @vandijk2018; @vandijk2023]
+### 3. Compare synteny among Muller Elements
 
-For your design narrative: 
+On FlyBase, select **Synteny Table** under the **Species** tab. *Drosophila* chromosomes are labeled as **Muller’s Elements**, and comparative genomics across *Drosophila* species has been studied since the 1930s using polytene chromosome squashes.
 
-- Choose a species and justify why 100 genomes from this species would be informative. - State one or two main hypotheses, or guiding questions if discover-based. 
-- Identify which of the five perspectives (and which of the three Chapter 1 perspectives) your project emphasizes. 
-- Outline your sequencing strategy (platforms, approximate coverage, sample types) using concepts from Chapter 2. 
-- Sketch the main analysis steps (from raw FASTQ through alignment/assembly and downstream analyses) using ideas from Chapters 1 and 3. 
-- Briefly note any major ethical issues if humans or other sensitive species are involved.
+Answer the following:
 
-The focus of your design narrative should be on **motivation and approach**. You may refer to assigned readings (e.g., @hotaling2021; @marks2021; @bogan2025) in your narrative, but you do not need a formal reference list.
+1. What are the major changes at the chromosome level across these *Drosophila* species? Specifically, do any species have pieces of multiple Muller elements spanning a single chromosome?
+2. Compare the figure in the handout to the synteny table and mark where Muller elements have shuffled to form a combined element. (Do this on the printed/ PDF figure.)
+3. What other kinds of changes can you find?
+
+***
+
+### 4. Whole genome alignments on UCSC
+
+1. Go to the **UCSC Genome Browser** and select the *D. melanogaster* genome.
+2. Search for the **rdl** gene and select one of the hits, then zoom out 3×.
+3. Under **Comparative Genomics**, click **Conservation** and:
+    - Turn on **MultiZ Alignment** for these three *Drosophila* species:
+        - *D. simulans*
+        - *D. pseudoobscura*
+        - *D. grimshawi*
+    - Under **Others**, select all available options.
+    - Set the MultiZ track to **full**.
+    - Under **Subtracks**, select all and display them as **dense**.
+    - Click **Submit** to return to the genome viewer.
+4. Answer:
+    - Do the different conservation tracks (**phyloP**, **phastCons**, **Cons Elements**, and **MultiZ Align**) agree with each other?
+5. Examine the alignments for *D. melanogaster* and the other species.
+    - Do these tracks confirm what you saw in Part 2 with the pairwise alignment between *D. grimshawi* and *D. pseudoobscura* based on the species relationships on FlyBase?
+6. Repeat the setup for the **DSX** gene (you can type DSX in the top search panel and click **go**; your configuration should persist) and answer:
+    - Do the different conservation tracks still agree for this gene?
+
+***
+
+### 5. Orthologs, paralogues, and gene trees on Ensembl
+
+1. Go to the **Ensembl** genome browser and select the **Human** genome from the species drop-down menu.
+2. In the search bar, type **PRDM9** and click **Go**.
+3. From the gene page, select **Orthologues** under the **Comparative Genomics** section in the left-hand panel.
+4. Answer:
+    - How many orthologues are predicted for this gene in **Primates**?
+    - How many are predicted for **Sauropsida**? Which species?
+    - Note the **Target %id** and **Query %id** for these orthologues.
+5. Compare the counts of 1:1 orthologues versus 1:many orthologues.
+    - What do you think the “many” indicate biologically?
+6. Set **Species set** to **All**, then in the left-hand panel choose **Gene tree**.
+    - Select **Tetrapods**, then click **View sub-tree** using the **Wasabi** viewer.
+    - What do you notice about these gene sequences?
+    - Is this a protein sequence alignment or a DNA sequence alignment?
+7. Along the top, click **Export** and:
+    - Make sure **ALL** species are included.
+    - Download the tree as a **Newick** file.
+8. (Optional) Open the Newick file in **FigTree**:
+    - Explore settings to configure your tree (e.g., change tip names via the annotate feature, collapse groups).
+    - When satisfied, export the tree as a PDF.
+
+***
+
+## Lab Reflection Questions
+
+Answer the following reflection questions in complete sentences:
+
+1. What challenges did you encounter while navigating the different genome databases, and how did you overcome them?
+2. How did the different genome browsers compare in terms of ease of use and the type of information available?
+3. What new insights did you gain about genome structure and evolution by using these tools?
+4. When exploring the gene annotation tracks, how does the evidence from each track support your existing knowledge of how the gene functions?
+5. How does the percent identity in your BLAST search reflect evolutionary relationships between species, and how did this compare to the conservation tracks in UCSC?
+6. How do synteny comparisons help infer evolutionary history?
+7. Were you surprised by the number of orthologs and paralogs across different vertebrate groups for PRDM9? Do you think the accuracy of these counts differs across clades?

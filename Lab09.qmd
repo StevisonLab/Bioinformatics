@@ -1,0 +1,118 @@
+---
+title: "Lab09: IGV Genome Visualization Lab Activity"
+bibliography: references.bib
+csl: nature.csl
+---
+
+#Lab 9: IGV Genome Visualization Lab Activity
+
+---
+
+###The primary goal of most NGS Workflows is to generate genetic variants for downstream biological analysis. Here, we will take a look at variants using a genome viewer from the Broad Institute called "IGV" or integrated genome viewer. There are LOTS of other options if you want to shop around, but for the purposes of this lab, I will introduce you to this one.  
+
+###Step 1 - Download and install IGV:
+
+####The software IGV is available from the Broad Institute (which also host GATK). IGV stands for Integrative Genome Viewer and allows you to upload a variety of genome file formats to view on your desktop machine. It runs on java, so you may need to update your version of java to run it. 
+
+2. Download IGV from [here](https://software.broadinstitute.org/software/igv/downloadLinks) (make sure to scroll to the appropriate distribution based on your OS). Linux users will download the binary distribution, which can be launched directly from terminal using java. 
+
+3. Follow the instructions to install the software on your main OS.
+
+2. Make sure after you install it that it loads properly before getting started on the exercise below.  
+
+###Step 2 - Load data into IGV:
+
+####The goal of this part of the exercise is to load the datasets we have worked with in Labs 4 and 6 into IGV to look at the variants and the evidence that supports them. 
+
+1. Download files from [IGV_files.zip](https://auburn.instructure.com/courses/1629815/files/261678054/download?download_frd=1) from Canvas.
+
+2. Open IGV. Refer to the slides from this [tutorial](https://auburn.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=51da88a9-e569-4453-b414-b29d0125a0ac) if needed throughout.
+
+3. First, we need to load the genome file. At the top left, select the dropdown menu with the human genome and select the option “Click for more”. 
+
+   <p align="center" width="20%">
+   	<img width="25%" src=images/genomes1b.jpg>
+   	<p align="center" width="20%">
+   	<img width="25%" src=images/genomes1.jpg>
+	</p>
+ 
+4. From the pop up menu, scroll to the genome for *S. cerevisae (sacCer3)* and click OK to load it into the current session.
+
+   <p align="center" width="20%">
+   	<img width="40%" src=images/genomes2.jpg>
+	</p>
+	 
+5. Next, at the top left, select “File” and “Load from File” to import your raw sequence alignment (pre-filtering). The file should be named “SRR1693691.sorted.bam” and have a corresponding index file named “SRR1693691.sorted.bam.bai”. Make sure not to select the index, but only verify it exists in the same directory. IGV will search for it and give an error if it is not there.
+
+6. Repeat step #5 on the markdup bam file (post-filtering). The file should be named “SRR1693691.markdup.bam” and have a corresponding index file named “SRR1693691.markdup.bai”. Again, make sure not to select the index, but only verify it exists in the same directory. IGV will search for it and give an error if it is not there.
+
+7. Finally, you will load the VCF file you generated (pre-filtering). At the top left, select “File” and “Load from File” to import the file “SRR1693691.SNPs.vcf.gz”. This file does not have an index, but should still load.
+8. Configure your view in the following ways:
+ - In the sorted bam panel, right click and scroll to "Color alignments by" and in the pull out menu, select the option "read strand". This will color code reads by forward and reverse.
+
+   <p align="center" width="20%">
+   	<img width="50%" src=images/strands.jpg>
+	</p>
+ 
+ - In the markdup bam panel, right click and scroll to "Duplicates" and in the pull out menu, select the option "texture duplicates". This will make duplicates visible.
+     <p align="center" width="20%">
+   	<img width="50%" src=images/dups.jpg>
+	</p>
+	
+ - In the Sequence panel, click to show the standard translation panel of the amino acids.	     <p align="center" width="20%">
+   	<img width="50%" src=images/translation.jpg>
+	</p>
+	
+9. When you are done configuring your session, go ahead and save it so you can return to this configuration in the future. At the top, under "File" select the option to "Save Session". Name your session Lab 7.	
+
+###Step 3 - Examine variants in depth:
+
+####The goal of this part of the exercise is to scroll to specific variants and examine the raw evidence that supports or does not support them as REAL biologically relevant SNPs. 
+
+1. Now that you have the genome and two sets of data loaded into IGV, let's go ahead and compare the before and after filtering. Using the tutorial slides as a guide, select the following regions of the genome to explore. Zoom in enough to see the raw reads in the bam file and some SNP variants that are validated in your VCF:
+ - Region 1: chrII:598117-598156 
+ - Region 2: chrV:430725-431072
+ - Region 3: chrXV:468250-468449
+
+2. For each region, examine how many variants are in the region in the raw bam file? How many variants in this window are in the markdup bam? And, finally, how many variants in this window are in the VCF?
+
+3. For each variant that is in the VCF for each window, what is the read evidence to support these variants (remember to scroll down in the bam panels)? What is the coverage in the bam file? 
+
+ - To further configure your view, sort the reads by base in this region. 
+     <p align="center" width="20%">
+   	<img width="50%" src=images/base.jpg>
+	</p>
+
+4. Are there any sequencing errors that not NOT support a variant that surprise you? If you were a computer algorithm, would you “call” this a variant or not? Why or why not?
+
+5. Based on the evidence for the called variants, do you expect that this variant "Passed" the hard filtering that you did at the end of Lab 7? 
+
+6. Pick one variant and test your hypothesis by using `less` to search this chromosome and position in the filtered VCF file on the command line. 
+
+7. Does the filtered VCF support or reject your hypothesis? Based on this, would you modify your filtering strategy? In what ways?
+
+8. For the called SNP, return to IGV. Is this SNP in a protein-coding region? 
+
+9. If so, would this change in the nucleotide sequence result in an amino acid change? What impact do you think that could have on the function of this gene?
+
+10. Based on the following naming convention, write out the sequence changes in each region. 
+ - Depending on whether a sequence change is in the DNA or Protein, there is a conventional nomenclature for how to describe these changes:
+ - As an example, imagine we have a nucleotide change at position 69, if there is a difference in your sample relative to the reference genome, then substitutions are designated by a “>”-character with the original base before and the substitution after.
+     - A prefix of "g." is used for a genomic sequence (e.g. g.69A>T)
+     - A prefix of "p." is used for a protein sequence along with the one letter amino acid abbreviation (e.g. p.K23Y) and the position along the protein
+
+11. Feel free to check out some other regions and explore on your own:
+ - chrII:486633-487123
+ - chrV:553052-553399 
+ - chrXIV:39075-39311
+
+###Congratulations!
+
+Now that you are done, please upload the following to Canvas for a final grade:
+
+- Screen shots of selected variants in each of the three regions showing your customized view as directed
+- Answers to various questions throughout Step 3
+- List of specific variants in each of the three regions adhering to the nomenclature guideline in #10.
+
+
+#####IGV is a nice way to visually inspect specific variants, but as you may realize, it is quite inefficient to call all variants without an algorithm. It can also let you know if you’ve been too stringent or too relaxed in your filtering criteria and allow you to redo the variant filtering with new sets of criteria.

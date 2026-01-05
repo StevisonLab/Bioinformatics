@@ -11,7 +11,7 @@ To learn more about Quarto books visit <https://quarto.org/docs/books>.
 
 ## Why This Course? Why This Book?
 
-This companion textbook supports *BIOL 5860/6860: Bioinformatics and Genome Analysis*, a hands-on survey of computational approaches to "reading" biological data. As biologists with genetics and computational biology prerequisites, you already know how to frame biological questions and wrangle basic code. This course builds directly on that foundation to demystify the "black box" of bioinformatics tools, showing you how to move from raw sequencing data to biological insight.
+This companion textbook supports *BIOL 5860/6860: Bioinformatics and Genome Analysis*, a hands-on survey of computational approaches to "reading" biological data. As biologists with genetics and computational biology prerequisites, you already know how to frame biological questions and wrangle basic code. This course builds directly on that foundation to demystify the "black box" of bioinformatics tools, showing you how to move from raw sequencing data to biological insight. We will also read primary scientific literature, which you are expected to be familiar with. If you need a refresher, please refer to [Appendix A](appendixA.qmd).
 
 The field moves fast—back when I was in graduate school, I first learned 454 sequencing and applied it to my PhD work, which is now long obsolete. Rather than teaching specific tools that may change by graduation, this book emphasizes **adaptability**: the core concepts, file formats, quality control practices, and workflow thinking that transfer across platforms and projects. Labs progress from exploratory ("find a genome paper on your favorite organism") to practical (GATK variant calling on HPC) to independent (semester-long group research projects where you discover and master new tools yourselves).
 
@@ -19,13 +19,13 @@ The field moves fast—back when I was in graduate school, I first learned 454 s
 
 This resource targets our diverse class:
 
--   **Pre-med and future genetic counselors**: Clinical relevance through variant interpretation, population genetics, structural variants, and ethical considerations in human genomics.
+-   **Pre-med and future genetic counselors**: Clinical relevance through variant interpretation, population genetics, and ethical considerations in human genomics.
 
 -   **Graduate students and researchers**: Practical pipelines, reproducibility best practices, and project management skills for real analyses.
 
 -   **All students**: Demystification of the "hidden curriculum"—writing reproducible workflows, applying for funding, and participating in grant review panels.
 
-No prior genomics experience is required, but the prerequisites ensure everyone can keep pace with Linux, R, git, and basic scripting.
+While a pre-requisite of Genetics is required, no prior genomics experience is required. Similarly, the prerequisite of BIOL 5800/6800 ensures that everyone can keep pace with Linux, R, git, and basic scripting.
 
 ## How Does Computational Biology Differ from Bioinformatics
 
@@ -45,7 +45,10 @@ Importantly, how we define biology in this course is broadly emcompassing all fi
 
 Upon completion of the course, you should be able to:
 
--   Interpret data formats and quality of raw genome sequence data, sequence alignments, and genetic variants
+-   Interpret data formats and quality of:
+    - raw genome sequence data
+    - sequence alignments
+    - genetic variants
 -   Conduct genomic analysis using best practice pipelines
 -   Analyze data using R and various bioinformatics tools
 -   Critically evaluate genome analysis study designs
@@ -56,51 +59,82 @@ Upon completion of the course, you should be able to:
 
 Throughout the semester, you will encounter two recurring threads:
 
--   A **yeast experimental evolution pipeline** (Labs 4, 7, 8; [Appendix A](appendixA.qmd)) that takes you from FASTQ → BAM → VCF → IGV.
--   A **PRDM9 comparative genomics project** ([Appendix B](appendixB.qmd)) that applies those skills to a real research question.
+-   A **comparative genomics project** ([Appendix B](appendixB.qmd)) that applies the skills you are learning to a real research question.
+-   A **yeast genomics dataset** (Labs 4, 7, 9; [Appendix C](appendixC.qmd)) that takes you from FASTQ → BAM → VCF → IGV.
 
 Each chapter includes “Lab connections” callouts that point to relevant labs and appendices, so you can cross‑reference concepts, commands, and datasets as you work.
 
 ## Semester Schedule
 
 ::: {.smaller style="overflow-x: auto;"}
-| Week | Date | Class topic | Primary readings | Notes | Assignments |
+| Week | Date | Class topic | Primary readings | Description | Assessments |
 |------------|------------|------------|------------|------------|------------|
-| 1 | 8 Jan | Course overview and state of the field | [Chapter 1](ch01-reading-genomes.qmd); Readings: @hotaling2021; @marks2021; [Appendix C](appendixC.qmd) | Big‑picture framing of course. | [-@sec-lab01] |
-| 2 | 13 Jan | What is a genome analysis? | [Chapter 2](ch02-sequencing-tech.qmd); Reading: @bogan2025 | Sequencing platforms | Start @sec-lab03 |
-| 2 | 15 Jan | Intro to NGS data and data QC | [Chapter 3](ch03-formats-qc-design.qmd) | Genomics File Formats |  |
-| 3 | 20 Jan | Intro to semester‑long research project | [Appendix B](appendixB.qmd) | Project framing and expectations. |  |
-| 3 | 22 Jan | Fetching raw NGS data from NCBI | Ch. 4 Databases & Browsers | Focus on databases and provenance. |  |
-| 4 | 27 Jan | Lab day – Genome browsers | Ch. 4 Databases & Browsers | Lab‑heavy, light reading. | [@sec-lab02] |
-| 4 | 29 Jan | Pairwise & multiple sequence alignment | Ch. 6 Alignment | Intro to pairwise/MSA concepts. |  |
-| 5 | 3 Feb | Genome assembly guest lecture | Ch. 7 Genome Align & Assembly | Algorithms and case studies |  |
-| 5 | 5 Feb | Project management & writing methods in bioinformatics | Ch. 8 Workflows | Hidden curriculum emphasis. |  GP Step 1 Due |
-| 6 | 10 Feb | Genome sequence alignment | Ch. 7 Genome Align & Assembly | Scaling alignment concepts. |  |
-| 6 | 12 Feb | Lab day – Indexing, alignment, and assessment | [Appendix A](appendixA.qmd) | Applied, workflow‑focused. | Lab 4 |
-| 7 | 17 Feb | Various genome analysis workflows | Ch. 11 Post‑Alignment Workflows | RNA‑seq, ChIP‑seq, metagenomics survey. |  |
-| 7 | 19 Feb | Lab day – BLAST on the command line | Ch. 9 Gene Annotation & HMMs | BLAST concepts and practice. | Lab 5 |
-| 8 | 24 Feb | Lab day – HMMs for gene annotation | Ch. 9 Gene Annotation & HMMs | HMM intuition and gene‑finding. | Lab 6 |
-| 8 | 26 Feb | Midterm Exam | In class conceptual exam | Review of Chapters 1-7 | Exam  |
-| 9 | 3 Mar | Intro to variant calling/filtering | Ch. 10 Variant Calling & Eval | From alignment to variants. | GP Step 2 Due |
-| 9 | 5 Mar | Lab day – Variant filtering and QC | [Appendix A](appendixA.qmd) | Practical filtering and interpretation. |  Lab 7|
-| 10 | 10 Mar | Spring break – no class | — | No assigned reading. |  |
-| 10 | 12 Mar | Spring break – no class | — | No assigned reading. | |
-| 11 | 17 Mar | Discussion: variant‑calling methods comparisons | Assigned Article Readings |  Lab 8; GP Step 3 Due |
-| 11 | 19 Mar | IGV lab | [Appendix A](appendixA.qmd) | Visualizing variants in browsers. |  Lab 9 |
-| 12 | 24 Mar | Open lab – group project work | [Appendix B](appendixB.qmd) | Light, as‑needed reading. | GP Step 4 Due |
-| 12 | 26 Mar | Population genomics | Ch. 12 Population Genomics & Scans | Core pop‑gen concepts. |  |
-| 13 | 31 Mar | Lab day – Pop gen using 1000 Genomes | Ch. 12 Population Genomics & Scans | Hands‑on diversity and FST. | Lab 10 |
-| 13 | 2 Apr | Discussion: genetic essentialism/grant panels | Ch. 12 | Ethics and hidden curriculum. |  |
-| 14 | 7 Apr | Genome scans & sliding‑window analysis | Ch. 12 Population Genomics & Scans | Windows, outlier scans, selection. |  |
-| 14 | 9 Apr | Sequence motifs | Ch. 13 Motif Analysis | Ch. 13 - Sequence Motif Analysis |  |
-| 15 | 14 Apr | Grant panel day 1 | Ch. 5 Grants & Comm | In‑class panel, minimal new reading. | Panel |
-| 15 | 16 Apr | Grant panel day 2 | Ch. 5 Grants & Comm | Continuation of panels. |  Panel |
-| 16 | 21 Apr | Final Exam | In class conceptual exam | Review of Chapters 8-14 | Exam |
-| 16 | 23 Apr | Open lab – group project work | [Appendix B](appendixB.qmd) | Project‑oriented use of workflow ideas. |  GP Step 5 Due |
-| 17 | 1 May | Final group presentations (10:30–12:30) | Ch. 14 Where to Go Next | Capstone reflections and next steps. |  GP Step 6-7 |
+| 1 | 8 Jan | Course overview and state of the field | [Chapter 1](ch01-reading-genomes.qmd); Readings: @hotaling2021; @marks2021; [Appendix A](appendixA.qmd) | Big‑picture framing of course. | Start [Lab 1](Lab01.qmd) |
+| 2 | 13 Jan | What is a genome analysis? | [Chapter 2](ch02-sequencing-tech.qmd); Reading: @bogan2025 | Sequencing platforms | Start [Lab 2](Lab02.qmd) |
+|  | 15 Jan | Intro to NGS data and data QC | [Chapter 3](ch03-formats-qc-design.qmd) | Genomics File Formats |  |
+| 3 | 20 Jan | <span style="color: orange;">Intro to semester‑long research project</span> | [Appendix B](appendixB.qmd) | Project framing and expectations. |  |
+|   | 22-Jan | <span style="color: blue;">Lab day – Genome browsers  </span>| [Chapter 4](ch04-browsers-databases.qmd)| Explore different browsers and customizations          | [Lab 3](Lab03.qmd)|
+| 4  | 27-Jan | Pairwise & multiple sequence alignment | [Chapter 5](ch05-seq-alignment.qmd)| Intro to pairwise/MSA concepts |                              |
+|  | 29-Jan | Genome sequence alignment| [Chapter 6](ch06-genome-align-assembly.qmd) | Scaling alignment concepts and algorithms|  |
+| 5 | 3-Feb | Project management & writing methods in bioinformatics| [Chapter 7](ch07-project-mgmt.qmd) | Hidden curriculum emphasis  | <span style="color: orange;">GP Step 1 Due </span>               |
+| | 5-Feb | <span style="color: blue;">Lab day – Indexing, alignment, and assessment</span>| [Appendix C](appendixC.qmd)  | Introduce yeast dataset and practical application      | [Lab 4](Lab04.qmd)                        |
+| 6  | 10-Feb | Genome assembly guest lecture  | [Chapter 6](ch06-genome-align-assembly.qmd)  | Algorithms and case studies                            |                              |
+|  | 12-Feb | <span style="color: blue;">Lab day – BLAST on the command line </span>| Ch. 5 Sequence Alignment| BLAST concepts and practice on the HPC| [Lab 5](Lab05.qmd)|
+| 7  | 17-Feb | Various genome analysis workflows                       | [Chapter 8](ch08-alt-workflows.qmd)      | Multi-omics workflows and human case studies           | <span style="color: orange;">Meet with Dr. S</span>              |
+|  | 19-Feb | <span style="color: blue;">Lab day – HMMs for gene annotation</span>| [Chapter 9](ch09-hmms.qmd) | HMM intuition and gene‑finding  | [Lab 6](Lab06.qmd) |
+| 8  | 24-Feb | Intro to variant calling/filtering | [Chapter 10](ch10-variant-calling.qmd)       | From alignment to variants using GATK | |
+|  | 26-Feb |<span style="color: red;">**Midterm Exam**</span>| In class conceptual exam| Assessment of Chapters 1-7; Labs 1-5; Appendices | Exam                         |
+| 9  | 3-Mar| <span style="color: blue;">Lab day – Variant filtering and QC </span> | [Appendix C](appendixC.qmd) | Practical filtering and interpretation | [Lab 7](Lab07.qmd); <span style="color: orange;">GP Step 2 Due</span> |
+|  | 5-Mar| <span style="color: blue;">Beyond GATK: LLMs and other Variant Calling Approaches</span> | Assigned Article Readings  | In depth comparison of variant calling methods  | [Lab 8](Lab08.qmd); Annotation Report Due |
+| 10 | 10-Mar | Spring break – no class  | —  | No assigned reading||
+|  | 12-Mar | Spring break – no class| —  | No assigned reading | |
+| 11| 17-Mar| <span style="color: orange;">Open lab – group project work</span> | [Appendix B](appendixB.qmd)| Execute Bioinformatics Plan and Setup GitHub | <span style="color: orange;">GP Step 3</span>; Grad Assignment |
+| | 19-Mar|<span style="color: blue;">Lab Day – Visualizing Genetic Variants</span> | [Appendix C](appendixC.qmd) | Visualizing variants in genome viewers | [Lab 9](Lab09.qmd)  |
+| 12  | 24-Mar| How Science is Funded? – Grant Funding & Review Process | [Chapter 11](ch11-grants-funding.qmd)| Hidden curriculum emphasis|  |
+|  | 26-Mar | Population genomics| Ch. 12 Population Genomics & Scans | Human evolutionary genomics  | <span style="color: orange;">GP Step 4 Due </span>|
+| 13 | 31-Mar | <span style="color: blue;">Lab day – Human Population Genetics  </span> | [Chapter 12](ch12-popgen.qmd)| Hands‑on diversity and divergence analysis  | [Lab 10](Lab10.qmd) |
+|  | 2-Apr  | Genome scans & sliding‑window analysis| [Chapter 12](ch12-popgen.qmd)  | Outlier scans, patterns of selection, and case studies | <span style="color: purple;">Proposal Reviews Due</span> |
+| 14  | 7-Apr | <span style="color: purple;">Grant panel day 1 </span>| [Chapter 11](ch11-grants-funding.qmd) | In‑class panel and critique | <span style="color: purple;">Mock Grant Panel</span> |
+| | 9-Apr | <span style="color: purple;">Grant panel day 2 </span>| [Chapter 11](ch11-grants-funding.qmd)  | In‑class panel and critique  | <span style="color: purple;">Mock Grant Panel</span>   |
+| 15| 14-Apr | Sequence motifs| [Chapter 13](ch13-motifs.qmd) | Finding sequence motifs in genomes | <span style="color: purple;">Panel Summary Due   </span>  |
+| | 16-Apr | <span style="color: orange;">Open lab – group project work</span>| [Appendix B](appendixB.qmd); [Chapter 14](ch14-where-next.qmd) | Project‑oriented application of course content |   |
+| 16 | 21-Apr | <span style="color: red;">**Final Exam** </span> | In class conceptual exam | Review of Chapters 8-14; Labs 6-10 | Exam |
+|  | 23-Apr | <span style="color: orange;">Open lab – group project work</span>| [Appendix B](appendixB.qmd); [Chapter 14](ch14-where-next.qmd) | Project‑oriented application of course content     | <span style="color: orange;">GP Step 5 Due </span> |
+| 17  | 1-May | <span style="color: orange;">Final group presentations (10:30–12:30)</span>| [Appendix B](appendixB.qmd)| Capstone, reflections, and next steps  | <span style="color: orange;">GP Step 6-7 Due </span>|
 :::
 
-\*Note: This schedule is subject to change.
+## Key Dates
+::: {.smaller style="overflow-x: auto;"}
+| Assignment | Description | Due Date | Points | Percent course completed |
+|---|---|---|---|---|
+| Lab 1 | Find and describe a genome analysis paper | 15-Jan | 25 | 3% |
+| Lab 2 | Design a Genome Project | 23-Jan | 25 | 6% |
+| Lab 3 | Genome Browsers | 29-Jan | 25 | 9% |
+| GP Step 1 | Project Overview | 3-Feb | 20 | 12% |
+| Lab 4 | Genome Alignment/Indexing | 12-Feb | 25 | 15% |
+| Lab 5 | BLAST on the command line | 19-Feb | 25 | 18% |
+| GP Meeting | Meet with Dr. Stevison to discuss research plan | 20-Feb | NA | 18% |
+| Lab 6 | HMMs for gene annotation | 26-Feb | 25 | 21% |
+| Midterm | Exam on Chapters 1-7 | 26-Feb | 100 | 33% |
+| GP Step 2 | Detailed Bioinformatics Plan | 2-Mar | 30 | 36% |
+| Annotation Project | Manual Gene Annotation Report | 6-Mar | 100 | 48% |
+| Lab 7 | Variant Calling and Filtering | 10-Mar | 25 | 52% |
+| Lab 8 | Variant Calling Discussion | 12-Mar | 25 | 55% |
+| Grad Assignment | Guide for a bioinformatics tool! | 16-Mar | NA | 55% |
+| GP Step 3 | GitHub Repo with Prelim analysis | 23-Mar | 10 | 56% |
+| Lab 9 | IGV and Genome Viewers | 26-Mar | 25 | 59% |
+| GP Step 4 | Peer Review of Step 3 | 27-Mar | 20 | 61% |
+| Panel Review | Mock Panel Reviews (due BEFORE panel) | 3-Apr | 20 | 64% |
+| Lab 10 | FST, Tajima's D and Diversity Scans | 7-Apr | 25 | 67% |
+| Panel Discussion | Panel Discussion and Participation IN CLASS | 7-Apr | 30 | 70% |
+| Panel Summary | Detailed Summary of Panel Discussion | 14-Apr | 25 | 73% |
+| Final Exam | Exam on Chapters 8-14 | 21-Apr | 100 | 85% |
+| GP Step 5 | Final GitHub Repository  | 24-Apr | 50 | 92% |
+| GP Step 6 | Final Presentation | 1-May | 50 | 98% |
+| GP Step 7 | Peer Review of Step 6 | 1-May | 20 | 100% |
+:::
+
+\*Note: The above schedule and these deadlines are subject to change.
 
 ## Final Note to Students
 
@@ -112,7 +146,7 @@ Let's read some genomes together.
 
 ## Acknowledgments
 
-Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
+Portions of this book were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
 
 ------------------------------------------------------------------------
 

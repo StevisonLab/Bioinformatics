@@ -494,10 +494,6 @@ This chapter’s file formats and QC concepts feed directly into several labs:
 You can refer back to this chapter whenever you encounter new datasets or need to interpret QC plots and file structures in labs.
 :::
 
-## Acknowledgments
-
-Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
-
 ------------------------------------------------------------------------
 
 ## Practice Problem‑sets

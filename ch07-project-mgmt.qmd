@@ -1,5 +1,5 @@
 ---
-title: "Ch. 8 – Project Management and Reproducible Workflows"
+title: "Project Management and Reproducible Workflows"
 ---
 
 ## Overview

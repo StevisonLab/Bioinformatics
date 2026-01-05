@@ -12,21 +12,28 @@ book:
         - ch02-sequencing-tech.qmd
         - ch03-formats-qc-design.qmd
         - ch04-browsers-databases.qmd
-        - ch05-grants-funding.qmd
-        - ch06-seq-alignment.qmd
-        - ch07-genome-align-assembly.qmd
-        - ch08-project-mgmt.qmd
-        - ch09-annotation-hmms.qmd
+        - ch05-seq-alignment.qmd
+        - ch06-genome-align-assembly.qmd
+        - ch07-project-mgmt.qmd
+        - ch08-alt-workflows.qmd
+        - ch09-hmms.qmd
         - ch10-variant-calling.qmd
-        - ch11-sv-and-workflows.qmd
+        - ch11-grants-funding.qmd
         - ch12-popgen.qmd
-        - ch13-where-next.qmd
+        - ch13-motifs.qmd        
+        - ch14-where-next.qmd
     - part: "Lab Manual"
       chapters:
         - Lab01.qmd
         - Lab02.qmd
         - Lab03.qmd
-        - Lab04.qmd        
+        - Lab04.qmd
+        - Lab05.qmd
+        - Lab06.qmd
+        - Lab07.qmd
+        - Lab08.qmd
+        - Lab09.qmd
+        - Lab10.qmd
   appendices:
     - part: "Appendices"
       chapters:

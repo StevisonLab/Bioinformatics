@@ -1,5 +1,5 @@
 ---
-title: "Sequencing Technologies and Data"
+title: "Sequencing Technologies and Data Formats"
 bibliography: references.bib
 csl: nature.csl
 ---
@@ -189,10 +189,6 @@ In the early days of NGS, data analysis pipelines were largely assembled by indi
 Over the past decade, major sequencing vendors have increasingly offered **end‑to‑end workflow ecosystems**. Examples include Illumina’s cloud‑hosted pipelines, PacBio’s SMRT Link suite for HiFi data, and ONT’s MinKNOW plus associated basecallers and analysis apps [@vandijk2023]. These platforms bundle basecalling, alignment, variant calling, and sometimes annotation or structural variant detection into graphical interfaces and preconfigured workflows, lowering the barrier to entry for non‑specialists and making routine clinical and agricultural genomics feasible in more settings [@green2011; @vandijk2023].
 
 For bioinformatics, this trend is double‑edged. On one hand, user‑friendly workflows reduce technical hurdles and standardize analyses across labs; on the other, they can obscure algorithmic assumptions, limit flexibility, and make it harder to debug or extend pipelines [@pevsner2015; @akalin2020]. A core goal of this course is to help you operate at both levels: you should be able to use vendor pipelines productively when appropriate, but also understand enough about alignment, assembly, and variant calling algorithms to interpret their outputs critically and, when needed, construct your own reproducible workflows.
-
-## Acknowledgments
-
-Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
 
 ------------------------------------------------------------------------
 

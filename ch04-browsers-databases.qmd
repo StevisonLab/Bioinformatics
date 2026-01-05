@@ -1,5 +1,5 @@
 ---
-title: "Ch. 4 – Genome Databases and Browsers"
+title: "Genome Databases and Browsers"
 ---
 
 ## Overview
