@@ -1,0 +1,3151 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrreprt}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Reading Genomes: A Companion to Bioinformatics and Genome Analysis},
+  pdfauthor={Laurie Stevison},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Reading Genomes: A Companion to Bioinformatics and Genome
+Analysis}
+\author{Laurie Stevison}
+\date{}
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+
+\bookmarksetup{startatroot}
+
+\chapter{Welcome to Bioinformatics and Genome
+Analysis}\label{welcome-to-bioinformatics-and-genome-analysis}
+
+\bookmarksetup{startatroot}
+
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\markboth{Preface}{Preface}
+
+This is a Quarto book.
+
+To learn more about Quarto books visit
+\url{https://quarto.org/docs/books}.
+
+\bookmarksetup{startatroot}
+
+\chapter{Why This Course? Why This
+Book?}\label{why-this-course-why-this-book}
+
+This companion textbook supports \emph{BIOL 5860/6860: Bioinformatics
+and Genome Analysis}, a hands-on survey of computational approaches to
+``reading'' biological data. As biologists with genetics and
+computational biology prerequisites, you already know how to frame
+biological questions and wrangle basic code. This course builds directly
+on that foundation to demystify the ``black box'' of bioinformatics
+tools, showing you how to move from raw sequencing data to biological
+insight.
+
+The field moves fast---back when I was in graduate school, I first
+learned 454 sequencing and applied it to my PhD work, which is now long
+obsolete. Rather than teaching specific tools that may change by
+graduation, this book emphasizes \textbf{adaptability}: the core
+concepts, file formats, quality control practices, and workflow thinking
+that transfer across platforms and projects. Labs progress from
+exploratory (``find a genome paper on your favorite organism'') to
+practical (GATK variant calling on HPC) to independent (semester-long
+group research projects where you discover and master new tools
+yourselves).
+
+\section{Who This Book Serves}\label{who-this-book-serves}
+
+This resource targets our diverse class:
+
+\begin{itemize}
+\item
+  \textbf{Pre-med and future genetic counselors}: Clinical relevance
+  through variant interpretation, population genetics, structural
+  variants, and ethical considerations in human genomics.
+\item
+  \textbf{Graduate students and researchers}: Practical pipelines,
+  reproducibility best practices, and project management skills for real
+  analyses.
+\item
+  \textbf{All students}: Demystification of the ``hidden
+  curriculum''---writing reproducible workflows, applying for funding,
+  and participating in grant review panels.
+\end{itemize}
+
+No prior genomics experience is required, but the prerequisites ensure
+everyone can keep pace with Linux, R, git, and basic scripting.
+
+\section{How Does Computational Biology Differ from
+Bioinformatics}\label{how-does-computational-biology-differ-from-bioinformatics}
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Figure 0.1 -- Fields of Research within Bioinformatics}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+\begin{figure}[H]
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Fig_0_1_Fields.png}}
+
+}
+
+\caption{\label{fig-fields}Different fields in bioinformatics}
+
+\end{figure}%
+
+Having taken a course in Computational Biology, it can often be
+confusing of the specific distinction between the various fields and how
+to define each.
+
+This figure shows how bioinformatics lies at the interface of
+statistics, computer science, and biology, integrating methods from all
+three disciplines to analyze and interpret biological data. This Figure
+highlights how related subfields overlap: biostatistics emerges from the
+intersection of statistics and biology, computational biology from the
+overlap of computer science and biology, and data science from the
+overlap of statistics and computer science. At the center,
+bioinformatics combines these quantitative, computational, and
+biological approaches under one umbrella.
+
+Importantly, how we define biology in this course is broadly
+emcompassing all fields of empirical research. This would include
+biology, biomedical research, such as pharamcology, kinesiology, and
+veterinary sciences.
+
+\end{tcolorbox}
+
+\section{Course Structure and Learning
+Path}\label{course-structure-and-learning-path}
+
+The semester follows a logical workflow mirroring real genome projects:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Weeks 1--4}: Foundations (sequencing tech, formats, databases,
+  grants).
+\item
+  \textbf{Weeks 5--8}: Core analysis (alignment, assembly, project
+  management, annotation).
+\item
+  \textbf{Weeks 9--12}: Downstream applications (variants, SVs, RNA-seq,
+  population genomics).
+\item
+  \textbf{Final weeks}: Group projects, presentations, and ``where to go
+  next.''
+\end{itemize}
+
+Each chapter integrates:
+
+\begin{itemize}
+\item
+  \textbf{Core concepts} with minimal math, maximum intuition.
+\item
+  \textbf{Lab connections} with just enough detail for review.
+\item
+  \textbf{Hidden curriculum} sections on grants, reproducibility, and
+  workflow documentation.
+\item
+  \textbf{Further reading} pointers to Bioniformatics textbooks, primary
+  scientific literature, and video tutorial (optional depth, not
+  required pre-reading).
+\end{itemize}
+
+\section{How to Use This Book}\label{how-to-use-this-book}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Primary reading}: 15--20 minutes per chapter section before
+  class. Focus on concepts and figures.
+\item
+  \textbf{Reference}: Return during labs for file format refreshers, QC
+  decision trees, or workflow templates.
+\item
+  \textbf{Project support}: Chapters 7--8 provide reproducibility
+  scaffolding for your semester-long research.
+\item
+  \textbf{Career prep}: Grant writing (Ch. 5) and ``where next'' (Ch.
+  13) prepare you for funding applications and lifelong learning.
+\end{itemize}
+
+This book lives on GitHub/Quarto and deploys to a password-protected
+site accessible via Canvas. Pull requests welcome for minor fixes; major
+contributions discussed in office hours.
+
+\section{Semester Schedule}\label{semester-schedule}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0380}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0443}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3671}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2722}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2785}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Week
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Date
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Class topic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Primary readings
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Notes
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & 8 Jan & Course overview and state of the field & Ch. 1 Reading
+Genomes;\textsuperscript{1};\textsuperscript{2} & Big‑picture framing of
+course. \\
+2 & 13 Jan & What is a genome analysis? & Ch. 2 Sequencing
+Tech;\textsuperscript{3} & Emphasize applications and ethics. \\
+2 & 15 Jan & Intro to NGS data and data QC & Ch. 3 File Formats & Data
+types, FASTQ/QC concepts. \\
+3 & 20 Jan & Intro to semester‑long research project & Appendix B &
+Project framing and expectations. \\
+3 & 22 Jan & Fetching raw NGS data from NCBI & Ch. 4 Databases \&
+Browsers & Focus on databases and provenance. \\
+4 & 27 Jan & Lab day -- Genome browsers & Ch. 4 Databases \& Browsers &
+Lab‑heavy, light reading. \\
+4 & 29 Jan & Pairwise \& multiple sequence alignment & Ch. 6 Alignment &
+Intro to pairwise/MSA concepts. \\
+5 & 3 Feb & Genome assembly guest lecture & Ch. 7 Genome Align \&
+Assembly & Algorithms and case studies \\
+5 & 5 Feb & Project management \& writing methods in bioinformatics &
+Ch. 5 Grants \& Comm; Ch. 9 Workflows & Hidden curriculum emphasis. \\
+6 & 10 Feb & Genome sequence alignment & Ch. 7 Genome Align \& Assembly
+& Scaling alignment concepts. \\
+6 & 12 Feb & Lab day -- Indexing, alignment, and assessment & Appendix A
+& Applied, workflow‑focused. \\
+7 & 17 Feb & Various genome analysis workflows & Ch. 8 Post‑Alignment
+Workflows & RNA‑seq, ChIP‑seq, metagenomics survey. \\
+7 & 19 Feb & Lab day -- BLAST on the command line & Ch. 10 Gene
+Annotation \& HMMs & BLAST concepts and practice. \\
+8 & 24 Feb & Intro to HMMs & Ch. 10 Gene Annotation \& HMMs & HMM
+intuition and gene‑finding. \\
+8 & 26 Feb & Lab day -- HMMs for gene annotation & Ch. 10 Gene
+Annotation \& HMMs & Hands‑on annotation. \\
+9 & 3 Mar & Intro to variant calling/filtering & Ch. 11 Variant Calling
+\& Eval & From alignment to variants. \\
+9 & 5 Mar & Lab day -- Variant filtering and QC & Appendix A & Practical
+filtering and interpretation. \\
+10 & 10 Mar & Spring break -- no class & --- & No assigned reading. \\
+10 & 12 Mar & Spring break -- no class & --- & No assigned reading. \\
+11 & 17 Mar & Discussion: variant‑calling methods comparisons & Ch. 11
+Variant Calling \& Eval & Emphasize interpretation and tradeoffs. \\
+11 & 19 Mar & IGV lab & Appendix A & Visualizing variants in
+browsers. \\
+12 & 24 Mar & Open lab -- group project work & Appendix B & Light,
+as‑needed reading. \\
+12 & 26 Mar & Population genomics & Ch. 12 Population Genomics \& Scans
+& Core pop‑gen concepts. \\
+13 & 31 Mar & Lab day -- Pop gen using 1000 Genomes & Ch. 12 Population
+Genomics \& Scans & Hands‑on diversity and FST. \\
+13 & 2 Apr & Discussion: genetic essentialism/grant panels & Ch. 12 &
+Ethics and hidden curriculum. \\
+14 & 7 Apr & Genome scans \& sliding‑window analysis & Ch. 12 Population
+Genomics \& Scans & Windows, outlier scans, selection. \\
+14 & 9 Apr & Sequence motifs & Ch. 13 Motif Analysis & Ch. 13 - Sequence
+Motif Analysis \\
+15 & 14 Apr & Grant panel day 1 & Ch. 5 Grants \& Comm & In‑class panel,
+minimal new reading. \\
+15 & 16 Apr & Grant panel day 2 & Ch. 5 Grants \& Comm & Continuation of
+panels. \\
+16 & 21 Apr & Open lab -- group project work & Appendix B &
+Project‑oriented use of workflow ideas. \\
+16 & 23 Apr & Open lab -- group project work & Appendix B & As‑needed
+reading only. \\
+17 & 1 May & Final group presentations (10:30--12:30) & Ch. 14 Where to
+Go Next & Capstone reflections and next steps. \\
+\end{longtable}
+
+*Note: This schedule is subject to change.
+
+\section{Final Note to Students}\label{final-note-to-students}
+
+Bioinformatics feels like magic until you see the patterns: every
+pipeline starts with QC, every analysis needs reproducibility, every
+grant needs a clear workflow. By semester's end, you'll not only run
+these analyses but build the confidence and comfort to explain them to
+collaborators, reviewers, and future employers.
+
+Let's read some genomes together.
+
+\emph{Dr.~Laurie Stevison - Your Steward in Genomics}\\
+\emph{December 2025}
+
+\bookmarksetup{startatroot}
+
+\chapter{Reading Genomes: What Bioinformatics Is
+For}\label{reading-genomes-what-bioinformatics-is-for}
+
+\section{Genomics timeline: from Sanger to the data
+deluge}\label{genomics-timeline-from-sanger-to-the-data-deluge}
+
+Modern genome analysis traces back to the development of DNA sequencing
+methods in the 1970s, which made it possible to determine the nucleotide
+sequence of individual genes and small genomes for the first
+time\textsuperscript{4};\textsuperscript{5}. Over subsequent decades,
+improvements in chemistry and automation enabled large‑scale projects
+such as the Human Genome Project, which produced the first high‑quality
+human reference genome and marked the beginning of the ``genomic
+era''\textsuperscript{4};\textsuperscript{5}.
+
+In the roughly twenty‑five years since the first complete animal and
+plant genomes were published, sequencing technologies have advanced from
+low‑throughput Sanger methods to high‑throughput short‑read platforms
+and, more recently, long‑read technologies that generate much longer
+sequences at scale\textsuperscript{1};\textsuperscript{2}. These
+advances have produced thousands of animal and hundreds of land‑plant
+genome assemblies, but current references still cover only a small
+fraction of described species and are unevenly distributed across the
+tree of life\textsuperscript{1};\textsuperscript{2}.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Figure 1.1 -- Milestones in genomics}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+\begin{figure}[H]
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Fig_1_1_genomics_timeline.png}}
+
+}
+
+\caption{\label{fig-genomics-timeline}Milestones in genomics}
+
+\end{figure}%
+
+This figure presents a timeline of key technological innovations and
+landmark projects that shaped modern genomics, from the recognition of
+DNA as the hereditary material and the description of its double‑helix
+structure through the development of PCR, first‑generation Sanger
+sequencing, and early automated sequencers. It then highlights the
+launch and 2003 completion of the Human Genome Project and related
+large‑scale efforts, such as the generation of reference genomes for
+multiple organisms and subsequent population‑scale initiatives like the
+1000 Genomes Project and the Human Microbiome Project, which
+collectively established comprehensive genomic resources for research
+and medicine. The upper portion of the figure tracks the transition from
+low‑throughput first‑generation methods to second‑generation short‑read
+platforms and, more recently, to third‑generation long‑read technologies
+such as single‑molecule real‑time and nanopore sequencing, which now
+enable routine production of near‑complete, reference‑quality
+assemblies, including end‑to‑end human genomes.
+
+This figure visually anchors the historical narrative for later chapters
+where we will go into these technologies and research milestones in more
+depth throughout this course.
+
+\end{tcolorbox}
+
+\section{Core concepts: genomes, omes, and basic
+operations}\label{core-concepts-genomes-omes-and-basic-operations}
+
+For this course, the \textbf{genome} is the complete DNA sequence of an
+organism, typically organized into chromosomes, and including both
+coding and noncoding regions\textsuperscript{4};\textsuperscript{6}. The
+\textbf{transcriptome} is the collection of RNA molecules transcribed
+from the genome under specific conditions, and the \textbf{proteome} is
+the set of proteins produced from those transcripts; together they
+connect static DNA sequence to dynamic cellular
+phenotypes\textsuperscript{4};\textsuperscript{6}.
+
+Beyond sequence alone, the \textbf{epigenome} captures chemical and
+structural modifications (such as DNA methylation and chromatin state)
+that affect how accessible different genomic regions are without
+changing the underlying bases\textsuperscript{7}. Modern genome analysis
+often integrates these layers to understand how genomic sequence, gene
+expression, and epigenetic regulation combine to produce organism‑level
+traits\textsuperscript{4};\textsuperscript{7}.
+
+A \textbf{reference genome} is a community standard assembly for a
+species (or strain) that serves as a coordinate system for mapping
+reads, annotating genes, and comparing
+individuals\textsuperscript{1};\textsuperscript{2}. A \textbf{genome
+assembly} is the specific reconstruction of a genome from sequencing
+reads for a given project, usually summarized by its size, contiguity
+(for example, N50), and completeness; an \textbf{annotation} is the set
+of predicted and curated genomic features such as genes, transcripts,
+and regulatory elements placed on that
+assembly\textsuperscript{1};\textsuperscript{2}.
+
+Two core computational operations recur throughout this course.
+\textbf{Alignment} is a process that refers to the maping of reads or
+sequences to a reference genome to determine their physical location in
+the genome. This step is key in enabling variant calling, coverage
+analysis, and many downstream inferences\textsuperscript{4}. \textbf{De
+novo assembly} instead stitches reads together based on sequence overlap
+or graph structure to reconstruct longer contiguous sequences without
+relying on a close reference, which is essential for new or highly
+divergent genomes and for resolving structural
+complexity\textsuperscript{1}. Both processes are necessary to expand
+our understanding of genomes and require various bioinformatics tools.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Figure 1.2 -- Core genome concepts}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+A multi‑panel schematic:
+
+\begin{itemize}
+\tightlist
+\item
+  Panel A: genome, transcriptome, proteome, and epigenome illustrated
+  for a single cell.\\
+\item
+  Panel B: a reference genome shown as chromosomes, with an assembly
+  depicted as contigs/scaffolds and annotations drawn as gene models.\\
+\item
+  Panel C: side‑by‑side cartoons of alignment (reads mapped onto a
+  reference) and de novo assembly (reads overlapped without a
+  reference).
+\end{itemize}
+
+This figure gives students a visual vocabulary for the rest of the book.
+
+\end{tcolorbox}
+
+\section{Why bioinformatics exists}\label{why-bioinformatics-exists}
+
+As sequencing costs have fallen, generating genome‑scale data has become
+easier and cheaper than analyzing, storing, and interpreting it,
+creating a \textbf{bioinformatic bottleneck} in many
+projects\textsuperscript{7};\textsuperscript{5}. The price of
+whole‑genome sequencing has dropped orders of magnitude since the Human
+Genome Project, but high‑quality analysis still requires computational
+expertise, careful data management, and appropriate statistical
+methods\textsuperscript{7}.
+
+At the same time, concerns about a \textbf{reproducibility crisis} in
+biomedical and computational research have highlighted the need for
+transparent, well‑documented workflows\textsuperscript{4}. In genomics,
+this includes clearly recording data sources and metadata, tracking
+software versions and parameters, using version control and scripted
+pipelines where possible, and depositing both data and code in
+accessible repositories so that others can repeat and extend
+analyses\textsuperscript{4};\textsuperscript{1};\textsuperscript{2}.
+
+The software and methods landscape in bioinformatics changes rapidly:
+new alignment algorithms, variant callers, assemblers, and visualization
+tools appear frequently, while older tools may become unsupported or
+superseded\textsuperscript{4};\textsuperscript{6}. A central goal of
+this course is therefore not mastery of any single program but
+\textbf{adaptability}---the ability to read documentation, reason about
+how a tool fits into a workflow, evaluate whether its assumptions match
+a given dataset, and switch approaches as technologies and best
+practices evolve\textsuperscript{7};\textsuperscript{6}. This rapid pace
+is also the reason we do not have a standardized textbook for this
+course. Instead, I have compiled various resources into this single
+course companion. Much of this textbook relies heavily on an excellent
+textbook last updated in 2015\textsuperscript{4}. You will see this text
+cited throughout and some of the content comes directly from this text.
+But much of that is outdated and has been significantly supplemented
+with primary scientific literature as well as recent review articles. As
+much as possible, I will try to provide the references so that you can
+dive deeper on any of these topics.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Figure 1.3 -- From data generation to interpretation}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+A flow diagram with two highlighted ``pinch points'':
+
+\begin{itemize}
+\tightlist
+\item
+  Left: sequencing (library prep and instrument) labelled ``easy to
+  buy.''\\
+\item
+  Middle: data processing and analysis (QC, alignment/assembly, variant
+  calling, statistics) labelled ``bioinformatic bottleneck.''\\
+\item
+  Right: interpretation, visualization, and publication.
+\end{itemize}
+
+Below the middle, icons for documentation, code, and version control
+emphasize reproducibility.
+
+\end{tcolorbox}
+
+\section{What makes someone a
+``bioinformatician''?}\label{what-makes-someone-a-bioinformatician}
+
+Bioinformatics can be approached through many different workflows---web
+interfaces, command‑line tools, scripted analyses in languages like R or
+Python, and now AI‑assisted systems---and this course aims to give
+students a broad survey of that landscape rather than endorsing a single
+``best'' way to do bioinformatics.
+
+\textbf{Multiple ways to ``do genomics''}: For some people, doing
+bioinformatics means interactively exploring genome browsers or running
+analyses through web portals like Galaxy; for others, it means managing
+workflows on Linux clusters, writing code, or curating databases and
+infrastructure, and all of these activities fall under the very broad
+genomics umbrella.
+
+Job descriptions in the field range from analysts and software
+developers to computational biologists and AI bioinformatics engineers,
+illustrating that bioinformatics is defined more by the biological
+questions and data than by any fixed skillset or toolchain.
+
+\textbf{Web tools, command line, and pipelines}: Web‑based resources
+such as NCBI, Ensembl, UCSC Genome Browser, Galaxy, and similar portals
+make it possible to query databases, visualize genomes, and run common
+analyses without local installation, which is especially useful for new
+users and occasional genomics work.
+
+Command‑line tools, workflow managers (for example, Nextflow or
+Snakemake), and scripted pipelines support large‑scale, automated, and
+reproducible analyses when projects or datasets grow more complex, but
+they demand more technical setup and comfort with Unix‑like
+environments.
+
+\textbf{R and recent advances}: Modern R ecosystems---exemplified by
+Akalin's Computational Genomics with R\textsuperscript{6}, which
+introduces Bioconductor workflows, genomic intervals, and
+high‑throughput sequencing analyses---show how a general‑purpose
+language can connect statistical modeling, visualization, and
+domain‑specific genomics packages in a single environment.
+
+In this course R will appear in selected examples and advanced modules
+(rather than as a primary focus) to highlight these newer genomics
+capabilities and to give interested students a starting point if they
+wish to pursue more scripted, R‑based analysis later.
+
+\textbf{AI as an emerging bridge}: New AI‑driven platforms and
+multi‑agent systems can help design, execute, and document
+bioinformatics workflows, lowering the learning curve for building
+reproducible pipelines by suggesting tools, generating code, and
+tracking parameters automatically.
+
+These approaches do not replace traditional skills but offer another
+path into genomics work, especially for students who are more
+comfortable describing goals in natural language than writing full
+pipelines from scratch.
+
+\textbf{How this course uses these ecosystems}: This course was
+originally designed before current AI and tooling advances, and newer
+material---select R‑based genomics examples. Therefore, AI‑assisted
+workflows, and updated R resources are slowly being integrated
+incrementally while preserving the core emphasis on concepts and data
+literacy.
+
+Students will be exposed to web‑based tools, the Unix command line, and
+examples of scripted analyses, including some in R, and are encouraged
+to share outside resources that offer clearer or simpler solutions,
+reinforcing that there are many valid ways to contribute to genomics and
+that ``doing bioinformatics'' does not have to look the same for
+everyone.
+
+\section{Types of Genome Analysis Research
+Projects}\label{types-of-genome-analysis-research-projects}
+
+Genome analysis underpins a wide range of applications in
+\textbf{medical genetics}, including identifying variants that
+contribute to Mendelian disorders, studying complex disease risk, and
+informing targeted therapies\textsuperscript{7}. In
+\textbf{agriculture}, genomic selection and genome‑wide association
+studies accelerate breeding by linking genetic markers to traits such as
+yield, stress tolerance, and disease resistance in crops and
+livestock\textsuperscript{2}.
+
+In \textbf{ecology and evolution}, reference genomes and
+population‑scale sequencing allow researchers to study adaptation,
+speciation, and biodiversity at unprecedented resolution, including for
+non‑model organisms\textsuperscript{1};\textsuperscript{2}. In
+\textbf{public health}, genomic surveillance of pathogens supports
+outbreak tracking, antimicrobial resistance monitoring, and the design
+of diagnostics and vaccines\textsuperscript{7}.
+
+\subsection{Three perspectives on genomics and
+bioinformatics}\label{three-perspectives-on-genomics-and-bioinformatics}
+
+One way to organize this diversity is to think about three complementary
+``views'' of bioinformatics and genomics, moving from small to large
+scales\textsuperscript{4}.
+
+\begin{itemize}
+\item
+  \textbf{Cell:} At the molecular level, genomics focuses on DNA (the
+  genome), RNA (the transcriptome), and proteins (the proteome).
+  Questions at this scale include: What genes and transcripts exist? How
+  are they regulated? How do they interact in pathways and networks?
+  Many functional genomics tools (e.g., RNA‑seq, ChIP‑seq) are designed
+  to answer questions at this cellular scale\textsuperscript{4}.
+\item
+  \textbf{Organism:} At the level of an individual, genomics asks how
+  the same genome produces different phenotypes across tissues,
+  developmental stages, environments, and disease states. Typical
+  projects compare gene expression or other genomic features across
+  conditions (for example, healthy vs.~diseased tissue, or individuals
+  exposed to different environments) to understand how genomes respond
+  to internal and external signals\textsuperscript{4}.
+\item
+  \textbf{Tree of life:} At the largest scale, comparative genomics uses
+  genome sequences from many species to study phylogeny, genome
+  structure, and macroevolutionary processes such as gene family
+  expansion, whole‑genome duplication, and chromosomal rearrangements.
+  These studies emphasize both the shared molecular ``toolkit'' of life
+  and the ways genomes are shaped by adaptation to different
+  environments\textsuperscript{4};\textsuperscript{1};\textsuperscript{2}.
+\end{itemize}
+
+The required readings for this week highlight this tree‑of‑life
+perspective. One paper surveys the current state of animal genome
+sequencing across the animal kingdom, quantifying which lineages have
+reference genomes and how assembly quality has improved over
+time\textsuperscript{1}. The complementary plant genomics paper
+summarizes 20 years of land‑plant genome sequencing, showing how
+taxonomic coverage, assembly quality, and global participation have
+changed, and pointing out important gaps and inequities in who is
+leading and benefiting from plant genomics projects\textsuperscript{2}.
+
+\subsection{Hypothesis‑driven and discovery‑driven
+genomics}\label{hypothesisdriven-and-discoverydriven-genomics}
+
+As sequencing has become cheaper and datasets have grown larger, most
+impactful genomics studies now go beyond a single genome assembly or
+alignment. Instead, they combine substantial data generation with either
+explicit hypothesis testing, open‑ended discovery, or (ideally)
+both\textsuperscript{8};\textsuperscript{4}.
+
+\begin{itemize}
+\item
+  In \textbf{hypothesis‑driven} genomics, researchers start with
+  specific predictions (for example, that a gene family will be more
+  expanded in species from colder environments) and design sampling,
+  sequencing, and statistical analyses to test those predictions. These
+  projects emphasize careful experimental design, replication, and
+  rigorous statistical models to distinguish signal from
+  noise\textsuperscript{4}.
+\item
+  In \textbf{discovery‑driven} genomics, researchers focus on exploring
+  new genomes or large datasets to see what patterns emerge, often
+  without a single predefined ``main'' hypothesis. Examples include
+  assembling genomes for under‑studied clades, cataloging structural
+  variation, or visualizing complex expression or variant datasets to
+  identify unexpected clusters or associations. This exploratory work is
+  especially important in genomics, where high‑dimensional data can
+  contain many unanticipated
+  signals\textsuperscript{8};\textsuperscript{1};\textsuperscript{2}.
+\end{itemize}
+
+Both modes are valuable and interdependent. Exploratory analyses are
+often where new ideas and hypotheses come from, while hypothesis‑driven
+analyses are essential for testing those ideas and connecting genomic
+patterns to mechanisms\textsuperscript{8}. Throughout the course, you
+will see studies that move back and forth between these modes.
+
+\subsection{Looking ahead: case studies that span
+scales}\label{looking-ahead-case-studies-that-span-scales}
+
+Early next week, you will read a recent genomics paper on antifreeze
+proteins in polar and deep‑sea fishes that illustrates how these ideas
+come together\textsuperscript{3}. Without going into detail here, that
+study:
+
+\begin{itemize}
+\tightlist
+\item
+  Uses high‑quality genome assemblies and comparative analyses across
+  many species (tree‑of‑life perspective).
+\item
+  Examines how gene families and genome structure relate to
+  environmental variables such as temperature and depth (organism and
+  environment).
+\item
+  Combines exploratory genome‑scale analyses (discovery‑driven) with
+  explicit statistical tests of how gene copy number and genomic
+  location change across species and habitats (hypothesis‑driven).
+\end{itemize}
+
+As you read it, you will be able to connect the analyses in that paper
+to the three perspectives (cell, organism, tree of life) and to the
+balance between hypothesis‑driven and discovery‑driven genomics
+discussed above.
+
+These opportunities come with ethical, legal, and social questions. For
+human data, key concerns include informed consent, privacy, data
+security, and the potential for misuse or discrimination based on
+genetic information\textsuperscript{7}. For non‑human genomics, recent
+assessments of animal and plant genome projects have emphasized
+inequities in who leads sequencing efforts, how benefits and credit are
+shared, and how historical patterns of colonialism and ``parachute
+science'' continue to shape access to biodiversity and genomic
+resources\textsuperscript{1};\textsuperscript{2}.
+
+International agreements and community norms now guide data sharing and
+\textbf{equity considerations}, encouraging collaborations that involve
+local researchers, respect Indigenous knowledge, and support capacity
+building in regions where study species are
+found\textsuperscript{1};\textsuperscript{2}. Throughout the course,
+case studies such as long‑term animal and plant genome surveys will be
+used to discuss how technical decisions, sampling strategies, and
+authorship practices connect to these broader ethical
+themes\textsuperscript{1};\textsuperscript{2};\textsuperscript{5}.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Figure 1.4 -- Applications and equity}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+A four‑quadrant diagram:
+
+\begin{itemize}
+\tightlist
+\item
+  Medical genetics\\
+\item
+  Agriculture and food security\\
+\item
+  Ecology and conservation\\
+\item
+  Public health and pathogen genomics
+\end{itemize}
+
+Around the outside, icons for consent, privacy, benefit‑sharing, and
+global participation remind students that technical choices exist within
+an ethical and social context.
+
+\end{tcolorbox}
+
+\section{Ethics spotlight -- timelines, cases, and
+trust}\label{ethics-spotlight-timelines-cases-and-trust}
+
+\emph{Note: The goal of this section is to situate genomics in its
+historical and ethical context in a factual, objective way, without
+assigning blame to students or asking them to endorse any particular
+viewpoint.}
+
+The timeline in Figure Figure~\ref{fig-genomics-timeline} begins the
+story of milestones in human genomics with the Belmont
+Report\textsuperscript{9}, developed after a series of widely criticized
+research practices including the Tuskegee syphilis research study. In
+that study, conducted in Alabama, effective treatment was withheld from
+Black men with syphilis; the case is now frequently cited in bioethics
+as a reason for today's requirements for informed consent and ongoing
+oversight of human‑subjects research\textsuperscript{10}.
+
+Several later examples illustrate how questions about consent, privacy,
+and benefit sharing continue to arise in genetics and genomics.
+Henrietta Lacks's cervical tumor cells were collected in 1951 without
+her knowledge or consent, leading to the HeLa cell line and, decades
+later, to debates about privacy and family involvement when her cells
+and genome sequence were shared
+widely\textsuperscript{11};\textsuperscript{12};\textsuperscript{13}.
+Members of the Havasupai Tribe in Arizona provided blood samples for
+diabetes research and later learned their samples had also been used in
+studies of topics such as schizophrenia and population origins,
+prompting a lawsuit, a 2010 settlement, and renewed discussion of how
+consent forms describe future uses of samples\textsuperscript{14}. Human
+subject research is now strictly regulated, even in the context of
+survey-based work, through institutional review boards (IRB) that have
+guidelines to protect consent and reduce harm\textsuperscript{15}. At
+Auburn, the AU Human Research Protection Program is responsible for the
+ethical and regulatory requirements related to the protection of human
+participants in research. The Program includes the Institutional
+Official (IO; Senior Vice President for Research \& Economic
+Development), the Institutional Review Board (IRB) for the protection of
+human subjects in research, and the Office of Research Integrity \&
+Compliance (ORIC).
+
+Genomics today includes many different projects, from large biobanks to
+smaller disease or population studies, and these efforts depend on
+volunteered samples and trust that data will be used and shared in ways
+consistent with what participants and communities were
+told\textsuperscript{7}. International plant and animal genomics
+projects also raise questions about benefit sharing, authorship, and
+power imbalances between institutions and the regions or communities
+that provide samples\textsuperscript{1};\textsuperscript{2}.
+
+This course does not require students to agree with any particular
+ethical position, but it does present these well‑documented cases as
+background for understanding why modern genomics emphasizes informed
+consent, privacy protections, and clear communication about how data may
+be used. Later chapters briefly revisit these themes in connection with
+topics like data sharing and genome‑wide studies; students are
+welcome---but not required---to explore the broader ethical literature
+or related historical discussions if they are interested.
+
+\section{Course roadmap: ``reading genomes'' over the
+semester}\label{course-roadmap-reading-genomes-over-the-semester}
+
+This course is organized around the idea that \textbf{reading genomes}
+is a multi‑step process: learning the language of sequences and formats,
+understanding how different technologies generate data, and practicing
+how to transform raw reads into biological
+insight\textsuperscript{4};\textsuperscript{6}. Lectures and readings
+provide conceptual foundations, while labs and projects give hands‑on
+experience with real data and tools\textsuperscript{6}.
+
+Early labs focus on basic data formats, quality control, and simple
+workflows for short‑read data, building toward more complex analyses of
+alignment, variant calling, and genome annotation later in the
+semester\textsuperscript{4}. A semester‑long \textbf{genome analysis
+project} asks each student or group to design and execute a focused
+analysis (for example, on a chosen genome or dataset), document their
+workflow in a reproducible way, and present their findings, mirroring
+how modern genomics research is carried out.
+
+In parallel, a \textbf{mock grant review panel} assignment exposes
+students to how genomics proposals are evaluated: what makes a question
+compelling, whether the proposed analyses are appropriate and feasible,
+and how reviewers weigh innovation, rigor, and broader impacts.
+Together, these components---lectures, integrated readings, labs, the
+project, and the review panel---are designed to help students move from
+passively reading about genomes to actively \textbf{reading, analyzing,
+and critiquing} genomic data and studies.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Figure 1.5 -- How course components fit together}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+A course‑level map with three concentric rings:
+
+\begin{itemize}
+\tightlist
+\item
+  Inner ring: core skills (data formats, QC, alignment/assembly, variant
+  interpretation).\\
+\item
+  Middle ring: labs and the semester‑long project where those skills are
+  practiced.\\
+\item
+  Outer ring: readings and the mock grant panel that develop critical
+  evaluation and communication.
+\end{itemize}
+
+Arrows indicate how each activity reinforces the central goal of
+becoming fluent in ``reading genomes.''
+
+\end{tcolorbox}
+
+\section{A Consistent Example}\label{a-consistent-example}
+
+Throughout the semester, the class will return again and again to a
+single yeast genome sequence dataset, following it from raw sequencing
+reads all the way to biological interpretation. The dataset comes from
+an experimental evolution study in \emph{Saccharomyces cerevisiae} in
+which populations were propagated for many generations under defined
+conditions, allowing standing genetic variation to be reshaped by
+selection in a controlled laboratory environment\textsuperscript{16}. To
+keep the full workflow manageable, the course uses the compact sacCer3
+reference genome (about 12 Mb across 16 chromosomes), which makes it
+feasible to run industry-standard bioinformatics workflows on the
+high-performance computing cluster within realistic time and memory
+limits.
+
+In Lab 4, you will download the yeast reads from the NCBI SRA accession
+SRR1693691, perform initial quality control with FastQC, trim away
+low-quality bases and adapters, and align the cleaned reads to sacCer3,
+ending with an indexed BAM file and basic coverage and mapping
+statistics. In Lab 7, you will pick up the same alignment file to mark
+PCR duplicates, run additional QC checks such as samtools flagstat and
+MultiQC, and then use GATK's ``best practices'' variant calling workflow
+to generate and filter a set of SNPs, comparing different hard-filtering
+thresholds and visual summaries of variant quality metrics. In Lab 8,
+you will load both the pre- and post-filtering BAM files and the
+resulting VCFs into IGV, visually inspect specific regions of the
+genome, and decide which candidate variants look like real evolutionary
+changes versus sequencing or mapping artifacts, interpreting those
+variants in terms of coding changes and potential functional
+consequences for the yeast.
+
+Most of the heavy lifting on the command line will be handled by
+provided shell scripts, so students can focus on understanding what each
+step does and what each output means rather than on debugging complex
+pipelines from scratch. The overarching goals are to help them feel
+comfortable working with real whole-genome data on a high-performance
+cluster, to connect the dots between textbook methods and concrete files
+like FASTQ, BAM, and VCF, and to practice reading genomes as biological
+documents---writing clear methods, reporting variants in a biomedical
+context, and reasoning about how specific genetic changes might shape
+evolutionary trajectories in a model eukaryote.
+
+More on the GATK workflow and these file formats can be found in
+subsequent chapters, so do not worry so much about the details right
+now. You can also read more about this semester dataset in
+Appendix~\ref{sec-yeast}.
+
+\section{Looking ahead to Chapter 2}\label{looking-ahead-to-chapter-2}
+
+Chapter 2 builds directly on this foundation by unpacking the sequencing
+technologies behind the timeline in Figure
+Figure~\ref{fig-genomics-timeline}. It introduces first‑, second‑, and
+third‑generation sequencing platforms, compares Illumina, PacBio, and
+Oxford Nanopore data, and connects platform choice to alignment, de novo
+assembly, and experimental design. The goal is to give you a single,
+integrated reference for sequencing technologies and data so that later
+chapters on algorithms and applications have a concrete foundation.
+
+\section{Acknowledgments}\label{acknowledgments}
+
+Portions of this chapter were drafted and revised with the assistance of
+an AI‑based writing tool. The instructor reviewed, edited, and is
+responsible for the final content.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 0\tabcolsep) * \real{0.0556}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\#\# Reflection questions
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+title: Sequencing Technologies and Data bibliography: references.bib
+csl: nature.csl \\
+\end{longtable}
+
+\begin{verbatim}
+
+
+
+## Why this chapter?
+
+Chapter 1 framed genomics as the process of *reading genomes* and introduced core ideas such as reference assemblies, alignment, and de novo assembly as recurring operations in this course [@pevsner2015; @hotaling2021; @marks2021]. In this chapter, the focus shifts to the sequencing technologies themselves, the data they generate, and how platform choice interacts with experimental design and downstream bioinformatics workflows [@pevsner2015; @vandijk2018; @vandijk2023].
+
+By the end of the chapter, you should be able to:
+
+-   Explain how first‑, second‑, and third‑generation sequencing methods work at a conceptual level.\
+-   Compare Illumina, PacBio, and Oxford Nanopore platforms in terms of read length, accuracy, throughput, and error profiles [@pevsner2015; @vandijk2018; @vandijk2023].\
+-   Decide when alignment to a reference is appropriate and when de novo assembly or hybrid approaches are needed [@pevsner2015; @vandijk2018; @vandijk2023].\
+-   Interpret key assembly quality metrics and understand how long‑range technologies (Hi‑C, optical maps, Strand‑seq) scaffold contigs to chromosomes [@vandijk2018; @vandijk2023].\
+-   Recognize how modern sequencing companies increasingly provide full “sequencer‑to‑variants” workflows and what that means for practicing bioinformatics [@pevsner2015; @vandijk2023].
+
+Along the way, we connect the historical genomics timeline from Chapter 1 to current platforms and highlight ethical questions raised by the rapid expansion of genomic data, especially in human populations [@green2011; @hotaling2021].
+
+## From timelines to laboratories
+
+Figure 1.1 in Chapter 1 traced the history of genomics from the discovery of DNA as the hereditary molecule through Sanger sequencing, the Human Genome Project, high‑throughput short‑read platforms, and the emergence of long‑read technologies such as PacBio and Oxford Nanopore.<!-- cite ch01 figure --> Each milestone reflects two intertwined trends: improvements in chemistry and instrumentation, and increasingly sophisticated computational methods required to turn raw signals into usable sequence data [@pevsner2015; @vandijk2018].
+
+In practice, most modern genome projects follow a workflow similar to the one you saw in Lecture 2: experimental design and library preparation, sequencing on one or more platforms, quality control, alignment or assembly, variant calling or annotation, visualization, and long‑term data storage [@pevsner2015]. This chapter focuses primarily on the first half of that pipeline up to the point where reads are ready to be aligned or assembled; later chapters return to algorithms and downstream analyses in more detail.
+
+::: callout-note
+## Connecting Chapters 1 and 2
+
+Chapter 1 emphasized *what* we want from genomes—reference assemblies, annotations, and interpretable variation—while treating sequencing platforms as a black box. This chapter opens that box, because understanding how the data are generated is essential for making good decisions about coverage, library design, and downstream analysis choices.
+:::
+
+## First‑generation sequencing: Sanger and BAC‑by‑BAC
+
+First‑generation sequencing refers to the Sanger dideoxy method, which dominated from the late 1970s through the early 2000s and underpinned the Human Genome Project [@pevsner2015]. Sanger sequencing uses a primer, DNA polymerase, and a mixture of normal dNTPs and fluorescently labeled chain‑terminating ddNTPs; whenever a ddNTP is incorporated, extension stops and the fragment length encodes the position of that base [@pevsner2015]. Fragments are separated by capillary electrophoresis and detected by their fluorescent signals, producing reads of roughly 500–1000 bp with error rates typically below 1% [@pevsner2015].
+
+Because each capillary generates one read at a time, Sanger sequencing is low throughput and expensive per base, but its long reads and high accuracy remain useful for targeted validation and small‑scale projects [@pevsner2015]. Historically, large genomes were sequenced using BAC‑by‑BAC strategies: large genomic fragments were cloned into bacterial artificial chromosomes, ordered along chromosomes using genetic and physical maps, and individually shotgun‑sequenced and assembled into contigs before being merged into chromosome‑scale scaffolds [@pevsner2015; @vandijk2018].
+
+From a modern perspective, Sanger’s legacy is conceptual. It established the idea that sequencing is a combination of **chemistry** (how nucleotides are read) and **signal processing** (how those events are turned into digital base calls with quality scores) [@pevsner2015]. Those same elements recur in second‑ and third‑generation platforms, even as the physics of detection change.
+
+## Second‑generation sequencing: short reads at scale
+
+Second‑generation or “next‑generation” sequencing (NGS) refers to platforms that produce millions to billions of short reads in parallel by imaging clonal clusters or beads [@pevsner2015]. The most widely used technology is Illumina’s sequencing‑by‑synthesis chemistry, in which random DNA fragments with adapters are immobilized on a flow cell, amplified by bridge PCR, and extended one base at a time using fluorescent reversible terminator nucleotides [@pevsner2015].
+
+Modern Illumina instruments routinely generate paired‑end reads of 150–300 bp, with total outputs ranging from a few gigabases (e.g., MiSeq) to multiple terabases (e.g., NovaSeq) per run at very low per‑base error rates [@pevsner2015]. Each cycle incorporates a single labeled nucleotide, images the flow cell, and then chemically removes the terminator to allow the next base to be added, producing intensity traces that are converted into base calls and PHRED‑scaled quality scores [@pevsner2015].
+
+Short‑read NGS revolutionized genomics by making whole‑genome, whole‑exome, and RNA‑seq experiments affordable and practical for many labs [@green2011; @pevsner2015]. At the same time, the short read lengths and PCR‑based library preparation introduce characteristic challenges:
+
+-   **Repeats and structural variation**: reads much shorter than common repeats or structural variants cannot uniquely resolve those regions, leading to fragmented de novo assemblies and reduced sensitivity to large insertions, deletions, and rearrangements [@vandijk2018; @vandijk2023].\
+-   **Phasing**: short reads often cannot connect variants that are far apart on the chromosome, complicating the task of assigning alleles to maternal vs paternal haplotypes [@vandijk2018; @vandijk2023].\
+-   **GC bias**: PCR and cluster amplification are less efficient at extreme GC contents, reducing coverage and increasing false negatives in GC‑rich or GC‑poor regions [@vandijk2018].
+
+These limitations motivated the development of third‑generation long‑read technologies, as well as algorithmic advances (e.g., better mappers, local assembly around structural variants) that you will encounter later in the course.
+
+## Third‑generation sequencing: long reads and single molecules
+
+Third‑generation or long‑read sequencing (LRS) describes technologies that read individual DNA or RNA molecules in real time, producing reads that can span tens to hundreds of kilobases [@vandijk2018; @vandijk2023]. Two major players are Pacific Biosciences (PacBio) and Oxford Nanopore Technologies (ONT), both of which continue the timeline begun in Chapter 1 and Lecture 2.
+
+### PacBio SMRT and HiFi
+
+PacBio single‑molecule real‑time (SMRT) sequencing uses tiny observation chambers called zero‑mode waveguides (ZMWs), each containing a single DNA polymerase complexed with a circular “SMRTbell” template [@vandijk2018]. Fluorescently labeled nucleotides diffuse into the ZMW; as the polymerase incorporates bases, short pulses of fluorescence are recorded in real time and converted into a continuous long read [@vandijk2018; @vandijk2023].
+
+Early SMRT runs produced long but noisy continuous long reads with error rates around 10–15%, dominated by random insertions and deletions [@vandijk2018]. Modern workflows instead emphasize **HiFi** (high‑fidelity) reads: the polymerase repeatedly circles the same insert, generating multiple passes from which a circular consensus sequence can be derived, trading some maximum length for accuracies ≥99.9% over 10–25 kb [@vandijk2023]. Because the polymerase kinetics depend on base modifications, SMRT sequencing can also directly detect certain DNA methylation events when analyzed with specialized software [@vandijk2018; @vandijk2023].
+
+### Oxford Nanopore sequencing
+
+ONT nanopore sequencing takes an entirely different physical approach. DNA or RNA molecules are threaded through protein nanopores embedded in a membrane that separates two ionic buffer chambers; as a stretch of nucleotides occupies the constriction of the pore, it perturbs the ionic current in a sequence‑dependent way [@vandijk2018]. The resulting “squiggle” of current values is decoded by basecalling software into nucleotide sequences.
+
+In principle, nanopore read length is limited only by input molecule length and stability; with careful high‑molecular‑weight DNA extraction, reads with N50 values around 100 kb and individual reads approaching or exceeding one megabase have been reported [@vandijk2018; @vandijk2023]. Early nanopore chemistries had raw error rates of 20–30%, but newer pore designs (e.g., R10), duplex sequencing of both strands, and deep‑learning basecallers have improved simplex accuracies to \~99.6% and duplex accuracies toward 99.9% [@vandijk2023]. ONT can sequence native RNA directly as well as cDNA, enabling direct observation of some RNA modifications [@vandijk2018; @vandijk2023].
+
+### Comparing major platforms
+
+Table \@ref(tab:platform-comparison) summarizes key properties of the three platforms you will encounter most often in this course. Three practical differences matter: typical read length, error profile, and run scale [@pevsner2015; @vandijk2018; @vandijk2023]. Exact numbers vary with specific instruments and chemistries, but the qualitative trade‑offs are stable.
+
+The rest of the course will assume you can interpret such tables and reason about which combination of platforms best suits a given biological question and budget.
+
+| Platform | Typical read length | Typical accuracy | Typical throughput per run | Key strengths | Key limitations |
+|------------|------------|------------|------------|------------|------------|
+| Illumina NGS | 150–300 bp paired‑end | Very high (≈99.9%) | 10s–1000s of Gb (instrument‑dependent) | Cost‑effective short reads; variant calling; RNA‑seq quantification [@pevsner2015] | Repeats and SVs; limited phasing; GC bias [@vandijk2018; @vandijk2023] |
+| PacBio HiFi | 10–25 kb consensus reads | Very high (≥99.9%) | 10s–100s of Gb HiFi | Accurate long reads; assembly; SVs; phasing; some methylation detection [@vandijk2018; @vandijk2023] | Instrument cost; relatively shorter than ultra‑long nanopore reads |
+| ONT nanopore | 10–100+ kb; Mb possible | \~99–99.9% (chemistry‑dependent) | 10s of Gb (MinION) to Tb (PromethION) | Very long reads; portable devices; direct DNA and RNA; methylation detection [@vandijk2018; @vandijk2023] | Higher error for some contexts; protocol‑sensitive performance |
+
+: (#tab:platform-comparison) Qualitative comparison of common sequencing platforms.
+
+## Matching technology to biological questions
+
+Choosing a sequencing technology is fundamentally an **experimental design** decision. The same genome can be sequenced and analyzed in very different ways depending on whether the primary goal is variant discovery, de novo assembly, transcriptome characterization, or epigenetic profiling [@pevsner2015; @vandijk2018; @scarano2024].
+
+### Targeted panels, exomes, and whole genomes
+
+At one end of the spectrum, small **targeted panels** (for example, exons of 50–200 genes implicated in a disease) can be sequenced deeply with short‑read Illumina platforms, providing high sensitivity for single‑nucleotide variants and small insertions/deletions at relatively low cost per sample [@pevsner2015]. **Whole‑exome sequencing (WES)** scales this idea to most coding regions in the genome, often capturing roughly 1–2% of the genome but a large fraction of known Mendelian disease mutations [@pevsner2015].
+
+**Whole‑genome sequencing (WGS)** avoids capture bias and enables discovery of noncoding variants and structural variation, but requires more data and more careful analysis to achieve similar sensitivity for rare variants [@pevsner2015; @green2011]. For many medical and population genomics projects, 30× Illumina WGS has become a standard compromise between cost and power [@pevsner2015].
+
+### Long reads for structure, phasing, and isoforms
+
+Long‑read sequencing shines when the biology depends on long‑range information. Examples you will encounter in later chapters and labs include:
+
+-   **De novo assembly** of non‑model genomes, where repeats and segmental duplications fragment short‑read assemblies but can be spanned by 10–100 kb reads [@vandijk2018; @vandijk2023].\
+-   **Structural variant discovery**, including large insertions, deletions, inversions, and repeat expansions that span kilobases to megabases [@vandijk2018; @scarano2024].\
+-   **Haplotype phasing**, where long reads connect multiple heterozygous variants along the same physical chromosome copy, allowing separate maternal and paternal haplotypes to be reconstructed [@vandijk2018; @vandijk2023].\
+-   **Full‑length transcriptomics**, where long reads capture complete mRNA isoforms and clarify alternative splicing patterns that are difficult to reconstruct from short fragments [@vandijk2018; @vandijk2023].
+
+In practice, many modern projects use **hybrid strategies**: long reads provide the backbone for assembly or SV discovery, while inexpensive short reads polish base‑level accuracy, improve small‑variant calling, and support large sample sizes [@vandijk2018; @vandijk2023; @pevsner2015].
+
+## Alignment versus assembly in practice
+
+Chapter 1 introduced alignment and de novo assembly as core computational operations [@pevsner2015; @hotaling2021]. Here, we emphasize how platform choice and experimental goals determine which operation is primary.
+
+### Alignment to a reference
+
+For organisms with high‑quality reference genomes, most short‑read workflows begin by **aligning** reads to the reference using algorithms such as BWA or Bowtie2, producing SAM/BAM files that record alignment positions and quality metrics [@pevsner2015]. Alignment is the backbone of variant calling, read‑depth analysis, and many RNA‑seq and ChIP‑seq methods; its performance depends on read length, error rate, and the divergence between sample and reference [@pevsner2015].
+
+Long reads can also be aligned, and specialized mappers have been developed to handle higher error rates and complex structural variation. In lecture you saw how long‑read alignments make it easier to resolve large insertions, tandem repeats, or transposable element insertions that short reads may miss entirely [@vandijk2018; @vandijk2023].
+
+### De novo assembly and graph‑based references
+
+When no good reference exists—or when the reference is known to be incomplete or structurally divergent—**de novo assembly** reconstructs the genome directly from reads. Classical short‑read assemblers typically use de Bruijn graph formulations, breaking reads into k‑mers and finding Eulerian paths that traverse the graph to produce contigs [@pevsner2015]. Assemblies from short reads alone often fragment into many contigs because repeats longer than the read length create ambiguous graph structures [@vandijk2018].
+
+Long‑read assemblers instead work with overlap graphs or string graphs that leverage long overlaps between reads, greatly reducing ambiguity and producing much larger contigs [@vandijk2018; @vandijk2023]. However, even high‑quality long‑read assemblies typically need additional information to be oriented and ordered into chromosome‑scale scaffolds. The field is also moving toward **graph‑based pangenomes**, where multiple haplotypes or assemblies are combined into a single graph structure that better represents population‑level variation than any single linear reference [@vandijk2023].
+
+Later in the book, a guest lecture and accompanying chapter will dig into assembly algorithms and pangenome graphs in more detail; at this point the key idea is that sequencing technologies and algorithms co‑evolve, and practical decisions about assembly strategy must take both into account.
+
+## Assessing assemblies: the three C’s
+
+Genome assemblies are often evaluated using three high‑level criteria sometimes called the “three C’s”: **contiguity**, **completeness**, and **correctness** [@vandijk2018; @vandijk2023; @pevsner2015].
+
+### Contiguity
+
+Contiguity describes how fragmented an assembly is. The most widely reported metric is **N50**, the contig (or scaffold) length such that all contigs of that length or longer contain 50% of the assembled bases [@vandijk2018; @pevsner2015]. Assemblies with high contig N50 and scaffold N50 values are generally more useful for downstream analyses and annotation.
+
+However, N50 alone can be misleading. Aggressive assemblers may artificially join contigs through repeats or low‑confidence overlaps, inflating N50 at the cost of mis‑assemblies that misrepresent the true genome structure [@vandijk2018; @vandijk2023]. Later labs will show you how to plot contig length distributions and use multiple metrics to judge contiguity.
+
+### Completeness
+
+Completeness asks how much of the expected gene content is represented in the assembly. A widely used tool is **BUSCO** (Benchmarking Universal Single‑Copy Orthologs), which examines the presence and integrity of conserved single‑copy genes expected for a given clade [@simao2015]. High BUSCO scores (e.g., ≥95% complete) suggest that most core genes are present; low scores can indicate missing regions, assembly fragmentation, or annotation issues [@vandijk2023; @pevsner2015].
+
+### Correctness
+
+Correctness encompasses both base‑level accuracy and larger‑scale structural validity. Common approaches include:
+
+-   Mapping reads back to the assembly and examining mismatch and indel rates, discordant paired‑end mappings, and depth anomalies that suggest mis‑joins or collapses [@pevsner2015].\
+-   Comparing assemblies built from different technologies (e.g., long reads vs short reads) to identify consistent features and potential errors [@vandijk2018; @vandijk2023].\
+-   Using independent long‑range data such as Hi‑C, optical maps, or Strand‑seq to confirm or correct scaffold orientation and order [@vandijk2023].
+
+In Lecture 2 you saw how these methods feed into a practical checklist: does the assembly have the expected total length, minimal fragmentation, high BUSCO score, and no obvious structural contradictions with orthogonal evidence [@vandijk2023; @pevsner2015]?
+
+## Long‑range scaffolding: 3D genome methods and optical maps
+
+Even with long reads, de novo assemblies often consist of contigs rather than full chromosomes. Long‑range scaffolding methods exploit physical properties of chromosomes to order and orient contigs [@vandijk2018; @vandijk2023].
+
+### Hi‑C and other conformation capture assays
+
+High‑throughput chromosome conformation capture (**Hi‑C**) measures which regions of the genome are physically close to each other in the nucleus by crosslinking chromatin, digesting and ligating DNA, and sequencing junctions between interacting loci [@vandijk2023]. Because loci on the same chromosome interact more frequently than loci on different chromosomes, and nearby loci interact more frequently than distant ones, Hi‑C contact maps provide powerful information for assigning contigs to chromosomes and arranging them along each chromosome [@vandijk2023].
+
+### Optical maps and Strand‑seq
+
+**Optical mapping** labels specific sequence motifs along ultra‑long DNA molecules, linearizes them in nanochannels, and images the pattern of labels; consensus maps can then be used to validate and scaffold assemblies [@vandijk2023]. **Strand‑seq**, a single‑cell sequencing method that preserves strand orientation, can help distinguish homologous chromosomes, identify inversions, and phase assemblies [@vandijk2023]. Together with long reads, these technologies enabled the recent telomere‑to‑telomere (T2T) human genome assembly and are increasingly used in high‑quality assemblies for other species [@vandijk2023].
+
+## Experimental design and coverage
+
+All sequencing experiments must grapple with **coverage**, roughly defined as
+
+\[ \text{coverage} \approx \frac{\text{number of reads} \times \text{read length}}{\text{haploid genome size}}. \]
+
+For Illumina WGS, 30× coverage is a common target for germline variant discovery; higher coverage may be required for somatic mutation detection or low‑frequency variants in mixed samples [@pevsner2015]. For long‑read assembly projects, 20–40× coverage in HiFi or high‑quality nanopore reads is often recommended, sometimes supplemented with additional short reads for polishing [@vandijk2018; @vandijk2023].
+
+Because sequencing costs are typically proportional to total data volume, experimental design must balance per‑sample coverage against the number of samples and platforms used. Later chapters will revisit these trade‑offs with concrete R code examples inspired by workflows in *Computational Genomics with R* [@compgenomr], using simple functions to explore how changes in coverage, sample size, and error rate impact variant discovery power and assembly quality.
+
+## Box 2.1 – From sequencers to full‑stack workflows
+
+In the early days of NGS, data analysis pipelines were largely assembled by individual labs from a mosaic of third‑party tools: separate programs for basecalling, demultiplexing, alignment, variant calling, and visualization, each with its own configuration and output formats [@pevsner2015]. Reproducing an analysis often required extensive documentation and command‑line literacy.
+
+Over the past decade, major sequencing vendors have increasingly offered **end‑to‑end workflow ecosystems**. Examples include Illumina’s cloud‑hosted pipelines, PacBio’s SMRT Link suite for HiFi data, and ONT’s MinKNOW plus associated basecallers and analysis apps [@vandijk2023]. These platforms bundle basecalling, alignment, variant calling, and sometimes annotation or structural variant detection into graphical interfaces and preconfigured workflows, lowering the barrier to entry for non‑specialists and making routine clinical and agricultural genomics feasible in more settings [@green2011; @vandijk2023].
+
+For bioinformatics, this trend is double‑edged. On one hand, user‑friendly workflows reduce technical hurdles and standardize analyses across labs; on the other, they can obscure algorithmic assumptions, limit flexibility, and make it harder to debug or extend pipelines [@pevsner2015; @akalin2020]. A core goal of this course is to help you operate at both levels: you should be able to use vendor pipelines productively when appropriate, but also understand enough about alignment, assembly, and variant calling algorithms to interpret their outputs critically and, when needed, construct your own reproducible workflows.
+
+## Acknowledgments
+
+Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
+
+------------------------------------------------------------------------
+
+## Practice Problem‑sets
+
+You can use or adapt the following prompts for a combined problem set at the end of the chapter. Many can be translated into short R exercises using packages demonstrated in *Computational Genomics with R*.
+
+1.  **Coverage calculations in R**\
+    Write an R function that takes genome size (bp), planned read length, and number of reads as input and returns expected coverage. Explore how coverage changes as you vary read length from 150 bp to 20 kb while holding total sequenced bases constant, and interpret what this means for assembly contiguity versus variant calling in a 3 Gb genome [@pevsner2015; @vandijk2018].
+
+2.  **Platform choice for a real project**\
+    Choose a published genome study of your organism of interest (or a related species). Based on the questions the authors asked, justify whether their choice of sequencing platform(s) and coverage seems appropriate. Propose at least one alternative design using a different mix of short‑ and long‑read technologies, and explain what new information it might reveal [@vandijk2018; @vandijk2023; @scarano2024].
+
+3.  **Interpreting N50 and BUSCO**\
+    You are given summary statistics for two assemblies of the same plant genome: Assembly A has higher contig N50 but lower BUSCO completeness; Assembly B has lower N50 but higher BUSCO and fewer structural inconsistencies when compared to an optical map. In 1–2 paragraphs, argue which assembly you would choose as the main reference and what additional data or analyses you would request before making a final decision [@vandijk2023; @simao2015].
+
+4.  **Alignment versus assembly**\
+    Consider a project to study structural variation in a non‑model fish species with only a draft short‑read assembly available. Outline two analysis strategies: (a) alignment‑centric using new short‑read WGS data, and (b) assembly‑centric using long reads and Hi‑C. For each, list at least three strengths and three limitations, and suggest which approach would better address large rearrangements and repeat expansions [@vandijk2018; @vandijk2023; @pevsner2015].
+
+5.  **Workflow transparency and vendor ecosystems**\
+    Imagine your lab gains access to a turnkey sequencing‑plus‑analysis platform that produces variant calls through a graphical interface with minimal user control. Draft a short lab policy (half a page) describing how you would ensure analysis transparency and reproducibility when using this system (for example, documenting software versions, exporting intermediate files, or reanalyzing subsets of data with open‑source tools) [@pevsner2015; @akalin2020; @green2011].
+
+## Reflection questions
+
+These questions are intended for short written reflections or in‑class discussion.
+
+1.  **Data permanence and participant expectations**\
+    Sequencing costs continue to fall, but data storage and long‑term stewardship remain challenging [@green2011; @pevsner2015]. When human genomes are sequenced today, they may be reanalyzed decades later with new algorithms and linked to other data sources. How should this possibility influence what participants are told at consent, and who should decide how data can be reused?
+
+2.  **Algorithmic opacity**\
+    As vendor pipelines and machine‑learning–based basecallers become standard, fewer users will understand exactly how raw signals are transformed into sequences and variants [@vandijk2023; @akalin2020]. Is it acceptable to rely on “black‑box” algorithms in clinical or conservation genomics if they are empirically well validated? What safeguards or transparency requirements, if any, should be in place?
+
+------------------------------------------------------------------------
+
+## References
+
+
+`<!-- quarto-file-metadata: eyJyZXNvdXJjZURpciI6Ii4ifQ== -->`{=html}
+
+```{=html}
+<!-- quarto-file-metadata: eyJyZXNvdXJjZURpciI6Ii4iLCJib29rSXRlbVR5cGUiOiJjaGFwdGVyIiwiYm9va0l0ZW1OdW1iZXIiOjQsImJvb2tJdGVtRmlsZSI6ImNoMDMtZm9ybWF0cy1xYy1kZXNpZ24ucW1kIiwiYm9va0l0ZW1EZXB0aCI6MH0= -->
+```
+
+# NGS File Formats and Quality Control in Genome Workflows 
+
+```````{.quarto-title-block template='/Applications/RStudio.app/Contents/Resources/app/quarto/share/projects/book/pandoc/title-block.md'}
+---
+title: NGS File Formats and Quality Control in Genome Workflows
+bibliography: references.bib
+csl: nature.csl
+
+---
+\end{verbatim}
+
+\section{Introduction to NGS File
+Formats}\label{introduction-to-ngs-file-formats}
+
+Next-generation sequencing (NGS) generates massive datasets that flow
+through standardized workflows from raw reads to biological
+insights\textsuperscript{4}. Understanding file formats is essential for
+experimental design, as each format encodes metadata critical for
+downstream analysis decisions.
+
+Figure @ref(fig-ngs-workflow) shows the standard NGS pipeline from
+Pevsner Chapter 9.6, where FASTQ files capture raw sequencing data,
+SAM/BAM store alignments, and VCF summarizes variants.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Figure_9_6_Pevsner.jpg}}
+
+}
+
+\caption{\label{fig-ngs-workflow}Standard NGS workflow (from Pevsner
+9.6)}
+
+\end{figure}%
+
+Additionally, visualizing next-generation sequence data as well as
+genomic arithmetic can be done using genome viewer softwares, such as
+Integrated Genome Viewer (IGV), which we will cover later in this
+course. Another common file format in genomics is the BED format, which
+can be used with genome views, to perform various genome analyses, and
+to make custom tracks in genome browsers.
+
+The goal of this chapter is to familiarize you with these four major
+file formats, which are reviewed in this chapter:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Fastq}: raw sequence data from sequencing instrument
+\item
+  \emph{SAM/BAM}: alignment files
+\item
+  \emph{VCF}: summarizes genetic variation
+\item
+  \emph{BED}: genome interval file
+\end{enumerate}
+
+\section{FASTQ: Raw Sequencing Reads}\label{fastq-raw-sequencing-reads}
+
+When genomic DNA is sequenced, raw image files are typically generated
+that are used to interpret which nucleotide is called in a given
+fragment or ``read''. For most users, the FASTQ files (rather than the
+underlying image files) represent the raw reads from which other
+analyses are performed. Like the FASTA format, the FASTQ format includes
+a sequence string, consisting of the nucleotide sequence of each read.
+FASTQ also includes an associated quality score for every base.
+
+FASTQ extends FASTA by adding per-base quality scores, forming the
+foundation of NGS analysis. Each record spans four
+lines\textsuperscript{4,17}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Header} (\texttt{@}): Encodes rich metadata about sequencing
+  conditions
+\item
+  \textbf{Sequence}: Raw nucleotides (A/C/G/T/N)\\
+\item
+  \textbf{Separator} (\texttt{+}): Optional repeat of header
+\item
+  \textbf{Quality scores}: ASCII-encoded Phred values
+\end{enumerate}
+
+Each FASTQ file has records that are in blocks four lines long. The
+first line, beginning with the @ symbol, identifies the record. It may
+optionally include information about the sequence length or the machine
+used for sequencing. The second line has the sequence (in upper case),
+including the nucleotides G, A, T, C, and (as is the case here in the
+second position) there may be an N for unknown nucleotide. The third
+line begins with the + symbol and typically contains just that character
+(as in this case), or it can have more information. The fourth line
+includes the quality scores corresponding to every base. Each quality
+score is assigned a single character, and the entire quality score
+string must equal the length of the sequence string.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+@SRR518692.1 HWUSI-EAS176888:1:1:31851:320 length=150
+ACTCGCCACCGAACATCTGGCTGAACTTGATGTTGGCGCCATAGGCCACCTTGCCCGCATCCAGCTTGACGATCAGCTGCTCGGAAGCAGAAGTACCGTTGGCAAAGTGGCGGAAGTCCACCTCGTTGGCGAGGGTGTGGTTCGGTGAAC
++
+BBGHGHHGHHHGHGDGBGGHHHHHHHGEGGGGGHFHGHGGGFEGGGGGGGHHHHHBDHHHDHHBEGGGEGEFDHHFHHHHGDBGGGDGCDEBE??
+?A?CDDBGDAA
+
+\end{tcolorbox}
+
+\subsection{FASTQ Header Format}\label{fastq-header-format}
+
+Illumina headers contain important metadata about the sequencing run,
+such as instrument, run, flowcell, lane, etc.\textsuperscript{4}.
+
+For example, imagine the first line of the FastQ file looks something
+like this:
+
+\textbf{``@HS2000-306\_201:6:1204:19922:79127/1''}
+
+This header string reveals the following metadata of the sequencing
+reads in this file:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Information in header & Interpretation \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HS2000-306\_201 & the unique instrument name \\
+6 & flowcell lane \\
+1204 & tile number within the flowcell lane \\
+19922 & x-coordinate of the cluster within the tile \\
+79127 & y-coordinate of the cluster within the tile \\
+1 & the member of a pair, 1 or 2 (paired-end) \\
+\end{longtable}
+
+\subsection{Phred Quality Scores}\label{phred-quality-scores}
+
+PHRED scores were introduced in 1988 by Phil Green and colleagues to
+describe base quality scores from Sanger sequencing. This definition is
+used in the Sanger FASTQ format. Characters are stored as ASCII
+printable characters 33--126 (i.e., with an ASCII offset of 33) so the
+range of possible quality scores is 0 to 93. These are listed in Figure
+9.8. A value of 93 corresponds to a probability of 10\^{}--9.3 that a
+base call occurred by chance, that is, the read is extremely likely to
+be correct. At Q30 there is a 1:1000 (i.e., 10--3) error rate, a
+threshold that is often set as a minimum for high-quality reads.
+
+Quality scores use Phred scale: \(Q = -10\log_{10}(P_e)\) where \(P_e\)
+is error probability\textsuperscript{4}. ASCII encoding adds +33 offset
+for printable characters:
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Figure_9_8_Pevsner.jpg}}
+
+}
+
+\caption{\label{fig-phred-ascii}Phred-to-ASCII conversion (from Pevsner
+9.8)}
+
+\end{figure}%
+
+Because genome sequencing has so much data, the cutoffs for Phred scores
+require added stringency. As is shown in the table below, a typical
+quality score of 20, which is recommended in most pipelines equates to
+\textasciitilde100 million sequencing errors in a standard dataset of 10
+billion base pairs of DNA. Later, in Chapter 10, we will discuss variant
+filtering in more detail where additional parameters are used to filter
+data beyond simply Phred Quality scores of individual base calls.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2466}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2603}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2466}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2466}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Phred Quality Score
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Probability of Incorrect Base Call
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Base Call Accuracy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Errors in 10 billion bp
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+10 & 1 in 10 & 90\% & 1,000,000,000 \\
+20 & 1 in 100 & 99\% & 100,000,000 \\
+30 & 1 in 1,000 & 99.9\% & 10,000,000 \\
+40 & 1 in 10,000 & 99.99\% & 1,000,000 \\
+50 & 1 in 100,000 & 99.999\% & 100,000 \\
+60 & 1 in 1,000,000 & 99.9999\% & 10,000 \\
+\end{longtable}
+
+\section{Quality Control: FastQC
+Interpretation}\label{quality-control-fastqc-interpretation}
+
+Several packages are useful to assess the quality of the sequence data.
+There are many types of sequencing errors:
+
+\begin{itemize}
+\item
+  Errors typically increase as a function of read length. For example,
+  for Illumina technology, with each increasing cycle it becomes
+  increasingly difficult to differentiate the signal to noise ratio for
+  which nucleotide has been incorporated.
+\item
+  Errors occur as a function of GC content.
+\item
+  Errors may occur in homopolymer positions. Both pyrosequencing and Ion
+  Torrent technologies are susceptible to this.
+\end{itemize}
+
+FastQC software (\textsuperscript{18}) provides quality control
+statistics. Data are imported from FASTQ files, and are then analyzed
+for qulality. The output includes the following:
+
+\begin{itemize}
+\item
+  \emph{Basic statistics}. This includes information such as the range
+  of sequence lengths and the percent GC content.
+\item
+  \emph{Per base sequence quality}. This shows quality scores (y axis)
+  versus base position (x axis).
+\item
+  \emph{Per sequence quality scores} shows the number of sequences (y
+  axis) versus mean sequence quality (Phred score; x axis).
+\item
+  \emph{Overrepresented sequences}. You can copy these sequences and
+  save them to a text file. You can then try BLAT (particularly if you
+  know the species of the overrepresented sequences), BLASTN (to search
+  for matches across species), batch BLAST, or other tools.
+\item
+  \emph{k-mer content}: this shows data for a series of 5-mers (strings
+  of 5 nucleotides) plotted by relative enrichment (y axis) versus
+  position in read (in base pairs; x axis). The expected 5-mer frequency
+  (determined from the base composition of the entire sequence) can be
+  compared to the observed frequency. k-mer counts may be reduced (e.g.,
+  when poor quality reads reduce the counts for duplicated sequences) or
+  enriched (e.g., when 5-mers are overrepresented at particular
+  locations along a read, such as in the vicinity of a tag added to the
+  5′ end of sequencing reads).
+\end{itemize}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Fig_3_3_fastqc.png}}
+
+}
+
+\caption{\label{fig-fastqc-plots}FastQC Sample Output}
+
+\end{figure}%
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Per base sequence quality}: Boxplots by position; expect
+  Q\textgreater30 early, decline to Q20+ at ends
+\item
+  \textbf{Per base sequence content}: Even A/C/G/T; 5' bias = adapters\\
+\item
+  \textbf{Adapter content}: Rising \% indicates contamination
+\item
+  \textbf{Sequence duplication}: \textgreater50\% duplicates flags PCR
+  bias
+\end{itemize}
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-important-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Coverage Calculation from FastQC}, opacityback=0, colbacktitle=quarto-callout-important-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+Read depth (or depth of coverage) is a basic design consideration. If a
+library is sequenced more often (e.g., analyzing it on multiple lanes of
+a flow cell) this will offer greater depth and more statistical power to
+detect variants. At the same time, obtaining deeper coverage is
+relatively expensive. For a typical whole-genome sequence using Illumina
+technology that generates 150 nucleotide paired end reads, coverage of
+30× to 50× is obtained, meaning that on average any given base in the
+genome is covered by 30--50 independent sequencing reads. For
+whole-exome sequencing (which often spans ∼50 megabases or 1--2\% of the
+genome), depth of coverage is often 100× or more. For targeted
+sequencing, depth of sequencing ranges from 5× to 30× depending on
+factors such as the number of samples that are run simultaneously.
+
+The redundancy of coverage c is a function of the number of reads N, the
+average length of each read L, and the length of the region (e.g.,
+genome G) being sequenced\textsuperscript{4}:
+
+Coverage = \(\frac{N \times L}{G}\) where \(G\) = genome size.
+
+\end{tcolorbox}
+
+\section{SAM/BAM: Aligned Reads}\label{sambam-aligned-reads}
+
+The next major step in a basic genome analysis pipeline is alignment,
+which we will go into a lot of depth in subsequent chapters. When FastQ
+files are aligned to a reference genome, the output is a SAM (Sequence
+Alignment/Map) file. This file format is a compressed file that stores
+read alignments. It can be further compressed into its binoary form
+BAM\textsuperscript{4}. Finally, an even more compressed version is a
+CRAM (Compressed Reference-oriented Alignment Map) file which was
+introduced in 2011. CRAM is a compressed columnar file format for
+storing biological sequences aligned to a reference sequence. For the
+purposes of this chpater, we will focus on the SAM format. BAM files
+cannot be directly viewed due to their binary nature.
+
+\subsection{The SAM/baM Format and
+SAMtools}\label{the-sambam-format-and-samtools}
+
+The SAM (sequence alignment/map) format is commonly used to store
+next-generation sequence alignments. SAM files can be easily converted
+to the BAM (binary alignment/map) format. BAM is a binary representation
+of SAM, compressed by the BGZF library, and contains the same
+information as the SAM file. Because they are easily interchangeable, we
+may refer to the SAM/BAM format. This format is very popular, with many
+datasets available in repositories (such as the Sequence Read Archive at
+NCBI, the 1000 Genomes Project, and the Cancer Genome Atlas).
+
+The SAM format includes a header section (having lines beginning with
+the character @) and an alignment section. The file is tab-delimited,
+and there are 11 mandatory fields (Table 9.4) which we examine in our
+autism panel (Fig. 9.13). We use the samtools view command to display
+the first of over a million rows (each row corresponding to a read that
+has been aligned to a reference genome). Twelve fields are shown,
+including the sequence (beginning AATCT\ldots) followed by the
+corresponding quality scores. The CIGAR string refers to a notation
+system for variants. Here string ``148M2S'' shows 148 matches and 2
+soft-clipped (unaligned) bases. Standard CIGAR operations are M (match),
+I (insertion), and D (deletion). Extended CIGAR options are N (skipped
+bases on reference), S (soft clipping), H (hard clipping), and P
+(padding). SAMtools is a library and a software package (Li et al.,
+2009). We can use it to analyze alignments in the SAM/BAM input,
+accomplishing the following tasks:
+
+\begin{itemize}
+\tightlist
+\item
+  convert from other alignment formats, or between SAM and BAM formats;
+\item
+  sort and merge alignments;
+\item
+  index alignments (once sorted, BAM file can be indexed generating a
+  BAI file used in downstream analyses);
+\item
+  view alignments in the pileup format (as shown below with the samtools
+  view command);
+\item
+  remove PCR duplicates (this procedure, called duplicate marking or
+  ``dedupping,'' removes reads that are redundant); and
+\item
+  call two classes of variants: single-nucleotide polymorphisms (SNPs)
+  and small indels.
+\end{itemize}
+
+\begin{figure}
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/Figure_9_13_Pevsner.jpg}}
+
+}
+
+\caption{SAM alignment anatomy (Pevsner 9.13)}
+
+\end{figure}%
+
+\section{VCF: Variant Call Format}\label{vcf-variant-call-format}
+
+Once FASTQ files from your sample have been aligned to a reference
+genome, it may be assumed that variants (both single-nucleotide variants
+and indels) can be called by inspecting the alignment and tabulating the
+differences. The problem with this approach is that many sources of
+errors occur in the process of sequencing and performing alignment: bias
+may occur in how libraries are prepared and amplified; sequencing
+technologies all have associated error rates; and mapping has error
+rates.
+
+VCF tabulates variants post-alignment
+(GATK/SAMtools)\textsuperscript{4,19}.
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, opacitybacktitle=0.6, breakable, left=2mm, titlerule=0mm, bottomtitle=1mm, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, colbacktitle=quarto-callout-note-color!10!white, leftrule=.75mm, coltitle=black, bottomrule=.15mm, colback=white]
+
+\#fileformat=VCFv4.2 \# Mandatory header\\
+\#CHROM POS ID REF ALT QUAL FILTER INFO FORMAT Sample1 chr1 1 . A G,T
+100 PASS \ldots{} GT:DP 1/1:13
+
+\textbf{9 mandatory columns} + samples: \#\textbar{} label:
+tbl-vcf-columns \#\textbar{} tbl-cap: ``VCF column definitions (Pevsner
+Table 9.6).'' tibble::tribble( \textasciitilde Column,
+\textasciitilde Description, ``CHROM'', ``Chromosome'', ``POS'',
+``1-based variant start'', ``ID'', ``dbSNP rsID'', ``REF'', ``Reference
+allele'', ``ALT'', ``Alternate allele(s)'', ``QUAL'', ``Phred quality'',
+``FILTER'', ``PASS/FAIL'', ``INFO'', ``Annotations'', ``FORMAT'',
+``Sample field order'' ) \textbar\textgreater{} knitr::kable()
+
+\textbf{Genotype encoding}: \texttt{0/0}=homozygous ref,
+\texttt{0/1}=heterozygous, \texttt{1/1}=homozygous alt.
+
+\end{tcolorbox}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Figure_9_17_Pevsner.jpg}}
+
+}
+
+\caption{\label{fig-variant-types}Description of a variant call format
+(VCF) file from Pevsner 9.17.)}
+
+\end{figure}%
+
+\section{Variant Types Beyond SNPs}\label{variant-types-beyond-snps}
+
+The outline of a genome analysis workflow presented in Figure 9.6 is
+relatively simplistic. We will use that workflow to gain experience with
+basic data manipulation. A state-of-the-art workflow, used by many
+experts, is the Genome Analysis Toolkit
+(GATK;\textsuperscript{20};\textsuperscript{21}). We show the GATK
+workflow in Figure 9.7, and explain why its approaches are crucial to
+sensitive, specific analyses of genome sequences.
+
+The basic GATK workflow is used for variant discovery with the goal
+output being a VCF. But in addition to SNPs, GATK can be used to call
+other types of genomic variants. Specifically, GATK can be used to
+identify indels and other structural variants\textsuperscript{4}:
+
+\textbf{GATK Best Practices} (Figure @ref(fig:gatk-workflow)) is the
+best genome workflow for model organisms, and for modern human genomics.
+However, it may not be suitable for calling variants in non-model
+systems, which will be covered later in the
+course\textsuperscript{20,21}. Each step in the GATK pipeline reduces
+the amount of data in a genome analysis, the goal is to improve the
+overall quality of the results that are filtered along the way. For
+example, we may expect to see up to 50\% of the data is removed during a
+standard workflow from raw FastQ file to a VCF. This does not mean that
+your data are of poor quality of that your experimental design was
+flawed, but only that your resulting variants have been stringently
+filtered to be of the highest confidence.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/Figure_9_7_Pevsner.jpg}}
+
+}
+
+\caption{\label{fig-gatk-workflow}GATK pipeline (Pevsner 9.7): raw reads
+→ analysis-ready BAM → VCF.)}
+
+\end{figure}%
+
+\section{BED file format and
+BEDtools}\label{bed-file-format-and-bedtools}
+
+This section is a placeholder to introduce the BED file format.
+
+\section{}\label{section}
+
+Throughout the semester, the class will return again and again to a
+single evolving yeast population, following it from raw sequencing reads
+all the way to biological interpretation. The dataset comes from an
+experimental evolution study in Saccharomyces cerevisiae in which
+populations were propagated for many generations under defined
+conditions, allowing standing genetic variation to be reshaped by
+selection in a controlled laboratory environment. To keep the full
+workflow manageable, the course uses the compact sacCer3 reference
+genome (about 12 Mb across 16 chromosomes), which makes it feasible to
+run industry-standard tools such as BWA, samtools, and GATK on the
+high-performance computing cluster within realistic time and memory
+limits.\hspace{0pt}\hspace{0pt}
+
+In Lab 4, students will download the yeast reads from the NCBI SRA
+accession SRR1693691, perform initial quality control with FastQC, trim
+away low-quality bases and adapters, and align the cleaned reads to
+sacCer3, ending with an indexed BAM file and basic coverage and mapping
+statistics. In Lab 6, they will pick up the same alignment file to mark
+PCR duplicates, run additional QC checks such as samtools flagstat and
+MultiQC, and then use GATK's ``best practices'' variant calling workflow
+to generate and filter a set of SNPs, comparing different hard-filtering
+thresholds and visual summaries of variant quality metrics. In Lab 7,
+they will load both the pre- and post-filtering BAM files and the
+resulting VCFs into IGV, visually inspect specific regions of the
+genome, and decide which candidate variants look like real evolutionary
+changes versus sequencing or mapping artifacts, interpreting those
+variants in terms of coding changes and potential functional
+consequences for the yeast.\hspace{0pt}\hspace{0pt}
+
+Most of the heavy lifting on the command line will be handled by
+provided shell scripts, so students can focus on understanding what each
+step does and what each output means rather than on debugging complex
+pipelines from scratch. The overarching goals are to help them feel
+comfortable working with real whole-genome data on a high-performance
+cluster, to connect the dots between textbook methods and concrete files
+like FASTQ, BAM, and VCF, and to practice reading genomes as biological
+documents---writing clear methods, reporting variants in a biomedical
+context, and reasoning about how specific genetic changes might shape
+evolutionary trajectories in a model eukaryote.\hspace{0pt}\hspace{0pt}
+
+\section{Experimental Design
+Implications}\label{experimental-design-implications}
+
+File formats encode decisions:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1739}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2464}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2754}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3043}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Decision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FASTQ Impact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SAM/BAM Impact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+VCF Impact
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Coverage & Read count & Alignment rate & Variant sensitivity \\
+Paired-end & R1/R2 headers & Insert size dist. & Phasing accuracy \\
+Platform & Quality profile & Error modes & Indel/SV calling \\
+\end{longtable}
+
+\textbf{Key takeaway}: 30× WGS + long-read hybrid = optimal variant
+discovery.
+
+\section{Practice Problem‑sets}\label{practice-problemsets}
+
+\subsection{Problem Set 1: Galaxy NCBI QC
+Pipeline}\label{problem-set-1-galaxy-ncbi-qc-pipeline}
+
+Using Galaxy and SRR518692 (Aeromonas hydrophila):\hspace{0pt}
+
+Fetch FASTQ pair via ``Fasterq-dump''.
+
+Run FastQC; screenshot key plots.
+
+Compute coverage (use G=4.72 Mb).
+
+Trim adapters (if detected); re-run FastQC.
+
+Reflect: How does quality change? Compare to slides.\hspace{0pt}
+
+Deliverable: Workflow screenshot, coverage calc, 1-page reflection.
+
+\subsection{Problem Set 2: R QC
+(Akalin-Style)}\label{problem-set-2-r-qc-akalin-style}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Download SRR518692\_1.fastq; analyze}
+\FunctionTok{library}\NormalTok{(ShortRead)}
+\NormalTok{fq }\OtherTok{\textless{}{-}} \FunctionTok{readFastq}\NormalTok{(}\StringTok{"SRR518692\_1.fastq"}\NormalTok{)}
+\NormalTok{qa }\OtherTok{\textless{}{-}} \FunctionTok{qa}\NormalTok{(fq)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Plot per-base quality; filter
+Q\textless20}\label{plot-per-base-quality-filter-q20}
+
+Generate QA report; interpret vs FastQC.
+
+Filter low-quality bases; re-analyze.
+
+Deliverable: Rmd with plots, filtering code, comparison.
+
+\subsection{Problem Set 3: Linux vs
+Others}\label{problem-set-3-linux-vs-others}
+
+On ASC (or local Linux):\hspace{0pt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{fasterq{-}dump}\NormalTok{ SRR518692 }\ErrorTok{(}\ExtensionTok{SRA}\NormalTok{ Toolkit}\KeywordTok{)}\BuiltInTok{.}
+
+\ExtensionTok{fastqc}\NormalTok{ SRR518692\_1.fastq.}
+
+\ExtensionTok{seqtk}\NormalTok{ sample, cutadapt}\KeywordTok{;} \ExtensionTok{compare}\NormalTok{ sizes/plots.}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Comparison:}\label{comparison}
+
+Compare approaches: Table differences in output/runtime/results;
+hypothesize why Linux differs (e.g., exact vs approximate stats).
+
+\section{Reflection Questions}\label{reflection-questions}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  When choose Linux over Galaxy/R? Differences from Galaxy?
+\item
+  Why encode Phred scores as ASCII (+33 offset) rather than raw
+  numbers?\hspace{0pt}
+\item
+  A Q30 read has \textasciitilde0.1\% error; for 10M × 100bp reads, how
+  many errors expected? Would this be an acceptable cutoff?
+\end{enumerate}
+
+\section{References}\label{references}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 4 -- Genome Databases and
+Browsers}\label{ch.-4-genome-databases-and-browsers}
+
+\section{Overview}\label{overview}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative}
+
+\subsection{Key concepts}\label{key-concepts}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 5 -- Grants, Funding, and Scientific
+Communication}\label{ch.-5-grants-funding-and-scientific-communication}
+
+\section{Overview}\label{overview-1}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-1}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-1}
+
+\subsection{Key concepts}\label{key-concepts-1}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-1}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-1}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-1}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 6 -- Pairwise and Multiple Sequence
+Alignment}\label{ch.-6-pairwise-and-multiple-sequence-alignment}
+
+\section{Overview}\label{overview-2}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-2}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-2}
+
+\subsection{Key concepts}\label{key-concepts-2}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-2}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-2}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-2}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 7 -- Genome Alignment and Genome
+Assembly}\label{ch.-7-genome-alignment-and-genome-assembly}
+
+\section{Overview}\label{overview-3}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-3}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-3}
+
+\subsection{Key concepts}\label{key-concepts-3}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-3}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-3}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-3}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 8 -- Project Management and Reproducible
+Workflows}\label{ch.-8-project-management-and-reproducible-workflows}
+
+\section{Overview}\label{overview-4}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-4}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-4}
+
+\subsection{Key concepts}\label{key-concepts-4}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-4}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-4}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-4}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 9 -- Gene Annotation, Homology, and
+HMMs}\label{ch.-9-gene-annotation-homology-and-hmms}
+
+\section{Overview}\label{overview-5}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-5}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-5}
+
+\subsection{Key concepts}\label{key-concepts-5}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-5}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-5}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-5}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 10 -- Variant Calling and
+Evaluation}\label{ch.-10-variant-calling-and-evaluation}
+
+\section{Overview}\label{overview-6}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-6}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-6}
+
+\subsection{Key concepts}\label{key-concepts-6}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-6}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-6}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-6}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 11 -- Structural Variation, CNVs, and Other Post‑Alignment
+Workflows}\label{ch.-11-structural-variation-cnvs-and-other-postalignment-workflows}
+
+\section{Overview}\label{overview-7}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-7}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-7}
+
+\subsection{Key concepts}\label{key-concepts-7}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-7}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-7}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-7}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 12 -- Population Genomics and Genome
+Scans}\label{ch.-12-population-genomics-and-genome-scans}
+
+\section{Overview}\label{overview-8}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-8}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-8}
+
+\subsection{Key concepts}\label{key-concepts-8}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-8}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-8}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-8}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ch. 13 -- Where to Go Next}\label{ch.-13-where-to-go-next}
+
+\section{Overview}\label{overview-9}
+
+Short paragraph linking to previous chapter and framing why this topic
+matters in the course.
+
+\section{Learning objectives}\label{learning-objectives-9}
+
+\begin{itemize}
+\tightlist
+\item
+  Bullet list of 3--5 concrete things students should be able to do.
+\end{itemize}
+
+\section{Narrative}\label{narrative-9}
+
+\subsection{Key concepts}\label{key-concepts-9}
+
+\begin{itemize}
+\tightlist
+\item
+  2--4 subsections that walk through your bullet points (e.g., ``FASTQ
+  and Phred scores'', ``QC metrics'', ``Design decisions based on QC'').
+\end{itemize}
+
+\subsection{Figures and examples}\label{figures-and-examples-9}
+
+\begin{itemize}
+\tightlist
+\item
+  Simple diagrams you sketch yourself (e.g., read‑quality plot,
+  schematic of FASTQ fields, coverage cartoon).
+\item
+  One or two short, self‑contained R or shell code blocks where
+  appropriate.
+\end{itemize}
+
+\section{Activities and labs}\label{activities-and-labs-9}
+
+\begin{itemize}
+\tightlist
+\item
+  Describe how the corresponding lab (e.g., Galaxy vs command line QC)
+  connects to the chapter, and give just enough detail that students can
+  re‑orient later.
+\end{itemize}
+
+\section{Further reading}\label{further-reading-9}
+
+\begin{itemize}
+\tightlist
+\item
+  List your resources with 1--2‑sentence annotations each, rather than
+  reproducing any text.
+\end{itemize}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{part}{Appendices}
+\appendix
+
+\chapter{Appendix: Yeast Experimental Evolution
+Dataset}\label{appendix-yeast-experimental-evolution-dataset}
+
+\section{Overview of the yeast dataset}\label{sec-yeast}
+
+In the labs, you will work with whole-genome sequencing data from a
+single \emph{Saccharomyces cerevisiae} population that was part of an
+experimental evolution study on standing genetic variation and
+adaptation in outcrossing yeast. The dataset you will analyze is one run
+from this experiment deposited in the NCBI Sequence Read Archive (SRA)
+under accession \textbf{SRR1693691}. This sample represents pooled
+genomic DNA from many yeast cells, capturing allele frequency changes
+that occurred over hundreds of generations under defined selection
+conditions in the original study.\textsuperscript{16}
+
+The reference genome used throughout the course is the sacCer3 build of
+the \emph{S. cerevisiae} S288C genome (NCBI assembly R64), which is a
+compact, well-annotated eukaryotic genome of roughly 12 Mb spread across
+16 chromosomes plus mitochondrial DNA. The small genome size makes it
+feasible to run a full variant-calling workflow (alignment,
+post-processing, GATK variant calling, and filtering) on the
+high-performance computing (HPC) system within a single semester, while
+still exposing you to tools and file formats that are standard in modern
+human and biomedical genomics.
+
+\section{Where the data come from}\label{where-the-data-come-from}
+
+The sequencing data for SRR1693691 were generated as part of an
+``evolve-and-resequence'' experiment in which yeast populations were
+founded from a genetically diverse base population and then propagated
+for many generations with periodic outcrossing.@burke\_standing\_2014 In
+this design, recombination reshuffles standing genetic variants across
+the genome, allowing adaptation to proceed from existing variation
+rather than relying primarily on new mutations, and making evolutionary
+responses more repeatable across replicate populations.
+
+The original publication (``Standing Genetic Variation Drives Repeatable
+Experimental Evolution in Outcrossing Populations of \emph{Saccharomyces
+cerevisiae}'') used whole-genome resequencing of evolved populations to
+identify genomic regions where allele frequencies changed consistently
+across replicates under selection. In this course, you will not attempt
+to fully reproduce the paper's population-genetic analyses; instead, you
+will focus on learning how to process raw sequencing reads into
+high-quality variant calls and then interpret those variants in a
+biological and biomedical context using a subset of the data.
+
+\section{Core files and formats you will
+see}\label{core-files-and-formats-you-will-see}
+
+You will repeatedly encounter a small set of core file types as you move
+from raw data to filtered variants, and part of the course goal is to
+help you learn to ``read'' these files as biological objects as well as
+technical ones.
+
+\begin{itemize}
+\item
+  \textbf{Raw sequencing reads (FASTQ)}:\\
+  The SRA run SRR1693691 can be converted into one or more compressed
+  FASTQ files (for example, \texttt{SRR1693691.fastq.gz} or lane-split
+  files) that contain the raw read sequences and their per-base quality
+  scores. In Lab 4 you will download the reads from NCBI using provided
+  scripts, inspect the FASTQ structure, and run \textbf{FastQC} to
+  assess base quality, GC content, adapter contamination, and other
+  quality metrics before and after trimming.
+\item
+  \textbf{Reference genome (FASTA and index files)}:\\
+  The sacCer3 reference genome is provided as a FASTA file (for example,
+  \texttt{sacCer3.masked.fa}), which you will index with \textbf{bwa}
+  and \textbf{samtools} to support alignment and downstream operations.
+  Index files such as \texttt{sacCer3.masked.fa.bwt} (for BWA) and
+  \texttt{sacCer3.masked.fa.fai} (for samtools) allow fast lookups of
+  sequence coordinates, and you will use the \texttt{.fai} file to
+  compute the total genome size and estimate coverage in Lab 4.
+\item
+  \textbf{Aligned reads (BAM and BAI)}:\\
+  After trimming, you will align the reads to sacCer3 using BWA and
+  convert the output into a coordinate-sorted BAM file, for example
+  \texttt{SRR1693691.sorted.bam}, plus an index file
+  \texttt{SRR1693691.sorted.bam.bai} that enables rapid random access to
+  specific genomic regions. Later, as part of the GATK post-processing
+  workflow, you will mark PCR and optical duplicates to produce a
+  duplicate-marked BAM (for example, \texttt{SRR1693691.markdup.bam})
+  that better reflects the true independent read depth at each site.
+\item
+  \textbf{Variant calls (VCF)}:\\
+  GATK will be used to call single nucleotide variants, producing a VCF
+  file such as \texttt{SRR1693691.SNPs.vcf} (or a compressed
+  \texttt{SRR1693691.SNPs.vcf.gz}) that lists putative variant sites
+  along with quality scores and annotations. You will then apply hard
+  filters with GATK (using recommended thresholds and your own
+  adjustments) to generate one or more filtered VCFs (for example,
+  \texttt{SRR1693691.SNPs.filtered.vcf} and
+  \texttt{SRR1693691.SNPs.filtered2.vcf}) and compare how filtering
+  choices affect the number and quality of retained variants.
+\item
+  \textbf{Quality summary files (flagstat, depth, MultiQC, plots)}:\\
+  Along the way you will generate summary text files from
+  \texttt{samtools\ flagstat}, depth-of-coverage summaries from
+  \textbf{vcftools}, and an integrated \textbf{MultiQC} HTML report that
+  aggregates QC metrics across the workflow. Custom scripts will also
+  create density plots of key variant-quality metrics (for example,
+  quality-by-depth or mapping quality) to help you decide on appropriate
+  filtering thresholds.
+\end{itemize}
+
+\section{How the dataset flows through the
+labs}\label{how-the-dataset-flows-through-the-labs}
+
+The genome dataset SRR1693691 is the thread that ties together multiple
+labs into a coherent end-to-end workflow, from raw data to
+interpretation. Each lab revisits the same sample and reference genome
+but focuses on a different set of tools and questions, so that by the
+end of the course you will have seen every major step of a standard
+variant-calling pipeline in the context of a real experimental evolution
+dataset.
+
+\begin{itemize}
+\tightlist
+\item
+  In \textbf{Lab 4 (Genome Sequence Indexing and Alignment)}, you will:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Index the sacCer3 reference genome with BWA and samtools and examine
+    the \texttt{.fai} index to calculate total genome size.\\
+  \item
+    Download the SRR1693691 reads from NCBI using a provided shell
+    script, inspect the FASTQ files, and run FastQC before and after
+    trimming.\\
+  \item
+    Trim the reads and align them to sacCer3, producing a sorted BAM
+    file plus coverage estimates and initial alignment QC metrics.
+  \end{itemize}
+\item
+  In \textbf{Lab 7 (Variant Calling via GATK Best Practices)}, you will:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Start from the aligned BAM and run GATK's post-processing and
+    variant-calling steps using a provided script, including duplicate
+    marking and variant calling for SNPs.\\
+  \item
+    Add additional QC steps (such as \texttt{samtools\ flagstat},
+    vcftools depth summaries, and MultiQC) and inspect density plots of
+    variant-quality metrics to decide how stringent your filters should
+    be.
+  \item
+    Generate multiple filtered VCFs with different cutoff choices and
+    compare the resulting sets of SNPs using VCFtools and an UpSet plot,
+    learning how filtering decisions trade off between retaining true
+    variants and excluding noise.
+  \end{itemize}
+\item
+  In \textbf{Lab 8 (Genome Visualization with IGV)}, you will:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Load the sacCer3 genome, the pre-filtering BAM
+    (\texttt{SRR1693691.sorted.bam}), the duplicate-marked BAM
+    (\texttt{SRR1693691.markdup.bam}), and the VCF into IGV, configuring
+    track coloring and display options to highlight read strand,
+    duplicates, and amino acid translations.\\
+  \item
+    Navigate to specific genomic windows that contain called SNPs and
+    visually evaluate the evidence for each variant: read depth, base
+    quality patterns, strand balance, and consistency across reads.
+  \item
+    Use coordinate-based searches in both IGV and the filtered VCF to
+    decide whether certain variants are likely real biological changes,
+    consider whether they fall in protein-coding regions, and reason
+    about possible amino acid changes and functional impacts.
+  \end{itemize}
+\end{itemize}
+
+Throughout these labs, most of the heavy lifting is handled by template
+shell scripts that you will lightly edit and submit to the HPC queue, so
+you can concentrate on understanding the logic of each step and
+interpreting the outputs rather than on writing a full pipeline from
+scratch. By repeatedly touching the same dataset at different
+stages---raw reads, alignments, unfiltered and filtered variants, and
+visual inspection in IGV---you will gain practical experience with how
+real genomic data look and behave and how bioinformatics decisions shape
+the final set of variants that biologists use to draw conclusions about
+evolution and disease.
+
+\chapter{Appendix: Semester Research
+Project}\label{appendix-semester-research-project}
+
+\section{Group Research Project
+Overview}\label{group-research-project-overview}
+
+The majority of this course will be based on a semester-long genome
+analysis. In the beginning of the semester, you will choose a group
+based on the projects listed below. Once the projects are selected, you
+will form groups based on the projects in class. Students may choose to
+work individually if desired. Otherwise, groups sizes should be based on
+the scale of the project selected (see descriptions below). Groups will
+be required to meet OUTSIDE of class during the semester to discuss
+their project goals and complete their research plan (see below).
+
+\subsection{Learning Objectives}\label{learning-objectives-10}
+
+\begin{itemize}
+\tightlist
+\item
+  Experience with real data and research questions
+\item
+  Reinforcement of the scientific method
+\item
+  Learn common file types used for raw sequence data, alignments to
+  reference genomes, and variant files
+\item
+  Learn how to assess the quality of NGS data
+\item
+  Learn a variety of bioinformatics tools for conducting genome analysis
+\item
+  Develop proficiency in scientific communication skills and
+  reproducibility of research
+\item
+  Perform basic statistical analysis of NGS data using R
+\item
+  Use git for collaboration on a research project
+\item
+  Become proficient in shell scripting
+\item
+  Work together as a team to conduct a research project (see below)
+\end{itemize}
+
+\section{The Project: Evolution of the recombination regulation protein
+PRDM9 across non-avian
+reptiles}\label{the-project-evolution-of-the-recombination-regulation-protein-prdm9-across-non-avian-reptiles}
+
+Since 2010, the protein PRDM9 has been of interest to scientists for its
+role in modifying the meiotic recombination rate landscape (Baudat et
+al., 2010) Specifically, in taxa without a functional copy of this
+protein, recombination initiates near gene promoter regions. However, in
+taxa with a functional copy of this protein, recombination initiates
+near binding sites. Further, this protein has been shown to be involved
+in both male and female fertility across mammals, and speciation within
+mice (Grey et al., 2018; Paigen and Petkov, 2018).
+
+PRDM9 has four major domains, including a zinc-finger domain that allows
+it to bind to DNA and act as a transcription factor to initiate
+recombination. This dramatically alters the recombination landscape
+across the genome. Further, because this protein is rapidly evolving,
+the binding motif also changes rapidly, leaving recombination rates to
+evolve more rapidly in taxa with functional copies than without. This
+protein has been well studied in mammals, and particularly in primates
+(Schwartz et al., 2014). While we know it has been lost in birds and
+crocodiles, its role in other non-avian reptiles (e.g.~testudines and
+squamates) is largely unknown. Specifically, recent work in snakes has
+revealed non-canonical patterns of recombination regulation that warrant
+a deeper look in this clade (Hoge et al., 2024). Further, there is major
+variation across this clade in sex-determination and reproductive modes
+that could impact its role in fertility in unknown ways.
+
+A previous study surveyed a large number of vertebrate taxa, including
+reptiles, revealing loss of function across several major clades within
+reptiles, including complete loss of function in birds and crocodiles
+(Baker et al., 2017), and a recent loss in Anoles (Cavassim et
+al.~2022). However, they were limited in their analysis due to a lack of
+available reptile genomes at the time (Kosch et al., 2024). There are
+now over 165 published non-avian reptile genomes with this number
+growing rapidly (Card et al., 2023; Gable et al., 2023, 2022) making
+this a ripe time to conduct a detailed portrait on the evolution of this
+protein in non-avian reptiles. Our goal this semester in Bioinformatics
+Class will be to follow up on this interesting question using publicly
+available genomic data in two major clades of non-avian reptiles --
+testudines (N=18+) and squamates (N=83+).
+
+This project was started last spring in this course, with much insight
+gained to make the work this semester run smoother. But it is worth
+noting that with research, there is always an uncertainty that can lead
+to frustration. It can also seem like we ``do not know what we are
+doing''. This feeling should be embrace - you are not doing busy work on
+some known dataset, you are delving into the unknown and that is
+exciting, but also remember that uncharted territory is often rugged. So
+in the same way that you would dress appropriately for a trek through
+the Amazon, approach this project with curiousity and enthusiam.
+
+\section{Project 1: All students done
+invidually}\label{project-1-all-students-done-invidually}
+
+Early in the semester, each student will be assigned a genome from a
+non-avian reptile where there is no annotation of the reference genome.
+Your job will be to manually annotate only the PRDM9 gene. You will use
+web-based tools to identify the rough location of the ortholog of PRDM9
+using BLAST. You will then use an exon-by-exon mapping approach to
+develop a complete gene with start and end positions as well as the
+location of each exon/intron. The goal will be to submit a gene report
+mid-way through the semester of your proposed gene model for PRDM9 in
+your assigned species. This will include a GFF of the gene model, a
+screenshot of the genome view with your gene model and BLAST results
+visible, as well as a two-way sequence alignment between your predicted
+protein sequence and the PRDM9 protein from a close relative. This
+protein sequence will be added to a growing database of non-avian PRDM9
+sequences that will be used for this project.
+
+\section{Project 2: Semester-long group
+project}\label{project-2-semester-long-group-project}
+
+Early in the semester, you will form groups (students may also choose to
+work alone) to each investigate a key question towards the larger
+research goal. At the end of the semester, we will compile what we find
+collectively and hopefully be able to draft a manuscript of our findings
+for scientific publication. Below I have outlined a set of open
+questions that I think would lead to fruitful independent as well as
+collective results. If students want to pick a question that is NOT on
+this list, that would be OK, but they should meet up with me during
+office hours to discuss their plan early in the semester.
+
+Each group will put together a github repository of their research
+project and give a presentation during finals week. You will also be
+required to provide feedback for both the GitHub and the presentation in
+the form of peer review. The peer review will be INDIVIDUAL feedback to
+the groups on their work.
+
+The data analysis may employ a variety of bioinformatic tools you have
+learned during the semester or elsewhere. Some projects will rely on the
+data your group collects, so be mindful of this collaborative nature
+among groups and plan accordingly. Each project will address a
+scientific question or hypothesis. I have set aside a few class periods
+to work on these in class so that we can ALL brainstorm on the data
+analysis for EVERY project together.
+
+I encourage you to start each step early to make sure you have enough
+progress for it to be completed. For example, a preliminary analysis and
+your GitHub repository are due just after Spring Break. For this part of
+the assignment, you will get credit for completion ONLY, BUT it will be
+used for peer review. This means the depth of feedback from your peers
+is dependent upon the scale of your progress thus far.
+
+\section{Summary of Student Led Group Project
+Options:}\label{summary-of-student-led-group-project-options}
+
+\textbf{Project 1: Is PRDM9 expressed in the germline of the selected
+taxa?}: Because of its role in meiosis, expression in the germline is a
+huge component of validating the functionality of PRDM9. This project
+will likely start with surveying available RNA-seq datasets (See
+Supplementary File 2 from Kosch et al 2024) and then, based on
+availability of data, it may be used to help narrow down the selected
+taxa for our downstream investigation. Students who have already taken
+functional genomics are particularly well-suited to this project. A
+major goal of this would be to validate systems where there is no
+evidence of PRDM9 based on our larger genome survey by comparing
+expression of PRDM9 to other genes involved in recombination rate as
+positive controls (see Cavassim et al 2022 methods).
+
+\textbf{Project 2: Is there evidence for positive selection in the zinc
+finger residues of PRDM9 across non-avian reptiles?} There are four
+amino acid residues within each zinc finger that make contact when
+binding to DNA. Therefore, these residues are essential for
+investigating the rate of evolution of this protein. The goal here would
+be to generate a multiple sequence alignment of all the zinc fingers and
+then use PAML to estimate dN/dS (omega) to investigate the rate of
+evolution with a few different bioinformatics tools (see Figure 2 of
+Schwartz et al 2014). Depending on group size, this project could be
+combined with the Project 7. Otherwise, this would be suitable for an
+independent project.
+
+\textbf{Project 3: What are the evolutionary relationships between the
+SET domain of PRDM9 across non-avian reptiles?} This domain has specific
+residues with known catalytic activity that is necessary for opening the
+chromatin for the zinc finger array to bind to DNA. This project would
+investigate the SET domain in depth and explore the evolutionary
+relationships of this domain similar to the project above.
+
+\textbf{Project 4: What are the evolutionary relationships between the
+SSXRD domain of PRDM9 across non-avian reptiles?} Related to the two
+above questions, this project would investigate the SSXRD domain. This
+is the shortest functional domain in PRDM9, so it is unclear how
+necessary it is for function of this protein. Variation in
+presence/absence of this domain on its own would be a novel finding.
+
+\textbf{Project 5: What are the evolutionary relationships between the
+KRAB domain of PRDM9 across non-avian reptiles?} Related to the three
+above questions, this project would investigate the KRAB domain which is
+proposed to recruit recombination machinery after DNA binding occurs.
+Suggested reading: https://pubmed.ncbi.nlm.nih.gov/37716846Links to an
+external site..
+
+\emph{Depending on interest and the group size, projects 3-5 could
+easily be combined. Otherwise, this would be suitable for an independent
+project.}
+
+\textbf{Project 6: How do the predicted binding motifs of PRDM9 and the
+number of predicted binding sites across the genome differ across
+non-avian reptiles?} This project would use the zinc finger residue to
+predict the DNA binding sequence and examine how degenerate it is.
+Further, the predicted binding sequence matrix would be searched across
+the reference genome for each selected taxa to compare the number of
+predicted hits and how they cluster in the genome.
+
+\textbf{Project 7: What are the potential positional affects of PRDM9 in
+the genome that impact its evolution?} One thing I have recently noticed
+in investigating PRDM9 along so many genome is that it seems to be
+located towards chromosome ends very often. The synteny of this gene is
+not well-maintained which likely contributed to its rapid evolution. The
+goal of this project would be to use genomes with chromosome-level
+assemblies to investigate this pattern more robustly. It may also
+include diving into neighboring genes a bit to see how this gene moves
+within the genomes across the tree of life.
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{0}
+\bibitem[\citeproctext]{ref-hotaling2021}
+\CSLLeftMargin{1. }%
+\CSLRightInline{Hotaling, S., Kelley, J. L. \& Frandsen, P. B.
+\href{https://doi.org/10.1073/pnas.2109019118}{Toward a genome sequence
+for every animal: Where are we now?} \emph{Proceedings of the National
+Academy of Sciences} \textbf{118}, e2109019118 (2021).}
+
+\bibitem[\citeproctext]{ref-marks2021}
+\CSLLeftMargin{2. }%
+\CSLRightInline{Marks, R. A., Hotaling, S., Frandsen, P. B. \& VanBuren,
+R. \href{https://doi.org/10.1038/s41477-021-01031-8}{Representation and
+participation across 20 years of plant genome sequencing}. \emph{Nature
+Plants} \textbf{7}, 1571--1578 (2021).}
+
+\bibitem[\citeproctext]{ref-bogan2025}
+\CSLLeftMargin{3. }%
+\CSLRightInline{Bogan, S. N. \emph{et al.}
+\href{https://doi.org/10.1093/molbev/msaf219}{Temperature and pressure
+shaped the evolution of antifreeze proteins in polar and deep sea
+zoarcoid fishes}. \emph{Molecular Biology and Evolution} \textbf{42},
+msaf219 (2025).}
+
+\bibitem[\citeproctext]{ref-pevsner2015}
+\CSLLeftMargin{4. }%
+\CSLRightInline{Pevsner, J. \emph{Bioinformatics and Functional
+Genomics}. (Wiley, 2015).}
+
+\bibitem[\citeproctext]{ref-collins2003}
+\CSLLeftMargin{5. }%
+\CSLRightInline{Collins, F. S., Green, E. D., Guttmacher, A. E. \&
+Guyer, M. S. \href{https://doi.org/10.1038/nature01626}{A vision for the
+future of genomics research}. \emph{Nature} \textbf{422}, 835--847
+(2003).}
+
+\bibitem[\citeproctext]{ref-akalin2020}
+\CSLLeftMargin{6. }%
+\CSLRightInline{Akalin, A.
+\emph{\href{https://compgenomr.github.io/book/}{Computational Genomics
+with r}}. (CRC Press, 2020).}
+
+\bibitem[\citeproctext]{ref-green2011}
+\CSLLeftMargin{7. }%
+\CSLRightInline{Green, E. D., Guyer, M. S. \& NHGRI.
+\href{https://doi.org/10.1038/nature09764}{Charting a course for genomic
+medicine from base pairs to bedside}. \emph{Nature} \textbf{470},
+204--213 (2011).}
+
+\bibitem[\citeproctext]{ref-yanai2020}
+\CSLLeftMargin{8. }%
+\CSLRightInline{Yanai, I. \& Lercher, M. J.
+\href{https://doi.org/10.1186/s13059-020-02133-w}{A hypothesis is a
+liability}. \emph{Genome Biology} \textbf{21}, 231 (2020).}
+
+\bibitem[\citeproctext]{ref-belmont1979}
+\CSLLeftMargin{9. }%
+\CSLRightInline{National Commission for the Protection of Human Subjects
+of Biomedical and Behavioral Research.
+\href{https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/read-the-belmont-report/index.html}{The
+belmont report: Ethical principles and guidelines for the protection of
+human subjects of research}. \emph{Federal Register} \textbf{44},
+23191--23197 (1979).}
+
+\bibitem[\citeproctext]{ref-reverby2009tuskegee}
+\CSLLeftMargin{10. }%
+\CSLRightInline{Reverby, S. M. Examining tuskegee: The infamous syphilis
+study and its legacy. \emph{University of North Carolina Press} (2009).}
+
+\bibitem[\citeproctext]{ref-marks2016hela}
+\CSLLeftMargin{11. }%
+\CSLRightInline{Marks, J. H.
+\href{https://doi.org/10.1146/annurev-genom-083115-022536}{Lessons from
+{HeLa} cells: The ethics and policy of biospecimens}. \emph{Annual
+Review of Genomics and Human Genetics} \textbf{17}, 395--417 (2016).}
+
+\bibitem[\citeproctext]{ref-skloot2010henrietta}
+\CSLLeftMargin{12. }%
+\CSLRightInline{Skloot, R. The immortal life of henrietta lacks.
+\emph{Crown Publishing Group} (2010).}
+
+\bibitem[\citeproctext]{ref-lacks2022history}
+\CSLLeftMargin{13. }%
+\CSLRightInline{Washington, H. A.
+\href{https://doi.org/10.1089/heq.2021.0151}{Henrietta lacks and
+america's dark history of research involving black women}. \emph{Health
+Equity} \textbf{6}, e1--e3 (2022).}
+
+\bibitem[\citeproctext]{ref-havasupai2012genomicjustice}
+\CSLLeftMargin{14. }%
+\CSLRightInline{Garrison, N. A.
+\href{https://doi.org/10.1177/0162243912470009}{Genomic justice for
+native americans: Impact of the {Havasupai} case on genetic research}.
+\emph{Science, Technology, \& Human Values} \textbf{38}, 201--223
+(2013).}
+
+\bibitem[\citeproctext]{ref-havasupai2013irb}
+\CSLLeftMargin{15. }%
+\CSLRightInline{Harmon, A. \emph{et al.}
+\href{https://doi.org/10.1080/21507716.2013.770104}{{IRB} and researcher
+reflections on the {Havasupai} lawsuit}. \emph{AJOB Primary Research}
+\textbf{4}, 55--63 (2013).}
+
+\bibitem[\citeproctext]{ref-burke_standing_2014}
+\CSLLeftMargin{16. }%
+\CSLRightInline{Burke, M. K., Liti, G. \& Long, A. D.
+\href{https://doi.org/10.1093/molbev/msu256}{Standing {Genetic}
+{Variation} {Drives} {Repeatable} {Experimental} {Evolution} in
+{Outcrossing} {Populations} of {Saccharomyces} cerevisiae}.
+\emph{Molecular Biology and Evolution} \textbf{31}, 3228--3239 (2014).}
+
+\bibitem[\citeproctext]{ref-cock2010}
+\CSLLeftMargin{17. }%
+\CSLRightInline{Cock, P. J. A., Fields, C. J., Goto, N., Heuer, M. L. \&
+Rice, P. M. \href{https://doi.org/10.1093/nar/gkp1137}{The {Sanger}
+{FASTQ} file format for sequences with quality scores, and the
+{Solexa}/{Illumina} {FASTQ} variants}. \emph{Nucleic Acids Research}
+\textbf{38}, 1767--1771 (2010).}
+
+\bibitem[\citeproctext]{ref-fastqc}
+\CSLLeftMargin{18. }%
+\CSLRightInline{Institute, B.
+\href{https://www.bioinformatics.babraham.ac.uk/projects/fastqc/}{Babraham
+{Bioinformatics} - {FastQC} {A} {Quality} {Control} tool for {High}
+{Throughput} {Sequence} {Data}}.}
+
+\bibitem[\citeproctext]{ref-danecek_variant_2011}
+\CSLLeftMargin{19. }%
+\CSLRightInline{Danecek, P. \emph{et al.}
+\href{https://doi.org/10.1093/bioinformatics/btr330}{The variant call
+format and {VCFtools}}. \emph{Bioinformatics (Oxford, England)}
+\textbf{27}, 2156--2158 (2011).}
+
+\bibitem[\citeproctext]{ref-mckenna_genome_2010}
+\CSLLeftMargin{20. }%
+\CSLRightInline{McKenna, A. \emph{et al.}
+\href{https://doi.org/10.1101/gr.107524.110}{The {Genome} {Analysis}
+{Toolkit}: A {MapReduce} framework for analyzing next-generation {DNA}
+sequencing data}. \emph{Genome Research} \textbf{20}, 1297--1303
+(2010).}
+
+\bibitem[\citeproctext]{ref-depristo_framework_2011}
+\CSLLeftMargin{21. }%
+\CSLRightInline{DePristo, M. A. \emph{et al.}
+\href{https://doi.org/10.1038/ng.806}{A framework for variation
+discovery and genotyping using next-generation {DNA} sequencing data}.
+\emph{Nature Genetics} \textbf{43}, 491--498 (2011).}
+
+\end{CSLReferences}
+
+
+
+
+\end{document}

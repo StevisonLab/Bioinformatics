@@ -1,0 +1,42 @@
+project:
+  type: book
+
+book:
+  title: "Reading Genomes: A Companion to Bioinformatics and Genome Analysis"
+  author: "Laurie Stevison"
+  chapters:
+    - part: "Companion Chapters"
+      chapters:
+        - index.qmd
+        - ch01-reading-genomes.qmd
+        - ch02-sequencing-tech.qmd
+        - ch03-formats-qc-design.qmd
+        - ch04-browsers-databases.qmd
+        - ch05-grants-funding.qmd
+        - ch06-seq-alignment.qmd
+        - ch07-genome-align-assembly.qmd
+        - ch08-project-mgmt.qmd
+        - ch09-annotation-hmms.qmd
+        - ch10-variant-calling.qmd
+        - ch11-sv-and-workflows.qmd
+        - ch12-popgen.qmd
+        - ch13-where-next.qmd
+    - part: "Lab Manual"
+      chapters:
+        - Lab01.qmd
+        - Lab02.qmd
+        - Lab03.qmd
+        - Lab04.qmd        
+  appendices:
+    - part: "Appendices"
+      chapters:
+        - appendixA.qmd
+        - appendixB.qmd
+        - appendixC.qmd  
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    number-sections: true
+    csl: nature.csl

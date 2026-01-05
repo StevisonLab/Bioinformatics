@@ -1,0 +1,43 @@
+---
+title: "Lab01: Find and describe a Genome Analysis Paper"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Lab 1 {#sec-lab01}
+
+In class we will read and discuss a recent genome analysis paper that illustrates the three perspectives on genomics (cell, organism, tree of life) and the balance between hypothesis‑driven and discovery‑driven research introduced in Chapter 1 [@pevsner2015; @hotaling2021; @marks2021].
+
+After class, you will search PubMed for a scientific study that includes some form of genome analysis. Avoid “double‑dipping” by reusing papers assigned for other courses or lab meetings. Ideally, choose:
+
+-   a genome paper on your study organism, or\
+-   a paper that follows a workflow similar to one you plan to use in your own research, or
+-   a recent paper that excited you and presents a genome analysis.
+
+Before you start, skim the “Types of Genome Analysis Research Projects” section in Chapter 1 and, if needed, review Appendix @sec-papers for a refresher on reading primary literature [@pevsner2015; @hotaling2021; @marks2021; @burke_standing_2014].
+
+By the end of this lab, you should be able to:
+
+-   Identify the main hypothesis (or questions) of a genomics paper.
+-   Classify the study using the three perspectives from Chapter 1 (cell, organism, tree of life).
+-   Describe whether the study leans more hypothesis‑driven, discovery‑driven, or combines both.
+-   Summarize key genome features (assembly size, chromosome number, basic QC metrics) reported in the paper.
+
+## Deliverables
+
+1.  **Paper and methods diagram**
+    -   Upload the PDF of your chosen paper to Canvas.\
+    -   Upload a one‑page diagram of the methods used to test the main hypothesis. Give your diagram a descriptive title and include:
+        -   data types (e.g., short‑read WGS, long‑read assembly, RNA‑seq),\
+        -   main analysis steps (alignment, assembly, variant calling, comparative analyses),\
+        -   which of the three perspectives your paper emphasizes
+        -   whether it is hypothesis-drive, discovery-based, or both.
+2.  **2–3 minute video summary**
+    -   Record an informal 2–3 minute Panopto video summarizing the paper’s goals, methods, and main findings, and how it fits into the perspectives from Chapter 1.
+    -   Upload the video to the “Lab Activity #1” Panopto assignments folder as described on Canvas.
+
+Please refer to the syllabus for late policies. Detailed step‑by‑step instructions for recording and uploading Panopto videos are provided on Canvas rather than here.
+
+## Resources and Refreshers:
+
+If you do not have much experience finding and reading primary literature, complete Appendix @sec-papers (“How to Read Scientific Literature”) before or alongside this lab. That appendix walks through hypothesis identification, concept mapping, and designing follow‑up experiments using a concrete example.

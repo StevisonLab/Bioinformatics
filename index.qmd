@@ -1,0 +1,119 @@
+---
+bibliography: references.bib
+csl: nature.csl
+---
+
+# Preface {.unnumbered}
+
+This is a Quarto book.
+
+To learn more about Quarto books visit <https://quarto.org/docs/books>.
+
+## Why This Course? Why This Book?
+
+This companion textbook supports *BIOL 5860/6860: Bioinformatics and Genome Analysis*, a hands-on survey of computational approaches to "reading" biological data. As biologists with genetics and computational biology prerequisites, you already know how to frame biological questions and wrangle basic code. This course builds directly on that foundation to demystify the "black box" of bioinformatics tools, showing you how to move from raw sequencing data to biological insight.
+
+The field moves fast—back when I was in graduate school, I first learned 454 sequencing and applied it to my PhD work, which is now long obsolete. Rather than teaching specific tools that may change by graduation, this book emphasizes **adaptability**: the core concepts, file formats, quality control practices, and workflow thinking that transfer across platforms and projects. Labs progress from exploratory ("find a genome paper on your favorite organism") to practical (GATK variant calling on HPC) to independent (semester-long group research projects where you discover and master new tools yourselves).
+
+## Who This Book Serves
+
+This resource targets our diverse class:
+
+-   **Pre-med and future genetic counselors**: Clinical relevance through variant interpretation, population genetics, structural variants, and ethical considerations in human genomics.
+
+-   **Graduate students and researchers**: Practical pipelines, reproducibility best practices, and project management skills for real analyses.
+
+-   **All students**: Demystification of the "hidden curriculum"—writing reproducible workflows, applying for funding, and participating in grant review panels.
+
+No prior genomics experience is required, but the prerequisites ensure everyone can keep pace with Linux, R, git, and basic scripting.
+
+## How Does Computational Biology Differ from Bioinformatics
+
+::: callout-note
+### Figure 0.1 – Fields of Research within Bioinformatics
+
+![Venn Diagram with fields of study in the area of bioinformatics](images/Fig_0_1_Fields.png){#fig-fields width="50%"}
+
+Having taken a course in Computational Biology, it can often be confusing of the specific distinction between the various fields and how to define each.
+
+This figure shows how bioinformatics lies at the interface of statistics, computer science, and biology, integrating methods from all three disciplines to analyze and interpret biological data. This Figure highlights how related subfields overlap: biostatistics emerges from the intersection of statistics and biology, computational biology from the overlap of computer science and biology, and data science from the overlap of statistics and computer science. At the center, bioinformatics combines these quantitative, computational, and biological approaches under one umbrella.
+
+Importantly, how we define biology in this course is broadly emcompassing all fields of empirical research. This would include biology, biomedical research, such as pharamcology, kinesiology, and veterinary sciences.
+:::
+
+## Student Learning Objectives
+
+Upon completion of the course, you should be able to:
+
+-   Interpret data formats and quality of raw genome sequence data, sequence alignments, and genetic variants
+-   Conduct genomic analysis using best practice pipelines
+-   Analyze data using R and various bioinformatics tools
+-   Critically evaluate genome analysis study designs
+-   Be able to describe in depth the basic analysis for a variety of data types
+-   Develop proficiency in scientific communication skills and reproducibility of research
+
+## Labs and Projects as a parallel track
+
+Throughout the semester, you will encounter two recurring threads:
+
+-   A **yeast experimental evolution pipeline** (Labs 4, 7, 8; [Appendix A](appendixA.qmd)) that takes you from FASTQ → BAM → VCF → IGV.
+-   A **PRDM9 comparative genomics project** ([Appendix B](appendixB.qmd)) that applies those skills to a real research question.
+
+Each chapter includes “Lab connections” callouts that point to relevant labs and appendices, so you can cross‑reference concepts, commands, and datasets as you work.
+
+## Semester Schedule
+
+::: {.smaller style="overflow-x: auto;"}
+| Week | Date | Class topic | Primary readings | Notes | Assignments |
+|------------|------------|------------|------------|------------|------------|
+| 1 | 8 Jan | Course overview and state of the field | [Chapter 1](ch01-reading-genomes.qmd); Readings: @hotaling2021; @marks2021; [Appendix C](appendixC.qmd) | Big‑picture framing of course. | [-@sec-lab01] |
+| 2 | 13 Jan | What is a genome analysis? | [Chapter 2](ch02-sequencing-tech.qmd); Reading: @bogan2025 | Sequencing platforms | Start @sec-lab03 |
+| 2 | 15 Jan | Intro to NGS data and data QC | [Chapter 3](ch03-formats-qc-design.qmd) | Genomics File Formats |  |
+| 3 | 20 Jan | Intro to semester‑long research project | [Appendix B](appendixB.qmd) | Project framing and expectations. |  |
+| 3 | 22 Jan | Fetching raw NGS data from NCBI | Ch. 4 Databases & Browsers | Focus on databases and provenance. |  |
+| 4 | 27 Jan | Lab day – Genome browsers | Ch. 4 Databases & Browsers | Lab‑heavy, light reading. | [@sec-lab02] |
+| 4 | 29 Jan | Pairwise & multiple sequence alignment | Ch. 6 Alignment | Intro to pairwise/MSA concepts. |  |
+| 5 | 3 Feb | Genome assembly guest lecture | Ch. 7 Genome Align & Assembly | Algorithms and case studies |  |
+| 5 | 5 Feb | Project management & writing methods in bioinformatics | Ch. 8 Workflows | Hidden curriculum emphasis. |  GP Step 1 Due |
+| 6 | 10 Feb | Genome sequence alignment | Ch. 7 Genome Align & Assembly | Scaling alignment concepts. |  |
+| 6 | 12 Feb | Lab day – Indexing, alignment, and assessment | [Appendix A](appendixA.qmd) | Applied, workflow‑focused. | Lab 4 |
+| 7 | 17 Feb | Various genome analysis workflows | Ch. 11 Post‑Alignment Workflows | RNA‑seq, ChIP‑seq, metagenomics survey. |  |
+| 7 | 19 Feb | Lab day – BLAST on the command line | Ch. 9 Gene Annotation & HMMs | BLAST concepts and practice. | Lab 5 |
+| 8 | 24 Feb | Lab day – HMMs for gene annotation | Ch. 9 Gene Annotation & HMMs | HMM intuition and gene‑finding. | Lab 6 |
+| 8 | 26 Feb | Midterm Exam | In class conceptual exam | Review of Chapters 1-7 | Exam  |
+| 9 | 3 Mar | Intro to variant calling/filtering | Ch. 10 Variant Calling & Eval | From alignment to variants. | GP Step 2 Due |
+| 9 | 5 Mar | Lab day – Variant filtering and QC | [Appendix A](appendixA.qmd) | Practical filtering and interpretation. |  Lab 7|
+| 10 | 10 Mar | Spring break – no class | — | No assigned reading. |  |
+| 10 | 12 Mar | Spring break – no class | — | No assigned reading. | |
+| 11 | 17 Mar | Discussion: variant‑calling methods comparisons | Assigned Article Readings |  Lab 8; GP Step 3 Due |
+| 11 | 19 Mar | IGV lab | [Appendix A](appendixA.qmd) | Visualizing variants in browsers. |  Lab 9 |
+| 12 | 24 Mar | Open lab – group project work | [Appendix B](appendixB.qmd) | Light, as‑needed reading. | GP Step 4 Due |
+| 12 | 26 Mar | Population genomics | Ch. 12 Population Genomics & Scans | Core pop‑gen concepts. |  |
+| 13 | 31 Mar | Lab day – Pop gen using 1000 Genomes | Ch. 12 Population Genomics & Scans | Hands‑on diversity and FST. | Lab 10 |
+| 13 | 2 Apr | Discussion: genetic essentialism/grant panels | Ch. 12 | Ethics and hidden curriculum. |  |
+| 14 | 7 Apr | Genome scans & sliding‑window analysis | Ch. 12 Population Genomics & Scans | Windows, outlier scans, selection. |  |
+| 14 | 9 Apr | Sequence motifs | Ch. 13 Motif Analysis | Ch. 13 - Sequence Motif Analysis |  |
+| 15 | 14 Apr | Grant panel day 1 | Ch. 5 Grants & Comm | In‑class panel, minimal new reading. | Panel |
+| 15 | 16 Apr | Grant panel day 2 | Ch. 5 Grants & Comm | Continuation of panels. |  Panel |
+| 16 | 21 Apr | Final Exam | In class conceptual exam | Review of Chapters 8-14 | Exam |
+| 16 | 23 Apr | Open lab – group project work | [Appendix B](appendixB.qmd) | Project‑oriented use of workflow ideas. |  GP Step 5 Due |
+| 17 | 1 May | Final group presentations (10:30–12:30) | Ch. 14 Where to Go Next | Capstone reflections and next steps. |  GP Step 6-7 |
+:::
+
+\*Note: This schedule is subject to change.
+
+## Final Note to Students
+
+Bioinformatics feels like magic until you see the patterns: every pipeline starts with QC, every analysis needs reproducibility, every grant needs a clear workflow. By semester's end, you'll not only run these analyses but build the confidence and comfort to explain them to collaborators, reviewers, and future employers.
+
+Let's read some genomes together.
+
+*Dr. Laurie Stevison - Your Steward in Genomics* *December 2025*
+
+## Acknowledgments
+
+Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
+
+------------------------------------------------------------------------
+
+## References

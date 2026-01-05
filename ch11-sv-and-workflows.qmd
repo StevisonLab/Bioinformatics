@@ -1,0 +1,30 @@
+---
+title: "Ch. 11 – Structural Variation, CNVs, and Other Post‑Alignment Workflows"
+---
+
+## Overview
+
+Short paragraph linking to previous chapter and framing why this topic matters in the course.
+
+## Learning objectives
+
+-   Bullet list of 3–5 concrete things students should be able to do.
+
+## Narrative
+
+### Key concepts
+
+-   2–4 subsections that walk through your bullet points (e.g., “FASTQ and Phred scores”, “QC metrics”, “Design decisions based on QC”).
+
+### Figures and examples
+
+-   Simple diagrams you sketch yourself (e.g., read‑quality plot, schematic of FASTQ fields, coverage cartoon).
+-   One or two short, self‑contained R or shell code blocks where appropriate.
+
+## Activities and labs
+
+-   Describe how the corresponding lab (e.g., Galaxy vs command line QC) connects to the chapter, and give just enough detail that students can re‑orient later.
+
+## Further reading
+
+-   List your resources with 1–2‑sentence annotations each, rather than reproducing any text.

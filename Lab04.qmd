@@ -1,0 +1,87 @@
+---
+title: "Lab04: Genome Sequence Indexing and Alignment"
+bibliography: references.bib
+csl: nature.csl
+---
+
+##Lab 4: Genome Sequence Indexing and Alignment
+
+######For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workflow" shared folder to index a reference genome, split the fastq files into multiple lanes, and do an initial genome alignment. You will end by collecting a few QC metrics to assess the quality of the input fastq files and the alignment file. This lab activity is designed to give you real world experience with the tools we have been discussing in class so far. These are some of the first steps in the genome analysis workflow. We will work through later steps throughout the semester.
+
+1. Login to your ASC account and make a folder for Lab 4 called "Lab4".
+
+2. Copy the scripts files from the shared folder "Sample\_NGS\_Workflow/scripts" into your "Lab4" folder.
+ - 1\_index\_sacCer3.sh  
+ - 2\_sample\_sra.sh  
+ - 3\_sample\_trimming.sh  
+ - 4\_BWA\_example.sh
+
+3. Take a cursory glance at each of the script files and give them a quick read to understand the tools they are using and what they are doing. 
+
+###Step 1 (index your genome):
+
+4. Make any necessary edits to the 1st script "1\_index_sacCer3.sh" for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+ - Number of CPUs = 1
+ - RAM/Memory = 2GB
+ - Queue = class
+ - Time = 00:10:00 (10 minutes)
+
+4. Inspect the job standard error file. It will follow the naming convention of your job name followed by a period and the letter "e" and the job number (e.g. 1\_index\_sacCer3.sh.e237597). Any errors with your job will always be in this file, so get in the habit of checking here FIRST after your job finishes! The standard out goes to another file with an "o" which you should also check.
+ 
+5. This script will index the reference genome fasta file. First, it will use bwa, then samtools. Each index is for a different part of he pipeline. Look at the files that have been generated.
+
+6. Read over the samtools documentation to understand this file: "sacCer3.masked.fa.fai". Then explore the file using `less`. 
+
+7. You will notice that it lists the chromosomes and their lengths. How can you calculate the total genome size from these files? Remember, this information is useful in calculating genome coverage!
+
+###Step 2 (download reads from NCBI): 
+
+1. Inspect the next script you copied over "2\_sample\_sra.sh". As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+ - Number of CPUs = 1
+ - RAM/Memory = 3GB
+ - Queue = class
+ - Time = 00:15:00 (15 minutes)
+
+2. Inspect the job output and make any tweaks as needed to the script to get it to work if it did not work. A good troubleshooting tip is to find the FIRST error in your code, at the top of the standard out. Once you fix that, re-run it and work your way down until you have no errors. A lot of times, a fatal early error can cause a lot of downstream errors, so it is not productive to start at the bottom - always work from the top-down!
+
+2. What new files have appeared? Use zcat and less to examine these files. How are they different and what information was used to split them? *Hint: refer back to the Lecture on FASTQ file formats!*
+
+4. How many reads are in the FASTQ file? *Hint: refer back to the Lecture on FASTQ file formats for how many lines are there per entry. Then check the job output file to see the results of the line count in the script*
+
+###Step 3 (trimming):
+
+1. Inspect the next script you copied over "3\_sample\_trimming.sh". 
+ 
+2. As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+ - Number of CPUs = 2
+ - RAM/Memory = 1GB
+ - Queue = class
+ - Time = 00:10:00 (10 minutes)
+
+2. Inspect the job output. Do you see any errors? If so, work to fix them from the top-down as you did above!
+
+###Step 4 (alignment):
+
+1. Inspect the next script you copied over "4\_BWA\_example.sh". 
+ 
+2. As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+ - Number of CPUs = 4
+ - RAM/Memory = 2GB
+ - Queue = class
+ - Time = 00:45:00 (45 minutes)
+
+2. Inspect the job output. This script does a LOT, so look it over carefully to make sure you understand what the output means. Feel free to refer back to the initial script - notice where the echo statements are to help find your place in the output. Look up any of the commands or tools to make sure you understand the output.
+
+###Step 5 (quality assessment):
+
+3. At the bottom of the scripts "3\_sample\_trimming.sh" and "4\_BWA\_example.sh", you will see that they each collect some QC metrics - specifically, the first one runs fastQC on the input fastq file and the trimmed one. Download the resulting zip files locally so you can inspect the results. Was trimming necessary? Do things look better after trimming?
+
+4. Additionally, the latter one collects coverage using `samtools depth`. Look at the samtools manual for this program "depth" to parse the awk command that it pipes to. Notice the use of the variable `$genome_size`. This refers to the file you made earlier, "sacCer3.masked.fa.fai", to programmatically calculate the genome size and store it in a variable for this calculation.
+
+4. Use `less` to examine the file these stats have printed to.
+
+4. Another way of gathering QC metrics is to use the tool `samtools flagstat`. Write a script to collect this additional information from your merged sorted bam file. *Note: When adapting this main script for your research, you can add this code to the main script so it is all done in one step!*
+
+5. From the flagstat output, calculate the percentage of reads that mapped to the reference genome.  
+
+####Congratulations! You have now successfully indexed a reference genome and mapped reads to it! You have also collected various QC metrics of this process. Based on how you have seen these types of methods written in papers we have read, *write a short methods summary of what you did, including the quality metrics from the raw reads and the resulting coverage and % mapped calculations you made. (no more than 250 words!)* 

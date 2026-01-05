@@ -1,0 +1,71 @@
+---
+title: "Appendix: Semester Research Project"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Group Research Project Overview {#sec-prdm9}
+
+The majority of this course will be based on a semester-long genome analysis. In the beginning of the semester, you will choose a group based on the projects listed below. Once the projects are selected, you will form groups based on the projects in class. Students may choose to work individually if desired. Otherwise, groups sizes should be based on the scale of the project selected (see descriptions below). Groups will be required to meet OUTSIDE of class during the semester to discuss their project goals and complete their research plan (see below). 
+
+
+### Learning Objectives
+- Experience with real data and research questions
+- Reinforcement of the scientific method
+- Learn common file types used for raw sequence data, alignments to reference genomes, and variant files 
+- Learn how to assess the quality of NGS data
+- Learn a variety of bioinformatics tools for conducting genome analysis
+- Develop proficiency in scientific communication skills and reproducibility of research
+- Perform basic statistical analysis of NGS data using R
+- Use git for collaboration on a research project
+- Become proficient in shell scripting
+- Work together as a team to conduct a research project (see below)
+
+## The Project: Evolution of the recombination regulation protein PRDM9 across non-avian reptiles
+
+Since 2010, the protein PRDM9 has been of interest to scientists for its role in modifying the meiotic recombination rate landscape (Baudat et al., 2010) Specifically, in taxa without a functional copy of this protein, recombination initiates near gene promoter regions. However, in taxa with a functional copy of this protein, recombination initiates near binding sites. Further, this protein has been shown to be involved in both male and female fertility across mammals, and speciation within mice (Grey et al., 2018; Paigen and Petkov, 2018).
+
+PRDM9 has four major domains, including a zinc-finger domain that allows it to bind to DNA and act as a transcription factor to initiate recombination. This dramatically alters the recombination landscape across the genome. Further, because this protein is rapidly evolving, the binding motif also changes rapidly, leaving recombination rates to evolve more rapidly in taxa with functional copies than without. This protein has been well studied in mammals, and particularly in primates (Schwartz et al., 2014). While we know it has been lost in birds and crocodiles, its role in other non-avian reptiles (e.g. testudines and squamates) is largely unknown. Specifically, recent work in snakes has revealed non-canonical patterns of recombination regulation that warrant a deeper look in this clade (Hoge et al., 2024). Further, there is major variation across this clade in sex-determination and reproductive modes that could impact its role in fertility in unknown ways.
+
+A previous study surveyed a large number of vertebrate taxa, including reptiles, revealing loss of function across several major clades within reptiles, including complete loss of function in birds and crocodiles (Baker et al., 2017), and a recent loss in Anoles (Cavassim et al. 2022). However, they were limited in their analysis due to a lack of available reptile genomes at the time (Kosch et al., 2024). There are now over 165 published non-avian reptile genomes with this number growing rapidly (Card et al., 2023; Gable et al., 2023, 2022) making this a ripe time to conduct a detailed portrait on the evolution of this protein in non-avian reptiles. Our goal this semester in Bioinformatics Class will be to follow up on this interesting question using publicly available genomic data in two major clades of non-avian reptiles – testudines (N=18+) and squamates (N=83+). 
+
+This project was started last spring in this course, with much insight gained to make the work this semester run smoother. But it is worth noting that with research, there is always an uncertainty that can lead to frustration. It can also seem like we "do not know what we are doing". This feeling should be embrace - you are not doing busy work on some known dataset, you are delving into the unknown and that is exciting, but also remember that uncharted territory is often rugged. So in the same way that you would dress appropriately for a trek through the Amazon, approach this project with curiousity and enthusiam.
+
+## Project 1: All students done invidually
+
+Early in the semester, each student will be assigned a genome from a non-avian reptile where there is no annotation of the reference genome. Your job will be to manually annotate only the PRDM9 gene. You will use web-based tools to identify the rough location of the ortholog of PRDM9 using BLAST. You will then use an exon-by-exon mapping approach to develop a complete gene with start and end positions as well as the location of each exon/intron. The goal will be to submit a gene report mid-way through the semester of your proposed gene model for PRDM9 in your assigned species. This will include a GFF of the gene model, a screenshot of the genome view with your gene model and BLAST results visible, as well as a two-way sequence alignment between your predicted protein sequence and the PRDM9 protein from a close relative. This protein sequence will be added to a growing database of non-avian PRDM9 sequences that will be used for this project. 
+
+## Project 2: Semester-long group project
+
+Early in the semester, you will form groups (students may also choose to work alone) to each investigate a key question towards the larger research goal. At the end of the semester, we will compile what we find collectively and hopefully be able to draft a manuscript of our findings for scientific publication. Below I have outlined a set of open questions that I think would lead to fruitful independent as well as collective results. If students want to pick a question that is NOT on this list, that would be OK, but they should meet up with me during office hours to discuss their plan early in the semester.
+
+Each group will put together a github repository of their research project and give a presentation during finals week. You will also be required to provide feedback for both the GitHub and the presentation in the form of peer review. The peer review will be INDIVIDUAL feedback to the groups on their work. 
+
+The data analysis may employ a variety of bioinformatic tools you have learned during the semester or elsewhere. Some projects will rely on the data your group collects, so be mindful of this collaborative nature among groups and plan accordingly. Each project will address a scientific question or hypothesis. I have set aside a few class periods to work on these in class so that we can ALL brainstorm on the data analysis for EVERY project together.
+
+I encourage you to start each step early to make sure you have enough progress for it to be completed. For example, a preliminary analysis and your GitHub repository are due just after Spring Break. For this part of the assignment, you will get credit for completion ONLY, BUT it will be used for peer review. This means the depth of feedback from your peers is dependent upon the scale of your progress thus far.
+
+## Summary of Student Led Group Project Options:
+
+**Project 1: Is PRDM9 expressed in the germline of the selected taxa?**: Because of its role in meiosis, expression in the germline is a huge component of validating the functionality of PRDM9. This project will likely start with surveying available RNA-seq datasets (See Supplementary File 2 from Kosch et al 2024) and then, based on availability of data, it may be used to help narrow down the selected taxa for our downstream investigation. Students who have already taken functional genomics are particularly well-suited to this project. A major goal of this would be to validate systems where there is no evidence of PRDM9 based on our larger genome survey by comparing expression of PRDM9 to other genes involved in recombination rate as positive controls (see Cavassim et al 2022 methods).
+ 
+**Project 2: Is there evidence for positive selection in the zinc finger residues of PRDM9 across non-avian reptiles?**
+There are four amino acid residues within each zinc finger that make contact when binding to DNA. Therefore, these residues are essential for investigating the rate of evolution of this protein. The goal here would be to generate a multiple sequence alignment of all the zinc fingers and then use PAML to estimate dN/dS (omega) to investigate the rate of evolution with a few different bioinformatics tools (see Figure 2 of Schwartz et al 2014).
+Depending on group size, this project could be combined with the Project 7. Otherwise, this would be suitable for an independent project.
+ 
+**Project 3: What are the evolutionary relationships between the SET domain of PRDM9 across non-avian reptiles?**
+This domain has specific residues with known catalytic activity that is necessary for opening the chromatin for the zinc finger array to bind to DNA. This project would investigate the SET domain in depth and explore the evolutionary relationships of this domain similar to the project above.
+
+**Project 4: What are the evolutionary relationships between the SSXRD domain of PRDM9 across non-avian reptiles?**
+Related to the two above questions, this project would investigate the SSXRD domain. This is the shortest functional domain in PRDM9, so it is unclear how necessary it is for function of this protein. Variation in presence/absence of this domain on its own would be a novel finding.
+ 
+**Project 5: What are the evolutionary relationships between the KRAB domain of PRDM9 across non-avian reptiles?**
+Related to the three above questions, this project would investigate the KRAB domain which is proposed to recruit recombination machinery after DNA binding occurs. Suggested reading: https://pubmed.ncbi.nlm.nih.gov/37716846Links to an external site..
+
+*Depending on interest and the group size, projects 3-5 could easily be combined. Otherwise, this would be suitable for an independent project.*
+ 
+**Project 6: How do the predicted binding motifs of PRDM9 and the number of predicted binding sites across the genome differ across non-avian reptiles?**
+This project would use the zinc finger residue to predict the DNA binding sequence and examine how degenerate it is. Further, the predicted binding sequence matrix would be searched across the reference genome for each selected taxa to compare the number of predicted hits and how they cluster in the genome.
+
+**Project 7: What are the potential positional affects of PRDM9 in the genome that impact its evolution?**
+One thing I have recently noticed in investigating PRDM9 along so many genome is that it seems to be located towards chromosome ends very often. The synteny of this gene is not well-maintained which likely contributed to its rapid evolution. The goal of this project would be to use genomes with chromosome-level assemblies to investigate this pattern more robustly. It may also include diving into neighboring genes a bit to see how this gene moves within the genomes across the tree of life.

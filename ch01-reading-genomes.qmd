@@ -1,0 +1,221 @@
+---
+title: "Reading Genomes: What Bioinformatics Is For"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Genomics timeline: from Sanger to the data deluge {#sec-ch1}
+
+Modern genome analysis traces back to the development of DNA sequencing methods in the 1970s, which made it possible to determine the nucleotide sequence of individual genes and small genomes for the first time @pevsner2015; @collins2003. Over subsequent decades, improvements in chemistry and automation enabled large‑scale projects such as the Human Genome Project, which produced the first high‑quality human reference genome and marked the beginning of the “genomic era” @pevsner2015; @collins2003.
+
+In the roughly twenty‑five years since the first complete animal and plant genomes were published, sequencing technologies have advanced from low‑throughput Sanger methods to high‑throughput short‑read platforms and, more recently, long‑read technologies that generate much longer sequences at scale @hotaling2021; @marks2021. These advances have produced thousands of animal and hundreds of land‑plant genome assemblies, but current references still cover only a small fraction of described species and are unevenly distributed across the tree of life @hotaling2021; @marks2021.
+
+::: callout-note
+#### Figure 1.1 – Milestones in genomics
+
+![Milestones in genomics](images/Fig_1_1_genomics_timeline.png){#fig-genomics-timeline}
+
+This figure presents a timeline of key technological innovations and landmark projects that shaped modern genomics, from the recognition of DNA as the hereditary material and the description of its double‑helix structure through the development of PCR, first‑generation Sanger sequencing, and early automated sequencers. It then highlights the launch and 2003 completion of the Human Genome Project and related large‑scale efforts, such as the generation of reference genomes for multiple organisms and subsequent population‑scale initiatives like the 1000 Genomes Project and the Human Microbiome Project, which collectively established comprehensive genomic resources for research and medicine. The upper portion of the figure tracks the transition from low‑throughput first‑generation methods to second‑generation short‑read platforms and, more recently, to third‑generation long‑read technologies such as single‑molecule real‑time and nanopore sequencing, which now enable routine production of near‑complete, reference‑quality assemblies, including end‑to‑end human genomes.
+
+This figure visually anchors the historical narrative for later chapters where we will go into these technologies and research milestones in more depth throughout this course.
+:::
+
+## Core concepts: genomes, omes, and basic operations
+
+For this course, the **genome** is the complete DNA sequence of an organism, typically organized into chromosomes, and including both coding and noncoding regions @pevsner2015; @akalin2020. The **transcriptome** is the collection of RNA molecules transcribed from the genome under specific conditions, and the **proteome** is the set of proteins produced from those transcripts; together they connect static DNA sequence to dynamic cellular phenotypes @pevsner2015; @akalin2020.
+
+Beyond sequence alone, the **epigenome** captures chemical and structural modifications (such as DNA methylation and chromatin state) that affect how accessible different genomic regions are without changing the underlying bases @green2011. Modern genome analysis often integrates these layers to understand how genomic sequence, gene expression, and epigenetic regulation combine to produce organism‑level traits @pevsner2015; @green2011.
+
+A **reference genome** is a community standard assembly for a species (or strain) that serves as a coordinate system for mapping reads, annotating genes, and comparing individuals @hotaling2021; @marks2021. A **genome assembly** is the specific reconstruction of a genome from sequencing reads for a given project, usually summarized by its size, contiguity (for example, N50), and completeness; an **annotation** is the set of predicted and curated genomic features such as genes, transcripts, and regulatory elements placed on that assembly @hotaling2021; @marks2021.
+
+Two core computational operations recur throughout this course. **Alignment** is a process that refers to the maping of reads or sequences to a reference genome to determine their physical location in the genome. This step is key in enabling variant calling, coverage analysis, and many downstream inferences @pevsner2015. **De novo assembly** instead stitches reads together based on sequence overlap or graph structure to reconstruct longer contiguous sequences without relying on a close reference, which is essential for new or highly divergent genomes and for resolving structural complexity @hotaling2021. Both processes are necessary to expand our understanding of genomes and require various bioinformatics tools.
+
+::: callout-note
+#### Figure 1.2 – Core genome concepts
+
+A multi‑panel schematic:
+
+-   Panel A: genome, transcriptome, proteome, and epigenome illustrated for a single cell.\
+-   Panel B: a reference genome shown as chromosomes, with an assembly depicted as contigs/scaffolds and annotations drawn as gene models.\
+-   Panel C: side‑by‑side cartoons of alignment (reads mapped onto a reference) and de novo assembly (reads overlapped without a reference).
+
+This figure gives students a visual vocabulary for the rest of the book.
+:::
+
+## Why bioinformatics exists
+
+As sequencing costs have fallen, generating genome‑scale data has become easier and cheaper than analyzing, storing, and interpreting it, creating a **bioinformatic bottleneck** in many projects @green2011; @collins2003. The price of whole‑genome sequencing has dropped orders of magnitude since the Human Genome Project, but high‑quality analysis still requires computational expertise, careful data management, and appropriate statistical methods @green2011.
+
+At the same time, concerns about a **reproducibility crisis** in biomedical and computational research have highlighted the need for transparent, well‑documented workflows @pevsner2015. In genomics, this includes clearly recording data sources and metadata, tracking software versions and parameters, using version control and scripted pipelines where possible, and depositing both data and code in accessible repositories so that others can repeat and extend analyses @pevsner2015; @hotaling2021; @marks2021.
+
+The software and methods landscape in bioinformatics changes rapidly: new alignment algorithms, variant callers, assemblers, and visualization tools appear frequently, while older tools may become unsupported or superseded @pevsner2015; @akalin2020. A central goal of this course is therefore not mastery of any single program but **adaptability**—the ability to read documentation, reason about how a tool fits into a workflow, evaluate whether its assumptions match a given dataset, and switch approaches as technologies and best practices evolve @green2011; @akalin2020. This rapid pace is also the reason we do not have a standardized textbook for this course. Instead, I have compiled various resources into this single course companion. Much of this textbook relies heavily on an excellent textbook last updated in 2015 @pevsner2015. You will see this text cited throughout and some of the content comes directly from this text. But much of that is outdated and has been significantly supplemented with primary scientific literature as well as recent review articles. As much as possible, I will try to provide the references so that you can dive deeper on any of these topics.
+
+::: callout-note
+#### Figure 1.3 – From data generation to interpretation
+
+A flow diagram with two highlighted “pinch points”:
+
+-   Left: sequencing (library prep and instrument) labelled “easy to buy.”\
+-   Middle: data processing and analysis (QC, alignment/assembly, variant calling, statistics) labelled “bioinformatic bottleneck.”\
+-   Right: interpretation, visualization, and publication.
+
+Below the middle, icons for documentation, code, and version control emphasize reproducibility.
+:::
+
+## What makes someone a "bioinformatician"?
+
+Bioinformatics can be approached through many different workflows—web interfaces, command‑line tools, scripted analyses in languages like R or Python, and now AI‑assisted systems—and this course aims to give students a broad survey of that landscape rather than endorsing a single “best” way to do bioinformatics.
+
+**Multiple ways to “do genomics”**: For some people, doing bioinformatics means interactively exploring genome browsers or running analyses through web portals like Galaxy; for others, it means managing workflows on Linux clusters, writing code, or curating databases and infrastructure, and all of these activities fall under the very broad genomics umbrella.
+
+Job descriptions in the field range from analysts and software developers to computational biologists and AI bioinformatics engineers, illustrating that bioinformatics is defined more by the biological questions and data than by any fixed skillset or toolchain.
+
+**Web tools, command line, and pipelines**: Web‑based resources such as NCBI, Ensembl, UCSC Genome Browser, Galaxy, and similar portals make it possible to query databases, visualize genomes, and run common analyses without local installation, which is especially useful for new users and occasional genomics work.
+
+Command‑line tools, workflow managers (for example, Nextflow or Snakemake), and scripted pipelines support large‑scale, automated, and reproducible analyses when projects or datasets grow more complex, but they demand more technical setup and comfort with Unix‑like environments.
+
+**R and recent advances**: Modern R ecosystems—exemplified by Akalin’s Computational Genomics with R @akalin2020, which introduces Bioconductor workflows, genomic intervals, and high‑throughput sequencing analyses—show how a general‑purpose language can connect statistical modeling, visualization, and domain‑specific genomics packages in a single environment.
+
+In this course R will appear in selected examples and advanced modules (rather than as a primary focus) to highlight these newer genomics capabilities and to give interested students a starting point if they wish to pursue more scripted, R‑based analysis later.
+
+**AI as an emerging bridge**: New AI‑driven platforms and multi‑agent systems can help design, execute, and document bioinformatics workflows, lowering the learning curve for building reproducible pipelines by suggesting tools, generating code, and tracking parameters automatically.
+
+These approaches do not replace traditional skills but offer another path into genomics work, especially for students who are more comfortable describing goals in natural language than writing full pipelines from scratch.
+
+**How this course uses these ecosystems**: This course was originally designed before current AI and tooling advances, and newer material—select R‑based genomics examples. Therefore, AI‑assisted workflows, and updated R resources are slowly being integrated incrementally while preserving the core emphasis on concepts and data literacy.
+
+Students will be exposed to web‑based tools, the Unix command line, and examples of scripted analyses, including some in R, and are encouraged to share outside resources that offer clearer or simpler solutions, reinforcing that there are many valid ways to contribute to genomics and that “doing bioinformatics” does not have to look the same for everyone.
+
+## Types of Genome Analysis Research Projects
+
+Genome analysis underpins a wide range of applications in **medical genetics**, including identifying variants that contribute to Mendelian disorders, studying complex disease risk, and informing targeted therapies @green2011. In **agriculture**, genomic selection and genome‑wide association studies accelerate breeding by linking genetic markers to traits such as yield, stress tolerance, and disease resistance in crops and livestock @marks2021. The role of computational biologists varies significantly too, from support staff to project leaders @yanai_computational_2017. 
+
+In **ecology and evolution**, reference genomes and population‑scale sequencing allow researchers to study adaptation, speciation, and biodiversity at unprecedented resolution, including for non‑model organisms @hotaling2021; @marks2021. In **public health**, genomic surveillance of pathogens supports outbreak tracking, antimicrobial resistance monitoring, and the design of diagnostics and vaccines @green2011.
+
+### Three perspectives on genomics and bioinformatics
+
+One way to organize this diversity is to think about three complementary “views” of bioinformatics and genomics, moving from small to large scales @pevsner2015.
+
+-   **Cell:** At the molecular level, genomics focuses on DNA (the genome), RNA (the transcriptome), and proteins (the proteome). Questions at this scale include: What genes and transcripts exist? How are they regulated? How do they interact in pathways and networks? Many functional genomics tools (e.g., RNA‑seq, ChIP‑seq) are designed to answer questions at this cellular scale @pevsner2015.
+
+-   **Organism:** At the level of an individual, genomics asks how the same genome produces different phenotypes across tissues, developmental stages, environments, and disease states. Typical projects compare gene expression or other genomic features across conditions (for example, healthy vs. diseased tissue, or individuals exposed to different environments) to understand how genomes respond to internal and external signals @pevsner2015.
+
+-   **Tree of life:** At the largest scale, comparative genomics uses genome sequences from many species to study phylogeny, genome structure, and macroevolutionary processes such as gene family expansion, whole‑genome duplication, and chromosomal rearrangements. These studies emphasize both the shared molecular “toolkit” of life and the ways genomes are shaped by adaptation to different environments @pevsner2015; @hotaling2021; @marks2021.
+
+The required readings for this week highlight this tree‑of‑life perspective. One paper surveys the current state of animal genome sequencing across the animal kingdom, quantifying which lineages have reference genomes and how assembly quality has improved over time @hotaling2021. The complementary plant genomics paper summarizes 20 years of land‑plant genome sequencing, showing how taxonomic coverage, assembly quality, and global participation have changed, and pointing out important gaps and inequities in who is leading and benefiting from plant genomics projects @marks2021.
+
+### Hypothesis‑driven and discovery‑driven genomics
+
+As sequencing has become cheaper and datasets have grown larger, most impactful genomics studies now go beyond a single genome assembly or alignment. Instead, they combine substantial data generation with either explicit hypothesis testing, open‑ended discovery, or (ideally) both @yanai2020; @pevsner2015.
+
+-   In **hypothesis‑driven** genomics, researchers start with specific predictions (for example, that a gene family will be more expanded in species from colder environments) and design sampling, sequencing, and statistical analyses to test those predictions. These projects emphasize careful experimental design, replication, and rigorous statistical models to distinguish signal from noise @pevsner2015.
+
+-   In **discovery‑driven** genomics, researchers focus on exploring new genomes or large datasets to see what patterns emerge, often without a single predefined “main” hypothesis. Examples include assembling genomes for under‑studied clades, cataloging structural variation, or visualizing complex expression or variant datasets to identify unexpected clusters or associations. This exploratory work is especially important in genomics, where high‑dimensional data can contain many unanticipated signals @yanai2020; @hotaling2021; @marks2021.
+
+Both modes are valuable and interdependent. Exploratory analyses are often where new ideas and hypotheses come from, while hypothesis‑driven analyses are essential for testing those ideas and connecting genomic patterns to mechanisms @yanai2020. Throughout the course, you will see studies that move back and forth between these modes.
+
+::: callout-note
+## Lab connections
+
+-   **Lab01 (Section @sec-lab01)** asks you to find and describe a genome analysis paper, then classify it using the three perspectives introduced in this chapter and the ideas of hypothesis‑driven versus discovery‑driven genomics [@pevsner2015; @hotaling2021; @marks2021].
+-   If you would like a refresher on how to read scientific papers, Appendix @sec-papers walks through hypothesis identification, concept mapping, and designing follow‑up experiments using an example from human genetics [@burke_standing_2014].
+
+These lab activities reinforce the high‑level view of genomics developed in this chapter and prepare you for later, more technical labs.
+:::
+
+### Looking ahead: case studies that span scales
+
+Early next week, you will read a recent genomics paper on antifreeze proteins in polar and deep‑sea fishes that illustrates how these ideas come together @bogan2025. Without going into detail here, that study:
+
+-   Uses high‑quality genome assemblies and comparative analyses across many species (tree‑of‑life perspective).
+-   Examines how gene families and genome structure relate to environmental variables such as temperature and depth (organism and environment).
+-   Combines exploratory genome‑scale analyses (discovery‑driven) with explicit statistical tests of how gene copy number and genomic location change across species and habitats (hypothesis‑driven).
+
+As you read it, you will be able to connect the analyses in that paper to the three perspectives (cell, organism, tree of life) and to the balance between hypothesis‑driven and discovery‑driven genomics discussed above.
+
+These opportunities come with ethical, legal, and social questions. For human data, key concerns include informed consent, privacy, data security, and the potential for misuse or discrimination based on genetic information @green2011. For non‑human genomics, recent assessments of animal and plant genome projects have emphasized inequities in who leads sequencing efforts, how benefits and credit are shared, and how historical patterns of colonialism and “parachute science” continue to shape access to biodiversity and genomic resources @hotaling2021; @marks2021.
+
+International agreements and community norms now guide data sharing and **equity considerations**, encouraging collaborations that involve local researchers, respect Indigenous knowledge, and support capacity building in regions where study species are found @hotaling2021; @marks2021. Throughout the course, case studies such as long‑term animal and plant genome surveys will be used to discuss how technical decisions, sampling strategies, and authorship practices connect to these broader ethical themes @hotaling2021; @marks2021; @collins2003.
+
+::: callout-note
+#### Figure 1.4 – Applications and equity
+
+A four‑quadrant diagram:
+
+-   Medical genetics\
+-   Agriculture and food security\
+-   Ecology and conservation\
+-   Public health and pathogen genomics
+
+Around the outside, icons for consent, privacy, benefit‑sharing, and global participation remind students that technical choices exist within an ethical and social context.
+:::
+
+## Ethics spotlight – timelines, cases, and trust
+
+*Note: The goal of this section is to situate genomics in its historical and ethical context in a factual, objective way, without assigning blame to students or asking them to endorse any particular viewpoint.*
+
+The timeline in Figure @fig-genomics-timeline begins the story of milestones in human genomics with the Belmont Report @belmont1979, developed after a series of widely criticized research practices including the Tuskegee syphilis research study. In that study, conducted in Alabama, effective treatment was withheld from Black men with syphilis; the case is now frequently cited in bioethics as a reason for today’s requirements for informed consent and ongoing oversight of human‑subjects research @reverby2009tuskegee.
+
+Several later examples illustrate how questions about consent, privacy, and benefit sharing continue to arise in genetics and genomics. Henrietta Lacks’s cervical tumor cells were collected in 1951 without her knowledge or consent, leading to the HeLa cell line and, decades later, to debates about privacy and family involvement when her cells and genome sequence were shared widely @marks2016hela; @skloot2010henrietta; @lacks2022history. Members of the Havasupai Tribe in Arizona provided blood samples for diabetes research and later learned their samples had also been used in studies of topics such as schizophrenia and population origins, prompting a lawsuit, a 2010 settlement, and renewed discussion of how consent forms describe future uses of samples @havasupai2012genomicjustice. Human subject research is now strictly regulated, even in the context of survey-based work, through institutional review boards (IRB) that have guidelines to protect consent and reduce harm @havasupai2013irb. At Auburn, the AU Human Research Protection Program is responsible for the ethical and regulatory requirements related to the protection of human participants in research. The Program includes the Institutional Official (IO; Senior Vice President for Research & Economic Development), the Institutional Review Board (IRB) for the protection of human subjects in research, and the Office of Research Integrity & Compliance (ORIC).
+
+Genomics today includes many different projects, from large biobanks to smaller disease or population studies, and these efforts depend on volunteered samples and trust that data will be used and shared in ways consistent with what participants and communities were told @green2011. International plant and animal genomics projects also raise questions about benefit sharing, authorship, and power imbalances between institutions and the regions or communities that provide samples @hotaling2021; @marks2021.
+
+This course does not require students to agree with any particular ethical position, but it does present these well‑documented cases as background for understanding why modern genomics emphasizes informed consent, privacy protections, and clear communication about how data may be used. Later chapters briefly revisit these themes in connection with topics like data sharing and genome‑wide studies; students are welcome—but not required—to explore the broader ethical literature or related historical discussions if they are interested.
+
+## Course roadmap: “reading genomes” over the semester
+
+This course is organized around the idea that **reading genomes** is a multi‑step process: learning the language of sequences and formats, understanding how different technologies generate data, and practicing how to transform raw reads into biological insight @pevsner2015; @akalin2020. Lectures and readings provide conceptual foundations, while labs and projects give hands‑on experience with real data and tools @akalin2020.
+
+Early labs focus on basic data formats, quality control, and simple workflows for short‑read data, building toward more complex analyses of alignment, variant calling, and genome annotation later in the semester @pevsner2015. A semester‑long **genome analysis project** asks each student or group to design and execute a focused analysis (for example, on a chosen genome or dataset), document their workflow in a reproducible way, and present their findings, mirroring how modern genomics research is carried out.
+
+In parallel, a **mock grant review panel** assignment exposes students to how genomics proposals are evaluated: what makes a question compelling, whether the proposed analyses are appropriate and feasible, and how reviewers weigh innovation, rigor, and broader impacts. Together, these components—lectures, integrated readings, labs, the project, and the review panel—are designed to help students move from passively reading about genomes to actively **reading, analyzing, and critiquing** genomic data and studies.
+
+::: callout-note
+#### Figure 1.5 – How course components fit together
+
+A course‑level map with three concentric rings:
+
+-   Inner ring: core skills (data formats, QC, alignment/assembly, variant interpretation).\
+-   Middle ring: labs and the semester‑long project where those skills are practiced.\
+-   Outer ring: readings and the mock grant panel that develop critical evaluation and communication.
+
+Arrows indicate how each activity reinforces the central goal of becoming fluent in “reading genomes.”
+:::
+
+## A Consistent Example
+
+Throughout the semester, the class will return again and again to a single yeast genome sequence dataset, following it from raw sequencing reads all the way to biological interpretation. The dataset comes from an experimental evolution study in *Saccharomyces cerevisiae* in which populations were propagated for many generations under defined conditions, allowing standing genetic variation to be reshaped by selection in a controlled laboratory environment @burke_standing_2014. To keep the full workflow manageable, the course uses the compact sacCer3 reference genome (about 12 Mb across 16 chromosomes), which makes it feasible to run industry-standard bioinformatics workflows on the high-performance computing cluster within realistic time and memory limits.
+
+In Lab 4, you will download the yeast reads from the NCBI SRA accession SRR1693691, perform initial quality control with FastQC, trim away low-quality bases and adapters, and align the cleaned reads to sacCer3, ending with an indexed BAM file and basic coverage and mapping statistics. In Lab 7, you will pick up the same alignment file to mark PCR duplicates, run additional QC checks such as samtools flagstat and MultiQC, and then use GATK’s “best practices” variant calling workflow to generate and filter a set of SNPs, comparing different hard-filtering thresholds and visual summaries of variant quality metrics. In Lab 8, you will load both the pre- and post-filtering BAM files and the resulting VCFs into IGV, visually inspect specific regions of the genome, and decide which candidate variants look like real evolutionary changes versus sequencing or mapping artifacts, interpreting those variants in terms of coding changes and potential functional consequences for the yeast.
+
+Most of the heavy lifting on the command line will be handled by provided shell scripts, so students can focus on understanding what each step does and what each output means rather than on debugging complex pipelines from scratch. The overarching goals are to help them feel comfortable working with real whole-genome data on a high-performance cluster, to connect the dots between textbook methods and concrete files like FASTQ, BAM, and VCF, and to practice reading genomes as biological documents—writing clear methods, reporting variants in a biomedical context, and reasoning about how specific genetic changes might shape evolutionary trajectories in a model eukaryote.
+
+More on the GATK workflow and these file formats can be found in subsequent chapters, so do not worry so much about the details right now. You can also read more about this semester dataset in [Appendix @sec-yeast].
+
+## Looking ahead to Chapter 2
+
+Chapter 2 builds directly on this foundation by unpacking the sequencing technologies behind the timeline in Figure @fig-genomics-timeline. It introduces first‑, second‑, and third‑generation sequencing platforms, compares Illumina, PacBio, and Oxford Nanopore data, and connects platform choice to alignment, de novo assembly, and experimental design. The goal is to give you a single, integrated reference for sequencing technologies and data so that later chapters on algorithms and applications have a concrete foundation.
+
+## Acknowledgments
+
+Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
+
+------------------------------------------------------------------------
+
+## Reflection questions
+
+You can use the following questions to reflect on the concepts and papers introduced in this chapter. These are intended for after you have finished the chapter and associated readings. Some of these will lead directly into future lab assignments.
+
+1. **Three perspectives:** For a genomics study you have encountered (in this course or elsewhere), which perspective is most prominent: cell, organism, or tree of life? What specific datasets or analyses support your answer?
+
+2. **Multiple scales:** How does that study connect at least two of the three perspectives (for example, using cellular‑scale data to answer organism‑level or tree‑of‑life questions)?
+
+3. **Discovery vs. hypothesis:** Identify one example of discovery‑driven analysis (exploration of data without a single, predefined main hypothesis) and one example of hypothesis‑driven analysis (explicit testing of a stated prediction) from the assigned readings (animal genomes @hotaling2021, plant genomes @marks2021, or the antifreeze‑protein paper you will read next week @bogan2025). How do these approaches complement each other?
+
+4. **Data and methods:** In the animal and plant genomics overview papers, what kinds of data (for example, reference genomes, metadata) and methods (for example, phylogenetic analyses, summary statistics across taxa) are needed to draw conclusions about progress and gaps across the tree of life @hotaling2021; @marks2021? How do these differ from the data and methods needed to investigate a specific gene family, such as antifreeze proteins @bogan2025?
+
+5. **Equity and participation:** Both the animal and plant genomics overview papers highlight mismatches between where species are found, where sequencing work is done, and who leads that work @hotaling2021; @marks2021. What are some concrete ways that future genomics projects could promote more equitable collaboration and benefit‑sharing?
+
+6. **Future directions:** Imagine you are designing a new genomics project. How would you balance hypothesis‑driven goals (specific questions you want to test) with discovery‑driven goals (opening space for unexpected findings)? Which of the three perspectives (cell, organism, tree of life) would your project emphasize first, and how might you connect to the others as your work develops?
+
+## References

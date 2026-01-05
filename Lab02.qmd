@@ -1,0 +1,21 @@
+---
+title: "Lab03: Design a Genome Project"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Lab 2 {#sec-lab02}
+
+In Chapter 1, we introduced three broad perspectives on bioinformatics and genomics (cell, organism, tree of life) [@pevsner2015]. Later in the textbook, Pevsner expands these 3 perspectives into five basic perspectives on genome sequencing.
+
+For this lab, you will use these 5 perspectives, along with your new understanding of sequencing technologies from Chapter 2, to sketch a 1–2 page proposal for a hypothetical genome project [@pevsner2015; @vandijk2018; @vandijk2023].
+
+The five perspectives on genomics discussed in Pevsner Chapter 15 can be summarized as:
+
+-   **Catalog genomic information**: basic genome features (size, chromosomes, GC content, repeats, gene counts), based on sequencing, assembly, and annotation.
+-   **Catalog comparative genomic information**: whole‑genome comparisons to related species, orthologs, divergence times, lateral gene transfer, using whole‑genome alignments and genome browsers.
+-   **Biological principles**: how genome structure and variation underlie development, metabolism, behavior, and evolutionary processes (e.g., genome size evolution, polyploidization, gene birth/death).
+-   **Human disease relevance**: how genomes relate to disease in humans or plants, including SNPs, linkage and association studies, and host–pathogen interactions.
+-   **Bioinformatics aspects**: databases, software, and visualization tools that make genome analysis possible.
+
+These map naturally onto the three perspectives in Chapter 1: cell‑scale questions, organism‑level questions, and tree‑of‑life/comparative questions [@pevsner2015].

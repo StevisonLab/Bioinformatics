@@ -1,0 +1,55 @@
+---
+title: "Appendix: Yeast Experimental Evolution Dataset"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Overview of the yeast dataset {#sec-yeast}
+
+In the labs, you will work with whole-genome sequencing data from a single *Saccharomyces cerevisiae* population that was part of an experimental evolution study on standing genetic variation and adaptation in outcrossing yeast. The dataset you will analyze is one run from this experiment deposited in the NCBI Sequence Read Archive (SRA) under accession **SRR1693691**. This sample represents pooled genomic DNA from many yeast cells, capturing allele frequency changes that occurred over hundreds of generations under defined selection conditions in the original study. @burke_standing_2014
+
+The reference genome used throughout the course is the sacCer3 build of the *S. cerevisiae* S288C genome (NCBI assembly R64), which is a compact, well-annotated eukaryotic genome of roughly 12 Mb spread across 16 chromosomes plus mitochondrial DNA. The small genome size makes it feasible to run a full variant-calling workflow (alignment, post-processing, GATK variant calling, and filtering) on the high-performance computing (HPC) system within a single semester, while still exposing you to tools and file formats that are standard in modern human and biomedical genomics.
+
+## Where the data come from
+
+The sequencing data for SRR1693691 were generated as part of an “evolve-and-resequence” experiment in which yeast populations were founded from a genetically diverse base population and then propagated for many generations with periodic outcrossing.\@burke_standing_2014 In this design, recombination reshuffles standing genetic variants across the genome, allowing adaptation to proceed from existing variation rather than relying primarily on new mutations, and making evolutionary responses more repeatable across replicate populations.
+
+The original publication (“Standing Genetic Variation Drives Repeatable Experimental Evolution in Outcrossing Populations of *Saccharomyces cerevisiae*”) used whole-genome resequencing of evolved populations to identify genomic regions where allele frequencies changed consistently across replicates under selection. In this course, you will not attempt to fully reproduce the paper’s population-genetic analyses; instead, you will focus on learning how to process raw sequencing reads into high-quality variant calls and then interpret those variants in a biological and biomedical context using a subset of the data.
+
+## Core files and formats you will see
+
+You will repeatedly encounter a small set of core file types as you move from raw data to filtered variants, and part of the course goal is to help you learn to “read” these files as biological objects as well as technical ones.
+
+-   **Raw sequencing reads (FASTQ)**:\
+    The SRA run SRR1693691 can be converted into one or more compressed FASTQ files (for example, `SRR1693691.fastq.gz` or lane-split files) that contain the raw read sequences and their per-base quality scores. In Lab 4 you will download the reads from NCBI using provided scripts, inspect the FASTQ structure, and run **FastQC** to assess base quality, GC content, adapter contamination, and other quality metrics before and after trimming.
+
+-   **Reference genome (FASTA and index files)**:\
+    The sacCer3 reference genome is provided as a FASTA file (for example, `sacCer3.masked.fa`), which you will index with **bwa** and **samtools** to support alignment and downstream operations. Index files such as `sacCer3.masked.fa.bwt` (for BWA) and `sacCer3.masked.fa.fai` (for samtools) allow fast lookups of sequence coordinates, and you will use the `.fai` file to compute the total genome size and estimate coverage in Lab 4.
+
+-   **Aligned reads (BAM and BAI)**:\
+    After trimming, you will align the reads to sacCer3 using BWA and convert the output into a coordinate-sorted BAM file, for example `SRR1693691.sorted.bam`, plus an index file `SRR1693691.sorted.bam.bai` that enables rapid random access to specific genomic regions. Later, as part of the GATK post-processing workflow, you will mark PCR and optical duplicates to produce a duplicate-marked BAM (for example, `SRR1693691.markdup.bam`) that better reflects the true independent read depth at each site.
+
+-   **Variant calls (VCF)**:\
+    GATK will be used to call single nucleotide variants, producing a VCF file such as `SRR1693691.SNPs.vcf` (or a compressed `SRR1693691.SNPs.vcf.gz`) that lists putative variant sites along with quality scores and annotations. You will then apply hard filters with GATK (using recommended thresholds and your own adjustments) to generate one or more filtered VCFs (for example, `SRR1693691.SNPs.filtered.vcf` and `SRR1693691.SNPs.filtered2.vcf`) and compare how filtering choices affect the number and quality of retained variants.
+
+-   **Quality summary files (flagstat, depth, MultiQC, plots)**:\
+    Along the way you will generate summary text files from `samtools flagstat`, depth-of-coverage summaries from **vcftools**, and an integrated **MultiQC** HTML report that aggregates QC metrics across the workflow. Custom scripts will also create density plots of key variant-quality metrics (for example, quality-by-depth or mapping quality) to help you decide on appropriate filtering thresholds.
+
+## How the dataset flows through the labs
+
+The genome dataset SRR1693691 is the thread that ties together multiple labs into a coherent end-to-end workflow, from raw data to interpretation. Each lab revisits the same sample and reference genome but focuses on a different set of tools and questions, so that by the end of the course you will have seen every major step of a standard variant-calling pipeline in the context of a real experimental evolution dataset.
+
+-   In **Lab 4 (Genome Sequence Indexing and Alignment)**, you will:
+    -   Index the sacCer3 reference genome with BWA and samtools and examine the `.fai` index to calculate total genome size.\
+    -   Download the SRR1693691 reads from NCBI using a provided shell script, inspect the FASTQ files, and run FastQC before and after trimming.\
+    -   Trim the reads and align them to sacCer3, producing a sorted BAM file plus coverage estimates and initial alignment QC metrics.
+-   In **Lab 7 (Variant Calling via GATK Best Practices)**, you will:
+    -   Start from the aligned BAM and run GATK’s post-processing and variant-calling steps using a provided script, including duplicate marking and variant calling for SNPs.\
+    -   Add additional QC steps (such as `samtools flagstat`, vcftools depth summaries, and MultiQC) and inspect density plots of variant-quality metrics to decide how stringent your filters should be.
+    -   Generate multiple filtered VCFs with different cutoff choices and compare the resulting sets of SNPs using VCFtools and an UpSet plot, learning how filtering decisions trade off between retaining true variants and excluding noise.
+-   In **Lab 8 (Genome Visualization with IGV)**, you will:
+    -   Load the sacCer3 genome, the pre-filtering BAM (`SRR1693691.sorted.bam`), the duplicate-marked BAM (`SRR1693691.markdup.bam`), and the VCF into IGV, configuring track coloring and display options to highlight read strand, duplicates, and amino acid translations.\
+    -   Navigate to specific genomic windows that contain called SNPs and visually evaluate the evidence for each variant: read depth, base quality patterns, strand balance, and consistency across reads.
+    -   Use coordinate-based searches in both IGV and the filtered VCF to decide whether certain variants are likely real biological changes, consider whether they fall in protein-coding regions, and reason about possible amino acid changes and functional impacts.
+
+Throughout these labs, most of the heavy lifting is handled by template shell scripts that you will lightly edit and submit to the HPC queue, so you can concentrate on understanding the logic of each step and interpreting the outputs rather than on writing a full pipeline from scratch. By repeatedly touching the same dataset at different stages—raw reads, alignments, unfiltered and filtered variants, and visual inspection in IGV—you will gain practical experience with how real genomic data look and behave and how bioinformatics decisions shape the final set of variants that biologists use to draw conclusions about evolution and disease.

@@ -1,0 +1,529 @@
+---
+title: "NGS File Formats and Quality Control in Genome Workflows"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Introduction to NGS File Formats {#sec-ch3}
+
+Next-generation sequencing (NGS) generates massive datasets that flow through standardized workflows from raw reads to biological insights [@pevsner2015]. Understanding file formats is essential for experimental design, as each format encodes metadata critical for downstream analysis decisions.
+
+Figure \@ref(fig-ngs-workflow) shows the standard NGS pipeline, where FASTQ files capture raw sequencing data, SAM/BAM store alignments, and VCF summarizes variants.
+
+::: callout-note
+#### Figure 3.1 – NGS Workflow
+
+![Standard NGS workflow](images/Fig_3_1_ngs_workflow.png){#fig-ngs-workflow width="25%"}
+
+Workflow for next-generation sequence experiments: from experimental design to data
+analysis with the standard file formats for each step. Each file format is described in depth in this chapter and in the table below.
+:::
+
+Additionally, visualizing next-generation sequence data as well as genomic arithmetic can be done using genome viewer softwares, such as Integrated Genome Viewer (IGV), which we will cover later in this course. Another common file format in genomics is the BED format, which can be used with genome views, to perform various genome analyses, and to make custom tracks in genome browsers.
+
+The goal of this chapter is to familiarize you with these four major file formats, which are reviewed in this chapter:
+
+### Common Genome Analysis File Formats
+
+| Format | Acronym | Description | Primary Toolkit(s) |
+|-----------------|-----------------|-----------------|--------------------|
+| FASTA | FASTA | Text-based format for representing nucleotide or protein sequences with sequence identifiers | Biopython, BioPerl, seqtk, samtools faidx, EMBOSS |
+| FASTQ | FASTQ | Extension of FASTA that includes per-base quality scores from sequencing instruments | FastQC, Trimmomatic, cutadapt, seqtk |
+| SAM/BAM | Sequence Alignment/Map (Binary) | Stores aligned sequence reads to a reference genome; BAM is compressed binary version | SAMtools, Picard, GATK, sambamba |
+| VCF/BCF | Variant Call Format (Binary) | Describes genetic variations including SNPs, indels, and structural variants; BCF is binary version | BCFtools, GATK, VCFtools, vcflib, R: VariantAnnotation, vcfR |
+| BED | Browser Extensible Data | Tab-delimited format for genomic intervals and annotations (chromosome, start, end) | BEDtools, UCSC tools, pybedtools, R: GenomicRanges, rtracklayer |
+
+#### Additional Common Formats covered later
+
+| Format | Acronym | Description | Primary Toolkit(s) |
+|-----------------|-----------------|-----------------|--------------------|
+| GFF/GTF | General Feature Format / Gene Transfer Format | Annotation formats describing genomic features like genes, transcripts, and exons | gffread, bedtools, AGAT |
+| CRAM | CRAM | Highly compressed alternative to BAM with reference-based compression | SAMtools, htslib |
+| bigWig/bigBed | \- | Indexed binary formats for dense continuous data (bigWig) and interval data (bigBed) | UCSC tools (bigWigToBedGraph), deepTools |
+
+## FASTA: The Foundation of Sequence Data
+
+In your introductory coursework, you may have encountered [**chromatograms**](https://www.labxchange.org/library/pathway/lx-pathway:ff079975-ac71-418a-ac93-2e14b056f539/items/lb:LabXchange:22c08d85:html:1/58303?t=8c80f5c3-6a6b-49cf-9d3a-87f332b26c42)—the colorful trace files produced by Sanger sequencing instruments. While chromatograms preserve valuable quality information about individual sequencing reactions, they are impractical for computational analysis and database storage. This challenge led to the development of text-based sequence formats that could efficiently represent biological sequences while remaining human-readable and computationally tractable. The most fundamental and enduring of these formats is FASTA.
+
+The FASTA format was developed in **1985** by **William R. Pearson** and **David J. Lipman** at the National Institutes of Health [@lipman_rapid_1985; @pearson_improved_1988]. Originally created for their FASTP protein sequence similarity search program, the format was designed to handle the exponentially growing genetic databases of the 1980s when computer memory and processing speed were severely limited. The name "FASTA" stands for "FAST-All," reflecting the program's ability to handle both protein (FAST-P) and nucleotide (FAST-N) sequences.
+
+### FASTA File Structure
+
+A FASTA file consists of one or more sequence records, each with two components:
+
+**1. Definition line (header):**
+
+-   Begins with `>` character
+-   First word (no spaces) is the **sequence identifier**
+-   Remaining text is **optional description**
+-   Must be unique within the file
+
+**2. Sequence data:**
+
+-   Uses standard IUPAC single-letter codes
+-   Typically wrapped to 60-80 characters per line (for readability)
+-   Case-insensitive (though lowercase sometimes indicates masked/repeat regions)
+-   Whitespace and numbers are ignored
+
+FASTA files store only sequence data, not quality scores. Additionally, compression with `gzip` is common for large genome FASTA files, and many bioinformatics tools can read compressed FASTA files directly (`.fasta.gz` or `.fa.gz`).
+
+### From Individual Sequences to Genomic Scale
+
+While FASTA files are plain text and viewable in any text editor, specialized tools enhance their utility. In the next chapter on Genome Browsers, we will install **AliView**, a cross-platform tool that can visualize FASTA files along with other sequence formats. AliView is particularly useful for viewing multiple sequence alignments and comparing sequences side-by-side.
+
+The evolution from Sanger sequencing chromatograms to FASTA files to modern high-throughput formats reflects the scaling challenges in genomics. Where a single Sanger reaction produced one chromatogram file (\~1 KB) representing \~800 bp of sequence, modern Illumina sequencing produces billions of reads requiring formats like FASTQ (for raw reads) and BAM (for alignments). Yet FASTA remains the standard for reference genomes, gene sequences, and protein databases—a testament to the format's elegance and utility established nearly 40 years ago.
+
+## FASTQ: Raw Sequencing Reads
+
+When genomic DNA is sequenced, raw image files are typically generated that are used to interpret which nucleotide is called in a given fragment or “read”. For most users, the FASTQ files (rather than the underlying image files) represent the raw reads from which other analyses are performed. Like the FASTA format, the FASTQ format includes a sequence string, consisting of the nucleotide sequence of each read. FASTQ also includes an associated quality score for every base.
+
+FASTQ extends FASTA by adding per-base quality scores, forming the foundation of NGS analysis. Each record spans four lines [@pevsner2015; @cock2010]:
+
+1.  **Header** (`@`): Encodes rich metadata about sequencing conditions
+2.  **Sequence**: Raw nucleotides (A/C/G/T/N)
+3.  **Separator** (`+`): Optional repeat of header
+4.  **Quality scores**: ASCII-encoded Phred values
+
+Each FASTQ file has records that are in blocks four lines long. The first line, beginning with the \@ symbol, identifies the record. It may optionally include information about the sequence length or the machine used for sequencing. The second line has the sequence (in upper case), including the nucleotides G, A, T, C, and (as is the case here in the second position) there may be an N for unknown nucleotide. The third line begins with the + symbol and typically contains just that character (as in this case), or it can have more information. The fourth line includes the quality scores corresponding to every base. Each quality score is assigned a single character, and the entire quality score string must equal the length of the sequence string.
+
+::: callout-tip
+## Sample FASTQ entry
+
+A four-line FASTQ entry showing a single read of a genome sequenced sample:
+
+```         
+@SRR1693691.1 HWI-ST591:122:D19EFACXX:1:1101:1948:2137 length=75
+CTATAGATCGACGCATATGTATTATCTTAAATAGGTTGCAATATATTATTATTTTTTAACATTTATTGCGATGCT
++SRR1693691.1 HWI-ST591:122:D19EFACXX:1:1101:1948:2137 length=75
+?@@DFDDFHA<CDHGIGJIHGHJIGIJJGIIIICHGHJJIGIHGHIJHIJGIJJJIIGGGIIGJGIDEDH<?BEE
+```
+
+This represents a single Illumina sequencing read of 75 base pairs. The first line gives the header, the next the sequence, the next repeats the header, and the last line is hte ASCII-encode Phred quality scores for each position.
+:::
+
+### FASTQ Header Format
+
+FASTQ headers contain important metadata about each sequencing read and typically uses **colons (`:`)** as delimiters. However, the exact format has evolved over time as Illumina updated their sequencing platforms. Understanding these variations is important when working with data from different sources so that reads can be paired correctly, quality control tracks flowcell lanes properly, and to ensure tool compatibility. Generally, Illumina headers contain important metadata about the sequencing run, such as instrument, run, flowcell, lane, etc. [@pevsner2015].
+
+For example, imagine the first line of the FastQ file looks something like this:
+
+**"\@HS2000-306_201:6:1204:19922:79127/1"**
+
+This header string is an example of the modern Illumina FASTQ header fields (Casava 1.8+) and reveals the following metadata of the sequencing reads in the corresponding file:
+
+| Information in header | Interpretation                              |
+|-----------------------|---------------------------------------------|
+| HS2000-306_201        | the unique instrument name                  |
+| 6                     | flowcell lane                               |
+| 1204                  | tile number within the flowcell lane        |
+| 19922                 | x-coordinate of the cluster within the tile |
+| 79127                 | y-coordinate of the cluster within the tile |
+| 1                     | the member of a pair, 1 or 2 (paired-end)   |
+
+When data is downloaded from NCBI's Sequence Read Archive (SRA), or from older Illumina platforms, the header format differs, as you might notice in the example FASTQ entry above.
+
+**SRA Format in example above:**
+
+-   Begins with **SRA accession number** (e.g., SRR1693691) followed by the original Illumina header
+-   The SRA accession is followed by a period and read number (`.1` or `.2` for paired reads) with a space before the instrument name instead of a colon
+-   May include additional metadata like `length=75` at the end
+-   Original Illumina information preserved after the SRA identifier
+-   Older formats may also include a **flowcell ID** (e.g., D19EFACXX) not present in modern format
+
+The specific metadata encoded in the identifier varies by sequencing platform and processing pipeline, but the fundamental purpose remains the same: uniquely identifying each sequencing read and providing traceability to its origin on the sequencer.
+
+### Phred Quality Scores
+
+PHRED scores were introduced in 1988 by Phil Green and colleagues to describe base quality scores from Sanger sequencing. This definition is used in the Sanger FASTQ format. Characters are stored as ASCII printable characters 33–126 (i.e., with an ASCII offset of 33) so the range of possible quality scores is 0 to 93. These are listed in Figure 9.8. A value of 93 corresponds to a probability of 10\^–9.3 that a base call occurred by chance, that is, the read is extremely likely to be correct. At Q30 there is a 1:1000 (i.e., 10–3) error rate, a threshold that is often set as a minimum for high-quality reads.
+
+Quality scores use Phred scale: $Q = -10\log_{10}(P_e)$ where $P_e$ is error probability [@pevsner2015]. ASCII encoding adds +33 offset for printable characters:
+
+![Phred-to-ASCII conversion (from Pevsner 9.8)](images/Figure_9_8_Pevsner.jpg){#fig-phred-ascii width="75%"}
+
+Because genome sequencing has so much data, the cutoffs for Phred scores require added stringency. As is shown in the table below, a typical quality score of 20, which is recommended in most pipelines, ensures a 99% accuracy. Still, this equates to \~100 million sequencing errors in a standard dataset of 10 billion base pairs of DNA. Later, in Chapter 10, we will discuss variant filtering in more detail where additional parameters are used to filter data beyond simply Phred Quality scores of individual base calls.
+
+| Phred Quality Score | Probability of Incorrect Base Call | Base Call Accuracy |
+|------------------------|-------------------------|------------------------|
+| 10                  | 1 in 10                            | 90%                |
+| 20                  | 1 in 100                           | 99%                |
+| 30                  | 1 in 1,000                         | 99.9%              |
+| 40                  | 1 in 10,000                        | 99.99%             |
+| 50                  | 1 in 100,000                       | 99.999%            |
+| 60                  | 1 in 1,000,000                     | 99.9999%           |
+
+## Quality Control: FastQC Interpretation
+
+Several packages are useful to assess the quality of the sequence data. There are many types of sequencing errors:
+
+-   Errors typically increase as a function of read length. For example, for Illumina technology, with each increasing cycle it becomes increasingly difficult to differentiate the signal to noise ratio for which nucleotide has been incorporated.
+
+-   Errors occur as a function of GC content.
+
+-   Errors may occur in homopolymer positions. Both pyrosequencing and Ion Torrent technologies are susceptible to this.
+
+FastQC software (@fastqc) provides quality control statistics. Data are imported from FASTQ files, and are then analyzed for qulality. The output includes the following:
+
+-   *Basic statistics*. This includes information such as the range of sequence lengths and the percent GC content.
+
+-   *Per base sequence quality*. This shows quality scores (y axis) versus base position (x axis).
+
+-   *Per sequence quality scores* shows the number of sequences (y axis) versus mean sequence quality (Phred score; x axis).
+
+-   *Overrepresented sequences*. You can copy these sequences and save them to a text file. You can then try BLAT (particularly if you know the species of the overrepresented sequences), BLASTN (to search for matches across species), batch BLAST, or other tools.
+
+-   *k-mer content*: this shows data for a series of 5-mers (strings of 5 nucleotides) plotted by relative enrichment (y axis) versus position in read (in base pairs; x axis). The expected 5-mer frequency (determined from the base composition of the entire sequence) can be compared to the observed frequency. k-mer counts may be reduced (e.g., when poor quality reads reduce the counts for duplicated sequences) or enriched (e.g., when 5-mers are overrepresented at particular locations along a read, such as in the vicinity of a tag added to the 5′ end of sequencing reads).
+
+![FastQC Sample Output](images/Fig_3_3_fastqc.png){#fig-fastqc-plots width="75%"}
+
+-   **Per base sequence quality**: Boxplots by position; expect Q\>30 early, decline to Q20+ at ends
+-   **Per base sequence content**: Even A/C/G/T; 5' bias = adapters\
+-   **Adapter content**: Rising % indicates contamination
+-   **Sequence duplication**: \>50% duplicates flags PCR bias
+
+::: callout-tip
+## Coverage Calculation using FastQC or Samtools
+
+Read depth (or depth of coverage) is a basic design consideration. If a library is sequenced more often (e.g., analyzing it on multiple lanes of a flow cell) this will offer greater depth and more statistical power to detect variants. At the same time, obtaining deeper coverage is relatively expensive. For a typical whole-genome sequence using Illumina technology that generates 150 nucleotide paired end reads, coverage of 30× to 50× is obtained, meaning that on average any given base in the genome is covered by 30–50 independent sequencing reads. For whole-exome sequencing (which often spans ∼50 megabases or 1–2% of the genome), depth of coverage is often 100× or more. For targeted sequencing, depth of sequencing ranges from 5× to 30× depending on factors such as the number of samples that are run simultaneously.
+
+The redundancy of coverage c is a function of the number of reads N, the average length of each read L, and the length of the region (e.g., genome G) being sequenced [@pevsner2015]:
+
+Coverage = $\frac{N \times L}{G}$ where $G$ = genome size.
+
+**Using Samtools depth to calculate coverage**: SAMtools is a library and a software package (Li et al., 2009). We can use it to analyze alignments in the SAM/BAM input, accomplishing various tasks. For example, the tool **samtools depth** is used to give a coverage amount for EVERY position in the genome. Lucky for you it is in a column style format with the following columns:
+
+-   Column 1: ID\
+-   Column 2: Genomic position\
+-   Column 3: No of reads covering that position
+
+Using a simple awk command, we can calculate the average coverage using the third column:
+
+``` shell
+samtools depth  *bamfile*  |  awk '{sum+=$3} END { print "Average = ",sum/GENOME_SIZE}'
+```
+
+> I also recommend calculating genome size directly as this output does not list sites with zero coverage. While this is less of an issue with your small yeast genomes, for larger genomes it matters. Also note that we have used the masked version of the genome. This simply converts all sites in the genome file that are known to be repetitive (thus difficult to map for short reads) to N’s. These sites in particular are expected to have zero coverage as well.
+
+You can do this using awk and the file "sacCer3.fa.masked.fai" which has as its second column the total number of bases on each chromosome.
+
+**Standard Deviation**: Though not required, you can also calculate **standard deviation** to get an idea of how large of a range in coverage exists across your sample. Try using awk and the formula for standard deviation to accomplish this.
+
+[Standard Deviation Formula](http://standard-deviation.appspot.com/)
+
+``` shell
+#hint you will need both the sum and the squared sum:
+awk '{sum+=$3; sumsq+=$3*$3} END {print "Stdev = ",sqrt(sumsq/GENOME_SIZE - (sum/GENOME_SIZE)**2)}' depth.output
+```
+:::
+
+## SAM/BAM: Aligned Reads
+
+The next major step in a basic genome analysis pipeline is alignment, which we will go into a lot of depth in subsequent chapters. When FastQ files are aligned to a reference genome, the output is a SAM (Sequence Alignment/Map) file. This file format is a compressed file that stores read alignments. It can be further compressed into its binoary form BAM [@pevsner2015]. Finally, an even more compressed version is a CRAM (Compressed Reference-oriented Alignment Map) file which was introduced in 2011. CRAM is a compressed columnar file format for storing biological sequences aligned to a reference sequence. For the purposes of this chpater, we will focus on the SAM format. BAM files cannot be directly viewed due to their binary nature.
+
+### The SAM/baM Format and SAMtools
+
+The SAM (sequence alignment/map) format is commonly used to store next-generation sequence alignments. SAM files can be easily converted to the BAM (binary alignment/map) format. BAM is a binary representation of SAM, compressed by the BGZF library, and contains the same information as the SAM file. Because they are easily interchangeable, we may refer to the SAM/BAM format. This format is very popular, with many datasets available in repositories (such as the Sequence Read Archive at NCBI, the 1000 Genomes Project, and the Cancer Genome Atlas).
+
+The SAM format includes a header section (having lines beginning with the character \@) and an alignment section. The file is tab-delimited, and there are 11 mandatory fields (Table 9.4) which we examine in our autism panel (Fig. 9.13). We use the samtools view command to display the first of over a million rows (each row corresponding to a read that has been aligned to a reference genome). Twelve fields are shown, including the sequence (beginning AATCT…) followed by the corresponding quality scores. The CIGAR string refers to a notation system for variants. Here string “148M2S” shows 148 matches and 2 soft-clipped (unaligned) bases. Standard CIGAR operations are M (match), I (insertion), and D (deletion). Extended CIGAR options are N (skipped bases on reference), S (soft clipping), H (hard clipping), and P (padding). SAMtools is a library and a software package (Li et al., 2009). We can use it to analyze alignments in the SAM/BAM input, accomplishing the following tasks:
+
+-   convert from other alignment formats, or between SAM and BAM formats;
+-   sort and merge alignments;
+-   index alignments (once sorted, BAM file can be indexed generating a BAI file used in downstream analyses);
+-   view alignments in the pileup format (as shown below with the samtools view command);
+-   remove PCR duplicates (this procedure, called duplicate marking or “dedupping,” removes reads that are redundant); and
+-   call two classes of variants: single-nucleotide polymorphisms (SNPs) and small indels.
+
+![SAM alignment anatomy (Pevsner 9.13)](images/Figure_9_13_Pevsner.jpg){#fig-sam-anatomy width="75%"}
+
+::: callout-tip
+## Verification of Sam/Bam files using Samtools
+
+Another SAMtools tool, the **samtools flagstat** program is a very useful way to analyze a bam file. From samtools manual it describes flagstat's function as:
+
+> Does a full pass through the input file to calculate and print statistics to stdout. Provides counts for each of 13 categories based primarily on bit flags in the FLAG field. Each category in the output is broken down into QC pass and QC fail, which is presented as "#PASS + #FAIL" followed by a description of the category. The first row of output gives the total number of reads that are QC pass and fail (according to flag bit 0x200). For example: 122 + 28 in total (QC-passed reads + QC-failed reads) Which would indicate that there are a total of 150 reads in the input file, 122 of which are marked as QC pass and 28 of which are marked as "not passing quality controls"
+
+Sample output file from running flagstat on a bam file:
+
+``` shell
+20968800 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
+20968800 + 0 mapped (100.00%:nan%)
+20968800 + 0 paired in sequencing
+11431237 + 0 read1
+9537563 + 0 read2
+71098 + 0 properly paired (0.34%:nan%)
+6633306 + 0 with itself and mate mapped
+14335494 + 0 singletons (68.37%:nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+```
+:::
+
+## VCF: Variant Call Format
+
+Once FASTQ files from your sample have been aligned to a reference genome, it may be assumed that variants (both single-nucleotide variants and indels) can be called by inspecting the alignment and tabulating the differences. The problem with this approach is that many sources of errors occur in the process of sequencing and performing alignment: bias may occur in how libraries are prepared and amplified; sequencing technologies all have associated error rates; and mapping has error rates.
+
+VCF tabulates variants post-alignment (GATK/SAMtools) [@pevsner2015; @danecek_variant_2011].The VCF format was developed under the 1000 Genomes Project and is currently maintained by the Global Alliance for Genomics & Health (GA4GH). For practical guidance on working with VCF files using BCFtools, see @learning_vcf.
+
+### VCF File Format Details
+
+A VCF file consists of:
+
+-   **Meta-information lines** (starting with `##`) that define file format, reference genome, and field descriptions
+-   **Header line** (starting with `#CHROM`) that names the columns
+-   **Data lines** containing variant information
+
+**9 mandatory columns** + sample columns:
+
+```{r}
+#| label: tbl-vcf-columns
+#| tbl-cap: "VCF column definitions (Pevsner Table 9.6)."
+#| echo: false
+tibble::tribble(
+  ~Column, ~Description,
+  "CHROM", "Chromosome",
+  "POS", "1-based variant start position",
+  "ID", "dbSNP rsID or other identifier",
+  "REF", "Reference allele",
+  "ALT", "Alternate allele(s), comma-separated",
+  "QUAL", "Phred-scaled quality score",
+  "FILTER", "PASS if passes filters, or filter names",
+  "INFO", "Semicolon-separated annotation fields",
+  "FORMAT", "Colon-separated format of sample fields"
+) |>
+  knitr::kable()
+```
+
+**Genotype encoding**:
+
+-   `0/0` = homozygous reference
+-   `0/1` = heterozygous
+-   `1/1` = homozygous alternate
+-   `1/2` = heterozygous with two different alternate alleles
+
+### Example VCF Data
+
+::: {.callout-tip collapse="true"}
+## Sample VCF File
+
+Below is an example VCF file showing single nucleotide variants (SNVs) from chromosome I of a yeast genome:
+
+```         
+##fileformat=VCFv4.2
+##ALT=<ID=NON_REF,Description="Represents any possible alternative allele at this location">
+##FILTER=<ID=LowQual,Description="Low quality">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized Phred-scaled likelihoods">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth">
+##INFO=<ID=MQ,Number=1,Type=Float,Description="RMS Mapping Quality">
+##INFO=<ID=QD,Number=1,Type=Float,Description="Variant Confidence/Quality by Depth">
+##contig=<ID=chrI,length=230218>
+##source=HaplotypeCaller
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  SAMN03152093
+chrI    136     .       G       A       812.01  .       AC=1;AF=1.00;AN=1;DP=25;MQ=46.32;QD=32.48     GT:AD:DP:GQ:PL  1:4,21:25:99:822,0
+chrI    349     .       C       T       191.01  .       AC=1;AF=1.00;AN=1;DP=17;MQ=46.06;QD=11.24     GT:AD:DP:GQ:PL  1:6,11:17:99:201,0
+chrI    457     .       CA      C       194.01  .       AC=1;AF=1.00;AN=1;DP=12;MQ=39.48;QD=32.33     GT:AD:DP:GQ:PL  1:0,6:10:99:204,0
+chrI    610     .       G       A       80.01   .       AC=1;AF=1.00;AN=1;DP=2;MQ=33.14;QD=28.73      GT:AD:DP:GQ:PL  1:0,2:2:90:90,0
+```
+
+**Key observations:**
+
+-   Position 136: G→A SNV with high quality (QUAL=812) and good mapping quality (MQ=46.32)
+-   Position 457: 2bp deletion (CA→C) representing an indel
+-   INFO field QD (Quality by Depth) helps assess variant confidence relative to coverage
+-   FORMAT GT field shows genotype: `1` indicates homozygous alternate (haploid sample)
+:::
+
+### Quality Metrics
+
+Understanding VCF quality fields is crucial for variant filtering:
+
+-   **QUAL**: Phred-scaled probability that the variant call is incorrect (higher is better)
+-   **QD (Quality by Depth)**: QUAL/DP ratio; helps identify false positives from low-coverage regions
+-   **MQ (Mapping Quality)**: Root mean square of mapping quality scores; indicates alignment confidence
+-   **DP (Depth)**: Number of reads covering the position
+-   **GQ (Genotype Quality)**: Confidence in the assigned genotype
+
+These metrics are typically used together to filter high-confidence variants from sequencing artifacts, which we will get into in depth later in the course as part of Chapter 10.
+
+## Variant Types Beyond SNPs
+
+The outline of a genome analysis workflow presented in Figure 9.6 is relatively simplistic. We will use that workflow to gain experience with basic data manipulation. A state-of-the-art workflow, used by many experts, is the Genome Analysis Toolkit (GATK; @mckenna_genome_2010; @depristo_framework_2011). We show the GATK workflow in Figure 9.7, and explain why its approaches are crucial to sensitive, specific analyses of genome sequences.
+
+The basic GATK workflow is used for variant discovery with the goal output being a VCF. But in addition to SNPs, GATK can be used to call other types of genomic variants. Specifically, GATK can be used to identify indels and other structural variants [@pevsner2015]:
+
+::: callout-note
+#### Figure 3.5 – GATK Workflow
+
+![GATK pipeline: raw reads → analysis-ready BAM → VCF.)](images/Fig_3_4_gatk.jpg){#fig-gatk-workflow width="75%"}
+
+**GATK Best Practices** (Figure \@ref(fig:gatk-workflow)) is the best genome workflow for model organisms, and for modern human genomics. However, it may not be suitable for calling variants in non-model systems, which will be covered later in the course [@mckenna_genome_2010; @depristo_framework_2011]. Each step in the GATK pipeline reduces the amount of data in a genome analysis, the goal is to improve the overall quality of the results that are filtered along the way. For example, we may expect to see up to 50% of the data is removed during a standard workflow from raw FastQ file to a VCF. This does not mean that your data are of poor quality of that your experimental design was flawed, but only that your resulting variants have been stringently filtered to be of the highest confidence.
+:::
+
+### Variant Types in VCF Files
+
+VCF files can represent several types of genetic variation:
+
+**SNVs (Single Nucleotide Variants)**: Position 136 above shows a simple G→A substitution
+
+**Indels**:
+
+-   **Deletions**: Position 457 shows a deletion where CA in the reference becomes C (one base deleted)
+-   **Insertions**: Can be represented as `A→ATAAATTTTTT` where bases are added
+
+::: {.callout-tip collapse="true"}
+## Additional Indel Examples
+
+```         
+chrI    17290   .       AACAC   A       80.01   .       AC=1;AF=1.00;AN=1;DP=4;MQ=36.85;QD=27.08;SOR=2.303  GT:AD:DP:GQ:PL  1:0,2:2:90:90,0
+chrI    30097   .       A       ATAAATTTTTT     125.04  .       AC=1;AF=1.00;AN=1;DP=3;MQ=26.04;QD=21.53;SOR=1.179  GT:AD:DP:GQ:PL  1:0,3:3:99:135,0
+chrI    31122   .       CATAT   C       69.01   .       AC=1;AF=1.00;AN=1;DP=6;MQ=60.00;QD=34.50;SOR=2.303  GT:AD:DP:GQ:PL  1:0,2:2:79:79,0
+```
+
+-   Position 17290: 4bp deletion (AACAC→A)
+-   Position 30097: 10bp insertion (A→ATAAATTTTTT)
+-   Position 31122: 4bp deletion (CATAT→C)
+:::
+
+## BED file format and BEDtools
+
+The Browser Extensible Data (BED) format is a tab-delimited text format for storing genomic regions as coordinates and associated annotations. Originally developed during the Human Genome Project for the UCSC Genome Browser [@kent_human_2002], BED has become a de facto standard in bioinformatics for representing genomic intervals.
+
+The key advantage of BED format is its use of genomic coordinates rather than sequences, which optimizes computational efficiency when comparing genomic regions. Its simplicity also makes it easy to manipulate using standard command-line tools, scripting languages, or specialized utilities like BEDTools [@quinlan_bedtools_2010].
+
+### BED File Structure
+
+A minimal BED file requires three tab-delimited fields:
+
+```{r}
+#| label: tbl-bed-fields
+#| tbl-cap: "Core BED format fields."
+#| echo: false
+tibble::tribble(
+  ~Column, ~Description, ~Example,
+  "chrom", "Chromosome name", "chr1",
+  "chromStart", "Start position (0-based)", "1000",
+  "chromEnd", "End position (1-based, exclusive)", "1500"
+) |>
+  knitr::kable()
+```
+
+**Important**: BED uses a 0-based coordinate system for the start position and a 1-based coordinate system for the end position. This means:
+
+-   The first nucleotide of a chromosome has `chromStart=0, chromEnd=1`
+-   A feature's length is simply `chromEnd - chromStart`
+-   The position chr1:1001-1500 in "human" coordinates becomes `chr1 1000 1500` in BED format
+
+The BED format supports up to 12 standard fields, with the first three being mandatory:
+
+```{r}
+#| label: tbl-bed-extended
+#| tbl-cap: "Extended BED format fields (optional fields 4-12)."
+#| echo: false
+tibble::tribble(
+  ~Field, ~Name, ~Description,
+  4, "name", "Feature name or identifier",
+  5, "score", "Score (0-1000)",
+  6, "strand", "Strand: + or -",
+  7, "thickStart", "Start of thick drawing (e.g., coding region)",
+  8, "thickEnd", "End of thick drawing",
+  9, "itemRgb", "RGB color value (e.g., 255,0,0)",
+  10, "blockCount", "Number of blocks (exons)",
+  11, "blockSizes", "Comma-separated list of block sizes",
+  12, "blockStarts", "Comma-separated list of block starts"
+) |>
+  knitr::kable()
+```
+
+### Example BED Files
+
+::: callout-tip
+## Simple BED3 Format
+
+A basic three-column BED file showing genomic intervals:
+
+```         
+chr1    1000    1500
+chr1    2000    2300
+chr2    5000    5800
+chrX    1000000 1001000
+```
+
+This represents four genomic regions. The first spans 500 bp from position 1000 to 1499 on chromosome 1 (remember: end position is exclusive).
+:::
+
+### Working with BED Files: BEDTools
+
+BEDTools [@quinlan_bedtools_2010] is a powerful suite of utilities for performing "genome arithmetic" on BED files. These tools enable efficient comparison and manipulation of genomic features through set operations like intersect, merge, and complement. BEDTools can be combined with standard UNIX commands in pipelines, facilitating complex genomic analyses without requiring web-based tools or large data transfers.
+
+### BED Format in Other Tools
+
+Beyond BEDTools, BED format is supported by numerous bioinformatics tools:
+
+-   **UCSC Genome Browser tools**: bedToBigBed, bigBedToBed for creating indexed binary formats
+-   **R/Bioconductor**: `rtracklayer` for importing/exporting BED files, `GenomicRanges` for genomic interval operations
+-   **Python**: `pybedtools` provides Python interface to BEDTools functionality
+-   **IGV (Integrative Genomics Viewer)**: Native support for BED track display
+
+### Connection to Genome Browsers
+
+BED files serve as a fundamental format for displaying custom annotation tracks in genome browsers. The UCSC Genome Browser [@kent_human_2002] uses BED format extensively, allowing researchers to:
+
+1.  **Upload custom tracks** for visualization alongside reference annotations
+2.  **Define track display properties** through optional track lines
+3.  **Share results** by hosting BED files on web servers
+
+For large datasets, BED files can be converted to **bigBed** format [@kent_bigwig_2010], a compressed, indexed binary format that enables rapid visualization of millions of features without uploading entire datasets to the browser.
+
+As we transition to Chapter 4 on Genome Browsers, understanding BED format provides the foundation for effectively visualizing and interpreting genomic data. Genome browsers use BED-formatted tracks to display genes, regulatory elements, variants, and experimental results in their chromosomal context, making BED fluency essential for modern genomics research.
+
+## Lab connections
+
+::: callout-important
+This chapter’s file formats and QC concepts feed directly into several labs:
+
+-   **Lab01 (Section @sec-lab01)** asks you to identify how published genome analysis papers report assembly metrics and QC, and to relate those choices back to FASTQ, BAM, and VCF concepts.
+-   **Lab03 (Section @sec-lab03)** asks you to design a genome project that makes concrete decisions about coverage, platforms, and workflows—decisions that will be encoded in FASTQ, BAM, VCF, and BED files.
+-   **Labs 4, 7, & 8** : The practical labs using the yeast experimental evolution dataset (Appendix @sec-yeast) will give you hands‑on experience moving between these formats and interpreting QC outputs for a real dataset [@burke_standing_2014; @pevsner2015].
+
+You can refer back to this chapter whenever you encounter new datasets or need to interpret QC plots and file structures in labs.
+:::
+
+## Acknowledgments
+
+Portions of this chapter were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
+
+------------------------------------------------------------------------
+
+## Practice Problem‑sets
+
+1.  The chapter mentions that Q20 is a recommended cutoff for typical sequencing projects, but that this still equates to \~100 million errors in a standard sequencing project. This was based on a dataset with 100 million 100 base pair reads, or 10 billion reads. Imagine you increased the stringency from 99% to 99.9% by imposing a Q30 cutoff instead. **What would be the new number of expected sequencing errors resulting from this adjustment?**
+
+2.  Quality control is the critical first step in any sequencing analysis. Different research environments (local computers, web platforms, command-line servers, R environments) offer different tools for QC analysis. To better understand the strengths and limitations of each approach, compare FastQC implementations across different platforms. To do this, search the SRA accession **SRR518692** (*Aeromonas hydrophila* whole genome sequencing) which was sequenced here at Auburn. In class, we will run FastQC using the Galaxy Web Platform. Here, test out a local FastQC Installation (Mac/Windows). First, download [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc) for Mac/PC. Next, download the SRR518692 FASTQ files using Galaxy or SRA Toolkit. Third, run FastQC locally on the downloaded file. **Compare the output to your Galaxy results from class.**
+
+3.  As an extension of Problem #2, look up the genome size of the species *Aeromonas hydrophila* on NCBI. Then using the number of reads and the read length from the FastQC report, **calculate the expected coverage** of this sample.
+
+4.  As another example of tool implementation, try your hand at **running FastQC using the R/Bioconductor Approach**. There are several R pacakges that you can use. If you have installed FastQC, then you can use [fastqcr](https://cran.r-project.org/web/packages/fastqcr/readme/README.html). Alternatively, you can use an alternative pacakge called [ShortRead](https://kasperdanielhansen.github.io/genbioconductor/html/ShortRead.html). Once you have retrieved QC metrics using either R package, *compare your results with that of Galaxy and FastQC locally. Also reflect on the difference in experience across these three platforms. Which was easiest to run? fastest? Which was easiest to interpret? Which one would you choose if you needed to run these QC metrics on a set of 100 fastqc files?*
+
+5.  Look back at the Lab from Computational Biology where you learned to use AWK to manipulate VCF files. Now having learned more about this file format, why do you think a VCF file worked so well for this lab assignment working with the tool `awk`?
+
+6.  **SAM/BAM CIGAR Strings**: Alignment information encoded in SAM/BAM files use CIGAR strings. CIGAR (Compact Idiosyncratic Gapped Alignment Report) strings provide a compressed representation of how reads align to a reference genome. Given these CIGAR strings, decode what they mean: a). `148M2S` (from chapter example); b). `50M1I49M`; c). `75M5D25M`; d). `10S90M`. *Write out what they mean in plain English. How long is each read corresponding to each string? What types of potential variants do these reads indicate?*
+
+## Reflection Questions
+
+1.  **Format Evolution and Compression**: The chapter describes the evolution from FASTA → FASTQ → SAM → BAM → CRAM, with each format adding information or improving compression. Explain the trade-offs between human readability and computational efficiency in this progression. Why do you think FASTA has remained the standard for reference genomes for 40 years despite being uncompressed text, while CRAM has largely replaced SAM/BAM for aligned reads?
+
+2.  **Phred Quality Score as ASCII**: In the FastQ file format, Phred quality scores are encoded as ASCII (+33 offset) rather than raw numbers. Why do you think this format is preferred?
+
+3.  **Phred Quality Score Encoding**: FASTQ format encodes Phred quality scores as single ASCII characters with a +33 offset (e.g., Q30 becomes '?') rather than storing them as numeric values (e.g., "30"). Why do you think was this ASCII encoding scheme chosen? What benefits do you think this conversion has in terms of file compression? For example, why might the string "?????" (five Q30 scores) compress differently than "30,30,30,30,30"? Would ASCII encoding help or hurt compression? What are the trade-offs between human-readability and computational efficiency?
+
+4.  **Different ASCII encoding**: The +33 offset specifically makes quality scores printable characters (! through \~). The earlier Solexa/Illumina 1.0 format used +64 offset (\@ through \~). What practical problems might arise from having two different encoding schemes in the field? How would you detect which encoding a file uses?
+
+5.  **Coordinate Systems and Biological Meaning**: BED format uses 0-based start positions but 1-based end positions (0-based, half-open intervals), while VCF uses 1-based positions for both start and end. Discuss why these different conventions exist and how they affect biological interpretation. What errors might occur if you incorrectly convert between these systems? Provide a specific example with coordinates.
+
+## References

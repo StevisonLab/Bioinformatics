@@ -1,0 +1,297 @@
+---
+title: "Sequence Alignment"
+subtitle: "From Pairwise to Multiple Alignments"
+bibliography: references.bib
+csl: nature.csl
+---
+
+## Learning goals
+
+By the end of this chapter you should be able to:
+
+-   Explain why biologists align sequences and distinguish **similarity** from homology, orthologs, and paralogs.\[file:6\]\
+-   Describe how pairwise alignment scores are computed from substitution matrices and gap penalties.\[file:6\]\[file:5\]\
+-   Outline and interpret the Needleman–Wunsch global alignment algorithm and contrast it with Smith–Waterman local alignment.\[file:6\]\[file:5\]\
+-   Explain what a multiple sequence alignment (MSA) is, why it is more informative than pairwise alignment, and summarize major MSA algorithm families.\[file:6\]\[file:2\]\
+-   Read alignment output critically, recognizing poor alignments and the influence of parameter choices.
+
+------------------------------------------------------------------------
+
+## Why align sequences?
+
+Sequence alignment is a core operation in genomics, used whenever you want to compare DNA or protein sequences to ask biological questions.\[file:6\] Typical motivations include:
+
+-   Inferring gene or protein function for a new sequence by comparing it to known sequences with similar patterns of residues.\[file:6\]\
+-   Identifying orthologous genes across species for phylogeny reconstruction and evolutionary inference.\[file:6\]\
+-   Detecting conserved motifs and domains that may underlie shared structure or regulation.
+
+### Similarity, homology, orthologs, paralogs
+
+Alignment provides a *similarity* score, but what biologists usually care about is **homology**, meaning shared ancestry rather than just high percent identity.\[file:6\] Two sequences are either homologous or not; there is no partial homology, only stronger or weaker evidence for it.
+
+-   **Orthologs** are homologous genes in different species that diverged via a speciation event and usually retain similar function.\[file:6\]\
+-   **Paralogs** are homologous genes within a genome that arose by duplication and often diverge in function over time.\[file:6\]
+
+When you use alignment to infer orthology or paralogy, remember that homology is about evolutionary history, not just alignment score, and typically requires integrating tree information you will see in the phylogeny chapter.
+
+### Local vs global alignment (conceptual)
+
+Two broad alignment goals motivate different algorithms:
+
+-   **Global alignment** tries to align sequences end‑to‑end, useful when you expect roughly collinear sequences of similar length (for example, full‑length orthologous proteins).\[file:6\]\[file:5\]\
+-   **Local alignment** finds the best matching subsections, ideal for detecting shared domains or motifs between otherwise divergent sequences and for database searching (as in BLAST).\[file:6\]
+
+In practice, global alignment is good for “how similar are these things overall?”, while local alignment is better for “do these sequences share any conserved region at all?”.
+
+------------------------------------------------------------------------
+
+## Scoring alignments
+
+Algorithms need a way to rate one alignment as better than another. Scores come from two components: substitution matrices and gap penalties.\[file:6\]\[file:5\]
+
+### Substitution matrices: PAM and BLOSUM
+
+Scoring matrices assign a value (s\_{ij}) for aligning residue (i) with residue (j), reflecting how often that substitution is seen in real protein families compared with chance.\[file:5\] These matrices embed evolutionary and biochemical information:
+
+-   **PAM matrices** (Point Accepted Mutation) were introduced by Margaret Dayhoff in the 1970s using gapless alignments of closely related proteins; different PAM levels (e.g., PAM30 vs PAM250) correspond to different evolutionary distances.\[file:6\]\[file:5\]\
+-   **BLOSUM matrices** (Blocks Substitution Matrices) were later derived from conserved blocks of more divergent protein families and are widely used in tools like BLAST (default BLOSUM62).\[file:5\]\[file:6\]
+
+Higher scores reward conservative substitutions (for example, hydrophobic→hydrophobic), while strongly disfavored substitutions receive negative scores; identities do not all have the same score because some residues (like tryptophan) are rarer and more informative.\[file:5\]\[file:6\]
+
+### Gap penalties
+
+Insertions and deletions appear in alignments as gaps, which must be penalized so algorithms do not introduce them arbitrarily.\[file:6\]\[file:5\]
+
+-   A **constant gap penalty** subtracts the same score for each gap position, so a gap of length (k) costs (k \times g).\[file:6\]\
+-   An **affine gap penalty** distinguishes gap opening and extension: opening a gap has a large penalty, while extending it costs less per position, reflecting that one long indel is usually more plausible than many short ones.\[file:6\]
+
+When you run tools online, you will often see default gap open and gap extension settings; understanding these lets you reason about why alignments look the way they do.
+
+------------------------------------------------------------------------
+
+## Needleman–Wunsch: global alignment
+
+The Needleman–Wunsch algorithm (1970) is a dynamic programming method that guarantees an optimal global alignment for two sequences under the chosen scoring scheme.\[file:5\]\[file:6\]
+
+### High‑level idea
+
+Given sequences of lengths (m) and (n), the algorithm:
+
+1.  Builds an ((m+1) \times (n+1)) matrix where cell (F\_{i,j}) is the best score for aligning the first (i) residues of sequence 1 and the first (j) residues of sequence 2.\[file:5\]\
+2.  Fills this matrix row by row (or column by column) using a recurrence that considers match/mismatch and gap possibilities at each step.\[file:5\]\
+3.  Recovers the optimal alignment by tracing back from the bottom‑right cell to the origin following the path of choices that produced the maximal score.\[file:5\]\[file:6\]
+
+This uses dynamic programming: optimal subalignments are reused to build the optimal full alignment, avoiding exhaustive enumeration of all possibilities.\[file:5\]\[file:6\]
+
+### Recurrence and traceback (intuitive)
+
+At each internal cell (F\_{i,j}), the score is the maximum of three options:\[file:5\]
+
+-   Diagonal: extend an alignment by matching or mismatching residues (x_i) and (y_j).\
+-   Up: introduce or extend a gap in sequence 2 (move down in sequence 1 only).\
+-   Left: introduce or extend a gap in sequence 1 (move right in sequence 2 only).
+
+Edges of the matrix are initialized with cumulative gap penalties to allow terminal gaps.\[file:5\] Once the matrix is filled, the score in (F\_{m,n}) is the global alignment score, and backtracking through the arrows reconstructs the aligned sequences, including where matches, mismatches, and gaps occur.\[file:5\]\[file:6\]
+
+### Preparation for the in‑class Needleman–Wunsch activity
+
+In class you will work through a full Needleman–Wunsch example by hand using short “toy” protein sequences and a small PAM matrix.\[file:5\]\[file:6\] To be ready:
+
+-   Make sure you can:
+    -   Interpret a substitution matrix entry (e.g., what does the score where row S and column H meet mean?).\[file:5\]\
+    -   Explain why moving vertically or horizontally in the scoring matrix corresponds to inserting a gap in one sequence or the other.\[file:5\]\[file:6\]\
+    -   Describe in words why the bottom‑right cell represents the best overall global alignment.\
+-   Before class, sketch a tiny 3×3 or 4×4 matrix for two short sequences (like “SAE” and “SE”) and practice filling it using simple scores (e.g., +1 for match, −1 for mismatch, −2 for gap).
+
+------------------------------------------------------------------------
+
+## Smith–Waterman and local alignment
+
+Smith–Waterman (1981) adapts dynamic programming for local alignment, focusing on the best matching subsequences rather than forcing end‑to‑end alignment.\[file:5\]\[file:6\]
+
+Key differences from Needleman–Wunsch:
+
+-   The matrix is still ((m+1) \times (n+1)), but any negative intermediate score is replaced with zero, allowing alignments to *start* and *end* internally instead of at the edges.\[file:5\]\
+-   Traceback begins at the cell with the highest score anywhere in the matrix and stops when it reaches a cell with score zero, which defines the best local region.\[file:5\]
+
+Local alignment is especially important for:
+
+-   Detecting conserved domains between proteins that share only partial similarity.\
+-   Database searches, where algorithms such as BLAST use heuristic approximations to this idea for speed.\[file:6\]
+
+Although this course does not require hand‑implementing Smith–Waterman, recognizing that global and local alignments are built on related dynamic programming principles will help when you encounter genome alignment algorithms that adapt these ideas to long DNA sequences.
+
+------------------------------------------------------------------------
+
+## From pairwise to multiple sequence alignment
+
+Multiple sequence alignment (MSA) extends the same logic to three or more sequences, aligning columns of homologous residues.\[file:2\]\[file:4\]\[file:6\] MSAs are powerful because:
+
+-   They can reveal conserved motifs and structural features that pairwise alignments may miss, especially when individual pairs are only weakly similar.\[file:4\]\[file:6\]\
+-   They provide the input for phylogenetic tree reconstruction, protein family definition, variant effect prediction, and profile methods such as HMM‑based searches.\[file:4\]\[file:6\]
+
+### What makes an MSA “good”?
+
+An ideal MSA aligns residues that are homologous in both evolutionary and structural senses, while placing gaps in a way that reflects realistic insertions and deletions.\[file:4\] Real data are messy, and for moderately to highly diverged sequences there is often no single unambiguously correct alignment.
+
+Features often seen in well‑behaved alignments:
+
+-   Highly conserved residues in functional sites (for example, catalytic residues or cysteines forming disulfide bridges) staying in the same column across taxa.\[file:2\]\[file:4\]\
+-   Conserved secondary‑structure segments (helices, sheets) aligning with relatively few gaps, while loops show more variability and indels.\[file:4\]
+
+### Major algorithm families
+
+Because exact dynamic‑programming methods scale poorly with the number of sequences, practical MSA programs use heuristics.\[file:2\]\[file:4\]\[file:6\]
+
+| Method type | Core idea | Examples |
+|------------------------|------------------------|------------------------|
+| Exact | Multi‑dimensional dynamic programming; guaranteed optimal but feasible only for very few short sequences. | Used mainly in benchmarking studies.\[file:4\]\[file:2\] |
+| Progressive | Compute all pairwise global alignments (often with Needleman–Wunsch), build a guide tree from pairwise distances, then align the most similar sequences first and add others stepwise; “once a gap, always a gap.” | ClustalW, early MUSCLE.\[file:2\]\[file:6\] |
+| Iterative | Start with an initial MSA, then repeatedly modify and re‑score it, keeping changes that improve an objective until convergence. | MUSCLE, MAFFT, PRALINE.\[file:4\]\[file:6\] |
+| Consistency‑based | Combine information from many pairwise local alignments or profiles so that if A aligns to B and B to C, the algorithm encourages A to align consistently with C. | T‑COFFEE, ProbCons.\[file:4\]\[file:6\] |
+| Structure‑based | Incorporate 3D structural information (when available) alongside sequence when aligning, giving special weight to structurally conserved cores. | Expresso and related T‑COFFEE modules.\[file:4\]\[file:2\] |
+
+Benchmarking studies using curated reference alignments (for example, BAliBASE) show that no single method is best in all settings, though consistency‑based and high‑quality iterative programs often perform very well.\[file:4\]\[file:2\]\[file:6\]
+
+### Historical framing for genome alignment
+
+Most genome‑scale alignment algorithms reuse these same ideas, but add:
+
+-   Sparse seeding and chaining strategies instead of dense dynamic‑programming matrices to handle long genomes.\
+-   Specialized scoring schemes for non‑coding DNA and structural variants, building on the gap and substitution concepts introduced here.\[file:6\]
+
+When you study genome alignment in the next chapter, look for echoes of:
+
+-   Local versus global logic (whole‑genome vs local syntenic block alignment).\
+-   Dynamic‑programming cores used within narrower bands rather than over full matrices.\
+-   Progressive and iterative refinement strategies analogous to MSA tools.
+
+------------------------------------------------------------------------
+
+## Preparation for the MSA coronavirus activity
+
+In class you will use NCBI’s COBALT or a similar web tool to align nucleocapsid (N) and spike (S) protein sequences from SARS‑CoV‑2 across multiple years.\[file:2\]\[file:6\]
+
+To arrive ready:
+
+-   Review what a FASTA file looks like; `N.fa` and `S.fa` each contain a set of protein sequences with headers and amino acid lines.\[file:2\]\[file:6\]\
+-   Make sure you can describe the biological roles of the N and S proteins at a high level:
+    -   N is a shorter, relatively conserved nucleocapsid protein and is used as a target in many antigen tests.\[file:6\]\
+    -   S is a longer surface glycoprotein (spike) whose variable regions distinguish variants of concern but is overall still quite conserved across SARS‑CoV‑2 strains.\[file:6\]\
+-   Be prepared to interpret:
+    -   Which regions of the MSA are nearly invariant, which show clustered changes, and how this relates to function and evolution.\
+    -   How coloring schemes (for example, identity, BLOSUM62, frequency‑based difference) emphasize conserved versus variable positions.\[file:2\]\[file:6\]
+
+During the activity you will compare alignments for N and S, think about how protein length and function relate to observed variability, and discuss which regions might make robust vaccine or diagnostic targets.
+
+------------------------------------------------------------------------
+
+## Practice problem set
+
+These problems are intended for practice rather than grading; they mirror the types of reasoning you will use in lecture and assignments.
+
+### Pairwise scoring and algorithms
+
+1.  **Choosing local vs global.**\
+    You have two full‑length enzyme orthologs from closely related bacteria that differ only by a few substitutions and one short indel.
+    -   
+
+        (a) Which alignment type (local or global) is more appropriate and why?\
+
+    -   
+
+        (b) How would your choice change if you instead suspect they share only a single domain in common?
+2.  **Interpreting a substitution matrix.**\
+    Suppose a BLOSUM‑like matrix gives: (s(\text{W},\text{W}) = 11), (s(\text{A},\text{A}) = 4), and (s(\text{A},\text{G}) = 0).
+    -   
+
+        (a) Explain in words what each of these numbers implies about the observed vs expected frequencies of these alignments.\[file:5\]\[file:6\]\
+
+    -   
+
+        (b) Why might matching two tryptophans be more informative than matching two alanines?
+3.  **Gap penalty reasoning.**\
+    Two alternative global alignments differ mainly by a single long gap versus several short gaps.
+    -   
+
+        (a) Describe qualitatively how a constant versus an affine gap penalty would tend to favor one alignment over the other.\[file:6\]\
+
+    -   
+
+        (b) In what biological situations might many short gaps actually be more plausible than one long gap?
+4.  **Needleman–Wunsch sketch.**\
+    Without doing full calculations, sketch the scoring matrix layout and describe the order in which cells would be filled for sequences of lengths 3 and 5.
+    -   
+
+        (a) Why does dynamic programming avoid checking all possible alignments explicitly?\[file:5\]\[file:6\]\
+
+    -   
+
+        (b) What information must be stored in each cell to enable traceback?
+
+### Multiple sequence alignment
+
+5.  **Reading an MSA.**\
+    You see an alignment of five globin sequences where a histidine important for heme binding is perfectly conserved in one column, while nearby positions show a mixture of amino acids.\[file:2\]\[file:4\]
+    -   
+
+        (a) What does this suggest about functional constraint at that histidine site?\
+
+    -   
+
+        (b) If a new globin sequence lacks histidine at that position, what hypotheses could you make?
+6.  **Guide trees and gap lock‑in.**\
+    Progressive alignment programs build a guide tree from pairwise distances and then align sequences in that order, obeying “once a gap, always a gap.”\[file:2\]\[file:6\]
+    -   
+
+        (a) Explain why early gap decisions between the closest sequences strongly influence the final alignment.\
+
+    -   
+
+        (b) Describe one potential advantage and one drawback of this strategy.
+7.  **Choosing an MSA program.**\
+    You need to align 500 moderately diverged protein sequences.
+    -   
+
+        (a) Which algorithmic family (progressive, iterative, consistency‑based) would you prioritize and why, considering both speed and accuracy?\[file:4\]\[file:6\]\
+
+    -   
+
+        (b) How might your answer change if you instead have only 10 very divergent proteins with known structures?
+8.  **From protein to genome alignment.**\
+    Imagine you are designing a genome aligner for several mammalian genomes.
+    -   
+
+        (a) Which ideas from pairwise and multiple sequence alignment would you reuse directly?\
+
+    -   
+
+        (b) Which additional challenges arise from long genomes and non‑coding DNA that are less important in protein MSAs?
+
+------------------------------------------------------------------------
+
+## Reflection questions
+
+Use these to connect this material to your own research interests and to the upcoming genome alignment chapter.
+
+1.  How does understanding where substitution matrices and gap penalties come from change the way you interpret BLAST or MSA output in your own work?\[file:6\]\[file:5\]
+
+2.  Think about a gene or protein you care about. Would you learn more from global or local alignments when comparing it across species, and why?
+
+3.  In the coronavirus MSA activity you will see that even “rapidly evolving” proteins retain large conserved regions.\[file:6\] How does this nuance your intuition about what “rapidly evolving” looks like at the sequence level?
+
+4.  Many genome‑alignment tools were developed decades after Needleman–Wunsch and Smith–Waterman but still rely on their core ideas.\[file:5\]\[file:6\] What do you think enabled these early algorithms to remain so influential in modern genomics?
+
+5.  When you see conflicting alignments from different tools, how will you decide which to trust, and how much does that uncertainty matter for the biological inferences you intend to draw?
+
+------------------------------------------------------------------------
+
+## References and further reading
+
+These are *optional* if you want to go deeper; the chapter above is designed to stand alone.
+
+-   Pevsner, J. *Bioinformatics and Functional Genomics* (3rd ed.), Chapter 3: Pairwise Sequence Alignment (global/local algorithms, PAM/BLOSUM matrices, alignment statistics).\[file:5\]\
+-   Pevsner, J. *Bioinformatics and Functional Genomics* (3rd ed.), Chapter 6: Multiple Sequence Alignment (progressive, iterative, consistency‑based, structure‑based methods; benchmarking).\[file:4\]\
+-   Course lecture slides, “Sequence Alignment” (pairwise and multiple alignment overview, MSA algorithms, coronavirus N and S activities).\[file:2\]\
+-   Course lecture recording transcript, “Sequence Alignment” (historical context, algorithm motivations, practical tool tips).\[file:6\]\
+-   Needleman–Wunsch worksheet (global protein alignment exercise using a PAM matrix and gap penalty).\[file:5\]
