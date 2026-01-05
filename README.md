@@ -1,2 +1,7 @@
 # Bioinformatics
-R project with textbook for Bioinformatics Course
+
+This companion textbook supports BIOL 5860/6860: Bioinformatics and Genome Analysis, a hands-on survey of computational approaches to “reading” biological data. As biologists with genetics and computational biology prerequisites, you already know how to frame biological questions and wrangle basic code. This course builds directly on that foundation to demystify the “black box” of bioinformatics tools, showing you how to move from raw sequencing data to biological insight.
+
+The field moves fast—back when I was in graduate school, I first learned 454 sequencing and applied it to my PhD work, which is now long obsolete. Rather than teaching specific tools that may change by graduation, this book emphasizes adaptability: the core concepts, file formats, quality control practices, and workflow thinking that transfer across platforms and projects. Labs progress from exploratory (“find a genome paper on your favorite organism”) to practical (GATK variant calling on HPC) to independent (semester-long group research projects where you discover and master new tools yourselves).
+
+This book was developed in R using the package Quarto. It is written in markdown and rendered to HTML. It is still very much a work in progress and has been largely assisted by AI. 
