@@ -33,6 +33,7 @@ Two core computational operations recur throughout this course. **Alignment** is
 ::: callout-note
 #### Figure 1.2 – Core genome concepts
 
+![Core Concepts](images/Figure 1.2 Core Concepts.png){#fig-concepts}
 A multi‑panel schematic:
 
 -   Panel A: genome, transcriptome, proteome, and epigenome illustrated for a single cell.\
