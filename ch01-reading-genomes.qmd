@@ -13,7 +13,7 @@ In the roughly twenty‑five years since the first complete animal and plant gen
 ::: callout-note
 #### Figure 1.1 – Milestones in genomics
 
-![Milestones in genomics](images/Fig_1_1_genomics_timeline.png){#fig-genomics-timeline}
+![Milestones in genomics](images/Fig_1_1_genomics_timeline.png){#fig-genomics-timeline width="80%"}
 
 This figure presents a timeline of key technological innovations and landmark projects that shaped modern genomics, from the recognition of DNA as the hereditary material and the description of its double‑helix structure through the development of PCR, first‑generation Sanger sequencing, and early automated sequencers. It then highlights the launch and 2003 completion of the Human Genome Project and related large‑scale efforts, such as the generation of reference genomes for multiple organisms and subsequent population‑scale initiatives like the 1000 Genomes Project and the Human Microbiome Project, which collectively established comprehensive genomic resources for research and medicine. The upper portion of the figure tracks the transition from low‑throughput first‑generation methods to second‑generation short‑read platforms and, more recently, to third‑generation long‑read technologies such as single‑molecule real‑time and nanopore sequencing, which now enable routine production of near‑complete, reference‑quality assemblies, including end‑to‑end human genomes.
 
@@ -33,19 +33,16 @@ Two core computational operations recur throughout this course. **Alignment** is
 ::: callout-note
 #### Figure 1.2 – Core genome concepts
 
-![Core Concepts](images/Figure 1.2 Core Concepts.png){#fig-concepts}
-A multi‑panel schematic:
+![Core Concepts](images/Figure 1.2 Core Concepts.png){#fig-concepts width="75%"}
 
--   Panel A: genome, transcriptome, proteome, and epigenome illustrated for a single cell.\
--   Panel B: a reference genome shown as chromosomes, with an assembly depicted as contigs/scaffolds and annotations drawn as gene models.\
--   Panel C: side‑by‑side cartoons of alignment (reads mapped onto a reference) and de novo assembly (reads overlapped without a reference).
-
-This figure gives students a visual vocabulary for the rest of the book.
+Typical eukaryotic gene model illustrating exons and introns along a genomic region (A). Schematic of core “omes” for a single cell: DNA as the genome, transcribed RNA molecules as the transcriptome, translated polypeptides as the proteome, and chromatin with chemical modifications representing the epigenome (B). Reference-based alignment, showing sequencing reads stacked over a reference genome coordinate axis (C). Genome assembly, in which clusters of overlapping reads form contigs that are joined into an assembled scaffold (D). Created with BioRender.com.
 :::
 
 ## Why bioinformatics exists
 
-As sequencing costs have fallen, generating genome‑scale data has become easier and cheaper than analyzing, storing, and interpreting it, creating a **bioinformatic bottleneck** in many projects @green2011; @collins2003. The price of whole‑genome sequencing has dropped orders of magnitude since the Human Genome Project, but high‑quality analysis still requires computational expertise, careful data management, and appropriate statistical methods @green2011.
+As sequencing costs have fallen, generating genome‑scale data has become easier and cheaper than analyzing, storing, and interpreting it, creating a **bioinformatic bottleneck** in many projects @green2011; @collins2003 (see @fig-bottleneck). The price of whole‑genome sequencing has dropped orders of magnitude since the Human Genome Project, but high‑quality analysis still requires computational expertise, careful data management, and appropriate statistical methods @green2011. At the same time, public repositories, such as GenBank, have grown to tens of trillions of bases and billions of sequences, so simply storing and querying genomic data has become a large‑scale data‑management challenge (genomic databases will be revisited in Chapter 4).
+
+This data deluge is often compared to Moore’s law, which describes a long-term trend in the computer hardware industry that involves the doubling of 'compute power' every two years. Technology improvements that 'keep up' with Moore's Law are widely regarded to be doing exceedingly well, making it useful for comparison. Sequencing prices have fallen by more than six orders of magnitude since the Human Genome Project (see @fig-genomics-timeline), easily outpacing these expected trends in improvements to general computing hardware ([NHGRI DNA Sequencing Costs](https://www.genome.gov/about-genomics/fact-sheets/DNA-Sequencing-Costs-Data)). 
 
 At the same time, concerns about a **reproducibility crisis** in biomedical and computational research have highlighted the need for transparent, well‑documented workflows @pevsner2015. In genomics, this includes clearly recording data sources and metadata, tracking software versions and parameters, using version control and scripted pipelines where possible, and depositing both data and code in accessible repositories so that others can repeat and extend analyses @pevsner2015; @hotaling2021; @marks2021.
 
@@ -54,13 +51,9 @@ The software and methods landscape in bioinformatics changes rapidly: new alignm
 ::: callout-note
 #### Figure 1.3 – From data generation to interpretation
 
-A flow diagram with two highlighted “pinch points”:
+![Bioinformatics Bottleneck](images/Figure 1.3 Bioinformatic Bottleneck.png){#fig-bottleneck}
 
--   Left: sequencing (library prep and instrument) labelled “easy to buy.”\
--   Middle: data processing and analysis (QC, alignment/assembly, variant calling, statistics) labelled “bioinformatic bottleneck.”\
--   Right: interpretation, visualization, and publication.
-
-Below the middle, icons for documentation, code, and version control emphasize reproducibility.
+From data generation to interpretation and publication. Sequencing instruments generate large volumes of raw DNA reads from prepared libraries, a step that is now relatively easy to purchase and scale. The resulting data must then pass through a bottleneck of data cleaning, filtering, and analysis—where analysts perform quality control, alignment or assembly, and downstream processing while maintaining documentation, reproducible code, and version control. Finally, cleaned and analyzed results are interpreted, visualized, and synthesized into figures, genomic summaries, and manuscripts for publication and broader communication. Created with BioRender.com.
 :::
 
 ## What makes someone a "bioinformatician"?
@@ -91,7 +84,7 @@ Students will be exposed to web‑based tools, the Unix command line, and exampl
 
 Genome analysis underpins a wide range of applications in **medical genetics**, including identifying variants that contribute to Mendelian disorders, studying complex disease risk, and informing targeted therapies @green2011. In **agriculture**, genomic selection and genome‑wide association studies accelerate breeding by linking genetic markers to traits such as yield, stress tolerance, and disease resistance in crops and livestock @marks2021. The role of computational biologists varies significantly too, from support staff to project leaders @yanai_computational_2017. 
 
-In **ecology and evolution**, reference genomes and population‑scale sequencing allow researchers to study adaptation, speciation, and biodiversity at unprecedented resolution, including for non‑model organisms @hotaling2021; @marks2021. In **public health**, genomic surveillance of pathogens supports outbreak tracking, antimicrobial resistance monitoring, and the design of diagnostics and vaccines @green2011.
+In **ecology and evolution**, reference genomes and population‑scale sequencing allow researchers to study adaptation, speciation, and biodiversity at unprecedented resolution, including for non‑model organisms @hotaling2021; @marks2021. In **public health**, genomic surveillance of pathogens supports outbreak tracking, antimicrobial resistance monitoring, and the design of diagnostics and vaccines @green2011 (@fig-equity).
 
 ### Three perspectives on genomics and bioinformatics
 
@@ -134,28 +127,23 @@ Early next week, you will read a recent genomics paper on antifreeze proteins in
 
 As you read it, you will be able to connect the analyses in that paper to the three perspectives (cell, organism, tree of life) and to the balance between hypothesis‑driven and discovery‑driven genomics discussed above.
 
-These opportunities come with ethical, legal, and social questions. For human data, key concerns include informed consent, privacy, data security, and the potential for misuse or discrimination based on genetic information @green2011. For non‑human genomics, recent assessments of animal and plant genome projects have emphasized inequities in who leads sequencing efforts, how benefits and credit are shared, and how historical patterns of colonialism and “parachute science” continue to shape access to biodiversity and genomic resources @hotaling2021; @marks2021.
+These opportunities come with ethical, legal, and social questions (@fig-equity). For human data, key concerns include informed consent, privacy, data security, and the potential for misuse or discrimination based on genetic information @green2011. For non‑human genomics, recent assessments of animal and plant genome projects have emphasized inequities in who leads sequencing efforts, how benefits and credit are shared, and how historical patterns of colonialism and “parachute science” continue to shape access to biodiversity and genomic resources @hotaling2021; @marks2021.
 
 International agreements and community norms now guide data sharing and **equity considerations**, encouraging collaborations that involve local researchers, respect Indigenous knowledge, and support capacity building in regions where study species are found @hotaling2021; @marks2021. Throughout the course, case studies such as long‑term animal and plant genome surveys will be used to discuss how technical decisions, sampling strategies, and authorship practices connect to these broader ethical themes @hotaling2021; @marks2021; @collins2003.
 
 ::: callout-note
 #### Figure 1.4 – Applications and equity
 
-A four‑quadrant diagram:
+![Equity](images/Figure_1.4_Equity.jpeg){#fig-equity width="50%"}
 
--   Medical genetics\
--   Agriculture and food security\
--   Ecology and conservation\
--   Public health and pathogen genomics
-
-Around the outside, icons for consent, privacy, benefit‑sharing, and global participation remind students that technical choices exist within an ethical and social context.
+A four‑quadrant schematic illustrates major application areas of genomics: medical genetics (top left), agriculture and food security (top right), ecology and conservation (bottom left), and public health and pathogen genomics (bottom right). Each quadrant contains simple domain‑specific icons (for example, DNA and a clinical symbol, crop plants, ecosystems, and pathogens) to emphasize the diversity of contexts in which genomic data are generated and used. Surrounding the central square, icons for consent, privacy, benefit‑sharing, and global participation highlight that technical choices in genomic research and applications are embedded within ethical, legal, and social frameworks that should be considered across all domains. Figure concept and artwork generated with an AI‑assisted illustration tool.
 :::
 
 ## Ethics spotlight – timelines, cases, and trust
 
 *Note: The goal of this section is to situate genomics in its historical and ethical context in a factual, objective way, without assigning blame to students or asking them to endorse any particular viewpoint.*
 
-The timeline in Figure @fig-genomics-timeline begins the story of milestones in human genomics with the Belmont Report @belmont1979, developed after a series of widely criticized research practices including the Tuskegee syphilis research study. In that study, conducted in Alabama, effective treatment was withheld from Black men with syphilis; the case is now frequently cited in bioethics as a reason for today’s requirements for informed consent and ongoing oversight of human‑subjects research @reverby2009tuskegee.
+The timeline in @fig-genomics-timeline begins the story of milestones in human genomics with the Belmont Report @belmont1979, developed after a series of widely criticized research practices including the Tuskegee syphilis research study. In that study, conducted in Alabama, effective treatment was withheld from Black men with syphilis; the case is now frequently cited in bioethics as a reason for today’s requirements for informed consent and ongoing oversight of human‑subjects research @reverby2009tuskegee.
 
 Several later examples illustrate how questions about consent, privacy, and benefit sharing continue to arise in genetics and genomics. Henrietta Lacks’s cervical tumor cells were collected in 1951 without her knowledge or consent, leading to the HeLa cell line and, decades later, to debates about privacy and family involvement when her cells and genome sequence were shared widely @marks2016hela; @skloot2010henrietta; @lacks2022history. Members of the Havasupai Tribe in Arizona provided blood samples for diabetes research and later learned their samples had also been used in studies of topics such as schizophrenia and population origins, prompting a lawsuit, a 2010 settlement, and renewed discussion of how consent forms describe future uses of samples @havasupai2012genomicjustice. Human subject research is now strictly regulated, even in the context of survey-based work, through institutional review boards (IRB) that have guidelines to protect consent and reduce harm @havasupai2013irb. At Auburn, the AU Human Research Protection Program is responsible for the ethical and regulatory requirements related to the protection of human participants in research. The Program includes the Institutional Official (IO; Senior Vice President for Research & Economic Development), the Institutional Review Board (IRB) for the protection of human subjects in research, and the Office of Research Integrity & Compliance (ORIC).
 
@@ -171,18 +159,6 @@ Early labs focus on basic data formats, quality control, and simple workflows fo
 
 In parallel, a **mock grant review panel** assignment exposes students to how genomics proposals are evaluated: what makes a question compelling, whether the proposed analyses are appropriate and feasible, and how reviewers weigh innovation, rigor, and broader impacts. Together, these components—lectures, integrated readings, labs, the project, and the review panel—are designed to help students move from passively reading about genomes to actively **reading, analyzing, and critiquing** genomic data and studies.
 
-::: callout-note
-#### Figure 1.5 – How course components fit together
-
-A course‑level map with three concentric rings:
-
--   Inner ring: core skills (data formats, QC, alignment/assembly, variant interpretation).\
--   Middle ring: labs and the semester‑long project where those skills are practiced.\
--   Outer ring: readings and the mock grant panel that develop critical evaluation and communication.
-
-Arrows indicate how each activity reinforces the central goal of becoming fluent in “reading genomes.”
-:::
-
 ## A Consistent Example
 
 Throughout the semester, the class will return again and again to a single yeast genome sequence dataset, following it from raw sequencing reads all the way to biological interpretation. The dataset comes from an experimental evolution study in *Saccharomyces cerevisiae* in which populations were propagated for many generations under defined conditions, allowing standing genetic variation to be reshaped by selection in a controlled laboratory environment @burke_standing_2014. To keep the full workflow manageable, the course uses the compact sacCer3 reference genome (about 12 Mb across 16 chromosomes), which makes it feasible to run industry-standard bioinformatics workflows on the high-performance computing cluster within realistic time and memory limits.
@@ -191,7 +167,7 @@ In Lab 4, you will download the yeast reads from the NCBI SRA accession SRR16936
 
 Most of the heavy lifting on the command line will be handled by provided shell scripts, so students can focus on understanding what each step does and what each output means rather than on debugging complex pipelines from scratch. The overarching goals are to help them feel comfortable working with real whole-genome data on a high-performance cluster, to connect the dots between textbook methods and concrete files like FASTQ, BAM, and VCF, and to practice reading genomes as biological documents—writing clear methods, reporting variants in a biomedical context, and reasoning about how specific genetic changes might shape evolutionary trajectories in a model eukaryote.
 
-More on the GATK workflow and these file formats can be found in subsequent chapters, so do not worry so much about the details right now. You can also read more about this semester dataset in [Appendix @sec-yeast].
+More on the GATK workflow and these file formats can be found in subsequent chapters, so do not worry so much about the details right now. You can also read more about this semester dataset in [Appendix C](appendixC.qmd).
 
 ## Looking ahead to Chapter 2
 

@@ -8,15 +8,14 @@ csl: nature.csl
 
 Next-generation sequencing (NGS) generates massive datasets that flow through standardized workflows from raw reads to biological insights [@pevsner2015]. Understanding file formats is essential for experimental design, as each format encodes metadata critical for downstream analysis decisions.
 
-Figure \@ref(fig-ngs-workflow) shows the standard NGS pipeline, where FASTQ files capture raw sequencing data, SAM/BAM store alignments, and VCF summarizes variants.
+Figure @fig-ngs-workflow shows the standard NGS pipeline, where FASTQ files capture raw sequencing data, SAM/BAM store alignments, and VCF summarizes variants.
 
 ::: callout-note
 #### Figure 3.1 – NGS Workflow
 
 ![Standard NGS workflow](images/Fig_3_1_ngs_workflow.png){#fig-ngs-workflow width="25%"}
 
-Workflow for next-generation sequence experiments: from experimental design to data
-analysis with the standard file formats for each step. Each file format is described in depth in this chapter and in the table below.
+Workflow for next-generation sequence experiments: from experimental design to data analysis with the standard file formats for each step. Each file format is described in depth in this chapter and in the table below. Created with BioRender.com.
 :::
 
 Additionally, visualizing next-generation sequence data as well as genomic arithmetic can be done using genome viewer softwares, such as Integrated Genome Viewer (IGV), which we will cover later in this course. Another common file format in genomics is the BED format, which can be used with genome views, to perform various genome analyses, and to make custom tracks in genome browsers.
@@ -40,6 +39,15 @@ The goal of this chapter is to familiarize you with these four major file format
 | GFF/GTF | General Feature Format / Gene Transfer Format | Annotation formats describing genomic features like genes, transcripts, and exons | gffread, bedtools, AGAT |
 | CRAM | CRAM | Highly compressed alternative to BAM with reference-based compression | SAMtools, htslib |
 | bigWig/bigBed | \- | Indexed binary formats for dense continuous data (bigWig) and interval data (bigBed) | UCSC tools (bigWigToBedGraph), deepTools |
+
+::: callout-note
+## Lab connections
+
+This chapter’s file formats and QC concepts feed directly into the first two labs:
+
+-   **[Lab 1](Lab01.qmd)** asks you to identify how published genome analysis papers report assembly metrics and QC, and to relate those choices back to FASTQ, BAM, and VCF concepts.
+-   **[Lab 2](Lab02.qmd)** asks you to design a genome project that makes concrete decisions about coverage, platforms, and workflows—decisions that will be encoded in FASTQ, BAM, VCF, and BED files.
+:::
 
 ## FASTA: The Foundation of Sequence Data
 
@@ -138,7 +146,13 @@ PHRED scores were introduced in 1988 by Phil Green and colleagues to describe ba
 
 Quality scores use Phred scale: $Q = -10\log_{10}(P_e)$ where $P_e$ is error probability [@pevsner2015]. ASCII encoding adds +33 offset for printable characters:
 
+::: callout-note
+#### Figure 3.2 – Phred-to-ASCII conversion
+
 ![Phred-to-ASCII conversion (from Pevsner 9.8)](images/Figure_9_8_Pevsner.jpg){#fig-phred-ascii width="75%"}
+
+FASTQ quality scores use ASCII coding symbols. The chart shows ASCII symbols (Char columns indicate characters) corresponding to decimal notation 1–127. The characters for 0–31 (which are not used for printing) are not shown. Decimal 31 is a space, and subsequent characters (decimal 33–126) are used to represent base quality scores in the Sanger FASTQ format. For example, if base calls GATC have quality scores of 28, 30, 25, and 31 then the symbols for their quality scores are =?:@. Adapted from http://www.lookuptables.com. Source @pevsner2015.
+:::
 
 Because genome sequencing has so much data, the cutoffs for Phred scores require added stringency. As is shown in the table below, a typical quality score of 20, which is recommended in most pipelines, ensures a 99% accuracy. Still, this equates to \~100 million sequencing errors in a standard dataset of 10 billion base pairs of DNA. Later, in Chapter 10, we will discuss variant filtering in more detail where additional parameters are used to filter data beyond simply Phred Quality scores of individual base calls.
 
@@ -173,7 +187,13 @@ FastQC software (@fastqc) provides quality control statistics. Data are imported
 
 -   *k-mer content*: this shows data for a series of 5-mers (strings of 5 nucleotides) plotted by relative enrichment (y axis) versus position in read (in base pairs; x axis). The expected 5-mer frequency (determined from the base composition of the entire sequence) can be compared to the observed frequency. k-mer counts may be reduced (e.g., when poor quality reads reduce the counts for duplicated sequences) or enriched (e.g., when 5-mers are overrepresented at particular locations along a read, such as in the vicinity of a tag added to the 5′ end of sequencing reads).
 
+::: callout-note
+#### Figure 3.3 – FastQC Sample Output
+
 ![FastQC Sample Output](images/Fig_3_3_fastqc.png){#fig-fastqc-plots width="75%"}
+
+Sample FastQC output showing a sharp decline in Phred Quality scores along sequence length. This is indicated with a red X in the main panel and indicates a failed quality check. This would typically indicate that trimming of read ends is required to improve overall quality of read data prior to alignment. [Source](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+:::
 
 -   **Per base sequence quality**: Boxplots by position; expect Q\>30 early, decline to Q20+ at ends
 -   **Per base sequence content**: Even A/C/G/T; 5' bias = adapters\
@@ -219,6 +239,14 @@ awk '{sum+=$3; sumsq+=$3*$3} END {print "Stdev = ",sqrt(sumsq/GENOME_SIZE - (sum
 
 The next major step in a basic genome analysis pipeline is alignment, which we will go into a lot of depth in subsequent chapters. When FastQ files are aligned to a reference genome, the output is a SAM (Sequence Alignment/Map) file. This file format is a compressed file that stores read alignments. It can be further compressed into its binoary form BAM [@pevsner2015]. Finally, an even more compressed version is a CRAM (Compressed Reference-oriented Alignment Map) file which was introduced in 2011. CRAM is a compressed columnar file format for storing biological sequences aligned to a reference sequence. For the purposes of this chpater, we will focus on the SAM format. BAM files cannot be directly viewed due to their binary nature.
 
+::: callout-note
+## Lab connections
+
+In **[Lab 4](Lab04.qmd)** you will provide a practical opportunity to have hands-on experience working with raw fastq files on the Alabama Super Computer. You will also experience moving between these formats as you generate a bam alignment. You will also index a fasta formatted genome file.
+
+This upcoming lab will also allow you to use popular bioinformatics tools to both generate these types of files and perform standard quality control analysis. You will also first encounter the yeast genomics dataset we will be using throughout the semester and be able to practice interpreting QC outputs for a real dataset @burke_standing_2014. See [Appendix C](appendixC.qmd) for more detail.
+:::
+
 ### The SAM/baM Format and SAMtools
 
 The SAM (sequence alignment/map) format is commonly used to store next-generation sequence alignments. SAM files can be easily converted to the BAM (binary alignment/map) format. BAM is a binary representation of SAM, compressed by the BGZF library, and contains the same information as the SAM file. Because they are easily interchangeable, we may refer to the SAM/BAM format. This format is very popular, with many datasets available in repositories (such as the Sequence Read Archive at NCBI, the 1000 Genomes Project, and the Cancer Genome Atlas).
@@ -232,7 +260,37 @@ The SAM format includes a header section (having lines beginning with the charac
 -   remove PCR duplicates (this procedure, called duplicate marking or “dedupping,” removes reads that are redundant); and
 -   call two classes of variants: single-nucleotide polymorphisms (SNPs) and small indels.
 
+::: {.callout-tip collapse="true"}
+## Sample BAM File
+
+Using SAMtools to view sequence reads from a BAM file at genomic coordinates of interest. By using the samtools tview command you enable a genome-wide view of the reads. Using commands accessed via a help menu, you can view the same reads colored by (a) base quality or (b) mapping quality. The read depth is relatively low to the left side. The quality scores are colored blue (for 0–9), green (10–19), yellow (20–29), or white (≥30). Underlining represents secondary or orphan
+reads. This viewer is useful to quickly assess the quality at genomic loci of interest, such as positions having single-nucleotide variants.
+
+![Samtools tview](images/Fig_3.4_SAMtools_tview.png){#fig-sam width="75%"}
+:::
+
+While it is not typical to view BAM files natively, it is helpful to review the anatomay of a sam file and the various ways to view this file format using the bioinformatics software `samtools`.
+
+::: callout-note
+#### Figure 3.4 – Anatomy of a SAM File
+
 ![SAM alignment anatomy (Pevsner 9.13)](images/Figure_9_13_Pevsner.jpg){#fig-sam-anatomy width="75%"}
+
+Anatomy of a SAM file. The `samtools view` command was used in Linux to
+view a BAM file, and the `| less` command sends the output to a single screen of data at a time. (A typical SAM/BAM file has millions of rows.) A single record of the output is shown, with 12 features as indicated.
+
+The drop down menu above shows a sample output of `samtools tview` on the yeast genome sample.
+:::
+
+The bioinformatics tool [SAMtools](https://www.htslib.org/) is a suite of programs for interacting with high-throughput sequencing data @danecek_twelve_2021. It consists of three separate repositories:
+
+- Samtools: Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format
+- BCFtools: Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants
+- HTSlib: A C library for reading/writing high-throughput sequencing data 
+
+Samtools and BCFtools both use HTSlib internally, but these source packages contain their own copies of htslib so they can be built independently. 
+
+These can be used on the HPC which we will do in labs this semester. But you can also install these locally. On a Mac, you may use the package manager [HomeBrew](https://brew.sh/) to install `samtools`. If you are on Windows, first install WSL (Windows Subsystem for Linux) to get a full Linux environment. Then, the easiest approach would be to use a pacakge manager like `conda` which will also handle dependencies automatically. 
 
 ::: callout-tip
 ## Verification of Sam/Bam files using Samtools
@@ -263,6 +321,14 @@ Sample output file from running flagstat on a bam file:
 Once FASTQ files from your sample have been aligned to a reference genome, it may be assumed that variants (both single-nucleotide variants and indels) can be called by inspecting the alignment and tabulating the differences. The problem with this approach is that many sources of errors occur in the process of sequencing and performing alignment: bias may occur in how libraries are prepared and amplified; sequencing technologies all have associated error rates; and mapping has error rates.
 
 VCF tabulates variants post-alignment (GATK/SAMtools) [@pevsner2015; @danecek_variant_2011].The VCF format was developed under the 1000 Genomes Project and is currently maintained by the Global Alliance for Genomics & Health (GA4GH). For practical guidance on working with VCF files using BCFtools, see @learning_vcf.
+
+::: callout-note
+## Lab connections
+
+In **[Lab 7](Lab07.qmd)** you will have an opportunity to continue your practical exposure to these file formats as you take the next step in your genome analysis of the yeast genomics dataset. On the Alabama Super Computer, you will get hands-on experience using GATK to call variants from the BAM file you generate in **[Lab 4](Lab04.qmd)** creating a VCF file. 
+
+This later lab will also guide you in filtering and evaluating variants for quality. You can refer back to this chapter whenever you encounter new datasets or need to interpret QC plots and file structures in labs.
+:::
 
 ### VCF File Format Details
 
@@ -481,18 +547,6 @@ BED files serve as a fundamental format for displaying custom annotation tracks 
 For large datasets, BED files can be converted to **bigBed** format [@kent_bigwig_2010], a compressed, indexed binary format that enables rapid visualization of millions of features without uploading entire datasets to the browser.
 
 As we transition to Chapter 4 on Genome Browsers, understanding BED format provides the foundation for effectively visualizing and interpreting genomic data. Genome browsers use BED-formatted tracks to display genes, regulatory elements, variants, and experimental results in their chromosomal context, making BED fluency essential for modern genomics research.
-
-## Lab connections
-
-::: callout-important
-This chapter’s file formats and QC concepts feed directly into several labs:
-
--   **Lab01 (Section @sec-lab01)** asks you to identify how published genome analysis papers report assembly metrics and QC, and to relate those choices back to FASTQ, BAM, and VCF concepts.
--   **Lab03 (Section @sec-lab03)** asks you to design a genome project that makes concrete decisions about coverage, platforms, and workflows—decisions that will be encoded in FASTQ, BAM, VCF, and BED files.
--   **Labs 4, 7, & 8** : The practical labs using the yeast experimental evolution dataset (Appendix @sec-yeast) will give you hands‑on experience moving between these formats and interpreting QC outputs for a real dataset [@burke_standing_2014; @pevsner2015].
-
-You can refer back to this chapter whenever you encounter new datasets or need to interpret QC plots and file structures in labs.
-:::
 
 ------------------------------------------------------------------------
 

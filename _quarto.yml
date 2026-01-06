@@ -1,6 +1,7 @@
 project:
-  type: book
-
+  type: website
+  output-dir: docs
+  
 book:
   title: "Reading Genomes: A Companion to Bioinformatics and Genome Analysis"
   author: "Laurie Stevison"
