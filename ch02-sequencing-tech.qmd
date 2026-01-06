@@ -20,7 +20,7 @@ Along the way, we connect the historical genomics timeline from Chapter 1 to cur
 
 ## From timelines to laboratories
 
-Figure 1.1 in Chapter 1 traced the history of genomics from the discovery of DNA as the hereditary molecule through Sanger sequencing, the Human Genome Project, high‑throughput short‑read platforms, and the emergence of long‑read technologies such as PacBio and Oxford Nanopore.<!-- cite ch01 figure --> Each milestone reflects two intertwined trends: improvements in chemistry and instrumentation, and increasingly sophisticated computational methods required to turn raw signals into usable sequence data [@pevsner2015; @vandijk2018].
+Figure 1.1 in Chapter 1 traced the history of genomics from the discovery of DNA as the hereditary molecule through Sanger sequencing, the Human Genome Project, high‑throughput short‑read platforms, and the emergence of long‑read technologies such as PacBio and Oxford Nanopore @fig-genomics-timeline. Each milestone reflects two intertwined trends: improvements in chemistry and instrumentation, and increasingly sophisticated computational methods required to turn raw signals into usable sequence data [@pevsner2015; @vandijk2018].
 
 In practice, most modern genome projects follow a workflow similar to the one you saw in Lecture 2: experimental design and library preparation, sequencing on one or more platforms, quality control, alignment or assembly, variant calling or annotation, visualization, and long‑term data storage [@pevsner2015]. This chapter focuses primarily on the first half of that pipeline up to the point where reads are ready to be aligned or assembled; later chapters return to algorithms and downstream analyses in more detail.
 
@@ -32,55 +32,129 @@ Chapter 1 emphasized *what* we want from genomes—reference assemblies, annotat
 
 ## First‑generation sequencing: Sanger and BAC‑by‑BAC
 
-First‑generation sequencing refers to the Sanger dideoxy method, which dominated from the late 1970s through the early 2000s and underpinned the Human Genome Project [@pevsner2015]. Sanger sequencing uses a primer, DNA polymerase, and a mixture of normal dNTPs and fluorescently labeled chain‑terminating ddNTPs; whenever a ddNTP is incorporated, extension stops and the fragment length encodes the position of that base [@pevsner2015]. Fragments are separated by capillary electrophoresis and detected by their fluorescent signals, producing reads of roughly 500–1000 bp with error rates typically below 1% [@pevsner2015].
+First‑generation sequencing refers to the Sanger dideoxy method, which dominated from the late 1970s through the early 2000s and underpinned the Human Genome Project @pevsner2015. In Sanger sequencing, a single‑stranded DNA template is copied by DNA polymerase in the presence of a primer, the four normal deoxynucleotides (dNTPs), and small amounts of chain‑terminating dideoxynucleotides (ddNTPs) labeled with distinct dyes @pevsner2015. A normal dNTP has a 3′‑OH group on the deoxyribose sugar that allows the next nucleotide to be added, whereas a ddNTP lacks this 3′‑OH, so once incorporated no further extension is possible and the growing strand stops at that base.
 
-Because each capillary generates one read at a time, Sanger sequencing is low throughput and expensive per base, but its long reads and high accuracy remain useful for targeted validation and small‑scale projects [@pevsner2015]. Historically, large genomes were sequenced using BAC‑by‑BAC strategies: large genomic fragments were cloned into bacterial artificial chromosomes, ordered along chromosomes using genetic and physical maps, and individually shotgun‑sequenced and assembled into contigs before being merged into chromosome‑scale scaffolds [@pevsner2015; @vandijk2018].
+Because polymerase chooses between dNTPs and ddNTPs at random, the reaction generates a **nested set** of fragments that all start at the same primer and end at every possible position where that base occurs in the template @pevsner2015. Earlier protocols ran four separate reactions (one per ddNTP) and resolved the fragments on a polyacrylamide gel, with bands visualized by autoradiography; later instruments combined fluorescently labeled ddNTPs into a single reaction and read fragment size and dye color as they migrated past a laser in a capillary, automatically converting peaks into a base‑called chromatogram @pevsner2015. Modern capillary Sanger sequencing routinely yields reads of 500–1000 bp with error rates below 1%, which is why it remains the “gold standard” for validating variants and small loci today @pevsner2015.
 
-From a modern perspective, Sanger’s legacy is conceptual. It established the idea that sequencing is a combination of **chemistry** (how nucleotides are read) and **signal processing** (how those events are turned into digital base calls with quality scores) [@pevsner2015]. Those same elements recur in second‑ and third‑generation platforms, even as the physics of detection change.
+From a whole‑genome perspective, however, Sanger chemistry is inherently **low throughput**. Each capillary run produces one read for one template, so thousands to millions of reactions and capillaries are required to cover a large genome @pevsner2015. Even with high‑density instruments like the ABI PRISM 3700, which multiplexed 96 capillaries and automated loading, producing enough sequence for a draft human genome required years of continuous operation and substantial personnel, reagent, and instrument costs @pevsner2015.
+
+### BAC‑by‑BAC genome sequencing
+
+To scale Sanger sequencing to large genomes, the Human Genome Project and similar efforts used a **BAC‑by‑BAC** strategy. Genomic DNA was first fragmented into ~100–200 kb pieces and cloned into bacterial artificial chromosomes (BACs), producing a library of large‑insert clones that tiled across each chromosome @pevsner2015. Genetic linkage maps and physical maps (for example, restriction fragment patterns) were then used to order overlapping BACs along the chromosome, creating a scaffold or “tiling path” that indicated which region of the genome each clone represented @pevsner2015 @vandijk2018.
+
+Each BAC in this tiling path was then sequenced by **shotgun Sanger sequencing**: the BAC insert was sheared into smaller fragments, cloned again, and hundreds to thousands of individual Sanger reads were generated and assembled into contigs using overlap‑layout‑consensus algorithms @pevsner2015. Finishing a BAC required closing gaps and resolving repeats by designing new primers, resequencing troublesome regions, and manually inspecting assemblies, often iterating many times to obtain a contiguous, high‑quality sequence @pevsner2015. Finally, finished BAC sequences were stitched together along the tiling path, using the BAC map to determine their order and orientation and filling any remaining gaps as resources allowed @pevsner2015 @vandijk2018.
+
+This pipeline produced extremely accurate reference sequences, but it illustrates why Sanger‑era genomics was **inefficient and costly** for whole genomes. Every step—constructing BAC libraries, mapping clones, performing thousands of Sanger reactions per BAC, and manually finishing assemblies—was labor‑intensive and required large teams and dedicated sequencing centers @pevsner2015 @vandijk2018. The Human Genome Project consumed over a decade and billions of dollars partly because Sanger chemistry and BAC‑by‑BAC strategies, while reliable, simply could not deliver base‑pair–level coverage at the scale and speed that later high‑throughput technologies made routine @pevsner2015.
+
+From a modern perspective, Sanger’s legacy is conceptual. It established the idea that sequencing is a combination of **chemistry** (how nucleotides are incorporated and terminated) and **signal processing** (how fragment sizes and dye colors are turned into digital base calls with quality scores) @pevsner2015. Those same ideas—polymerase‑based synthesis, chain termination or detection events, and computational basecalling—reappear in second‑ and third‑generation platforms even as the physics of detection and the scale of data generation change @vandijk2018.
 
 ## Second‑generation sequencing: short reads at scale
 
-Second‑generation or “next‑generation” sequencing (NGS) refers to platforms that produce millions to billions of short reads in parallel by imaging clonal clusters or beads [@pevsner2015]. The most widely used technology is Illumina’s sequencing‑by‑synthesis chemistry, in which random DNA fragments with adapters are immobilized on a flow cell, amplified by bridge PCR, and extended one base at a time using fluorescent reversible terminator nucleotides [@pevsner2015].
+Second‑generation or “next‑generation” sequencing (NGS) refers to platforms that produce millions to billions of short reads in parallel by imaging clonal clusters or beads @pevsner2015. Several competing technologies appeared in the mid‑2000s—454 pyrosequencing (Roche), Solexa/Illumina sequencing‑by‑synthesis, Applied Biosystems SOLiD sequencing‑by‑ligation, and later Ion Torrent’s semiconductor‑based chemistry—each with its own way of coupling nucleotide incorporation to a detectable signal @pevsner2015.
 
-Modern Illumina instruments routinely generate paired‑end reads of 150–300 bp, with total outputs ranging from a few gigabases (e.g., MiSeq) to multiple terabases (e.g., NovaSeq) per run at very low per‑base error rates [@pevsner2015]. Each cycle incorporates a single labeled nucleotide, images the flow cell, and then chemically removes the terminator to allow the next base to be added, producing intensity traces that are converted into base calls and PHRED‑scaled quality scores [@pevsner2015].
+### Early NGS chemistries and why Illumina won
 
-Short‑read NGS revolutionized genomics by making whole‑genome, whole‑exome, and RNA‑seq experiments affordable and practical for many labs [@green2011; @pevsner2015]. At the same time, the short read lengths and PCR‑based library preparation introduce characteristic challenges:
+454 pyrosequencing amplified DNA on beads in emulsion PCR and flowed one unlabeled dNTP across a picotiter plate at a time; incorporation released pyrophosphate, which was converted to light via coupled enzymatic reactions, so peak height corresponded to the length of a homopolymer run @pevsner2015. The platform’s early strength was **read length**: several hundred bases when early Illumina reads were often \<50 bp. However, homopolymer runs were error‑prone, throughput and scalability lagged behind, and the cost per base remained high, so 454 was eventually discontinued as Illumina read lengths and yields improved @pevsner2015 @vandijk2018.
 
--   **Repeats and structural variation**: reads much shorter than common repeats or structural variants cannot uniquely resolve those regions, leading to fragmented de novo assemblies and reduced sensitivity to large insertions, deletions, and rearrangements [@vandijk2018; @vandijk2023].\
--   **Phasing**: short reads often cannot connect variants that are far apart on the chromosome, complicating the task of assigning alleles to maternal vs paternal haplotypes [@vandijk2018; @vandijk2023].\
--   **GC bias**: PCR and cluster amplification are less efficient at extreme GC contents, reducing coverage and increasing false negatives in GC‑rich or GC‑poor regions [@vandijk2018].
+SOLiD also used bead‑based clonal amplification but read sequence via ligation of fluorescently labeled oligonucleotide probes, encoding each base in **color space** rather than direct base calls @pevsner2015. This design provided theoretical error‑checking redundancy, but it came with practical problems: file sizes were large, interpretation required extra decoding steps, and the overall error rate and effective read length lagged behind Illumina’s steadily improving platforms @pevsner2015. Color‑space quality scores and formats were cumbersome enough that many downstream tools never fully supported them, which further reduced SOLiD’s appeal.
 
-These limitations motivated the development of third‑generation long‑read technologies, as well as algorithmic advances (e.g., better mappers, local assembly around structural variants) that you will encounter later in the course.
+Ion Torrent eliminated optics entirely and detected the pH change (proton release) that accompanies nucleotide incorporation in semiconductor wells, trading read length and homopolymer performance for cheaper, smaller instruments @pevsner2015. It remains useful in some targeted amplicon and diagnostics settings but has not displaced Illumina for large‑scale genomics.
+
+In contrast, Illumina’s (originally Solexa’s) sequencing‑by‑synthesis chemistry combined scalable throughput, a relatively simple short‑read error profile dominated by substitutions, and continuous improvements in read length, cost per base, and automation @pevsner2015 @vandijk2018. Over time this allowed Illumina to become the dominant short‑read platform used in research, clinical, and agricultural genomics.
+
+### Illumina sequencing‑by‑synthesis
+
+In the canonical Illumina workflow, genomic DNA (or cDNA) is fragmented and specialized adapters are ligated to both ends; these adapters provide binding sites for primers, indices (barcodes), and short sequences complementary to oligos covalently attached to the flow‑cell surface @pevsner2015. During **cluster generation**, fragments hybridize to one type of surface oligo and are copied by polymerase; the original strand is washed away, and the copy bends over to form a “bridge” to the second oligo type, where it is extended again. Repeated cycles of this bridge amplification create dense clusters of clonal copies of the original fragment, each tethered at both ends to the glass slide @pevsner2015.
+
+After amplification, one strand in each cluster is selectively cleaved and washed away and the remaining 3′ ends are blocked to prevent unwanted priming, leaving a lawn of single‑stranded clusters ready for sequencing. **Sequencing‑by‑synthesis** then proceeds in cycles: a sequencing primer anneals to each cluster, and a mix of four fluorescently labeled, 3′‑blocked reversible terminator nucleotides is added @pevsner2015. In each cycle, exactly one nucleotide is incorporated into each cluster based on the template base; a high‑resolution camera images the flow cell to record the color and intensity at each cluster; then the dye and blocking group are chemically removed so the next cycle can proceed. The number of cycles determines the read length, typically 75–300 bases for most current instruments @pevsner2015.
+
+Paired‑end libraries exploit the fact that both ends of each fragment have adapters. After Read 1 is complete and index reads have been acquired, the extension product is melted away, the intact template folds over to the opposite surface oligo, and a new primer initiates Read 2 from the other end of the fragment. Index 1 and index 2 reads interleaved into the run capture sample barcodes, allowing hundreds of libraries to be pooled in a single lane.
+
+::: callout-note
+#### Figure 2.1 – Illumina sequencing workflow
+
+![Overview of Illumina library preparation, bridge amplification, sequencing‑by‑synthesis, and imaging.](images/Fig-2-1-Illumina-Sequencing.jpg){#fig-illumina-workflow}
+
+This figure summarizes the four main stages of an Illumina run: library preparation with adapters, bridge amplification to form clusters, cyclic sequencing‑by‑synthesis with fluorescent nucleotides, and imaging to produce per‑cluster intensity traces that are converted into base calls. Scientists receive FASTQ files from these reads which will be covered more in the next chapter.
+:::
+
+### Throughput, evolution, and where sequencing happens now
+
+Modern Illumina instruments routinely generate paired‑end reads of 150–300 bp, with total outputs ranging from a few gigabases per run on benchtop systems (e.g., MiSeq) to many terabases per run on high‑end systems (e.g., NovaSeq) at very low per‑base error rates @pevsner2015. Each cycle’s fluorescence image is converted into intensity traces and then into base calls with associated PHRED‑scaled quality scores, which downstream tools use to weight alignments and variant calls; the FASTQ format that stores these calls and quality scores is introduced formally in Chapter 3.
+
+Illumina has continued to innovate even as long‑read platforms have matured. Patterned flow cells that regularize cluster positions, two‑channel or one‑channel dye schemes that reduce optical complexity, steadily higher cluster densities, and improved chemistries have all driven large gains in throughput and reductions in cost per base while maintaining or improving accuracy @vandijk2018 @vandijk2023. As a result, short‑read NGS remains the workhorse for high‑sample‑number studies—population resequencing, exomes, RNA‑seq, ChIP‑seq, and many clinical assays—even when long‑read data are used for assembly or structural variant discovery.
+
+In the early NGS era, many universities and research institutes operated their own sequencing cores with 454, SOLiD, and later Illumina instruments, employing dedicated staff to handle library preparation, runs, and first‑pass QC @pevsner2015. As instruments became larger, more expensive, and more specialized, and as commercial providers began to offer highly competitive pricing and turnaround times, many institutions shifted toward **outsourcing** most sequencing. At Auburn, for example, several labs still maintain older Illumina machines for small projects or pilot data, but most large‑scale sequencing is sent to external facilities such as Novogene, HudsonAlpha (Huntsville, Alabama), or similar providers that operate high‑throughput Illumina platforms at scale.
+
+### Strengths and limitations of short‑read NGS
+
+Short‑read NGS revolutionized genomics by making whole‑genome, whole‑exome, and RNA‑seq experiments affordable and practical for many labs @green2011 @pevsner2015. At the same time, the short read lengths and PCR‑based library preparation introduce characteristic challenges that you will see repeatedly in this course and that are discussed in detail by van Dijk et al. 2018 @vandijk2018:
+
+1. **Assembly**  
+   De novo assembly is difficult when reads are much shorter than common repeats and structural variants. Short reads cannot uniquely span many repeat families, so assemblers break contigs at these points, resulting in fragmented genomes with hundreds to thousands of contigs and potential mis‑assemblies in repeat‑rich regions @vandijk2018 @vandijk2023.
+
+2. **Phasing**  
+   In genetics, _phasing_ (or haplotype phasing) is the crucial process of determining which genetic variants are located together on the same haplotype during inheritance from each parent. Because short reads cover only a few hundred bases, they often cannot connect heterozygous variants that are far apart on the same chromosome copy. This makes it hard to determine which alleles co‑occur on the same haplotype (maternal vs paternal) and limits our ability to study compound heterozygosity and complex haplotypes in human and non‑human genomes @vandijk2018 @vandijk2023.
+
+3. **Transcript identification**  
+   RNA‑seq with short reads can quantify gene‑level expression well, but reconstructing full‑length transcript isoforms is challenging. Short reads provide only local views of exon–exon junctions, so many possible isoform combinations are consistent with a given set of reads unless sequencing depth is extremely high; long‑read transcriptomics (e.g., PacBio Iso‑Seq or nanopore cDNA/direct RNA) addresses this limitation by reading complete transcripts @vandijk2018 @vandijk2023.
+
+4. **GC bias**  
+   PCR amplification during library prep and cluster generation is less efficient at extreme GC contents. Regions that are very GC‑rich or GC‑poor therefore receive lower coverage, leading to false negatives in variant calling and uneven representation in assemblies and RNA‑seq experiments @vandijk2018.
+
+These limitations motivated both the development of third‑generation long‑read technologies and a wave of algorithmic advances—better mappers, local re‑assembly around structural variants, graph‑based references, and specialized isoform reconstruction tools—that you will encounter in Chapters 3–5 and beyond.
 
 ## Third‑generation sequencing: long reads and single molecules
 
-Third‑generation or long‑read sequencing (LRS) describes technologies that read individual DNA or RNA molecules in real time, producing reads that can span tens to hundreds of kilobases [@vandijk2018; @vandijk2023]. Two major players are Pacific Biosciences (PacBio) and Oxford Nanopore Technologies (ONT), both of which continue the timeline begun in Chapter 1 and Lecture 2.
+Third‑generation or long‑read sequencing (LRS) describes technologies that read individual DNA or RNA molecules in real time, producing reads that can span tens to hundreds of kilobases @vandijk2018 @vandijk2023. Two major players are Pacific Biosciences (PacBio) and Oxford Nanopore Technologies (ONT), alongside several synthetic and linked‑read approaches that attempted to bridge the gap between short‑ and long‑read data @vandijk2018 @scarano2024.
 
 ### PacBio SMRT and HiFi
 
-PacBio single‑molecule real‑time (SMRT) sequencing uses tiny observation chambers called zero‑mode waveguides (ZMWs), each containing a single DNA polymerase complexed with a circular “SMRTbell” template [@vandijk2018]. Fluorescently labeled nucleotides diffuse into the ZMW; as the polymerase incorporates bases, short pulses of fluorescence are recorded in real time and converted into a continuous long read [@vandijk2018; @vandijk2023].
+PacBio single‑molecule real‑time (SMRT) sequencing uses tiny observation chambers called zero‑mode waveguides (ZMWs), each containing a single DNA polymerase complexed with a circular “SMRTbell” template @vandijk2018. Fluorescently labeled nucleotides diffuse into the ZMW; as the polymerase incorporates bases, short pulses of fluorescence are recorded in real time and converted into a continuous long read @vandijk2018 @vandijk2023.
 
-Early SMRT runs produced long but noisy continuous long reads with error rates around 10–15%, dominated by random insertions and deletions [@vandijk2018]. Modern workflows instead emphasize **HiFi** (high‑fidelity) reads: the polymerase repeatedly circles the same insert, generating multiple passes from which a circular consensus sequence can be derived, trading some maximum length for accuracies ≥99.9% over 10–25 kb [@vandijk2023]. Because the polymerase kinetics depend on base modifications, SMRT sequencing can also directly detect certain DNA methylation events when analyzed with specialized software [@vandijk2018; @vandijk2023].
+Early SMRT runs produced continuous long reads (CLRs) tens of kilobases long but with raw error rates around 10–15%, dominated by random insertions and deletions @vandijk2018. Modern workflows instead emphasize **HiFi** (high‑fidelity) reads: the polymerase repeatedly circles the same insert, generating multiple passes from which a circular consensus sequence can be derived, trading some maximum length for accuracies ≥99.9% over 10–25 kb @vandijk2023 @scarano2024. Because polymerase kinetics depend on base modifications, SMRT sequencing can also directly detect certain DNA methylation events when analyzed with specialized software @vandijk2018 @vandijk2023.
+
+Improvements in polymerase engineering, fluorescent chemistry, and consensus algorithms have steadily moved PacBio from a noisy long‑read platform toward one that can rival or exceed Illumina for small‑variant calling in many contexts, while still providing long‑range information for assembly, phasing, and structural‑variant discovery @vandijk2018 @vandijk2023 @scarano2024.
+
+::: callout-note
+#### Figure 2.2 – PacBio SMRT sequencing
+
+*Suggested figure from* @vandijk2018 *or* @vandijk2023: schematic of a zero‑mode waveguide with a single polymerase at the bottom, a circular SMRTbell template, and fluorescent nucleotides entering the well. The figure should illustrate how individual incorporation events are detected in real time and how multiple passes around the circular template yield HiFi consensus reads.
+:::
 
 ### Oxford Nanopore sequencing
 
-ONT nanopore sequencing takes an entirely different physical approach. DNA or RNA molecules are threaded through protein nanopores embedded in a membrane that separates two ionic buffer chambers; as a stretch of nucleotides occupies the constriction of the pore, it perturbs the ionic current in a sequence‑dependent way [@vandijk2018]. The resulting “squiggle” of current values is decoded by basecalling software into nucleotide sequences.
+ONT nanopore sequencing takes an entirely different physical approach. DNA or RNA molecules are threaded through protein nanopores embedded in a membrane that separates two ionic buffer chambers; as a stretch of nucleotides occupies the constriction of the pore, it perturbs the ionic current in a sequence‑dependent way @vandijk2018. The resulting “squiggle” of current values is decoded by basecalling software into nucleotide sequences, using increasingly sophisticated deep‑learning models @vandijk2023 @scarano2024.
 
-In principle, nanopore read length is limited only by input molecule length and stability; with careful high‑molecular‑weight DNA extraction, reads with N50 values around 100 kb and individual reads approaching or exceeding one megabase have been reported [@vandijk2018; @vandijk2023]. Early nanopore chemistries had raw error rates of 20–30%, but newer pore designs (e.g., R10), duplex sequencing of both strands, and deep‑learning basecallers have improved simplex accuracies to \~99.6% and duplex accuracies toward 99.9% [@vandijk2023]. ONT can sequence native RNA directly as well as cDNA, enabling direct observation of some RNA modifications [@vandijk2018; @vandijk2023].
+In principle, nanopore read length is limited only by input molecule length and stability; with careful high‑molecular‑weight DNA extraction, reads with N50 values around 100 kb and individual reads approaching or exceeding one megabase have been reported @vandijk2018 @vandijk2023. Early nanopore chemistries had raw error rates of 20–30%, with systematic difficulties in homopolymers and certain motifs, but newer pore designs (for example, R10), duplex sequencing of both strands, and improved basecalling have raised simplex accuracies to around 99.6% and duplex accuracies toward 99.9% in favorable conditions @vandijk2023 @scarano2024. ONT can sequence native RNA directly as well as cDNA, and because the ionic‑current signal is sensitive to base modifications, the same data can be re‑analyzed to infer some DNA and RNA epigenetic marks @vandijk2018 @vandijk2023 @scarano2024.
+
+ONT’s product line ranges from pocket‑sized MinION devices powered by a laptop to large PromethION instruments with many flow cells running in parallel, making it possible to deploy sequencing in field settings as well as high‑throughput labs @vandijk2018 @vandijk2023.
+
+::: callout-note
+#### Figure 2.3 – Oxford nanopore sequencing
+
+*Suggested figure from* @vandijk2018 *or* @vandijk2023: cross‑section of a nanopore in a membrane with single‑stranded DNA passing through under an applied voltage, showing how different k‑mers produce distinct current levels (“squiggles”). The figure can also highlight how duplex or adaptive sampling workflows extend this basic concept.
+:::
+
+### Synthetic and linked‑read approaches
+
+Between “pure” short‑read and true single‑molecule long‑read platforms, several **synthetic long‑read** and **linked‑read** methods attempted to recover long‑range information from short reads. Examples include 10x Genomics Chromium linked‑reads, which partitioned high‑molecular‑weight DNA into microdroplets, barcoded fragments within each droplet, and then sequenced the barcoded fragments on an Illumina instrument so that short reads sharing a barcode could be associated with the same original long molecule @vandijk2018. Other approaches (for example, Moleculo/Illumina TruSeq Synthetic Long Reads) physically separated long molecules, amplified them, and computationally reassembled short reads back into “synthetic” long reads @vandijk2018.
+
+These methods were attractive because they worked with standard short‑read sequencers and avoided some of the early high error rates of PacBio and ONT. However, effective molecule lengths were constrained by DNA quality, barcode collisions and uneven coverage complicated analysis, and costs were not dramatically lower than true long‑read sequencing as PacBio and ONT matured @vandijk2018 @vandijk2023 @scarano2024. As consensus accuracies for HiFi and duplex nanopore reads climbed and per‑base costs fell, many synthetic and linked‑read products were discontinued or shifted toward niche structural‑variant and phasing applications.
 
 ### Comparing major platforms
 
-Table \@ref(tab:platform-comparison) summarizes key properties of the three platforms you will encounter most often in this course. Three practical differences matter: typical read length, error profile, and run scale [@pevsner2015; @vandijk2018; @vandijk2023]. Exact numbers vary with specific instruments and chemistries, but the qualitative trade‑offs are stable.
+Table \@ref(tab:platform-comparison) summarizes key properties of the three platforms you will encounter most often in this course. Three practical differences matter: typical read length, error profile, and run scale @pevsner2015 @vandijk2018 @vandijk2023. Exact numbers vary with specific instruments and chemistries, but the qualitative trade‑offs are stable.
 
-The rest of the course will assume you can interpret such tables and reason about which combination of platforms best suits a given biological question and budget.
+| Platform        | Typical read length            | Typical accuracy                    | Typical throughput per run                         | Key strengths                                                   | Key limitations                                                       |
+|----------------|--------------------------------|-------------------------------------|----------------------------------------------------|-----------------------------------------------------------------|------------------------------------------------------------------------|
+| Illumina NGS   | 150–300 bp paired‑end          | Very high (≈99.9%)                  | 10s–1000s of Gb (instrument‑dependent)             | Cost‑effective short reads; variant calling; RNA‑seq quantification [@pevsner2015] | Repeats and SVs; limited phasing; GC bias [@vandijk2018; @vandijk2023] |
+| PacBio HiFi    | 10–25 kb consensus reads       | Very high (≥99.9%)                  | 10s–100s of Gb HiFi                                | Accurate long reads; assembly; SVs; phasing; some methylation detection [@vandijk2018; @vandijk2023] | Instrument cost; relatively shorter than ultra‑long nanopore reads     |
+| ONT nanopore   | 10–100+ kb; Mb possible        | ~99–99.9% (chemistry‑dependent)     | 10s of Gb (MinION) to Tb (PromethION)             | Very long reads; portable devices; direct DNA and RNA; base‑modification detection [@vandijk2018; @vandijk2023; @scarano2024] | Higher error for some contexts; protocol‑sensitive performance         |
 
-| Platform | Typical read length | Typical accuracy | Typical throughput per run | Key strengths | Key limitations |
-|----|----|----|----|----|----|
-| Illumina NGS | 150–300 bp paired‑end | Very high (≈99.9%) | 10s–1000s of Gb (instrument‑dependent) | Cost‑effective short reads; variant calling; RNA‑seq quantification [@pevsner2015] | Repeats and SVs; limited phasing; GC bias [@vandijk2018; @vandijk2023] |
-| PacBio HiFi | 10–25 kb consensus reads | Very high (≥99.9%) | 10s–100s of Gb HiFi | Accurate long reads; assembly; SVs; phasing; some methylation detection [@vandijk2018; @vandijk2023] | Instrument cost; relatively shorter than ultra‑long nanopore reads |
-| ONT nanopore | 10–100+ kb; Mb possible | \~99–99.9% (chemistry‑dependent) | 10s of Gb (MinION) to Tb (PromethION) | Very long reads; portable devices; direct DNA and RNA; methylation detection [@vandijk2018; @vandijk2023] | Higher error for some contexts; protocol‑sensitive performance |
+: (\#tab:platform-comparison) Qualitative comparison of common sequencing platforms.
 
-: (#tab:platform-comparison) Qualitative comparison of common sequencing platforms.
+The rest of the course will assume you can interpret such tables and reason about which combination of platforms best suits a given biological question and budget. Later chapters return to these platforms in the context of specific analysis tasks such as structural‑variant discovery, genome assembly, and full‑length transcriptomics, and to how improvements in chemistry and analysis have kept long‑read technologies competitive with short‑read NGS @vandijk2018 @vandijk2023 @scarano2024.
 
 ## Matching technology to biological questions
 
@@ -89,9 +163,9 @@ Choosing a sequencing technology is fundamentally an **experimental design** dec
 ::: callout-note
 ## Lab connections
 
-In **Lab03 (Section @sec-lab03)** you will design a hypothetical genome project, choosing sequencing platforms and workflows based on the trade‑offs discussed in this chapter [@pevsner2015; @vandijk2018; @vandijk2023]. You will also locate your project within the five perspectives on genomics described by Pevsner, which extend the three perspectives from Chapter 1.
+In **Lab02 (Section @sec-lab02)** you will design a hypothetical genome project, choosing sequencing platforms and workflows based on the trade‑offs discussed in this chapter [@pevsner2015; @vandijk2018; @vandijk2023]. You will also locate your project within the five perspectives on genomics described by Pevsner, which extend the three perspectives from Chapter 1.
 
-Keep Lab03 in mind as you read: note which platforms and experimental designs would best support the kinds of questions you are most interested in. Lab03 will integrate the knowledge across Chapters 1-3 and 5 into an informal genome analysis proposal, so start thinking about this assignment now and it will be due after we finish Chapter 5.
+Keep Lab02 in mind as you read: note which platforms and experimental designs would best support the kinds of questions you are most interested in. Lab02 will integrate the knowledge across Chapters 1-3 into a genome analysis narrative, so start thinking about this assignment now and it will be due after we finish Chapter 5.
 :::
 
 ### Targeted panels, exomes, and whole genomes
@@ -114,8 +188,8 @@ In practice, many modern projects use **hybrid strategies**: long reads provide 
 ::: callout-note
 ## Lab connections
 
--   Labs 4, 7, and 8 (see Appendix @sec-yeast) use Illumina short‑read data and the sacCer3 reference genome to illustrate how platform choice, coverage, and error profiles affect QC, alignment, and variant calling.
--   Later projects (Appendix: Semester Research Project) highlight how long‑read and hybrid assemblies from vertebrates support comparative genomics questions about gene families such as PRDM9.
+-   Labs 4, 7, and 9 (see [Appendix C](appendixC.qmd)) use Illumina short‑read data and the sacCer3 reference genome to illustrate how platform choice, coverage, and error profiles affect QC, alignment, and variant calling.
+-   Later projects (see [Appendix B](appendixB.qmd)) highlight how long‑read and hybrid assemblies from vertebrates support comparative genomics questions about gene families such as PRDM9.
 :::
 
 ## Alignment versus assembly in practice
@@ -197,29 +271,36 @@ For bioinformatics, this trend is double‑edged. On one hand, user‑friendly w
 You can use or adapt the following prompts for a combined problem set at the end of the chapter. Many can be translated into short R exercises using packages demonstrated in *Computational Genomics with R*.
 
 1.  **Coverage calculations in R**\
-    Write an R function that takes genome size (bp), planned read length, and number of reads as input and returns expected coverage. Explore how coverage changes as you vary read length from 150 bp to 20 kb while holding total sequenced bases constant, and interpret what this means for assembly contiguity versus variant calling in a 3 Gb genome [@pevsner2015; @vandijk2018].
+Write an R function that takes genome size (bp), planned read length, and number of reads as input and returns expected coverage. Explore how coverage changes as you vary read length from 150 bp to 20 kb while holding total sequenced bases constant, and interpret what this means for assembly contiguity versus variant calling in a 3 Gb genome [@pevsner2015; @vandijk2018].
 
 2.  **Platform choice for a real project**\
-    Choose a published genome study of your organism of interest (or a related species). Based on the questions the authors asked, justify whether their choice of sequencing platform(s) and coverage seems appropriate. Propose at least one alternative design using a different mix of short‑ and long‑read technologies, and explain what new information it might reveal [@vandijk2018; @vandijk2023; @scarano2024].
+Choose a published genome study of your organism of interest (or a related species). Based on the questions the authors asked, justify whether their choice of sequencing platform(s) and coverage seems appropriate. Propose at least one alternative design using a different mix of short‑ and long‑read technologies, and explain what new information it might reveal [@vandijk2018; @vandijk2023; @scarano2024].
 
 3.  **Interpreting N50 and BUSCO**\
-    You are given summary statistics for two assemblies of the same plant genome: Assembly A has higher contig N50 but lower BUSCO completeness; Assembly B has lower N50 but higher BUSCO and fewer structural inconsistencies when compared to an optical map. In 1–2 paragraphs, argue which assembly you would choose as the main reference and what additional data or analyses you would request before making a final decision [@vandijk2023; @simao2015].
+You are given summary statistics for two assemblies of the same plant genome: Assembly A has higher contig N50 but lower BUSCO completeness; Assembly B has lower N50 but higher BUSCO and fewer structural inconsistencies when compared to an optical map. Which assembly you would choose as the main reference and what additional data or analyses you would request before making a final decision [@vandijk2023; @simao2015]?
 
 4.  **Alignment versus assembly**\
-    Consider a project to study structural variation in a non‑model fish species with only a draft short‑read assembly available. Outline two analysis strategies: (a) alignment‑centric using new short‑read WGS data, and (b) assembly‑centric using long reads and Hi‑C. For each, list at least three strengths and three limitations, and suggest which approach would better address large rearrangements and repeat expansions [@vandijk2018; @vandijk2023; @pevsner2015].
+Consider a project to study structural variation in a non‑model fish species with only a draft short‑read assembly available. Outline two analysis strategies: (a) alignment‑centric using new short‑read WGS data, and (b) assembly‑centric using long reads and Hi‑C. For each, list at least three strengths and three limitations, and suggest which approach would better address large rearrangements and repeat expansions [@vandijk2018; @vandijk2023; @pevsner2015].
 
 5.  **Workflow transparency and vendor ecosystems**\
-    Imagine your lab gains access to a turnkey sequencing‑plus‑analysis platform that produces variant calls through a graphical interface with minimal user control. Draft a short lab policy (half a page) describing how you would ensure analysis transparency and reproducibility when using this system (for example, documenting software versions, exporting intermediate files, or reanalyzing subsets of data with open‑source tools) [@pevsner2015; @akalin2020; @green2011].
+Imagine your lab gains access to a turnkey sequencing‑plus‑analysis platform that produces variant calls through a graphical interface with minimal user control. Consider how you would develop a lab policy to ensure analysis transparency and reproducibility when using this system (for example, documenting software versions, exporting intermediate files, or reanalyzing subsets of data with open‑source tools) [@pevsner2015; @akalin2020; @green2011].
 
 ## Reflection questions
 
-These questions are intended for short written reflections or in‑class discussion.
-
 1.  **Data permanence and participant expectations**\
-    Sequencing costs continue to fall, but data storage and long‑term stewardship remain challenging [@green2011; @pevsner2015]. When human genomes are sequenced today, they may be reanalyzed decades later with new algorithms and linked to other data sources. How should this possibility influence what participants are told at consent, and who should decide how data can be reused?
+Sequencing costs continue to fall, but data storage and long‑term stewardship remain challenging [@green2011; @pevsner2015]. When human genomes are sequenced today, they may be reanalyzed decades later with new algorithms and linked to other data sources. How should this possibility influence what participants are told at consent, and who should decide how data can be reused?
 
 2.  **Algorithmic opacity**\
-    As vendor pipelines and machine‑learning–based basecallers become standard, fewer users will understand exactly how raw signals are transformed into sequences and variants [@vandijk2023; @akalin2020]. Is it acceptable to rely on “black‑box” algorithms in clinical or conservation genomics if they are empirically well validated? What safeguards or transparency requirements, if any, should be in place?
+As vendor pipelines and machine‑learning–based basecallers become standard, fewer users will understand exactly how raw signals are transformed into sequences and variants [@vandijk2023; @akalin2020]. Is it acceptable to rely on “black‑box” algorithms in clinical or conservation genomics if they are empirically well validated? What safeguards or transparency requirements, if any, should be in place?
+    
+3.  **Polymerase proofreading and design trade‑offs**
+Many native DNA polymerases have a proofreading exonuclease domain that increases fidelity by removing incorrectly incorporated bases, but Illumina’s sequencing‑by‑synthesis chemistry uses engineered polymerases without this proofreading activity so that all strands in a cluster advance in lock‑step each cycle. How might proofreading interfere with synchronized sequencing, and what does this tell you about the trade‑off between _natural_ accuracy mechanisms and _engineered_ control of the chemistry in high‑throughput platforms?
+
+4. **What counts as a “read”?**
+PacBio HiFi consensus reads are built from multiple noisy passes around a circular template, whereas ONT reads are decoded directly from continuous current traces, and short‑read Illumina reads are aggregates of thousands of synchronized molecules in a cluster. In what sense are these three signals all called “reads”? How does thinking carefully about what a read represents at the chemistry/signal level change how you interpret downstream metrics such as coverage, mapping quality, or read depth?
+
+5. **Platform choice and hidden biases**
+Illumina, PacBio HiFi, and ONT now all claim per‑base accuracies near or above 99%, but their errors arise from different physical processes. For example, the chapter highlighted GC‑bias in short‑read PCR‑based methods and length‑ or context‑dependent biases in long‑read platforms. Imagine two groups sequencing the same genome: one with Illumina only, the other with a mix of PacBio HiFi and ONT. Without doing any computation, list several ways in which their biological conclusions could legitimately differ because of platform chemistry and error modes alone. How might you design an experiment or analysis to reveal, quantify, or mitigate those differences?
 
 ------------------------------------------------------------------------
 

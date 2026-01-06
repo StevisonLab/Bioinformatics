@@ -17,7 +17,7 @@ In the roughly twenty‑five years since the first complete animal and plant gen
 
 This figure presents a timeline of key technological innovations and landmark projects that shaped modern genomics, from the recognition of DNA as the hereditary material and the description of its double‑helix structure through the development of PCR, first‑generation Sanger sequencing, and early automated sequencers. It then highlights the launch and 2003 completion of the Human Genome Project and related large‑scale efforts, such as the generation of reference genomes for multiple organisms and subsequent population‑scale initiatives like the 1000 Genomes Project and the Human Microbiome Project, which collectively established comprehensive genomic resources for research and medicine. The upper portion of the figure tracks the transition from low‑throughput first‑generation methods to second‑generation short‑read platforms and, more recently, to third‑generation long‑read technologies such as single‑molecule real‑time and nanopore sequencing, which now enable routine production of near‑complete, reference‑quality assemblies, including end‑to‑end human genomes.
 
-This figure visually anchors the historical narrative for later chapters where we will go into these technologies and research milestones in more depth throughout this course.
+This figure visually anchors the historical narrative for later chapters where we will go into these technologies and research milestones in more depth throughout this course. Created in  https://BioRender.com.
 :::
 
 ## Core concepts: genomes, omes, and basic operations
