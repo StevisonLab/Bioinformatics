@@ -1,30 +1,114 @@
 ---
 title: "Genome Databases and Browsers"
+bibliography: references.bib
+csl: nature.csl
 ---
 
-## Overview
+## Genome Databases and Browsers
 
-Short paragraph linking to previous chapter and framing why this topic matters in the course.
+Genome databases and browsers form the foundation of modern bioinformatics, providing access to reference assemblies, annotations, and experimental data across thousands of species. These resources evolved from early sequence repositories like GenBank (established 1982) to sophisticated platforms integrating comparative genomics, functional annotations, and interactive visualization [@pevsner2015; @brown1998]. This chapter traces their historical development while emphasizing practical skills for data retrieval, visualization, and reproducible workflows---essential for Lab 3 (Genome Browsers and Databases) and Galaxy-based analyses.
 
-## Learning objectives
+The major portals---NCBI, Ensembl, UCSC---complement organism-specific databases, each with strengths in curation, annotation depth, and visualization. Understanding coordinate systems, stable identifiers, and metadata provenance ensures reproducible research. Web interfaces like browsers enable exploration, while platforms like Galaxy transition to scripted workflows for scalability.
 
--   Bullet list of 3–5 concrete things students should be able to do.
+## Historical Overview
 
-## Narrative
+The Human Genome Project (HGP, 1990--2003) catalyzed genome database development, necessitating standardized repositories for massive sequence data [@international2004]. GenBank, launched in 1982 by NCBI, initially stored ~600 sequences; by HGP completion, it held billions of bases [@benson2013]. Parallel efforts produced EMBL (Europe, 1980) and DDBJ (Japan, 1987), forming the International Nucleotide Sequence Database Collaboration (INSDC).
 
-### Key concepts
+Genome browsers emerged to visualize assemblies: UCSC Genome Browser (2000) displayed the draft human genome with tracks for genes and clones [@karolchik2003]. Ensembl (2000) followed, focusing on automated annotation for vertebrates [@birney2004]. NCBI's Map Viewer (1999) integrated genetic/physical maps. These addressed "data deluge"---HGP's 3 Gb assembly required novel visualization [@stein2001].
 
--   2–4 subsections that walk through your bullet points (e.g., “FASTQ and Phred scores”, “QC metrics”, “Design decisions based on QC”).
+Post-HGP milestones include RefSeq (2000) for curated non-redundant sequences [@pruitt2007], ENCODE (2003) for functional elements [@encode2012], and GTEx (2015) for expression [@gtex2023]. Long-read technologies (PacBio, Oxford Nanopore) prompted GRCh38 (2013) and recent p14 patch, emphasizing structural variant resolution [@schneider2022]. Ensembl 110 (2024) covers 500+ species [@reyes2023].
 
-### Figures and examples
+Organism-specific resources filled gaps: FlyBase (1992) for Drosophila [@thurmond2019], WormBase (2000) for C. elegans [@harris2020]. Lab 3 exemplifies FlyBase's JBrowse for DSX gene exploration, highlighting evidence-based tracks [@misra2021].
 
--   Simple diagrams you sketch yourself (e.g., read‑quality plot, schematic of FASTQ fields, coverage cartoon).
--   One or two short, self‑contained R or shell code blocks where appropriate.
+## Major Databases
 
-## Activities and labs
+### NCBI
 
--   Describe how the corresponding lab (e.g., Galaxy vs command line QC) connects to the chapter, and give just enough detail that students can re‑orient later.
+NCBI's ecosystem spans GenBank (raw sequences), RefSeq (curated), and Genome (assemblies). GenBank exceeds 10^12 bases (2025), with daily releases [@o2025]. RefSeq unifies isoforms (e.g., human HBB NM_000518.6) via curation levels: reviewed, provisional, predicted [@o2025].
 
-## Further reading
+Genome portal lists 300,000+ prokaryotic/eukaryotic assemblies; Genome Data Viewer (GDV) visualizes tracks [@ncbi2023]. Gene resource curates loci with orthologs, OMIM phenotypes [@sayers2023]. E-utilities/EDirect enable scripted access: `esearch -db gene -query "HBB[Gene] AND human[orgn]" | efetch -format docsum` [@pevsner2015].
 
--   List your resources with 1–2‑sentence annotations each, rather than reproducing any text.
+Metadata: assembly GCF_*/GCA_*, annotation release, BUSCO score. Challenges: redundancy (GenBank vs. RefSeq), versioning (NM_000518.3 → .6 shifts positions).
+
+### Ensembl
+
+Ensembl (EBI/Sanger) excels in comparative annotation for vertebrates/plants/fungi. Release 110 (Jan 2025) annotates GRCh38.p14, T2T-CHM13 [@reyes2023]. Stable IDs: ENSG00000244734 (genes), ENST* (transcripts); VEP tool predicts variant effects [@mcLaren2016].
+
+Regulation tracks (CTCF binding, histone marks), gene trees (OrthoTree), and Biomart enable bulk queries. Comparative genomics shows paralogs/orthologs (e.g., PRDM9 across primates) [@yamaguchi2021]. Lab 3 uses Ensembl for human PRDM9 orthologs/gene trees.
+
+### UCSC Genome Browser
+
+UCSC hosts 100+ assemblies (hg38, mm39, sacCer3); Table 1 lists hubs [@navarro2024]. Tracks: RefSeq/Ensembl genes, conservation (phyloP100way), 1000 Genomes variants [@karolchik2018].
+
+Custom tracks (BED/BigWig) via `track type=bigWig ...`; Table Browser exports subsets. BLAT aligns queries; LiftOver converts coordinates (hg19→hg38).
+
+| Assembly | Lift | Size (Gb) | Release |
+|----------|------|-----------|---------|
+| GRCh38  | hg38 | 3.1     | 2013   |
+| T2T-v2  | t2t  | 3.05    | 2022   |
+| sacCer3 | sac3 | 0.012   | 2011   |
+
+**Table 4.1**: UCSC assemblies [@navarro2024].
+
+### Organism-Specific Resources
+
+FlyBase (Drosophila): JBrowse for synteny/Muller elements (Lab 3) [@dos2021]. TAIR (Arabidopsis): PSORT for localization. SGD (yeast): AlphaFold models [@engel2023]. Phytozome (plants): comparative orthologs [@goodstein2012].
+
+Metadata: provenance (assembly method), accession stability [@pucker2023].
+
+## Genome Browsers
+
+Browsers align data to linear chromosomes using 1-based "human-readable" coordinates (chr1:1,000,000). Tracks stack hierarchically: dense (blocks), squish (arrows), pack/full [@kent2002].
+
+### UCSC
+
+Search "rdl" (D. mel); zoom reveals MultiZ alignments (gaps=indels). Tracks: Conservation (phastCons score), RNA-Seq (bigWig coverage). Lab 3: enable D. simulans/grimshawi; phyloP/phastCons agree on conserved exons.
+
+### Ensembl/JBrowse
+
+Ensembl: gene tab → orthologs → tree (Newick export). JBrowse (FlyBase): RNA/CDS tracks show DSX transcripts (5 isoforms), strand (+), domains (Homeobox). Evidence: modENCODE TSS, RNA-Seq junctions; hover read counts.
+
+### Features
+
+Gene models: exons (filled), UTR (thin), CDS (thick). Alignments: MultiZ (pairwise phyloP). Coordinate conversion via LiftOver.
+
+## Retrieving and Documenting Data
+
+Stable IDs prevent ambiguity: RefSeq versions (.6), Ensembl (ENSG00000*, stable across releases). Builds: GRCh38.p14 vs. hg19 (chr11 HBB shift ~50kb).
+
+Provenance: Galaxy histories log parameters; EDirect scripts reproducible. Lab 3: FASTA-CDS → BLAST2seq (D. grimshawi/mel ADH, 85% identity).
+
+## Web vs. Galaxy/CLI
+
+Web: intuitive (Lab 3 FlyBase search). Limitations: no bulk, ephemeral.
+
+Galaxy: usegalaxy.org; FASTQ groomer handles variants (Sanger/Illumina), trim (offsets), filter (min Q28, length) [@cock2009; @blankenberg2010]. Strengths: workflows → scripts, provenance. Limitations: quotas; local Docker [@afgan2018].
+
+Transition: history → workflow → API/CLI.
+
+## Galaxy in Depth
+
+Public/main: 100+ tools; histories track inputs/parameters. FASTQ: join/split paired-end, stats (boxplots). Upload SRA → groom → trim 10% ends → filter → align (BWA).
+
+Lab integration: FASTQ from Drosophila → groom → AliView [@huser2016].
+
+## AliView
+
+Fast viewer/editor: load FASTA from Galaxy/NCBI. Features: SNP coloring, muscle align, color-space. Install: binaries (Linux `sudo ./aliview.install.run`), conda. Lab 3: ADH orthologs, trim low-Q [@huser2016].
+
+## Reflection Questions
+
+1. Trace GenBank→RefSeq evolution; why curate HBB NM_000518? [@pevsner2015]
+2. Compare UCSC/Ensembl PRDM9 orthologs; why "1:many"? [Lab 3](Lab03.qmd)
+3. Galaxy groomer: validate FASTQ variant before trimming.
+4. AliView vs. JBrowse: local advantages for editing.
+
+## Problem Sets
+
+1. NCBI Gene "DSX Drosophila"; EDirect → FASTA; AliView isoforms.
+2. UCSC mel rdl: MultiZ 4 species; phyloP peaks → conserved residues.
+3. Galaxy: SRA SRR123456 → groom → filter Q30 → BigWig track.
+4. Ensembl human HBB: VEP chr11:5226696G>A.
+5. FlyBase synteny: Muller elements shuffle across species.
+
+## References
