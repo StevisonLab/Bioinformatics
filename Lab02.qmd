@@ -8,7 +8,7 @@ csl: nature.csl
 
 In Chapter 1, we introduced three broad perspectives on bioinformatics and genomics (cell, organism, tree of life) [@pevsner2015]. Later in the textbook, Pevsner expands these 3 perspectives into five basic perspectives on genome sequencing.
 
-For this lab, you will use these 5 perspectives, along with your new understanding of sequencing technologies from Chapter 2, to sketch a 1–2 page narrative for a hypothetical genome project [@pevsner2015; @vandijk2018; @vandijk2023]. More information on Grant writing and review will be covered later in Chapter 5 to give you plenty of time to work on this lab assignment outside of class while we move to other topics in the course.
+For this lab, you will use these 5 perspectives, along with your new understanding of sequencing technologies from Chapter 2, to sketch a 1–2 page narrative for a hypothetical genome project [@pevsner2015; @vandijk2018; @vandijk2023]. 
 
 The five perspectives on genomics discussed in Pevsner Chapter 15 can be summarized as:
 
