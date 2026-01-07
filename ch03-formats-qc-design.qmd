@@ -1,10 +1,10 @@
 ---
-title: "NGS File Formats and Quality Control in Genome Workflows"
+title: "File Formats and Quality Control in Genome Workflows"
 bibliography: references.bib
 csl: nature.csl
 ---
 
-## Introduction to NGS File Formats {#sec-ch3}
+## Introduction to Genome File Formats {#sec-ch3}
 
 Next-generation sequencing (NGS) generates massive datasets that flow through standardized workflows from raw reads to biological insights [@pevsner2015]. Understanding file formats is essential for experimental design, as each format encodes metadata critical for downstream analysis decisions.
 
@@ -51,7 +51,7 @@ This chapter’s file formats and QC concepts feed directly into the first two l
 
 ## FASTA: The Foundation of Sequence Data
 
-In your introductory coursework, you may have encountered [**chromatograms**](https://www.labxchange.org/library/pathway/lx-pathway:ff079975-ac71-418a-ac93-2e14b056f539/items/lb:LabXchange:22c08d85:html:1/58303?t=8c80f5c3-6a6b-49cf-9d3a-87f332b26c42)—the colorful trace files produced by Sanger sequencing instruments. While chromatograms preserve valuable quality information about individual sequencing reactions, they are impractical for computational analysis and database storage. This challenge led to the development of text-based sequence formats that could efficiently represent biological sequences while remaining human-readable and computationally tractable. The most fundamental and enduring of these formats is FASTA.
+Last chapter discussed Sanger sequencing and the generation of [**chromatograms**](https://www.labxchange.org/library/pathway/lx-pathway:ff079975-ac71-418a-ac93-2e14b056f539/items/lb:LabXchange:22c08d85:html:1/58303?t=8c80f5c3-6a6b-49cf-9d3a-87f332b26c42)—the colorful trace files produced by these sequencing instruments. While chromatograms preserve valuable quality information about individual sequencing reactions, they are impractical for computational analysis and database storage. This challenge led to the development of text-based sequence formats that could efficiently represent biological sequences while remaining human-readable and computationally tractable. The most fundamental and enduring of these formats is FASTA.
 
 The FASTA format was developed in **1985** by **William R. Pearson** and **David J. Lipman** at the National Institutes of Health [@lipman_rapid_1985; @pearson_improved_1988]. Originally created for their FASTP protein sequence similarity search program, the format was designed to handle the exponentially growing genetic databases of the 1980s when computer memory and processing speed were severely limited. The name "FASTA" stands for "FAST-All," reflecting the program's ability to handle both protein (FAST-P) and nucleotide (FAST-N) sequences.
 
@@ -419,7 +419,7 @@ These metrics are typically used together to filter high-confidence variants fro
 
 ## Variant Types Beyond SNPs
 
-The outline of a genome analysis workflow presented in Figure 9.6 is relatively simplistic. We will use that workflow to gain experience with basic data manipulation. A state-of-the-art workflow, used by many experts, is the Genome Analysis Toolkit (GATK; @mckenna_genome_2010; @depristo_framework_2011). We show the GATK workflow in Figure 9.7, and explain why its approaches are crucial to sensitive, specific analyses of genome sequences.
+The outline of a genome analysis workflow presented in Figure 9.6 is relatively simplistic. We will use that workflow to gain experience with basic data manipulation. A state-of-the-art workflow, used by many experts, is the Genome Analysis Toolkit (GATK; [@mckenna_genome_2010; @depristo_framework_2011]). We show the GATK workflow in Figure 9.7, and explain why its approaches are crucial to sensitive, specific analyses of genome sequences.
 
 The basic GATK workflow is used for variant discovery with the goal output being a VCF. But in addition to SNPs, GATK can be used to call other types of genomic variants. Specifically, GATK can be used to identify indels and other structural variants [@pevsner2015]:
 
