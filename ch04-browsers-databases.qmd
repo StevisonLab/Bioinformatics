@@ -6,9 +6,19 @@ csl: nature.csl
 
 ## Genome Databases and Browsers
 
-Genome databases and browsers form the foundation of modern bioinformatics, providing access to reference assemblies, annotations, and experimental data across thousands of species. These resources evolved from early sequence repositories like GenBank (established 1982) to sophisticated platforms integrating comparative genomics, functional annotations, and interactive visualization [@pevsner2015; @brown1998]. This chapter traces their historical development while emphasizing practical skills for data retrieval, visualization, and reproducible workflows---essential for Lab 3 (Genome Browsers and Databases) and Galaxy-based analyses.
+Genome databases and browsers form the foundation of modern bioinformatics, providing access to reference assemblies, annotations, and experimental data across thousands of species. These resources evolved from early sequence repositories like GenBank (established 1982) to sophisticated platforms integrating comparative genomics, functional annotations, and interactive visualization [@pevsner2015; @brown1998]. This chapter traces their historical development while emphasizing practical skills for data retrieval, visualization, and reproducible workflows. 
 
-The major portals---NCBI, Ensembl, UCSC---complement organism-specific databases, each with strengths in curation, annotation depth, and visualization. Understanding coordinate systems, stable identifiers, and metadata provenance ensures reproducible research. Web interfaces like browsers enable exploration, while platforms like Galaxy transition to scripted workflows for scalability.
+Three main sites that have been responsible for storing nucleotide sequence data from 1982 to the present. These are: (1) GenBank at the National Center for Biotechnology Information (NCBI) of the National Institutes of Health (NIH); (2) the European Molecular Biology Laboratory (EMBL)-Bank Nucleotide Sequence Database (EMBL-Bank), part of the European Nucleotide Archive (ENA) at the European Bioinformatics Institute (EBI); and (3) the DNA Database of Japan (DDBJ) at the National Institute of Genetics. All three are coordinated by the International Nucleotide Sequence Database Collaboration (INSDC), and they share their data daily. GenBank, EMBL-Bank, and DDBJ are organized as databases within NCBI, EBI, and DDBJ which offer many dozens of other resources for the study of sequence data.
+
+In addition to these nucleotide sequence databases, there are three major genome portals that we will cover in this course. First, NCBI which is directly connected to GenBank. Second, is [Ensembl](https://www.ensembl.org/index.html), started before the human genome was completed with a goal of annotating genomes and providing a comparative genomic database. Third, the University of California, San Cruz [(UCSC) Genome Browser](https://genome.ucsc.edu/) which was started in 2000 concurrent with the human genome project. The latter two are heavily focused on vertebrate genomes. In addition to these three, there are several organism-specific databases. Each database and browser has unique strengths in curation, annotation depth, and visualization.  
+
+In addition to web genome browsers and databases, this chapter will introduce an online platform for genome analysis called "Galaxy". Web interfaces like browsers enable exploration, while platforms like Galaxy transition to scripted workflows for scalability.
+
+::: callout-note
+## Lab connections
+
+-   [Lab 3](Lab03.qmd)) will involve an exploratory activity to engage with three different genome databases to give a practical hands-on opportunity to explore, customize and export genome data.
+:::
 
 ## Historical Overview
 
@@ -18,15 +28,15 @@ Genome browsers emerged to visualize assemblies: UCSC Genome Browser (2000) disp
 
 Post-HGP milestones include RefSeq (2000) for curated non-redundant sequences [@pruitt2007], ENCODE (2003) for functional elements [@encode2012], and GTEx (2015) for expression [@gtex2023]. Long-read technologies (PacBio, Oxford Nanopore) prompted GRCh38 (2013) and recent p14 patch, emphasizing structural variant resolution [@schneider2022]. Ensembl 110 (2024) covers 500+ species [@reyes2023].
 
-Organism-specific resources filled gaps: FlyBase (1992) for Drosophila [@thurmond2019], WormBase (2000) for C. elegans [@harris2020]. Lab 3 exemplifies FlyBase's JBrowse for DSX gene exploration, highlighting evidence-based tracks [@misra2021].
+Organism-specific resources filled gaps: FlyBase (1992) for Drosophila [@thurmond2019], WormBase (2000) for C. elegans [@harris2020]. Lab 3 exemplifies FlyBase's JBrowse for gene exploration, highlighting evidence-based tracks [@misra2021].
 
 ## Major Databases
 
 ### NCBI
 
-NCBI's ecosystem spans GenBank (raw sequences), RefSeq (curated), and Genome (assemblies). GenBank exceeds 10^12 bases (2025), with daily releases [@o2025]. RefSeq unifies isoforms (e.g., human HBB NM_000518.6) via curation levels: reviewed, provisional, predicted [@o2025].
+NCBI's ecosystem spans GenBank (raw sequences), RefSeq (curated), and Genome (assemblies). GenBank exceeds 10^12 bases (2025), with daily releases. RefSeq unifies isoforms (e.g., human HBB NM_000518.6) via curation levels: reviewed, provisional, predicted.
 
-Genome portal lists 300,000+ prokaryotic/eukaryotic assemblies; Genome Data Viewer (GDV) visualizes tracks [@ncbi2023]. Gene resource curates loci with orthologs, OMIM phenotypes [@sayers2023]. E-utilities/EDirect enable scripted access: `esearch -db gene -query "HBB[Gene] AND human[orgn]" | efetch -format docsum` [@pevsner2015].
+Genome portal lists 300,000+ prokaryotic/eukaryotic assemblies; Genome Data Viewer (GDV) visualizes tracks [@ncbi2023]. Gene resource curates loci with orthologs, OMIM phenotypes. E-utilities/EDirect enable scripted access: `esearch -db gene -query "HBB[Gene] AND human[orgn]" | efetch -format docsum` [@pevsner2015].
 
 Metadata: assembly GCF_*/GCA_*, annotation release, BUSCO score. Challenges: redundancy (GenBank vs. RefSeq), versioning (NM_000518.3 → .6 shifts positions).
 
@@ -72,29 +82,144 @@ Ensembl: gene tab → orthologs → tree (Newick export). JBrowse (FlyBase): RNA
 
 Gene models: exons (filled), UTR (thin), CDS (thick). Alignments: MultiZ (pairwise phyloP). Coordinate conversion via LiftOver.
 
+## Sequence Read Archive (SRA)
+
+The [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra/docs/) (SRA) is NCBI’s repository for *raw* high-throughput sequencing data and is part of the same ecosystem as GenBank and RefSeq. Whereas GenBank focuses on assembled sequences and RefSeq on curated reference sequences, SRA stores the unprocessed reads and alignments that underlie those assemblies and publications. This design enables other researchers to reanalyze published data, test new methods, and improve genome annotations without having to regenerate the raw data themselves. SRA is synchronized with partner archives at EMBL-EBI and DDBJ as part of the International Nucleotide Sequence Database Collaboration.
+
+An SRA record is typically linked to a BioProject (study-level description), one or more BioSamples (biological sources), and then to one or more SRA runs that correspond to specific sequencing libraries or lanes. In practice, you will usually interact with SRA at the “run” level via accessions like SRR518692 (Auburn *Aeromonas hydrophila* sequencing), which you can download as FASTQ and then process through your own pipeline.
+
+### Depositing Data into SRA
+
+This subsection outlines a practical, student-friendly path to deposit sequencing data into SRA using the web-based Submission Portal Wizard. The same workflow works for small projects and full papers. You will need to create a free MyNCBI account, prepare your raw fastq files (*.fastq.gz or split based on read groups if paired), and include a basic study description (project title, abstract-like summary, organism). Finally, you will need to include metadata for your sample (strain, tissue, treatment, etc.) and the sequencing runs (library information, sequencing platform, lane information, etc.). If you have a lot of samples, consider downloading the BioSample worksheet template that you can fill out locally. 
+
+Upon depsositing data, you will need to make a decision about data access. I strongly recommend making an appointment with your [subject librarian](https://libguides.auburn.edu/subjectlibrarians). Subject librarians offer discipline-specific services designed to help Auburn University students, faculty, and staff access information resources and use them effectively. These include research consultations and discipline-specific support for using the Innovation and Research Commons (I&RC). Alternatively, you can contact the [research data management librarian](https://www.lib.auburn.edu/people/alicia-krzton.php) directly.
+
+### Retrieving Data from SRA (SRR518692 Example)
+In this course, you will frequently retrieve public data from SRA to practice analysis steps. This section shows how to download the _Aeromonas hydrophila_ dataset SRR518692 via the NCBI web interface (manual download). First, go to the [SRA home page](https://www.ncbi.nlm.nih.gov/sra) and paste "SRR518692" into the search box and hit search. The Run page for SRR518692 shows links to the related BioProject/BioSample and basic metadata (organism, instrument, library layout). In the “Data access” or “Send to” section, look for links to either "FASTQ" via the NCBI Run Selector or "SRA file download". Keep in mind that since this is a smaller demo, you can download the compressed FASTQ directly through the browser, but for reproducible workflows and large datasets you should use the SRA Toolkit instead, which we will cover later in Lab 4. 
+
+### SRA Toolkit for Command Line Retrieval
+The SRA Toolkit is a set of command-line programs that allow you to download and convert SRA runs to FASTQ or FASTA. The two most relevant tools for this course are:
+
+- fastq-dump: older, widely used tool to convert SRA to FASTQ (now deprecated, but still available).
+- fasterq-dump: newer tool that is significantly faster and more memory-efficient, recommended by NCBI.
+
+On HPC, always check local documentation for preferred options and scratch storage guidelines.
+
+#### Using SRA Toolkit inside Galaxy
+
+Many Galaxy instances provide tools like “Faster Download and Extract Reads in FASTQ” (a wrapper for fasterq-dump) or “NCBI SRA Tools: fastq-dump”. For this example you can try:
+
+- Select the SRA tool in Galaxy.
+- Enter SRR518692 as the accession.
+- Choose “Split files” for paired-end.
+- Run the job to produce FASTQ datasets directly in your Galaxy history.
+
+### SRA Metadata and Its Evolution
+SRA metadata has evolved alongside sequencing technologies and community practices, gradually moving from sparse, free-text descriptions toward more structured, machine-readable formats. Early submissions often contained minimal or inconsistent sample information, which makes reuse and integration across studies difficult, especially when key fields such as strain, host, or geographic origin are missing or encoded only in narrative text. In response, NCBI introduced structured **BioSample packages** with controlled fields like host, isolation_source, and collection_date, strengthened the links between SRA runs and their associated BioProject and BioSample records, and issued recommendations to rely more consistently on standard vocabularies and ontologies where possible.
+
+Despite these improvements, the overall metadata landscape in SRA remains **heterogeneous**, particularly when older accessions are considered alongside newer submissions. Historical datasets may lack important fields or use idiosyncratic labels for the same concept (for example, one group might use “treatment” while another uses “condition” for similar variables), and some submitters rely heavily on file names or free-text notes to convey crucial information about experimental design, which complicates downstream harmonization. As a result, researchers reusing SRA data often need to spend substantial effort cleaning, relabeling, and normalizing metadata before they can perform robust comparative analyses across runs or projects.
+
+For your own work, it is helpful to treat SRA metadata as part of the primary scientific output rather than an afterthought. Choosing the correct BioSample package for your experiment and filling out all recommended fields produces records that are easier for both humans and software to interpret. Consistent naming of samples across local files, lab notebooks, and SRA accessions (for example, using the same IDs such as AH01, AH02 in all places) reduces confusion when you later trace a particular run back to wet-lab procedures or to a specific figure in a manuscript. Thoroughly documenting library preparation kits, read lengths, sequencing platforms, and any unusual processing steps both in the SRA submission and in your methods section further improves transparency and reproducibility. Many groups also maintain a local spreadsheet or a YAML/JSON manifest that mirrors the information in SRA, so they can track updates, annotate special cases, and generate analysis-ready metadata tables without editing SRA records directly.
+
+When mining existing SRA datasets for reanalysis, it is wise to assume that metadata will require curation. A practical approach is to download the run table or associated metadata, normalize field names to a consistent internal schema, and explicitly check key variables such as organism, library type, read layout, and sequencing platform before combining runs into a single analysis. Older submissions, in particular, should be treated cautiously; verifying sample identities and experimental conditions by cross-referencing the associated publication, or contacting the original authors when necessary, can prevent serious misinterpretation of results. Ultimately, this variability in SRA metadata is not just an annoyance but a concrete illustration of why data literacy, careful documentation, and explicit provenance tracking are essential skills for modern genome research.
+
 ## Retrieving and Documenting Data
 
 Stable IDs prevent ambiguity: RefSeq versions (.6), Ensembl (ENSG00000*, stable across releases). Builds: GRCh38.p14 vs. hg19 (chr11 HBB shift ~50kb).
 
 Provenance: Galaxy histories log parameters; EDirect scripts reproducible. Lab 3: FASTA-CDS → BLAST2seq (D. grimshawi/mel ADH, 85% identity).
 
-## Web vs. Galaxy/CLI
-
-Web: intuitive (Lab 3 FlyBase search). Limitations: no bulk, ephemeral.
-
-Galaxy: usegalaxy.org; FASTQ groomer handles variants (Sanger/Illumina), trim (offsets), filter (min Q28, length) [@cock2009; @blankenberg2010]. Strengths: workflows → scripts, provenance. Limitations: quotas; local Docker [@afgan2018].
-
-Transition: history → workflow → API/CLI.
-
-## Galaxy in Depth
-
-Public/main: 100+ tools; histories track inputs/parameters. FASTQ: join/split paired-end, stats (boxplots). Upload SRA → groom → trim 10% ends → filter → align (BWA).
-
-Lab integration: FASTQ from Drosophila → groom → AliView [@huser2016].
-
-## AliView
+### AliView
 
 Fast viewer/editor: load FASTA from Galaxy/NCBI. Features: SNP coloring, muscle align, color-space. Install: binaries (Linux `sudo ./aliview.install.run`), conda. Lab 3: ADH orthologs, trim low-Q [@huser2016].
+
+## Data Sharing Policies in Genomics
+Genome data sharing policies have evolved from idealistic commitments to rapid open release toward more nuanced systems that balance broad access, participant protection, and the interests of data producers [@jones_bermuda_2018; @nicol_data_2024]. This section traces that trajectory, uses the baboon genome as a case study in embargo-related bottlenecks, and offers guidance on navigating current policies across human and non‑human genomics.
+
+### From Bermuda to managed access
+The Bermuda Principles (1996) emerged from the Human Genome Project (HGP) and mandated that publicly funded human and model-organism sequence be deposited in public databases within 24 hours, with daily **pre‑publication** release into the public domain @jones_bermuda_2018. This approach framed genomic sequence as part of a scientific commons and was explicitly justified as a way to accelerate discovery and to limit restrictive gene patenting by using rapid release as prior art.
+
+Follow‑on statements such as the Fort Lauderdale agreement (2003) reaffirmed early deposition but added clearer expectations that downstream users respect the interests of data producers, especially large sequencing centers and consortia. These early policies were designed in an era when sequence data were mostly de‑identified, largely non‑clinical, and generated by a relatively small number of centers, which made it easier to sustain almost fully open release with only informal norms to protect the “first use” of the data by generators. This also meant that researchers largely understood the sequencing bottleneck (see @fig-bottleneck) and were pro-active in moving the science forward. 
+
+### Human genomics and the medical information commons
+As whole‑genome and exome sequencing became embedded in clinical care, the notion of a medical information commons (MIC) reframed genome data as one component of large, integrated resources containing genomic, phenotypic, and environmental information. Cook‑Deegan and McGuire argue that building a MIC requires going beyond Bermuda’s simple “sequence into GenBank” model toward federated systems that respect privacy, regulatory heterogeneity, and data donors’ expectations while still enabling large‑scale reuse [@cook-deegan_moving_2017; @cook-deegan_sharing_2017].
+
+In the modern genome database landscape, “open” human genomic data are increasingly rare; instead, most large‑scale human datasets are subject to tiered or managed access, often governed by Data Access Committees that vet applications, require data use agreements, and sometimes impose limits on re‑identification, clinical interpretation, or re‑contact. This shift reflects: (1) recognition that genomic data are inherently identifying; (2) expansion to more diverse and often more vulnerable populations; and (3) the embedding of genomic data within linked EHRs and biobanks, making them qualitatively different from the relatively “flat” HGP sequences of the 1990s @cook-deegan_sharing_2017.
+
+### Consortia, tiered access, and embargoes
+Modern genomic consortia—spanning cancer, rare disease, population genomics, agriculture, and microbial surveillance—use a wide variety of access arrangements. Nicol, Nielsen, and Archer surveyed 98 genomic consortia and identified twelve distinct access patterns, including simple models such as open access, consortium‑only access, managed access, and registered access, plus tiered combinations such as “consortium + managed + open.” Tiered arrangements often allow: privileged access for consortium members, managed access for qualified external users, and fully open release of a summary or low‑risk subset of data @nicol_data_2024.
+
+Funding policies encode similar logic. The NIH Genomic Data Sharing (GDS) Policy @NIH_GDSP requires submission of large‑scale human genomic data to approved repositories (e.g., dbGaP) and typically defers broad release of controlled human data for about six months after quality control, but explicitly rejects long publication embargoes in favor of relatively rapid sharing with no formal guarantee of “first publication rights.” For non‑human genomic data, NIH expects submission no later than the time of publication, with fewer privacy constraints but similar expectations that sequence and metadata be deposited in recognized repositories.
+
+Embargoes and “privileged access” periods remain widespread in consortia as a way to recognize the investment of data producers. The tiered access model can, in principle, honor rapid pre‑publication release while giving generating groups a limited window to publish primary analyses, but the effectiveness of this approach depends heavily on clear documentation of embargo conditions and on the pace at which data producers can move through their own analysis bottlenecks @nicol_data_2024.
+
+:::callout-important
+## Box 4.1: A cautionary tale - The Baboon Genome Project
+The baboon genome illustrates how informal embargo practices can stall downstream science and even incentivize duplication of effort. Baylor produced a reference assembly for the olive baboon (_Papio anubis_) "Panu_3.0" and deposited under an informal embargo beginning around 2008, with access constrained under Fort Lauderdale–style expectations that expected external researchers to defer primary genome‑scale analyses to the generating group. While Rogers and colleagues at Baylor’s Human Genome Sequencing Center ultimately published this reference genome, it was not until 2019 @rogers_comparative_2019, over a decade after making it widely available.  
+
+In parallel, Wall et al. published a 2016 study of admixture and divergence in wild baboons using low‑coverage whole‑genome sequencing @wall_genomewide_2016. Because use of the Baylor reference assembly for primary analyses was constrained by embargo conditions, the group generated its own de novo reference, allowing it to publish genome‑wide results without violating Fort Lauderdale norms or undermining the Baylor team’s planned flagship paper. A later paper from the same team presented a new olive baboon assembly (Panubis1.0) explicitly noting that Panu_3.0 had “negligible” scientific influence in part because it was effectively embargoed for more than a decade, despite being the primary reference for the species @batra_accurate_2020. The result was a situation in which NIH‑funded sequencing efforts supported two separate reference‑quality assemblies and duplicated core aspects of the work, with the later Panubis1.0 paper arguing that several large syntenic discrepancies between Panu_3.0 and Panubis1.0 reflect genuine assembly errors in Panu_3.0.
+
+This case study illustrates several key points about data sharing and publication timing:
+
+- Long, informal embargoes can effectively remove a reference genome from the scientific arena, even when the sequence is technically deposited at NCBI or similar repositories @batra_accurate_2020.
+- When primary producers cannot move from sequencing to analysis and publication quickly, other groups may either avoid the dataset entirely or reproduce the underlying sequencing effort in order to publish their own work [@wall_genomewide_2016; @batra_accurate_2020].
+- Embargo‑protected references can interact poorly with the rapid pace of high‑throughput sequencing: the sequencing bottleneck has largely disappeared, but the analysis bottleneck remains, creating a period during which data exist but cannot be freely used for the most scientifically valuable questions @cook-deegan_moving_2017.
+:::
+
+### Practical guidance for working with genome data today
+Across both human and non‑human genomics, the early‑deposit norm means that reference genomes, resequencing data, and large cohort datasets often appear in repositories months to years before the corresponding flagship papers. This practice accelerates method development, cross‑project integration, and secondary discovery, but it also raises concrete risks for researchers who do not carefully assess data‑use conditions (see Box 4.1 above for cautionary tale).
+
+When working with human or non‑human genomic datasets, it is important to:
+
+- Check the data‑sharing policy and access tier. Repositories such as GenBank, SRA, ENA, and non‑human assemblies in NCBI usually host genuinely open sequence, but human genomic datasets in dbGaP or EGA are almost always subject to managed or registered access, with explicit Data Access Committee oversight and data use limitations @nicol_data_2024.
+- Examine whether any publication embargo, moratorium, or “first publication” expectation applies, particularly for data labeled as coming from a consortium, a sequencing center, or a flagship project @nicol_data_2024.
+- Look for documentation that specifies which analyses are reserved for the generating consortium (e.g., full genome‑wide association analyses, primary pan‑genome construction, or first comprehensive comparative genomics) and which are encouraged for external users @nicol_data_2024.
+- Cross‑check whether closely related genome projects are underway that might produce overlapping analyses; in light of cases like the baboon reference, investigators considering large investments in new assemblies or resequencing may wish to contact data generators and funders early to clarify expectations and avoid inadvertent duplication @batra_accurate_2020.
+
+For students and trainees, an important lesson is that “open” in genomics is not a single category. Sequence reads in an NCBI project may be technically accessible but still subject to norms, policies, or formal embargoes that shape what is considered appropriate use. At the same time, as Cook‑Deegan and McGuire emphasize, the long‑term goal remains a more robust medical information commons and comparable shared infrastructure for non‑human genomics, in which broad, responsible data sharing supports both collective discovery and fair recognition of the labor and resources that generate large genomic datasets [@nicol_data_2024; @cook-deegan_moving_2017; @cook-deegan_sharing_2017].
+
+## Galaxy as a web-based genome analysis workbench
+
+Galaxy is a web-based workbench that allows researchers to perform complex genome analyses through a browser without writing code, addressing the “informatics crisis” created by high-throughput sequencing [@Goecks2010GalaxyGenomeBiol;@Blankenberg2010FastqGalaxy]. By wrapping command-line tools in a consistent graphical interface and automatically managing compute infrastructure and file formats, Galaxy makes bioinformatics workflows accessible to students and experimentalists who might never log into a cluster or install analysis software @Blankenberg2010GalaxyExperimentalists.
+
+::: {.callout-note}
+## Figure 4.1. Galaxy analysis workspace 
+
+![Bioinformatics Bottleneck](images/Fig_4.1_Galaxy.png){#fig-galaxy}
+
+**Galaxy analysis workspace**. The Galaxy analysis workspace is where users perform genomic analyses. The workspace has four areas: the navigation bar, tool panel (left column), detail panel (middle column), and history panel (right column). The navigation bar provides links to
+Galaxy’s major components, including the analysis workspace, workflows, data libraries, and user repositories (histories, workflows, Pages). The tool panel lists the analysis tools and data sources available to the user. The detail panel displays interfaces for tools selected by the user. The history panel shows data and the results of analyses performed by the user, as well as automatically tracked metadata and user-generated annotations. Every action by the user generates a new history item, which can then be used in subsequent analyses, downloaded, or visualized. Galaxy’s history panel helps to facilitate reproducibility by showing provenance of data and by enabling users to extract a workflow from a history, rerun analysis steps, visualize output datasets, tag datasets for searching and grouping, and annotate steps with information about their purpose or importance. Here, a download FASTQ file is being viewed in the detail panel by simply clicking the eyeball button on the file in the history panel.
+:::
+
+### Historical development and design goals
+
+Galaxy originated in the mid-to-late 2000s in response to the rapid expansion of microarray and next-generation sequencing data, when many biologists lacked the training or infrastructure to analyze their own data [@Goecks2010GalaxyGenomeBiol;@Blankenberg2010FastqGalaxy]. Early papers described Galaxy as a “web-based genome analysis tool for experimentalists” and emphasized a central design goal: making large-scale analyses biologist-friendly by providing a unified, web-based interface to powerful tools while hiding computational details @Blankenberg2010GalaxyExperimentalists. 
+
+Technically, Galaxy treats any command-line program with a well-defined interface as a tool that can be exposed through the web by writing a configuration file that specifies its inputs, outputs, and parameters @Goecks2010GalaxyGenomeBiol. This modular architecture made it straightforward to integrate diverse tools for sequence alignment, variant calling, ChIP-seq, RNA-seq, and metagenomics, and to deploy them on a public server (usegalaxy.org) or local institutional instances without changing the user’s experience @Goecks2010GalaxyGenomeBiol.
+
+### Doing bioinformatics in the browser
+
+Galaxy’s analysis workspace is organized around three key elements: a tool panel listing available methods, a central panel for configuring and running tools, and a “history” panel that records all datasets and analysis steps @Goecks2010GalaxyGenomeBiol. Users can upload their own files or import data from integrated sources, then chain tools together by passing the output of one step directly into the next, constructing multi-step workflows entirely via point-and-click interfaces @Goecks2010GalaxyGenomeBiol.
+
+The FASTQ manipulation suite illustrates how basic NGS data preparation can be done entirely in the browser @Blankenberg2010FastqGalaxy. Tools such as the FASTQ Groomer, quality summary, trimmer, quality-based filters, and paired-end joiner/splitter allow users to: convert between FASTA/QUAL and all common FASTQ variants; compute per-base quality statistics and visualize them; trim low-quality ends; filter reads by length or quality; and perform complex pattern-based manipulations including reverse complementing and adapter handling @Blankenberg2010FastqGalaxy. These tasks, traditionally the domain of custom scripts, become reproducible “first steps” in a teaching-friendly, GUI-based workflow that can be reused across projects.
+
+Beyond early QC, Galaxy supports complete analysis pipelines in many domains, including RNA-seq, ChIP-seq, variant calling, and metagenomics @Goecks2010GalaxyGenomeBiol. Tool wrappers encapsulate standard command-line software (e.g., mapping, peak calling, quantification) so that a novice user can execute sophisticated end-to-end workflows by selecting tools and parameters, rather than composing shell commands @Goecks2010GalaxyGenomeBiol.
+
+### Reproducible workflows and provenance
+
+A distinctive feature of Galaxy is its emphasis on reproducible computational research @Goecks2010GalaxyGenomeBiol. Every tool execution generates provenance metadata that include the input datasets, tool identity and version, parameter values, and resulting outputs, all stored as steps in the user’s history @Goecks2010GalaxyGenomeBiol. Users can inspect any intermediate dataset, rerun individual steps with modified parameters, and branch analyses by copying histories, making it straightforward to revise or expand an existing analysis.
+
+Galaxy’s workflow system builds on this provenance @Goecks2010GalaxyGenomeBiol. A user can either design a workflow from scratch using a graphical editor—dragging tools into a canvas, connecting them, and configuring their parameters—or, more simply, generate a workflow from an existing history “by example” @Goecks2010GalaxyGenomeBiol. The resulting workflow becomes a reusable template that appears alongside other tools in the interface; running the workflow applies the same series of steps and parameter settings to new input datasets, thereby enforcing consistent analysis and enabling exact reproducibility.
+
+To support interpretability, Galaxy allows users to add annotations and tags to histories, individual analysis steps, and workflows, capturing the intent and rationale behind each computational decision @Goecks2010GalaxyGenomeBiol. This user metadata complements the automatically tracked provenance and encourages good habits in documenting analyses, especially valuable in a teaching setting where students can learn by exploring well-annotated example histories.
+
+### Transparency, sharing, and Galaxy Pages
+
+Galaxy also functions as a publishing medium for computational analyses @Goecks2010GalaxyGenomeBiol. Any dataset, history, or workflow can be shared with collaborators, made accessible via a stable URL, or published in a public repository where other users can search, view metadata, and import items into their own workspaces. @Goecks2010GalaxyGenomeBiol This sharing model turns workflows into community resources and promotes convergence on best-practice pipelines.
+
+Galaxy Pages extend this concept by providing interactive, web-based documents that combine narrative text, figures, and embedded Galaxy objects (datasets, histories, workflows) @Goecks2010GalaxyGenomeBiol. A Page can document an entire computational experiment—from raw reads to final figures—with embedded items that readers can expand to inspect parameters or intermediate results, or import directly into their own Galaxy account to rerun or adapt the analysis @Goecks2010GalaxyGenomeBiol. For example, a metagenomic study of “windshield splatter” used Galaxy to build a complete NGS pipeline for phylogenetic profiling, then published a Page that exposes the full workflow and histories as an executable online supplement @Goecks2010GalaxyGenomeBiol.
+
+In practice, this means that a methods section and supplementary material can be instantiated as a live, executable artifact rather than static text @Goecks2010GalaxyGenomeBiol. For a chapter on genome databases and workflows, Galaxy can therefore be presented not only as a tool for doing bioinformatics, but also as a model for how web-based platforms can embed reproducibility and transparency directly into the way computational genomics is taught, practiced, and published.
 
 ## Reflection Questions
 
