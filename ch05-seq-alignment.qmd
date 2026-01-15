@@ -15,8 +15,6 @@ By the end of this chapter you should be able to:
 -   Explain what a multiple sequence alignment (MSA) is, why it is more informative than pairwise alignment, and summarize major MSA algorithm families.\[file:6\]\[file:2\]\
 -   Read alignment output critically, recognizing poor alignments and the influence of parameter choices.
 
-------------------------------------------------------------------------
-
 ## Why align sequences?
 
 Sequence alignment is a core operation in genomics, used whenever you want to compare DNA or protein sequences to ask biological questions.\[file:6\] Typical motivations include:
@@ -43,8 +41,6 @@ Two broad alignment goals motivate different algorithms:
 
 In practice, global alignment is good for “how similar are these things overall?”, while local alignment is better for “do these sequences share any conserved region at all?”.
 
-------------------------------------------------------------------------
-
 ## Scoring alignments
 
 Algorithms need a way to rate one alignment as better than another. Scores come from two components: substitution matrices and gap penalties.\[file:6\]\[file:5\]
@@ -66,8 +62,6 @@ Insertions and deletions appear in alignments as gaps, which must be penalized s
 -   An **affine gap penalty** distinguishes gap opening and extension: opening a gap has a large penalty, while extending it costs less per position, reflecting that one long indel is usually more plausible than many short ones.\[file:6\]
 
 When you run tools online, you will often see default gap open and gap extension settings; understanding these lets you reason about why alignments look the way they do.
-
-------------------------------------------------------------------------
 
 ## Needleman–Wunsch: global alignment
 
@@ -103,8 +97,6 @@ In class you will work through a full Needleman–Wunsch example by hand using s
     -   Describe in words why the bottom‑right cell represents the best overall global alignment.\
 -   Before class, sketch a tiny 3×3 or 4×4 matrix for two short sequences (like “SAE” and “SE”) and practice filling it using simple scores (e.g., +1 for match, −1 for mismatch, −2 for gap).
 
-------------------------------------------------------------------------
-
 ## Smith–Waterman and local alignment
 
 Smith–Waterman (1981) adapts dynamic programming for local alignment, focusing on the best matching subsequences rather than forcing end‑to‑end alignment.\[file:5\]\[file:6\]
@@ -121,7 +113,6 @@ Local alignment is especially important for:
 
 Although this course does not require hand‑implementing Smith–Waterman, recognizing that global and local alignments are built on related dynamic programming principles will help when you encounter genome alignment algorithms that adapt these ideas to long DNA sequences.
 
-------------------------------------------------------------------------
 
 ## From pairwise to multiple sequence alignment
 
@@ -166,8 +157,6 @@ When you study genome alignment in the next chapter, look for echoes of:
 -   Dynamic‑programming cores used within narrower bands rather than over full matrices.\
 -   Progressive and iterative refinement strategies analogous to MSA tools.
 
-------------------------------------------------------------------------
-
 ## Preparation for the MSA coronavirus activity
 
 In class you will use NCBI’s COBALT or a similar web tool to align nucleocapsid (N) and spike (S) protein sequences from SARS‑CoV‑2 across multiple years.\[file:2\]\[file:6\]
@@ -183,8 +172,6 @@ To arrive ready:
     -   How coloring schemes (for example, identity, BLOSUM62, frequency‑based difference) emphasize conserved versus variable positions.\[file:2\]\[file:6\]
 
 During the activity you will compare alignments for N and S, think about how protein length and function relate to observed variability, and discuss which regions might make robust vaccine or diagnostic targets.
-
-------------------------------------------------------------------------
 
 ## Practice problem set
 
@@ -268,8 +255,6 @@ These problems are intended for practice rather than grading; they mirror the ty
 
         (b) Which additional challenges arise from long genomes and non‑coding DNA that are less important in protein MSAs?
 
-------------------------------------------------------------------------
-
 ## Reflection questions
 
 Use these to connect this material to your own research interests and to the upcoming genome alignment chapter.
@@ -284,14 +269,4 @@ Use these to connect this material to your own research interests and to the upc
 
 5.  When you see conflicting alignments from different tools, how will you decide which to trust, and how much does that uncertainty matter for the biological inferences you intend to draw?
 
-------------------------------------------------------------------------
-
-## References and further reading
-
-These are *optional* if you want to go deeper; the chapter above is designed to stand alone.
-
--   Pevsner, J. *Bioinformatics and Functional Genomics* (3rd ed.), Chapter 3: Pairwise Sequence Alignment (global/local algorithms, PAM/BLOSUM matrices, alignment statistics).\[file:5\]\
--   Pevsner, J. *Bioinformatics and Functional Genomics* (3rd ed.), Chapter 6: Multiple Sequence Alignment (progressive, iterative, consistency‑based, structure‑based methods; benchmarking).\[file:4\]\
--   Course lecture slides, “Sequence Alignment” (pairwise and multiple alignment overview, MSA algorithms, coronavirus N and S activities).\[file:2\]\
--   Course lecture recording transcript, “Sequence Alignment” (historical context, algorithm motivations, practical tool tips).\[file:6\]\
--   Needleman–Wunsch worksheet (global protein alignment exercise using a PAM matrix and gap penalty).\[file:5\]
+## References
