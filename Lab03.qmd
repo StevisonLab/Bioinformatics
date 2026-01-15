@@ -5,11 +5,11 @@ csl: nature.csl
 ---
 
 ## Using the Jump-2-gene (J2G) feature on FlyBase
-![](images/Lab3_FlyBase.png){width="50%" fig-align="center"}
+![](images/Lab3_FlyBase.png){width="50%" fig-align="center" fig-alt="Logo for FlyBase"}
   
 1. Search for the **DSX** gene using the search box in the top-right corner.
   
-![](images/Lab3_J2G.png){width="50%" fig-align="center"}
+![](images/Lab3_J2G.png){width="75%" fig-align="center" fig-alt="Jump to Gene Search Box"}
 
 2. What chromosome is this gene on?
 
@@ -17,11 +17,11 @@ csl: nature.csl
 
 4. Find the section **Genomic Location** and use <span style="color: blue;">jBrowse</span> to view DSX in the genome browser.
 
-![](images/Lab3_JBrowse.png){width=10% fig-align="center"}
+![](images/Lab3_JBrowse.png){width=25% fig-align="center" fig-alt="JBrowse Button."}
 
 5. On the left, turn on the **RNA** and **CDS** tracks, then answer:
 
-![](images/Lab3_browser.png){width=100% fig-align="center"}
+![](images/Lab3_browser.jpeg){width=100% fig-align="center" fig-alt="View of the top of the Browser Window."}
 
     - How many different transcripts does this gene have?
     - How many exons are in each protein?
@@ -43,7 +43,7 @@ csl: nature.csl
 
 9. In the **Expression** section under **RNA-Seq → Tissues**, turn on expression for **Gonads and male accessory glands**. 
 
-![](images/Lab3_ExprTrack.png){width=100% fig-align="center"}
+![](images/Lab3_ExprTrack.png){width=75% fig-align="center" fig-alt="Example track configuration settings."}
 
 10. Configure and maximize vertical spacing as in the image above, then examine the expression data. **What predictions do you make about this gene?**
 
@@ -51,7 +51,7 @@ csl: nature.csl
 
 1. In the NCBI **Gene** database, find the **ADH** gene in *Drosophila grimshawi*.
 
-![](images/Lab3_Dgrim.jpg){width=50% fig-align="center"}
+![](images/Lab3_Dgrim.jpg){width=40% fig-align="center" fig-alt="An image of Drosophila grimshawi."}
 
 2. From the gene page, under **Genomic regions, transcripts, and products**, click **FASTA** to obtain the ADH sequence for *D. grimshawi*.
 
@@ -62,7 +62,7 @@ csl: nature.csl
     - Paste *D. melanogaster* ADH into the **Query**.
     - Paste *D. grimshawi* ADH into the **Subject**.
     - Under **Program Selection**, choose **blastn** for somewhat similar sequences.
-    - Click the ![](images/Lab3_Blast.png){width=25%} button.
+    - Click the ![](images/Lab3_Blast.png){width=15% fig-alt="BLAST tool button."} button.
 
 5. From the BLAST output, record:
     - Percent identity between the two species: ________
@@ -96,9 +96,9 @@ Answer the following:
 
 1. What are the major changes at the chromosome level across these *Drosophila* species? Specifically, do any species have pieces of multiple Muller elements spanning a single chromosome?
 
-2. Compare the Figure 3 from @bhutkar_chromosomal_2008 below to the synteny table and mark where Muller elements have shuffled to form a combined element. 
+2. Compare the below (Figure 3 from @bhutkar_chromosomal_2008) to the synteny table and mark where Muller elements have shuffled to form a combined element. 
 
-![](images/Lab3_synteny.jpeg){fig-align="center"}
+![](images/Lab3_synteny.jpeg){fig-align="center" fig-alt="An image Muller Elements from each species."}
 
 3. What other kinds of changes can you find?
 
@@ -137,7 +137,7 @@ Answer the following:
 
 2. In the search bar, type **PRDM9** and click **Go**.
 
-![](images/Lab3_Ensembl.jpeg){fig-align="center"}
+![](images/Lab3_Ensembl.jpeg){fig-align="center" fig-alt="An image of search bar for Ensembl Browser."}
 
 3. From the gene page, select **Orthologues** under the **Comparative Genomics** section in the left-hand panel.
 
@@ -154,13 +154,13 @@ Answer the following:
     - What do you notice about these gene sequences?
     - Is this a protein sequence alignment or a DNA sequence alignment?
 
-![](images/Lab3_export.jpeg){fig-align="center"}
+![](images/Lab3_export.jpeg){fig-align="center" fig-alt="An image of export toolbar in BioMart on Ensembl."}
 
 7. Along the top, click **Export** and:
     - Make sure **ALL** species are included.
     - Download the tree as a **Newick** file.
 
-![](images/Lab3_Newick.jpeg){fig-align="center"}
+![](images/Lab3_Newick.jpeg){fig-align="center" fig-alt="An image of Export Menu for exporting Newick files."}
 
 8. (Optional) Open the Newick file in **FigTree**:
 
