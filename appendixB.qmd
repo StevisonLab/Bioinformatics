@@ -66,7 +66,7 @@ Related to the three above questions, this project would investigate the KRAB do
 **Project 6: How do the predicted binding motifs of PRDM9 and the number of predicted binding sites across the genome differ across non-avian reptiles?**
 This project would use the zinc finger residue to predict the DNA binding sequence and examine how degenerate it is. Further, the predicted binding sequence matrix would be searched across the reference genome for each selected taxa to compare the number of predicted hits and how they cluster in the genome.
 
-**Project 7: What are the potential positional affects of PRDM9 in the genome that impact its evolution?**
+**Project 7: What are the potential positional effects of PRDM9 in the genome that impact its evolution?**
 One thing our work has recently revealed in investigating PRDM9 along so many genome is that it seems to be located towards chromosome ends very often. Further, the synteny of this gene is not well-maintained, which could be a contributing factor to its rapid evolution. The goal of this project would be to use genomes with chromosome-level assemblies to investigate this pattern more robustly. It may also include diving into neighboring genes a bit to see how this gene moves within the genomes across the tree of life. You may consider the high-quality genomic assembly standard introduced in the first day of class reading (e.g. [6.C.Q40](https://www.earthbiogenome.org/report-on-assembly-standards)).
 
 **Project 8: For the newly identified losses in testudines and squamates, what is the timing of these events?**
