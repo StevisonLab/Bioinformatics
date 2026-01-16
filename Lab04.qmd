@@ -8,13 +8,13 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
 
 1. Login to your ASC account and make a folder for Lab 4 called `Lab4`.
 
-2. Copy the scripts files from the shared folder `Sample_NGS_Workflow/scripts` into your `Lab4` folder.
+2. Copy the script files listed below from the shared folder `Sample_NGS_Workflow/scripts` into your `Lab4` folder.
   - 1\_index\_sacCer3.sh  
   - 2\_sample\_sra.sh  
   - 3\_sample\_trimming.sh  
   - 4\_BWA\_example.sh
 
-3. Take a cursory glance at each of the script files and give them a quick read to understand the tools they are using and what they are doing. 
+3. Look over each script file and try to understand which tools they are using and what the scripts are doing. Draw out a diagram of the workflow from script to script.
 
 ## Step 1 : Index your genome
 
@@ -27,9 +27,9 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
 
 2. Inspect the job standard error file. It will follow the naming convention of your job name followed by a period and the letter "e" and the job number (e.g. 1\_index\_sacCer3.sh.e237597). Any errors with your job will always be in this file, so get in the habit of checking here FIRST after your job finishes! The standard out goes to another file with an "o" which you should also check.
  
-3. This script will index the reference genome fasta file. First, it will use bwa, then samtools. Each index is for a different part of he pipeline. Look at the files that have been generated.
+3. This script will index the reference genome fasta file. First, it will use [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml), then samtools. Each index is for a different part of he pipeline. Look at the files that have been generated.
 
-4. Read over the [samtools faidx documentation](https://www.htslib.org/doc/samtools-faidx.html) to understand this file: "sacCer3.masked.fa.fai". Then explore the file using `less`. 
+4. Read over the [samtools faidx](https://www.htslib.org/doc/samtools-faidx.html) documentation to understand this file: "sacCer3.masked.fa.fai". Then explore the file using `less`. 
 
 5. You will notice that it lists the chromosomes and their lengths. How can you use command line tools to calculate the total genome size from these files? _Remember, this information is useful in calculating genome coverage!_
 
@@ -50,7 +50,7 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
 
 ## Step 3 : Trimming
 
-1. Inspect the next script you copied over "3\_sample\_trimming.sh". 
+1. Inspect the next script you copied over "3\_sample\_trimming.sh". Look over the [trimmomatic tool](http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf) documentation.
  
 2. As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
 
@@ -63,9 +63,10 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
 
 ## Step 4 : Alignment
 
-1. Inspect the next script you copied over "4\_BWA\_example.sh". 
+1. Inspect the next script you copied over "4\_BWA\_example.sh". This script uses the tool [bwa mem](https://bio-bwa.sourceforge.net/bwa.shtml) to align the raw reads to the reference genome.
  
-2. As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+2. As you did with the first few scripts, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+
  - Number of CPUs = 4
  - RAM/Memory = 2GB
  - Queue = class
@@ -80,7 +81,7 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
  - Was trimming necessary? 
  - Does the data look better after trimming?
 
-2. Additionally, the latter one collects coverage using `samtools depth`. Look at the [samtools manual](https://www.htslib.org/doc/samtools-depth.html) for this program "depth" to parse the `awk` command that it pipes to. Notice the use of the variable `$genome_size`. This refers to the file you made earlier, "sacCer3.masked.fa.fai", to programmatically calculate the genome size and store it in a variable for this calculation.
+2. Additionally, the latter one collects coverage using `samtools depth`. Look at the [samtools depth](https://www.htslib.org/doc/samtools-depth.html) documentation for this program "depth" to parse the `awk` command that it pipes to. Notice the use of the variable `$genome_size`. This refers to the file you made earlier, "sacCer3.masked.fa.fai", to programmatically calculate the genome size and store it in a variable for this calculation.
 
 3. Use `less` to examine the file these statistics have printed to.
 
