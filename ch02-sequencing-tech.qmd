@@ -265,8 +265,6 @@ For bioinformatics, this trend is double‑edged. On one hand, user‑friendly w
 
 ## Practice Problem‑sets
 
-You can use or adapt the following prompts for a combined problem set at the end of the chapter. Many can be translated into short R exercises using packages demonstrated in *Computational Genomics with R*.
-
 1.  **Coverage calculations in R**: Write an R function that takes genome size (bp), planned read length, and number of reads as input and returns expected coverage. Explore how coverage changes as you vary read length from 150 bp to 20 kb while holding total sequenced bases constant, and interpret what this means for assembly contiguity versus variant calling in a 3 Gb genome [@pevsner2015; @vandijk2018].
 
 2.  **Platform choice for a real project**: Choose a published genome study of your organism of interest (or a related species). Based on the questions the authors asked, justify whether their choice of sequencing platform(s) and coverage seems appropriate. Propose at least one alternative design using a different mix of short‑ and long‑read technologies, and explain what new information it might reveal [@vandijk2018; @vandijk2023; @scarano2024].
