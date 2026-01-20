@@ -1,6 +1,6 @@
 ---
 title: "Sequence Alignment"
-subtitle: "From Pairwise to Multiple Alignments"
+subtitle: "Pairwise and Multiple Sequence Alignment Algorithms"
 bibliography: references.bib
 csl: nature.csl
 ---
@@ -12,6 +12,7 @@ By the end of this chapter you should be able to:
 -   Explain why biologists align sequences and distinguish **similarity** from homology, orthologs, and paralogs.
 -   Describe how pairwise alignment scores are computed from substitution matrices and gap penalties.
 -   Outline and interpret the Needleman–Wunsch global alignment algorithm and contrast it with Smith–Waterman local alignment.
+-   Explain the difference between a dynamic versus heuristic programming.
 -   Explain what a multiple sequence alignment (MSA) is, why it is more informative than pairwise alignment, and summarize major MSA algorithm families.
 -   Read alignment output critically, recognizing poor alignments and the influence of parameter choices.
 
@@ -82,7 +83,7 @@ When you run alignment tools on the web or command line, default gap opening and
 
 ### Needleman–Wunsch: Global Alignment
 
-The Needleman–Wunsch algorithm, introduced in 1970, is a dynamic programming method that guarantees an optimal global alignment for two sequences given a specified substitution matrix and gap penalty scheme [@needleman1970; @pevsner2015]. The core idea is to systematically evaluate all possible ways of aligning prefixes of the two sequences by filling a matrix of scores and then to recover the best full-length alignment by tracing back through that matrix [@needleman1970; @pevsner2015]. This approach avoids exhaustive enumeration of all possible alignments, which would grow combinatorially with sequence length, while still ensuring that the final alignment is optimal under the chosen scoring system [@needleman1970; @pevsner2015].  
+The Needleman–Wunsch algorithm, introduced in 1970, is a **dynamic programming** method that guarantees an optimal global alignment for two sequences given a specified substitution matrix and gap penalty scheme [@needleman1970; @pevsner2015]. The core idea is to systematically evaluate all possible ways of aligning prefixes of the two sequences by filling a matrix of scores and then to recover the best full-length alignment by tracing back through that matrix [@needleman1970; @pevsner2015]. This approach avoids exhaustive enumeration of all possible alignments, which would grow combinatorially with sequence length, while still ensuring that the final alignment is optimal under the chosen scoring system [@needleman1970; @pevsner2015]. Below is a description of this algorithm, but if you are more of a visual learner, there is a great 15 minute [YouTube video](https://www.youtube.com/watch?v=LhpGz5--isw) on the topic @deborah_thurtle-schmidt_global_2018. 
 
 Given sequences of lengths \(m\) and \(n\), Needleman–Wunsch constructs a matrix of dimensions \((m+1) \times (n+1)\), where the cell \(F_{i,j}\) represents the best possible global alignment score for the first \(i\) residues of sequence 1 and the first \(j\) residues of sequence 2 [@needleman1970; @pevsner2015]. The first row and first column are initialized with cumulative gap penalties, allowing either sequence to begin with a terminal gap if that yields a higher overall score [@pevsner2015]. The matrix is then filled row by row or column by column using a recurrence relation that considers the three possible ways to reach each cell: aligning the current pair of residues (diagonal move), inserting a gap in one sequence (vertical move), or inserting a gap in the other (horizontal move) [@needleman1970; @pevsner2015].  
 
@@ -103,18 +104,12 @@ where $(s(x_i, y_j))$ is the substitution score for aligning residues $(x_i)$ an
 ![Pairwise Sequence Alignment (from Pevsner 3.20)](images/Figure_3.20_Pevsner.jpg){#fig-pairwise width="75%"}
 
 Pairwise alignment of two amino acid sequences using a dynamic programming
-algorithm of Needleman and Wunsch (1970) for global alignment. (a) Two sequences can be assigned
-a diagonal path through the matrix and, when necessary, the path can deviate horizontally or vertically,
-reflecting gaps that are introduced into the alignment. (b) Two identical sequences form a path on
-the matrix that fits a diagonal line. (c) If there is a mismatch (or multiple mismatches), the path still
-follows a diagonal, although a scoring system may penalize the presence of mismatches. If the alignment
-includes a gap in (d) the first sequence or (e) the second sequence, the path includes a vertical
-or horizontal line.
+algorithm of Needleman and Wunsch (1970) for global alignment. (a) Two sequences can be assigned a diagonal path through the matrix and, when necessary, the path can deviate horizontally or vertically, reflecting gaps that are introduced into the alignment. (b) Two identical sequences form a path on the matrix that fits a diagonal line. (c) If there is a mismatch (or multiple mismatches), the path still follows a diagonal, although a scoring system may penalize the presence of mismatches. If the alignment includes a gap in (d) the first sequence or (e) the second sequence, the path includes a vertical or horizontal line.
 :::
 
 ### Smith–Waterman: Local Alignment
 
-The Smith–Waterman algorithm, introduced in 1981, adapts the dynamic programming framework to local rather than global alignment, focusing on the highest-scoring subsequences of the two inputs [@smith1981; @pevsner2015]. Instead of forcing an alignment from the beginning to the end of both sequences, Smith–Waterman identifies the best local region of similarity, which is especially useful for detecting conserved domains, motifs, or exons embedded in longer, less related sequence contexts [@smith1981; @pevsner2015]. This local strategy is also central to database search tools such as BLAST and FASTA, which conceptually perform many local alignments between a query and entries in a database [@pevsner2015].  
+The Smith–Waterman algorithm, introduced in 1981, adapts the **dynamic programming** framework to local rather than global alignment, focusing on the highest-scoring subsequences of the two inputs [@smith1981; @pevsner2015]. Instead of forcing an alignment from the beginning to the end of both sequences, Smith–Waterman identifies the best local region of similarity, which is especially useful for detecting conserved domains, motifs, or exons embedded in longer, less related sequence contexts [@smith1981; @pevsner2015]. This local strategy is also central to database search tools such as BLAST and FASTA, which conceptually perform many local alignments between a query and entries in a database [@pevsner2015]. As with global alignment, below is a description of this algorithm, but if you are more of a visual learner, there is a short 2 minute [YouTube video](https://www.youtube.com/watch?v=F1YId_z4pc8) on the topic @tel-aviv_tutorials_how_2019.  
 
 Smith–Waterman uses a similar \((m+1) \times (n+1)\) dynamic programming matrix as Needleman–Wunsch, but modifies the recurrence relation in two key ways [@smith1981; @pevsner2015]. First, the first row and first column are initialized to zero rather than cumulative gap penalties, reflecting the fact that local alignments may begin anywhere in the sequences without penalty [@smith1981; @pevsner2015]. Second, at each cell the algorithm introduces a fourth option in addition to the three used for global alignment: the score zero. The recurrence becomes
 
@@ -143,7 +138,7 @@ Here, you can search a paper (e.g. "Altschul 1990 basic local alignment search t
 
 I find the analysis over time to be particularly useful. For example, you might find a particular tool has a LOT of citations, but that the number have dwindled in recent years. A deeper dive might find that a newer tool has largely replaced this tool. This information together would suggest that you should try to use the newer tool. 
 
-In your bioinformatics approach for your group project, I expect you to use these types of metrics to justify your selected bioinformatics tools, including ones you might have considered and decided against.    
+In the bioinformatics approach for your group project, I expect you to use these types of metrics to justify your selected bioinformatics tools, including ones you might have considered and decided against.    
 :::
 
 BLAST, first published in 1990, takes a query sequence and searches a database for entries sharing significant local similarity, outputting a ranked list of hits annotated with scores and statistics such as bit score and expect value (E value) [@altschul1990; @pevsner2015].
@@ -154,9 +149,9 @@ BLAST, first published in 1990, takes a query sequence and searches a database f
 In [Lab 5](Lab05.qmd), we will use BLAST on the command line using the Alabama Super Computer [@camacho2009]. The command-line version (BLAST+) allows custom database searches, bulk queries, and complex search strategies essential for large-scale genomic data [@camacho2009].
 :::
 
-BLAST builds on Smith–Waterman's local alignment framework but uses heuristics rather than exhaustive dynamic programming, trading small losses in theoretical optimality for massive gains in speed [@altschul1990; @pevsner2015]. The algorithm proceeds in three main phases [@altschul1990; @camacho2009; @pevsner2015]:
+BLAST builds on Smith–Waterman's local alignment framework but uses **heuristic programming** rather than exhaustive dynamic programming, trading small losses in theoretical optimality for massive gains in speed [@altschul1990; @pevsner2015]. The algorithm proceeds in three main phases [@altschul1990; @camacho2009; @pevsner2015]:
 
-**Phase 1 (List)**: BLAST analyzes the query and compiles short words of fixed length $(w)$ (typically 3 for proteins) [@altschul1990; @pevsner2015]. Each possible word pair is scored using the substitution matrix, and only words scoring at or above threshold \(T\) are retained [@altschul1990; @pevsner2015]. This filters for exact or conservative substitutions characteristic of conserved motifs [@pevsner2015].
+**Phase 1 (List)**: BLAST analyzes the query and compiles short words of fixed length $(w)$ (typically 3 for proteins) [@altschul1990; @pevsner2015]. Each possible word pair is scored using the substitution matrix, and only words scoring at or above threshold $(T)$ are retained [@altschul1990; @pevsner2015]. This filters for exact or conservative substitutions characteristic of conserved motifs [@pevsner2015].
 
 **Phase 2 (Scan and Extend)**: BLAST scans the database for retained words, using a "two-hit" strategy requiring two non-overlapping hits within window $(A)$ to initiate extension [@pevsner2015]. Extensions create high-scoring segment pairs (HSPs), first ungapped then optionally gapped [@pevsner2015]. HSPs exceeding reporting cutoff $(S)$ are retained [@pevsner2015].
 
@@ -208,24 +203,14 @@ MSAs inform protein structure and function prediction [@pevsner2015]. Profiles a
 ::: callout-note
 #### Figure 5.3 – Multiple Sequence Alignment of Insulin
 
-![Multiple Sequence Alignment (from Pevsner 7.3)](images/Figure_7.3_Pevsner.jpg){#fig-msa width="75%"}
+![Multiple Sequence Alignment (from Pevsner 7.3)](images/Figure_7.3_Pevsner.jpg){#fig-msa}
 
-Since the 1950s, studies of insulin have facilitated our understanding of molecular evolution. (a) The human insulin molecule
-consists of a signal peptide (required for intracellular transport; amino acid residues 1–24), the B chain, the C peptide, and the A
-chain. Dibasic residues (amino acids RR, KR) flank the C peptide and are the sites at which proteases cleave the protein. The A chain and
-B chain are then covalently linked through disulfide bridges, forming mature insulin. (b) Multiple sequence alignment of insulin from 12
-species. Amino acid substitutions occur in nonrandom patterns. Note that within the A chain of insulin the amino acid residues are almost
-perfectly conserved between different species, except for three divergent columns of amino acids (A chain, residues in green font). However,
-the rate of nucleotide substitution is about six-fold higher in the region encoding the intervening C peptide than in the region encoding
-the B and A chains (Kimura, 1983), and gaps in the multiple sequence alignment are evident here. Disulfide bridges between cysteine
-residues
-are indicated by dashed lines. The accession numbers are NP_000198.1 (human), NP_001008996.1 (chimpanzee), NP_062003.1
-(rat), NP_001123565.1 (dog), NP_001172013.1 (mouse), NP_001075804.1 (rabbit), NP_001103242.1 (pig), NP_990553.1 (chicken),
-NP_001172055.1 (cow), P01318.2 (sheep), XP_003422420.1 (elephant), and P67974.1 (sperm whale). (c) Guinea pig (Cavia porcellus,
-accession NP_001166362.1) and coypu (Myocastor coypus, P01330.1) insulins evolve about seven-fold faster than insulin from other
-species.
-Human, mouse, guinea pig, and coypu insulins are aligned. Arrows indicate 18 amino acid positions at which the guinea pig
-sequence (purple) varies from that of human and/or mouse. Source @pevsner2015
+Since the 1950s, studies of insulin have facilitated our understanding of molecular evolution. (a) The human insulin molecule consists of a signal peptide (required for intracellular transport; amino acid residues 1–24), the B chain, the C peptide, and the A
+chain. Dibasic residues (amino acids RR, KR) flank the C peptide and are the sites at which proteases cleave the protein. The A chain and B chain are then covalently linked through disulfide bridges, forming mature insulin. (b) Multiple sequence alignment of insulin from 12
+species. Amino acid substitutions occur in nonrandom patterns. Note that within the A chain of insulin the amino acid residues are almost perfectly conserved between different species, except for three divergent columns of amino acids (A chain, residues in green font). However,
+the rate of nucleotide substitution is about six-fold higher in the region encoding the intervening C peptide than in the region encoding the B and A chains (Kimura, 1983), and gaps in the multiple sequence alignment are evident here. Disulfide bridges between cysteine
+residues are indicated by dashed lines. The accession numbers are NP_000198.1 (human), NP_001008996.1 (chimpanzee), NP_062003.1 (rat), NP_001123565.1 (dog), NP_001172013.1 (mouse), NP_001075804.1 (rabbit), NP_001103242.1 (pig), NP_990553.1 (chicken), NP_001172055.1 (cow), P01318.2 (sheep), XP_003422420.1 (elephant), and P67974.1 (sperm whale). (c) Guinea pig (Cavia porcellus, accession NP_001166362.1) and coypu (Myocastor coypus, P01330.1) insulins evolve about seven-fold faster than insulin from other species. Human, mouse, guinea pig, and coypu insulins are aligned. Arrows indicate 18 amino acid positions at which the guinea pig
+sequence (purple) varies from that of human and/or mouse. Figure source: @pevsner2015.
 :::
 
 ### Conserved Residues, Motifs, and Databases of MSAs
@@ -254,6 +239,7 @@ Constructing accurate MSAs is algorithmically challenging because the search spa
 
 **Structure-based methods** incorporate three-dimensional structural information, recognizing that tertiary structures are better conserved than primary sequences [@armougom2006; @pevsner2015]. The Expresso mode in T-COFFEE begins by identifying structural templates for input sequences via BLAST searches against the Protein Data Bank, then uses pairwise structural alignments to guide multiple alignment, improving alignment of secondary structure elements and functionally important residues [@armougom2006; @pevsner2015]. PRALINE can integrate profiles from PSI-BLAST searches and predicted secondary structure, using this additional information to refine MSAs beyond what sequence alone dictates [@pevsner2015]. Structural information is also crucial in benchmarking: curated reference alignments based on superposed protein structures serve as gold standards for evaluating algorithmic accuracy using metrics such as sum-of-pairs and column scores [@thompson1999; @lassmann2005; @pevsner2015].
 
+::: {.smaller style="overflow-x: auto;"}
 | Method type | Core idea | Examples |
 |-------------|-----------|----------|
 | Exact | Multi-dimensional dynamic programming; guaranteed optimal but feasible only for very few short sequences. | Used mainly in benchmarking studies. |
@@ -263,6 +249,7 @@ Constructing accurate MSAs is algorithmically challenging because the search spa
 | Structure-based | Incorporate 3D structural information (when available) alongside sequence when aligning, giving special weight to structurally conserved cores. | Expresso (T-COFFEE module). |
 
 : Algorithm families with representative examples you will encounter in lab exercises. {#tbl-msa-algorithms .striped .hover}
+:::
 
 ::: callout-note
 ## NCBI COBALT Tool
@@ -288,21 +275,21 @@ The Ensembl browser implements a related but distinct pipeline based on Enredo, 
 
 ## Problem Sets
 
-1. **Global Protein Alignment**: Implement the Needleman-Wunsch algorithm on this toy example. Below is the PAM matrix already set up based on a gap penalty of -6. First, select the optimal alignment between the pair of sequences. On a blank sheet of paper, work through the matrix to align the two sequences, remembering that vertical and horizontal moves insert gaps and reduce your overall score. Then use the scoring matrix to compute the overall score of this optimal alignment. When done, write out the resulting pairwise sequence alignment.
+1. **Global Protein Alignment**: Implement the Needleman-Wunsch algorithm on this toy example. Below is the PAM matrix already set up based on a gap penalty of -6. First, select the optimal alignment between the pair of sequences. On a blank sheet of paper, work through the matrix to align the two sequences, remembering that vertical and horizontal moves insert gaps and reduce your overall score as in @fig-pairwise. Then use the scoring matrix to compute the overall score of your resulting optimal alignment. When done, write out the resulting pairwise sequence alignment of the two sequences as in @fig-exSeq.
 
    |-|S|P|E|A|R|E|
    |-|-|-|-|-|-|-|
-   |S|2|1|0|1|0|0|
-   |H|-1|0|1|-1|2|1|
-   |A|1|1|0|2|-2|0|
-   |K|0|-1|0|-1|3|0|
-   |E|0|-1|4|0|-1|4|
+   |**S**|2|1|0|1|0|0|
+   |**H**|-1|0|1|-1|2|1|
+   |**A**|1|1|0|2|-2|0|
+   |**K**|0|-1|0|-1|3|0|
+   |**E**|0|-1|4|0|-1|4|
 
    : Scoring Matrix {.sm .hover}
 
 2. **Multiple Sequence Alignment with COBALT**: Download the FASTA file [N.fa](https://auburn.instructure.com/courses/1709268/files/275453963/download?download_frd=1). Go to the [COBALT tool](https://www.ncbi.nlm.nih.gov/tools/cobalt/re_cobalt.cgi) at NCBI, upload the FASTA file, and click "Align".
 
-   - How **similar** are these sequences? Would you say they are highly similar (likely from the same species) or dissimilar (likely from different species)? These sequences are actually from the nucleocapsid phosphoprotein of the SARS-CoV-2 genome.
+   - How **similar** are these sequences? Would you say they are highly similar (likely from the same species as in @fig-msa) or dissimilar (likely from different species)? These sequences are actually from the nucleocapsid phosphoprotein of the SARS-CoV-2 genome.
    - **Configure the view** by changing the color scheme to "BLOSUM62". How does this help? Configure the view again by changing to "Frequency-based difference". How does this change your interpretation? What do some of the other settings do?
    - How **long** is this protein?
    - Click the button at the top to generate a **phylogenetic tree**. Examine the tree topology and branch lengths.
