@@ -1,30 +1,651 @@
 ---
 title: "Project Management and Reproducible Workflows"
+
+bibliography: references.bib
+csl: nature.csl
 ---
 
-## Overview
+## Introduction
 
-Short paragraph linking to previous chapter and framing why this topic matters in the course.
+Bioinformatics research is inherently computational, requiring rigorous organization, documentation, and communication of methods to ensure reproducibility and scientific validity. Unlike traditional wet-lab protocols, computational experiments face unique challenges: workflows can be complex, data files numerous, and the exact sequence of computational steps difficult to reconstruct months or years later. This chapter addresses two critical but often overlooked aspects of bioinformatics practice: (1) organizing and managing computational biology projects effectively, and (2) writing clear, reproducible methods sections for bioinformatics research.
 
-## Learning objectives
+The principles outlined here are not merely about good housekeeping—they are fundamental to reproducible science. As @sandve2013 emphasize, reproducibility is both a moral responsibility to the scientific community and a practical necessity for individual researchers who need to reuse and extend their own work. Poor organizational practices can lead to irreproducible results, wasted time, and ultimately, compromised science [@merali2010].
 
--   Bullet list of 3–5 concrete things students should be able to do.
+## Part 1: Project Management in Bioinformatics
 
-## Narrative
+### The Core Principle of Reproducibility
 
-### Key concepts
+The fundamental principle guiding computational project organization is simple yet powerful: **someone unfamiliar with your project should be able to look at your computer files and understand in detail what you did and why** [@noble2009]. This "someone" could be a collaborator, a journal reviewer attempting to reproduce your results, a future lab member, or—most commonly—yourself several months later.
 
--   2–4 subsections that walk through your bullet points (e.g., “FASTQ and Phred scores”, “QC metrics”, “Design decisions based on QC”).
+This principle leads directly to a corollary that experienced bioinformaticians learn through hard experience: **everything you do, you will probably have to do over again** [@noble2009]. You will discover flaws in data preparation, gain access to new data, or need to adjust analysis parameters. If your work is well-organized and documented, repeating experiments becomes straightforward rather than a frustrating archaeological expedition through cryptic file names and uncommented code.
 
-### Figures and examples
+### Reproducibility: The Ten Simple Rules
 
--   Simple diagrams you sketch yourself (e.g., read‑quality plot, schematic of FASTQ fields, coverage cartoon).
--   One or two short, self‑contained R or shell code blocks where appropriate.
+@sandve2013 provide a comprehensive framework for reproducible computational research, which we adapt here for bioinformatics contexts:
 
-## Activities and labs
+**Rule 1: For Every Result, Keep Track of How It Was Produced**
 
--   Describe how the corresponding lab (e.g., Galaxy vs command line QC) connects to the chapter, and give just enough detail that students can re‑orient later.
+Every analysis involves a sequence of steps—commands, scripts, and programs that transform raw data into final results. While one step may represent the core analysis, the full sequence of pre- and post-processing steps is often critical for reproducing results. Document every detail that influences execution: program names, versions, parameters, and inputs [@sandve2013].
 
-## Further reading
+Rather than manually noting steps (which easily becomes out of sync with actual execution), specify the full workflow in executable form. This could be shell scripts, makefiles, or workflow management systems like Snakemake or Nextflow. The key is ensuring the specification matches what was actually performed and can be re-executed automatically.
 
--   List your resources with 1–2‑sentence annotations each, rather than reproducing any text.
+**Rule 2: Avoid Manual Data Manipulation**
+
+Manual procedures are inefficient, error-prone, and impossible to reproduce [@sandve2013]. Replace manual file editing with programmatic approaches using standard UNIX commands or custom scripts. Manual operations like copy-paste between documents should be avoided. If manual operations are unavoidable, document which files were modified and why.
+
+**Rule 3: Archive Exact Versions of All External Programs**
+
+To reproduce results exactly, you may need the precise program versions originally used. Input and output formats often change between versions, and newer versions may not run without modifying inputs [@sandve2013]. Archive the exact versions of programs used—sometimes a single executable suffices, but complex dependencies may require storing a complete virtual machine image. At minimum, record exact names and versions of all major programs.
+
+**Rule 4: Version Control All Custom Scripts**
+
+Even minor changes to code can have major consequences. Only the exact code state that generated a result may be able to reproduce that exact output [@sandve2013]. Use version control systems like Git, Subversion, or Mercurial to systematically track code evolution. These systems are relatively easy to set up and prevent the nightmare scenario of being unable to verify previous results because the generating code is lost or modified.
+
+**Rule 5: Record All Intermediate Results**
+
+While a complete workflow specification theoretically allows regenerating all intermediate data, having easily accessible intermediate results is invaluable [@sandve2013]. Intermediate results help:
+- Reveal discrepancies and uncover bugs not apparent in final results
+- Show consequences of alternative programs and parameters
+- Allow partial workflow reexecution
+- Enable tracking inconsistencies to specific workflow steps
+- Support critical examination without requiring all executables
+
+Store intermediate results in standardized formats when possible. Archive any intermediate files produced during analysis, provided storage space permits.
+
+**Rule 6: For Analyses with Randomness, Note Random Seeds**
+
+Many analyses include randomness, giving slightly different results with each execution [@sandve2013]. However, given the same initial seed, all random numbers will be identical, producing exactly reproducible results. There is a profound difference between exact reproduction and approximate reproduction—only exact reproduction strongly indicates a procedure has been reproduced correctly. Record random seeds for all analyses involving randomness.
+
+**Rule 7: Always Store Raw Data Behind Plots**
+
+Figures undergo multiple modifications from initial generation to publication [@sandve2013]. If raw data behind figures are systematically stored and easily retrieved, you can modify plotting procedures without redoing entire analyses. Additionally, precise values can be consulted when needed. For plots involving data processing (like histograms), store both original data and processed values. When using command-based plotting (R, Python, etc.), store the plotting code as well.
+
+**Rule 8: Generate Hierarchical Analysis Output**
+
+Final results in publications often represent highly summarized data—each curve point may represent averages from underlying distributions [@sandve2013]. To validate and understand main results, inspecting detailed underlying values is crucial. Rather than embedding debug outputs in source code, permanently output all underlying data using systematic naming conventions. Hypertext (HTML) output works particularly well, allowing summarized results to link directly to detailed underlying data.
+
+**Rule 9: Connect Textual Statements to Underlying Results**
+
+Throughout research projects, diverse analyses are tried and results interpreted. While results and interpretations are conceptually interconnected, they often live separately—results on servers or personal computers, interpretations in notes or emails [@sandve2013]. To reevaluate interpretations or allow peer assessment of claims, connect textual statements to precise supporting results. Making this connection when statements are initially formulated (in notes or emails) prevents difficult, error-prone reconstruction later. Tools like Sweave, Galaxy Pages, or simple file path references within text can facilitate these connections.
+
+**Rule 10: Provide Public Access to Scripts, Runs, and Results**
+
+All input data, scripts, versions, parameters, and intermediate results should be made publicly and easily accessible [@sandve2013]. Most journals allow supplementary online material, and some have initiated efforts to integrate data and code with publications. At minimum, submit main data and source code as supplementary material and be prepared to respond to requests for further details. Making work reproducible by peers signals quality, trustworthiness, and transparency, potentially improving review processes, publication chances, and citations.
+
+### Data Management Best Practices
+
+**Never Trust Your Data**
+
+Bioinformatics data, particularly from sequencing centers, must be verified upon receipt. Always check data transfers with MD5 checksums to ensure file integrity before the sequencing facility deletes the original data (typically after 30 days). Treat your raw data as read-only—never make edits to original files directly. Always work with copies, maintaining the original as an immutable reference [@rother2011].
+
+**The 3-2-1 Backup Rule**
+
+Maintain **three** copies of your data: one working copy (on HPC or local workstation), and two backups in different physical locations (cloud storage, external drives, institutional servers). Critically, **never consider HPC scratch space or your home directory on shared computing resources as a backup**—these systems are not backed up and are subject to failures and purges [@rother2011].
+
+**Metadata: Data About Your Data**
+
+Metadata answers critical questions: Where did data come from? When and how was it downloaded? How can it be recreated? What version is associated with the data? [@rother2011] Document this information in `data/README.md` files within your project directories. For downloaded data, record:
+- Source URL
+- Download date
+- Version number or accession number
+- Any preprocessing steps applied
+
+**Use Code as Documentation**
+
+Rather than relying on manually entered terminal commands, save all commands in scripts [@rother2011]. Even simple file operations benefit from script documentation. While bash history exists, it becomes an unusable mess. Scripts provide clean, executable documentation of your workflow. Comment scripts generously so that someone (including future you) can understand what was done and why.
+
+### File and Directory Organization
+
+**Directory Structure Principles**
+
+Organize projects with a logical top-level structure and chronological organization at the next level [@noble2009]. A typical project root contains:
+
+```
+project-root/
+├── data/           # Fixed datasets
+├── results/        # Computational experiments
+├── doc/            # Documentation and manuscripts
+├── src/            # Source code
+├── bin/            # Compiled binaries and scripts
+└── README.md       # Project overview
+```
+
+Within `data/` and `results/`, use **chronological organization** with dates formatted as `YYYY-MM-DD` for proper sorting [@noble2009]. Logical names seemed obvious initially often become confusing months later. Chronological directories with optional topic suffixes (e.g., `2024-11-15-quality-control/`) provide self-evident organization. Each experiment may span several days, so new subdirectories emerge every few days to weeks.
+
+Within a single experiment directory, organization becomes logical again, structured by the experiment's workflow. For simple experiments, all files remain in the current directory. For complex experiments generating many files, introduce subdirectories to organize different file types.
+
+**File Naming Conventions**
+
+Follow these critical conventions [@rother2011]:
+
+1. **Never use spaces in filenames**—use underscores or hyphens instead
+2. **Always use file extensions** (`.txt`, `.fastq`, `.py`, `.sh`, `.md`)—explicit is better than implicit
+3. **Make names descriptive** of file contents
+4. **Use leading zeros for numerical sequences** (`001`, `002`, ..., `100`) to facilitate proper sorting
+5. **Use consistent naming for similar data types**—enables automation through pattern matching
+
+For paired-end sequencing data, consistent conventions like `sample_R1.fastq` and `sample_R2.fastq` enable batch processing through regular expressions and wildcards:
+
+```bash
+# Process all R1 files
+for file in *_R1.fastq; do
+    sample=$(basename $file _R1.fastq)
+    # Process $sample
+done
+```
+
+### The Electronic Lab Notebook
+
+Maintain a chronologically organized lab notebook in your project root documenting all experiments [@noble2009]. Entries should be:
+
+- **Dated** for temporal tracking
+- **Verbose** with detailed descriptions of procedures
+- **Visual** with embedded images, plots, and tables
+- **Analytical** recording observations, conclusions, and future ideas
+
+When experiments fail, document **how you know they failed**—interpretation may not be obvious to others (or future you). Transcribe relevant conversation notes and emails to provide complete project context.
+
+Host lab notebooks online (password-protected if necessary) to facilitate collaboration. During meetings, review the online notebook together, scrolling through current and previous entries. This practice is particularly valuable for remote collaborations [@rother2011].
+
+### Organizing Subdirectories: The TARDIS Analogy
+
+Complex bioinformatics workflows generate numerous intermediate files that can clutter directories. Divide projects into modular sub-projects with numerical prefixes for sorting [@noble2009]:
+
+```
+analysis/
+├── 1_data_QC/
+├── 2_trimming/
+├── 3_alignment/
+├── 4_bam_processing/
+├── 5_variant_calling/
+└── 6_pop_gen_analysis/
+```
+
+This "TARDIS" approach (named for the Doctor Who time machine that's bigger on the inside) keeps the main directory clean while accommodating extensive intermediate outputs in logically organized subdirectories.
+
+### Executing Reproducible Experiments
+
+**The Driver Script Approach**
+
+For each experiment, create either a `README` file documenting every command executed, or better yet, a driver script (often called `runall`) that executes the entire experiment automatically [@noble2009]. Key principles:
+
+1. **Record every operation**—no undocumented steps
+2. **Comment generously**—someone should understand your workflow from comments alone
+3. **Avoid manual editing**—use `sed`, `awk`, `grep`, `cut`, `paste`, etc. instead
+4. **Store all filenames in the driver script**—centralized file management
+5. **Use relative paths**—ensures portability across systems
+6. **Make scripts restartable**—check if output exists before rerunning expensive steps:
+
+```bash
+if [ ! -f "output_file.txt" ]; then
+    # Perform operation
+    expensive_analysis input.txt > output_file.txt
+fi
+```
+
+For long-running experiments, create both `runall` (executes experiment) and `summarize` (generates progress reports) scripts. The `summarize` script should interpret partial results, showing completion status.
+
+**Error Handling**
+
+Errors are inevitable during development but particularly problematic if difficult to track or unnoticed [@rother2011]:
+
+1. **Write robust error detection**—check for invalid parameters, bad inputs, malformed files
+2. **Abort on errors**—print error messages to stderr and exit with non-zero status. Don't skip errors and continue, or you may never notice problems
+3. **Check return codes**—verify that called programs and functions succeeded before proceeding
+4. **Use temporary files**—create output with temporary names, rename only when complete. Prevents partial results from being mistaken for complete results and enables restartable scripts
+
+### Version Control for Computational Research
+
+Version control systems (Git, Subversion) are invaluable for managing computational experiments for three critical reasons [@noble2009; @rother2011]:
+
+**1. Automatic Backup**
+
+Version control provides reliable backup beyond scheduled institutional backups. After committing changes (`git commit`), a project snapshot resides safely in the central repository, retrievable even after accidental file overwrites.
+
+**2. Historical Record**
+
+Track how scripts and programs evolved throughout a project. Rather than storing multiple file versions with slightly different names, rely on version control to track versions. To reproduce an experiment from three months ago, check out the project state from that time. Most systems allow tagging specific states with logical names for easy retrieval.
+
+**3. Collaboration Support**
+
+Repositories allow simultaneous work on shared files (scripts, documentation, manuscripts). When two people edit the same file in parallel, version control automatically merges changes and flags conflicts. Before deadlines, collaborators can edit the same document, checking in changes every few minutes while communicating by phone or video.
+
+**Version Control Best Practices**
+
+- **Check in changes daily**—ensures complete history and recent backups
+- **Use branches for works-in-progress**—merge to trunk once code works
+- **Only version files you edit by hand**—exclude compiled programs and computational results (they're large, change frequently, and waste space)
+- **Use `.gitignore` files**—tell version control to ignore generated files, preventing endless warnings about uncommitted files
+
+## Part 2: Writing Methods for Bioinformatics Research
+
+### The Challenge of Methods Writing
+
+Converting complex computational workflows into clear, reproducible methods sections presents unique challenges [@kallet2004]. Bioinformatics methods must balance completeness (providing enough detail for reproduction) with readability (organizing information logically without overwhelming readers). Journal word limits intensify these challenges, requiring strategic decisions about what appears in main text versus supplementary materials.
+
+### The Structure of a Bioinformatics Methods Section
+
+A comprehensive bioinformatics methods section typically includes these components, adapted from @kallet2004:
+
+#### Ethics Statements
+
+For research involving human subjects or animals [@kallet2004]:
+- State relevant IRB (Institutional Review Board) or IACUC (Institutional Animal Care and Use Committee) approvals
+- Include protocol numbers
+- Briefly summarize steps ensuring animal care or human subject confidentiality
+- **Critical**: Approvals must precede any project work—you cannot obtain approval retroactively
+
+#### Data Sources
+
+**For Data You Collected:**
+
+Describe collection procedures in detail [@kallet2004]:
+- Geographic location and rationale
+- Collection protocols (cite existing protocols when applicable)
+- For laboratory-reared specimens: husbandry techniques, growth conditions, age at sampling
+- Sample preparation: tissue dissection procedures, molecular protocols (DNA/RNA isolation, library preparation, QC procedures)
+- Commercial kits and reagents with manufacturer information
+- Number of biological replicates
+- Justification for tissue/protocol choices based on research goals
+
+**For Previously Published Data:**
+
+Provide complete provenance [@kallet2004]:
+- Data source (URL and/or publication)
+- Version numbers and accession numbers
+- Download dates
+- Brief description of how data were originally generated
+- Any preprocessing or filtering applied
+
+#### Sequencing Methods
+
+Detail the technical aspects of data generation [@kallet2004]:
+- Sequencing platform(s) and justification
+- Specific instrument models
+- Sequencing centers
+- Read specifications (e.g., "20 million 150 bp paired-end reads per sample")
+- Quality control procedures
+
+#### Genome Analysis Workflow
+
+This section requires the most careful attention to reproducibility [@kallet2004]:
+
+**Software and Versions:**
+- Name every software tool with exact version numbers
+- Cite the most recent publication for each tool
+- If using established workflows (e.g., GATK Best Practices), cite the workflow
+
+**Parameters:**
+- Document all non-default parameters with justifications
+- Even better: document default parameters explicitly (defaults change between versions)
+- Explain rationale for parameter choices
+
+**Reference Genomes:**
+- Specify exact reference version (e.g., "hg38 from Ensembl release 104")
+- Provide download URL or accession number
+- Note any modifications to standard references
+
+**Example of Proper Citation:**
+
+> "Raw sequencing reads were quality-filtered using Trimmomatic v0.39 [@bolger2014] with the following parameters: LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36. Filtered reads were aligned to the human reference genome (GRCh38.p13, Ensembl release 104) using HISAT2 v2.2.1 [@kim2019] with default parameters."
+
+#### Downstream and Statistical Analyses
+
+For analyses following primary data processing [@kallet2004]:
+- Justify software and analysis choices
+- Organize into logical subsections
+- Order from most to least important (or follow manuscript chronology)
+- Compare approaches to similar published studies
+- For reanalyzed public data, compare results to original publications and explain differences
+
+#### Data Access
+
+Describe how others can access your data [@kallet2004]:
+- Repository names and accession numbers (NCBI SRA, Dryad, institutional repositories)
+- DOIs for datasets
+- URLs for code repositories (GitHub, GitLab, Bitbucket)
+- Note GitHub's 2GB limit—use specialized repositories for large datasets
+- Consider institutional repositories (e.g., Auburn's Aurora system) for datasets exceeding GitHub limits
+
+### Citing Computational Resources
+
+Proper citation of computational resources presents unique challenges [@pop2015]:
+
+**Software:**
+1. Search for associated peer-reviewed publications (primary citation source)
+2. If no publication exists, cite software using:
+   - Version numbers
+   - DOIs (from services like Zenodo)
+   - URLs with access dates
+
+**Databases:**
+- Cite primary database publications
+- Include database version numbers
+- Provide accession numbers for specific entries
+- Include access dates for time-sensitive data
+
+**Websites Without Publications:**
+- Use URL with access date
+- APA format: Author(s). (Year). Title. Retrieved from URL
+- Harvard format: Author(s), year. Title. [online] Available at: URL [Accessed date]
+
+**NCBI SRA Citations:**
+
+Follow NCBI guidelines (https://support.nlm.nih.gov/knowledgebase/article/KA-03391/en-us):
+> "Data are available from NCBI Sequence Read Archive under BioProject accession PRJNA123456."
+
+### Managing Supplementary Material
+
+Supplementary material, while useful for accommodating journal length restrictions, presents serious challenges to scientific integrity [@pop2015]:
+
+#### Problems with Supplementary Material
+
+1. **Citation Tracking**: Citations in supplements don't appear in citation indices, denying software developers appropriate credit [@pop2015]
+2. **Review Quality**: Supplements often receive superficial review or no review at all, potentially allowing errors to enter published record [@pop2015]
+3. **Discoverability**: Information buried in supplements is difficult to find and extract
+4. **Format Issues**: PDF tables are not machine-readable; size limits reduce image resolution
+
+#### Best Practices for Supplementary Material
+
+**Strategic Organization** [@pop2015]:
+- Main text: Core methodology and key parameters
+- Supplement: Detailed technical descriptions
+- External online documentation (GitHub): Complete workflows and code
+
+**Integration and Cross-Referencing:**
+- Hyperlink directly to specific sections of supplements (not just "see supplementary material")
+- Some journals (PNAS) provide rich online interfaces with hover-over citations and direct supplement links
+- Ensure supplements are provided to reviewers during peer review
+
+**Reference Management:**
+- Include all references (main text and supplement) in the main manuscript reference list
+- This ensures proper indexing and credit attribution
+- Nature and Science have specific policies—consult journal guidelines
+
+### Using Reference Management Software
+
+Modern reference managers streamline citation workflows [@kallet2004]:
+- **Zotero** (free, open source)—Auburn Libraries offer training workshops
+- **Mendeley** (free, Elsevier-owned)
+- **EndNote** (commercial, often institutionally licensed)
+- **Papers** (commercial, Mac-focused)
+
+These tools:
+- Import references from PubMed, Google Scholar, journal websites
+- Organize PDF libraries
+- Insert formatted citations and bibliographies into manuscripts
+- Sync across devices and enable collaborative libraries
+
+### Comparing Your Work to Others
+
+When reanalyzing published data or applying methods to new contexts [@kallet2004]:
+- Choose meaningful comparison metrics
+- For reanalyzed public data, compare resulting SNP counts, expression values, etc.
+- If results differ, propose explanations (different software versions, parameters, reference genomes)
+- Acknowledge limitations and alternative interpretations
+
+### The GitHub Repository as Living Methods
+
+Modern best practice extends beyond static methods sections to living documentation [@rother2011]:
+- Host complete analysis code in version-controlled repository
+- Include README files documenting setup and execution
+- Provide example data for testing
+- Write "cookbook-style" documentation with executable code examples
+- Some journals now review GitHub repositories alongside manuscripts
+- Editors may identify errors during review, improving final publications
+
+### Writing as You Go
+
+The most critical advice for methods writing: **document procedures as you perform them** [@kallet2004]. Waiting until manuscript preparation guarantees forgotten details, lost version numbers, and reconstructed workflows that may not match actual procedures. Maintain detailed lab notebooks throughout research, recording:
+- Exact commands executed
+- Software versions used
+- Parameters chosen and why
+- Failed attempts and why they failed
+- Deviations from standard protocols and rationale
+
+This contemporaneous documentation makes methods writing straightforward, reproducible, and accurate.
+
+## Project Management Tools and Workflows
+
+### Modern Project Management for Bioinformatics
+
+Software development methodologies offer valuable frameworks for managing bioinformatics projects [@rother2011; @kane2006]:
+
+**Agile Methodologies:**
+- Emphasize working software over comprehensive documentation
+- Accommodate changing requirements
+- Use iterative development with frequent releases
+- Prioritize face-to-face communication
+
+**Scrum Framework:**
+- Organize work into time-boxed "sprints" (typically 2-4 weeks)
+- Hold daily stand-up meetings for coordination
+- Use "product backlogs" to track features and bugs
+- Successfully applied to bioinformatics projects like InterPro [@hunter2009]
+
+**Kanban Boards:**
+- Visualize workflow with columns: "To Do," "In Progress," "Done"
+- GitHub Projects provides integrated Kanban functionality
+- Physical boards work well for small, co-located teams
+- Track progress at a glance
+
+### Team Roles and Collaboration
+
+Effective bioinformatics teams typically include these roles [@rother2011]:
+
+**Supervisor/Product Owner:**
+- Defines project scope and priorities
+- Makes strategic decisions about deliverables
+- Manages team and resources
+- Ensures project aligns with scientific goals
+
+**Coach/Senior Programmer:**
+- Breaks complex tasks into manageable units
+- Reviews code and provides architectural guidance
+- Writes and oversees test functions
+- Mentors junior team members
+- Identifies and removes impediments (the "Scrum Master" role)
+
+**Trainee/Junior Programmer:**
+- Implements assigned components
+- Takes full responsibility for code quality
+- Learns through code reviews and mentorship
+- Documents progress in lab notebooks
+
+**User/Domain Expert:**
+- Articulates scientific requirements
+- Provides real-world data for testing
+- Tests preliminary versions
+- Reports bugs and requests features
+
+### Documentation Standards
+
+**Coding Guidelines:**
+Use established community standards like PEP8 (Python) to ensure code readability [@rother2011]:
+- Consistent naming conventions for variables, functions, classes
+- Appropriate use of comments (explain why, not what)
+- Avoiding overly complex constructs
+- Tools like `pylint` (Python) or `checkstyle` (Java) automate compliance checking
+
+**Code Reviews:**
+Systematic code review improves quality and facilitates training [@rother2011]:
+- Review 300-500 lines per hour maximum
+- Provide constructive feedback
+- Praise good practices as well as identifying problems
+- Document review findings
+- Treat reviews as learning opportunities, not criticism
+
+**Test-Driven Development (TDD):**
+Writing tests before implementation guides design and ensures correctness [@rother2011]:
+1. Write test for next small feature
+2. Run test (it should fail)
+3. Write minimal code to pass test
+4. Refactor code for clarity
+5. Repeat for next feature
+
+TDD produces reliable code with comprehensive test coverage, though initial development may be slower than test-after approaches.
+
+## Practical Workflow Examples
+
+### Example 1: RNA-Seq Differential Expression Analysis
+
+**Directory Structure:**
+```
+rnaseq-analysis/
+├── data/
+│   ├── README.md
+│   ├── raw/
+│   │   ├── sample1_R1.fastq.gz
+│   │   ├── sample1_R2.fastq.gz
+│   │   └── ...
+│   └── reference/
+│       └── GRCh38.fa
+├── results/
+│   ├── 2024-11-15-quality-control/
+│   ├── 2024-11-18-alignment/
+│   └── 2024-11-22-diff-expression/
+├── scripts/
+│   ├── 01_quality_control.sh
+│   ├── 02_alignment.sh
+│   └── 03_diff_expression.R
+├── doc/
+│   └── lab-notebook.md
+└── README.md
+```
+
+**Driver Script Example (`results/2024-11-22-diff-expression/runall.sh`):**
+```bash
+#!/bin/bash
+# Differential expression analysis
+# Date: 2024-11-22
+# Author: Your Name
+
+# Set up paths (all relative to this script)
+SCRIPT_DIR="$( cd "$( dirname "$" )" && pwd )"
+DATA_DIR="../../data"
+RESULTS_DIR="."
+
+# Check for required input
+if [ ! -f "${DATA_DIR}/counts/gene_counts.txt" ]; then
+    echo "Error: Count data not found"
+    exit 1
+fi
+
+# Run DESeq2 analysis (only if output doesn't exist)
+if [ ! -f "${RESULTS_DIR}/de_results.csv" ]; then
+    echo "Running differential expression analysis..."
+    Rscript ../../scripts/03_diff_expression.R         --counts ${DATA_DIR}/counts/gene_counts.txt         --metadata ${DATA_DIR}/metadata.txt         --output ${RESULTS_DIR}/de_results.csv         --fdr 0.05
+fi
+
+# Generate summary plots
+if [ -f "${RESULTS_DIR}/de_results.csv" ]; then
+    echo "Generating summary visualizations..."
+    Rscript ../../scripts/04_visualize.R         --input ${RESULTS_DIR}/de_results.csv         --output ${RESULTS_DIR}/plots/
+fi
+
+echo "Analysis complete. Results in ${RESULTS_DIR}"
+```
+
+### Example 2: Methods Section for the Above Analysis
+
+> **RNA-Seq Data Processing and Analysis**
+>
+> *Ethics and Data Source:* All procedures were approved by Auburn University IRB (Protocol #23-456). RNA was extracted from liver tissue samples (n=6 per condition) using the Qiagen RNeasy Mini Kit (Cat# 74104) according to manufacturer's instructions. Library preparation was performed using the Illumina TruSeq Stranded mRNA Library Prep Kit. Sequencing was conducted at the HudsonAlpha Genome Sequencing Center on an Illumina NovaSeq 6000, generating 150 bp paired-end reads with an average depth of 40 million reads per sample.
+>
+> *Quality Control and Alignment:* Raw sequencing reads were assessed using FastQC v0.11.9 [@andrews2010]. Adapter trimming and quality filtering were performed using Trimmomatic v0.39 [@bolger2014] with parameters: ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36. Filtered reads were aligned to the human reference genome (GRCh38.p14, Ensembl release 109) using HISAT2 v2.2.1 [@kim2019] with default parameters and '--rna-strandness RF' to account for stranded library preparation.
+>
+> *Gene Quantification and Differential Expression:* Aligned reads were assigned to genes using featureCounts v2.0.3 [@liao2014] from the Subread package, using Ensembl gene annotations (release 109) with parameters: '-p -B -C -s 2' to count only properly paired reads mapping to exons, with strand-specific counting. Differential expression analysis was conducted using DESeq2 v1.38.0 [@love2014] in R v4.2.2. Genes with fewer than 10 counts across all samples were excluded. Significantly differentially expressed genes were identified using an adjusted p-value (FDR) threshold of 0.05, calculated using the Benjamini-Hochberg method.
+>
+> *Data Availability:* Raw sequencing data have been deposited in NCBI Sequence Read Archive under BioProject accession PRJNA123456. Analysis code is available at https://github.com/yourusername/rnaseq-analysis with DOI:10.5281/zenodo.1234567.
+
+## Summary and Best Practices Checklist
+
+### Project Organization
+- [ ] Use consistent directory structure across projects
+- [ ] Name directories chronologically within `data/` and `results/`
+- [ ] Never use spaces in filenames
+- [ ] Use descriptive, consistent file naming conventions
+- [ ] Store all project files under common root directory
+- [ ] Maintain electronic lab notebook with dated, detailed entries
+
+### Data Management
+- [ ] Verify data downloads with MD5 checksums
+- [ ] Keep raw data read-only; work with copies
+- [ ] Maintain 3 backups in different locations
+- [ ] Document data provenance in README files
+- [ ] Use metadata files extensively
+
+### Code and Scripts
+- [ ] Use version control (Git) for all custom code
+- [ ] Write self-documenting code with generous comments
+- [ ] Create driver scripts that execute entire workflows
+- [ ] Make scripts restartable with conditional execution
+- [ ] Use relative paths for portability
+- [ ] Implement robust error handling
+
+### Testing and Validation
+- [ ] Write tests for critical code components
+- [ ] Use example datasets for development
+- [ ] Validate with known results when possible
+- [ ] Document test procedures
+- [ ] Use continuous integration when appropriate
+
+### Documentation
+- [ ] Maintain detailed lab notebooks
+- [ ] Comment code generously
+- [ ] Write README files for each project and subdirectory
+- [ ] Document software versions and parameters
+- [ ] Keep notes on failed attempts and why
+
+### Methods Writing
+- [ ] Write methods as you perform research, not afterward
+- [ ] Include software names, versions, and citations
+- [ ] Document all non-default parameters with rationale
+- [ ] Specify exact reference genome versions and sources
+- [ ] Provide data access information (accessions, DOIs, URLs)
+- [ ] Include ethics approvals with protocol numbers
+- [ ] Link main text to supplementary material specifically
+- [ ] Make code publicly available when possible
+
+### Reproducibility
+- [ ] Archive exact software versions used
+- [ ] Record random seeds for stochastic analyses
+- [ ] Store intermediate results when feasible
+- [ ] Connect results to interpretations systematically
+- [ ] Provide public access to scripts and data
+- [ ] Test that workflows can be re-executed
+- [ ] Document computational environment (OS, dependencies)
+
+## Conclusion
+
+Effective project management and clear methods writing are not peripheral concerns in bioinformatics—they are fundamental to conducting rigorous, reproducible science. The practices outlined in this chapter require initial investment of time and effort but pay substantial dividends through:
+
+- **Increased productivity**: Well-organized projects are easier to work with and extend
+- **Better collaboration**: Clear documentation facilitates teamwork and knowledge transfer
+- **Reproducible results**: Systematic workflows can be verified and built upon
+- **Professional development**: These skills are valued in both academic and industry settings
+- **Scientific integrity**: Transparent methods strengthen the research enterprise
+
+As bioinformatics continues to grow in scope and complexity, these organizational and communication skills will only become more essential. By adopting these practices early and refining them through experience, you position yourself as a rigorous, professional bioinformatician capable of tackling the increasingly complex challenges at the intersection of biology, medicine, and data science.
+
+Remember: the goal is not perfection but continuous improvement. Start with practices that address your most pressing challenges, and gradually expand your toolkit as projects grow in complexity. The investment in these foundational skills will serve you throughout your career.
+
+## Appendix: Additional Resources
+
+### Online Resources
+
+- **GitHub**: https://github.com
+- **Bioinformatics.org**: http://www.bioinformatics.org
+- **Software Carpentry**: https://software-carpentry.org
+- **Bioconductor**: https://www.bioconductor.org
+- **NCBI Resources**: https://www.ncbi.nlm.nih.gov
+
+### Auburn University Resources
+
+- **Auburn IT Support**: https://aub.ie/it-support
+- **Auburn Libraries - Zotero Workshops**: Contact library for schedule
+- **Aurora Data Repository**: Institutional repository for large datasets
+- **Hopper HPC**: Auburn's high-performance computing cluster
+
+## References
+
