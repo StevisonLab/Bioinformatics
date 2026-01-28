@@ -287,14 +287,14 @@ The Ensembl browser implements a related but distinct pipeline based on Enredo, 
 
    : Scoring Matrix {.sm .hover}
 
-2. **Multiple Sequence Alignment with COBALT**: Download the FASTA file [N.fa](https://auburn.instructure.com/courses/1709268/files/275453963/download?download_frd=1). Go to the [COBALT tool](https://www.ncbi.nlm.nih.gov/tools/cobalt/re_cobalt.cgi) at NCBI, upload the FASTA file, and click "Align".
+2. **Multiple Sequence Alignment with COBALT**: Download the FASTA file [N.fa](datasets/N.fa). Go to the [COBALT tool](https://www.ncbi.nlm.nih.gov/tools/cobalt/re_cobalt.cgi) at NCBI, upload the FASTA file, and click "Align".
 
    - How **similar** are these sequences? Would you say they are highly similar (likely from the same species) or dissimilar (likely from different species as in @fig-msa)? These sequences are actually from the nucleocapsid phosphoprotein of the SARS-CoV-2 genome.
    - **Configure the view** by changing the color scheme to "BLOSUM62". How does this help? Configure the view again by changing to "Frequency-based difference". How does this change your interpretation? What do some of the other settings do?
    - How **long** is this protein?
    - Click the button at the top to generate a **phylogenetic tree**. Examine the tree topology and branch lengths.
 
-3. **Comparative MSA analysis**: Repeat the steps above with **this FASTA file: [S.fa](https://auburn.instructure.com/courses/1709268/files/275454072/download?download_frd=1)**. This second set of sequences is from the SARS-CoV-2 surface glycoprotein, also called the "spike" protein. Notice how the similarity of these sequences differs from the first set.
+3. **Comparative MSA analysis**: Repeat the steps above with **this FASTA file: [S.fa](datasets/S.fa)**. This second set of sequences is from the SARS-CoV-2 surface glycoprotein, also called the "spike" protein. Notice how the similarity of these sequences differs from the first set.
 
    - Again configure the view settings and explore the length.
    - How does the length of this protein compare to the first?
@@ -302,7 +302,7 @@ The Ensembl browser implements a related but distinct pipeline based on Enredo, 
    - Look at the times these sequences were collected in the sequence names. Do the sequences cluster by year collected?
    - Find the node associated with the cluster of sequences from 2019/2020 and reroot the tree. Do these clusters in time make sense?
 
-4. **Algorithm comparison**: Download the FASTA file [hbb.fa](https://auburn.instructure.com/courses/1709268/files/279282674/download?download_frd=1) and go to the [multiple alignment](https://www.ebi.ac.uk/jdispatcher/msa) page on the EBI platform. Select an MSA tool (e.g., CLUSTALW, MAFFT, MUSCLE) and upload the sequences to submit the job.
+4. **Algorithm comparison**: Download the FASTA file [hbb.fa](datasets/hbb.fa) and go to the [multiple alignment](https://www.ebi.ac.uk/jdispatcher/msa) page on the EBI platform. Select an MSA tool (e.g., CLUSTALW, MAFFT, MUSCLE) and upload the sequences to submit the job.
 
    - Like with COBALT, explore different color schemes for viewing the MSA.
    - Look at the resulting phylogenetic tree. Work with others in the class to compare your results across different alignment tools.
