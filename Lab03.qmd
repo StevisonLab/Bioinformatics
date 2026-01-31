@@ -2,6 +2,7 @@
 title: "Lab03: Genome Browsers and Databases"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Using the Jump-2-gene (J2G) feature on FlyBase

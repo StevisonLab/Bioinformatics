@@ -2,6 +2,7 @@
 title: "File Formats and Quality Control in Genome Workflows"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Introduction to Genome File Formats {#sec-ch3}

@@ -2,6 +2,7 @@
 title: "Appendix: Yeast Experimental Evolution Dataset"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Overview of the yeast dataset {#sec-yeast}

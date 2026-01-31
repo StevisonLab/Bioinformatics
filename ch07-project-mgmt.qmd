@@ -3,6 +3,7 @@ title: "Project Management and Writing Methods"
 subtitle: "A Guide to Reproducible Computational Research"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 This chapter delves into some topics that are not covered in typical bioinformatics course, but are essential to _doing_ bioinformatics. Specifically, we dive deep into two major components of reproducible bioinformatics research - project management and methods sections. As such, this chapter is split into these two major sections to cover these critical best practices and reveal these aspects of hidden curriculum in this field.

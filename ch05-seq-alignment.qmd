@@ -3,6 +3,7 @@ title: "Sequence Alignment"
 subtitle: "Pairwise and Multiple Sequence Alignment Algorithms"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Learning goals

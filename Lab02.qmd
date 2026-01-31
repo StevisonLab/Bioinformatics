@@ -2,6 +2,7 @@
 title: "Lab02: Design a Genome Project"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Lab 2 {#sec-lab02}

@@ -2,6 +2,7 @@
 title: "Lab04: Genome Sequence Indexing and Alignment"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workflow" shared folder to index a reference genome, split the fastq files into multiple lanes, and do an initial genome alignment. You will end by collecting a few QC metrics to assess the quality of the input fastq files and the alignment file. This lab activity is designed to give you real world experience with the tools we have been discussing in class so far. These are some of the first steps in the genome analysis workflow. We will work through later steps throughout the semester.
@@ -18,46 +19,59 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
 
 ## Step 1 : Index your genome
 
-1. Make any necessary edits to the 1st script `1_index_sacCer3.sh` for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+1. For the 1st script `1_index_sacCer3.sh`, edit line 8 to change the variable `path` to point to your Lab4 directory and submit it to the queue using the following parameters:
 
  - Number of CPUs = 1
  - RAM/Memory = 2GB
  - Queue = class
- - Time = 00:10:00 (10 minutes)
+ - Time = 01:00:00 (1 hour)
 
-2. Inspect the job standard error file. It will follow the naming convention of your job name followed by a period and the letter "e" and the job number (e.g. 1\_index\_sacCer3.sh.e237597). Any errors with your job will always be in this file, so get in the habit of checking here FIRST after your job finishes! The standard out goes to another file with an "o" which you should also check.
+2. Inspect the job standard error file. It will follow the naming convention of your job name followed by a period and the letter "o" and the job number (e.g. `1indexsacCer3shSCR.o8618`). Any errors with your job will always be in this file, so get in the habit of checking here FIRST after your job finishes! This includes both the standard out and standard error of your job. 
  
-3. This script will index the reference genome fasta file. First, it will use [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml), then samtools. Each index is for a different part of he pipeline. Look at the files that have been generated.
+3. This script will index the reference genome fasta file. First, it will use [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml), then samtools. Each index is for a different part of the pipeline. Look at the files that have been generated.
 
 4. Read over the [samtools faidx](https://www.htslib.org/doc/samtools-faidx.html) documentation to understand this file: "sacCer3.masked.fa.fai". Then explore the file using `less`. 
 
-5. You will notice that it lists the chromosomes and their lengths. How can you use command line tools to calculate the total genome size from these files? _Remember, this information is useful in calculating genome coverage!_
+5. You will notice that it lists the chromosomes and their lengths in the 1st and 2nd columns. How can you use command line tools to calculate the total genome size from these files? _Remember, this information is useful in calculating genome coverage!_
 
 ## Step 2 : Download reads from NCBI 
 
-1. Inspect the next script you copied over "2\_sample\_sra.sh". As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+1. Inspect the next script you copied over "2\_sample\_sra.sh". As you did with the first script, edit line 10 to change the path variable so that it runs in your Lab4 directory. Before submitting it to the queue, we will need to configure your account for [SRAtoolkit](https://hpcdocs.asc.edu/content/sra-sequence-read-archive):
+
+   ```
+   module purge
+   module load sra
+   perl /apps/x86-64/apps/sra_2.3.5/sratoolkit.2.3.5-centos_linux64/bin/configuration-assistant.perl
+   Y
+   Y
+   ```
+
+   >This should end with the message "Configuration is correct". This creates a subdirectory named .ncbi The user-settings.mkfg file in that directory is slightly different from the one made by the graphical configuration tool in that it does not define which directory to download files into.
+
+
+2. Once you have your account configured, then you are ready to submit this script to the queue using the following parameters:
 
  - Number of CPUs = 1
- - RAM/Memory = 3GB
+ - RAM/Memory = 1GB
  - Queue = class
- - Time = 00:15:00 (15 minutes)
+ - Time = 01:00:00 (1 hour)
 
-2. Inspect the job output and make any tweaks as needed to the script to get it to work if it did not work. A good troubleshooting tip is to find the FIRST error in your code, at the top of the standard out. Once you fix that, re-run it and work your way down until you have no errors. A lot of times, a fatal early error can cause a lot of downstream errors, so it is not productive to start at the bottom - always work from the top-down!
+3. Inspect the job output and make any tweaks as needed to the script to get it to work if it did not work. A good troubleshooting tip is to find the FIRST error in your code, at the top of the standard out. Once you fix that, re-run it and work your way down until you have no errors. A lot of times, a fatal early error can cause a lot of downstream errors, so it is not productive to start at the bottom - always work from the top-down!
 
-3. What new files have appeared? Use zcat and less to examine these files. How are they different and what information was used to split them? *Hint: refer back to the Lecture on FASTQ file formats!*
+4. What new files have appeared? Use zcat and less to examine these files. How are they different and what information was used to split them? *Hint: refer back to the Fastq section of Chapter 3 for more detail on this file format!*
 
-4. How many reads are in the FASTQ file? *Hint: refer back to the Lecture on FASTQ file formats for how many lines are there per entry. Then check the job output file to see the results of the line count in the script*
+5. How many reads are in the FASTQ file? *Hint: refer back to FASTQ section of Chapter 3 for details of how many lines are there per entry in this type of file. Then check the job output file to see the results of the line count in the script*
 
 ## Step 3 : Trimming
 
 1. Inspect the next script you copied over "3\_sample\_trimming.sh". Look over the [trimmomatic tool](http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf) documentation.
  
-2. As you did with the first script, make any necessary edits for it to run in your Lab4 directory and submit it to the queue using the following parameters:
+2. As you did with the first script, make any necessary edits for it to run in your Lab4 directory. You will need to edit the username on line 14 as well. Then, submit it to the queue using the following parameters:
 
- - Number of CPUs = 2
- - RAM/Memory = 1GB
- - Queue = class
- - Time = 00:10:00 (10 minutes)
+  - Number of CPUs = 2
+  - RAM/Memory = 1GB
+  - Queue = class
+  - Time = 01:00:00 (1 hour)
 
 3. Inspect the job output. Do you see any errors? If so, work to fix them from the top-down as you did above!
 
@@ -70,23 +84,23 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
  - Number of CPUs = 4
  - RAM/Memory = 2GB
  - Queue = class
- - Time = 00:45:00 (45 minutes)
+ - Time = 01:00:00 (1 hour)
 
 3. Inspect the job output. This script does a LOT, so look it over carefully to make sure you understand what the output means. Feel free to refer back to the initial script - notice where the echo statements are to help find your place in the output. Look up any of the commands or tools to make sure you understand the output.
 
 ## Step 5 : Quality assessment
 
-1. At the bottom of the scripts "3\_sample\_trimming.sh" and "4\_BWA\_example.sh", you will see that they each collect some QC metrics - specifically, the first one runs [fastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) on the input fastq file and the trimmed one. Download the resulting zip files locally so you can inspect the results. 
+1. At the bottom of the scripts "3\_sample\_trimming.sh" and "4\_BWA\_example.sh", you will see that they each collect some QC metrics - specifically, the first one runs [fastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) on both the input fastq file and the trimmed one. Download the resulting zip files locally so you can inspect the results. For a refresher on uploading and downloading files from the ASC, see this [Canvas Page](https://auburn.instructure.com/courses/1709268/pages/getting-on-the-alabama-super-computer-asc-2).
 
  - Was trimming necessary? 
  - Does the data look better after trimming?
 
-2. Additionally, the latter one collects coverage using `samtools depth`. Look at the [samtools depth](https://www.htslib.org/doc/samtools-depth.html) documentation for this program "depth" to parse the `awk` command that it pipes to. Notice the use of the variable `$genome_size`. This refers to the file you made earlier, "sacCer3.masked.fa.fai", to programmatically calculate the genome size and store it in a variable for this calculation.
+2. Additionally, the latter script collects coverage using `samtools depth` into an output file `SRR1693691.coverage_summary.txt`. Use `less` to examine the file these statistics have printed to.
 
-3. Use `less` to examine the file these statistics have printed to.
+3. Now, look at the [samtools depth](https://www.htslib.org/doc/samtools-depth.html) documentation for this program "depth" and parse the `awk` command that it uses to generate the summary you just inspected. Notice the use of the variable `$genome_size`. This uses to the file you made earlier in script #1, "sacCer3.masked.fa.fai", to programmatically calculate the genome size and store it in a variable for this calculation.
 
-4. Another way of gathering QC metrics is to use the tool [samtools flagstat](https://www.htslib.org/doc/samtools-flagstat.html). See Section **Verification of Sam/Bam files using Samtools** in Chapteer 3 for a sample output of this program. Write a script to collect this additional information from your merged sorted bam file. *Note: When adapting this main script for your research, you can add this code to the main script so it is all done in one step!*
+4. Another way of gathering QC metrics is to use the tool [samtools flagstat](https://www.htslib.org/doc/samtools-flagstat.html). See Section **Verification of Sam/Bam files using Samtools** in Chapter 3 for a sample output of this program. Write a script to collect this additional information from your merged sorted bam file. *Note: When adapting this main script for your research, you can add this code to the main script so it is all done in one step!*
 
-5. From the `flagstat` output, calculate the percentage of reads that mapped to the reference genome.  
+5. From the `flagstat` output, locate the section that reports the percentage of reads that mapped to the reference genome. Include this in your summary. 
 
 Congratulations! You have now successfully indexed a reference genome and mapped reads to it! You have also collected various QC metrics of this process. Based on how you have seen these types of methods written in papers we have read, *write a short methods summary of what you did, including the quality metrics from the raw reads and the resulting coverage and % mapped calculations you made. (no more than 250 words!)* 

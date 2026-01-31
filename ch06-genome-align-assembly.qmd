@@ -2,6 +2,7 @@
 title: "Genome Alignment and Genome Assembly"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Genome alignment and genome assembly

@@ -1,9 +1,10 @@
 ---
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
-# Preface {.unnumbered}
+# Preface {.unnumbe#7f2704}
 
 This is a Quarto book. This companion textbook is a draft teaching resource created specifically for students enrolled in BIOL 5860/6860: Bioinformatics and Genome Analysis at Auburn University during the Spring 2026 term. _It is not intended for general public use, redistribution, or citation as a finalized scholarly work._
 
@@ -34,7 +35,7 @@ While a pre-requisite of Genetics is required, no prior genomics experience is r
 ::: callout-note
 ### Figure 0.1 – Fields of Research within Bioinformatics
 
-![Venn Diagram with fields of study in the area of bioinformatics](images/Fig_0_1_Fields.png){#fig-fields width="50%"}
+![Venn Diagram with fields of study in the area of bioinformatics](images/Fig_0_1_Fields.png){#fig-fields width="50%" fig-alt="Venn diagram showing how different subfields intersect."}
 
 Having taken a course in Computational Biology, it can often be confusing of the specific distinction between the various fields and how to define each.
 
@@ -74,35 +75,35 @@ Each chapter includes “Lab connections” callouts that point to relevant labs
 | 1 | 8 Jan | Course overview and state of the field | [Chapter 1](ch01-reading-genomes.qmd); Readings: @hotaling2021; @marks2021; [Appendix A](appendixA.qmd) | Big‑picture framing of course. | Start [Lab 1](Lab01.qmd) |
 | 2 | 13 Jan | What is a genome analysis? | [Chapter 2](ch02-sequencing-tech.qmd); Reading: @bogan2025 | Sequencing platforms | Start [Lab 2](Lab02.qmd) |
 |  | 15 Jan | Intro to NGS data and data QC | [Chapter 3](ch03-formats-qc-design.qmd) | Genomics File Formats |  |
-| 3 | 20 Jan | <span style="color: orange;">Intro to semester‑long research project</span> | [Appendix B](appendixB.qmd) | Project framing and expectations. |  |
+| 3 | 20 Jan | <span style="color: #cc4c02;">Intro to semester‑long research project</span> | [Appendix B](appendixB.qmd) | Project framing and expectations. |  |
 |   | 22-Jan | <span style="color: blue;">Lab day – Genome browsers  </span>| [Chapter 4](ch04-browsers-databases.qmd)| Explore different browsers and customizations          | [Lab 3](Lab03.qmd)|
 | 4  | 27-Jan | Pairwise & multiple sequence alignment | [Chapter 5](ch05-seq-alignment.qmd)| Intro to pairwise/MSA concepts |                              |
 |  | 29-Jan | Genome sequence alignment| [Chapter 6](ch06-genome-align-assembly.qmd) | Scaling alignment concepts and algorithms|  |
-| 5 | 3-Feb | Project management & writing methods in bioinformatics| [Chapter 7](ch07-project-mgmt.qmd) | Hidden curriculum emphasis  | <span style="color: orange;">GP Step 1 Due </span>               |
+| 5 | 3-Feb | Project management & writing methods in bioinformatics| [Chapter 7](ch07-project-mgmt.qmd) | Hidden curriculum emphasis  | <span style="color: #cc4c02;">GP Step 1 Due </span>               |
 | | 5-Feb | <span style="color: blue;">Lab day – Indexing, alignment, and assessment</span>| [Appendix C](appendixC.qmd)  | Introduce yeast dataset and practical application      | [Lab 4](Lab04.qmd)                        |
 | 6  | 10-Feb | Genome assembly guest lecture  | [Chapter 6](ch06-genome-align-assembly.qmd)  | Algorithms and case studies                            |                              |
 |  | 12-Feb | <span style="color: blue;">Lab day – BLAST on the command line </span>| Ch. 5 Sequence Alignment| BLAST concepts and practice on the HPC| [Lab 5](Lab05.qmd)|
-| 7  | 17-Feb | Various genome analysis workflows                       | [Chapter 8](ch08-alt-workflows.qmd)      | Multi-omics workflows and human case studies           | <span style="color: orange;">Meet with Dr. S</span>              |
+| 7  | 17-Feb | Various genome analysis workflows                       | [Chapter 8](ch08-alt-workflows.qmd)      | Multi-omics workflows and human case studies           | <span style="color: #cc4c02;">Meet with Dr. S</span>              |
 |  | 19-Feb | <span style="color: blue;">Lab day – HMMs for gene annotation</span>| [Chapter 9](ch09-hmms.qmd) | HMM intuition and gene‑finding  | [Lab 6](Lab06.qmd) |
 | 8  | 24-Feb | Intro to variant calling/filtering | [Chapter 10](ch10-variant-calling.qmd)       | From alignment to variants using GATK | |
-|  | 26-Feb |<span style="color: red;">**Midterm Exam**</span>| In class conceptual exam| Assessment of Chapters 1-7; Labs 1-5; Appendices | Exam                         |
-| 9  | 3-Mar| <span style="color: blue;">Lab day – Variant filtering and QC </span> | [Appendix C](appendixC.qmd) | Practical filtering and interpretation | [Lab 7](Lab07.qmd); <span style="color: orange;">GP Step 2 Due</span> |
+|  | 26-Feb |<span style="color: #7f2704;">**Midterm Exam**</span>| In class conceptual exam| Assessment of Chapters 1-7; Labs 1-5; Appendices | Exam                         |
+| 9  | 3-Mar| <span style="color: blue;">Lab day – Variant filtering and QC </span> | [Appendix C](appendixC.qmd) | Practical filtering and interpretation | [Lab 7](Lab07.qmd); <span style="color: #cc4c02;">GP Step 2 Due</span> |
 |  | 5-Mar| <span style="color: blue;">Beyond GATK: LLMs and other Variant Calling Approaches</span> | Assigned Article Readings  | In depth comparison of variant calling methods  | [Lab 8](Lab08.qmd); Annotation Report Due |
 | 10 | 10-Mar | Spring break – no class  | —  | No assigned reading||
 |  | 12-Mar | Spring break – no class| —  | No assigned reading | |
-| 11| 17-Mar| <span style="color: orange;">Open lab – group project work</span> | [Appendix B](appendixB.qmd)| Execute Bioinformatics Plan and Setup GitHub | <span style="color: orange;">GP Step 3</span>; Grad Assignment |
+| 11| 17-Mar| <span style="color: #cc4c02;">Open lab – group project work</span> | [Appendix B](appendixB.qmd)| Execute Bioinformatics Plan and Setup GitHub | <span style="color: #cc4c02;">GP Step 3</span>; Grad Assignment |
 | | 19-Mar|<span style="color: blue;">Lab Day – Visualizing Genetic Variants</span> | [Appendix C](appendixC.qmd) | Visualizing variants in genome viewers | [Lab 9](Lab09.qmd)  |
 | 12  | 24-Mar| How Science is Funded? – Grant Funding & Review Process | [Chapter 11](ch11-grants-funding.qmd)| Hidden curriculum emphasis|  |
-|  | 26-Mar | Population genomics| Ch. 12 Population Genomics & Scans | Human evolutionary genomics  | <span style="color: orange;">GP Step 4 Due </span>|
+|  | 26-Mar | Population genomics| Ch. 12 Population Genomics & Scans | Human evolutionary genomics  | <span style="color: #cc4c02;">GP Step 4 Due </span>|
 | 13 | 31-Mar | <span style="color: blue;">Lab day – Human Population Genetics  </span> | [Chapter 12](ch12-popgen.qmd)| Hands‑on diversity and divergence analysis  | [Lab 10](Lab10.qmd) |
 |  | 2-Apr  | Genome scans & sliding‑window analysis| [Chapter 12](ch12-popgen.qmd)  | Outlier scans, patterns of selection, and case studies | <span style="color: purple;">Proposal Reviews Due</span> |
 | 14  | 7-Apr | <span style="color: purple;">Grant panel day 1 </span>| [Chapter 11](ch11-grants-funding.qmd) | In‑class panel and critique | <span style="color: purple;">Mock Grant Panel</span> |
 | | 9-Apr | <span style="color: purple;">Grant panel day 2 </span>| [Chapter 11](ch11-grants-funding.qmd)  | In‑class panel and critique  | <span style="color: purple;">Mock Grant Panel</span>   |
 | 15| 14-Apr | Sequence motifs| [Chapter 13](ch13-motifs.qmd) | Finding sequence motifs in genomes | <span style="color: purple;">Panel Summary Due   </span>  |
-| | 16-Apr | <span style="color: orange;">Open lab – group project work</span>| [Appendix B](appendixB.qmd); [Chapter 14](ch14-where-next.qmd) | Project‑oriented application of course content |   |
-| 16 | 21-Apr | <span style="color: red;">**Final Exam** </span> | In class conceptual exam | Review of Chapters 8-14; Labs 6-10 | Exam |
-|  | 23-Apr | <span style="color: orange;">Open lab – group project work</span>| [Appendix B](appendixB.qmd); [Chapter 14](ch14-where-next.qmd) | Project‑oriented application of course content     | <span style="color: orange;">GP Step 5 Due </span> |
-| 17  | 1-May | <span style="color: orange;">Final group presentations (10:30–12:30)</span>| [Appendix B](appendixB.qmd)| Capstone, reflections, and next steps  | <span style="color: orange;">GP Step 6-7 Due </span>|
+| | 16-Apr | <span style="color: #cc4c02;">Open lab – group project work</span>| [Appendix B](appendixB.qmd); [Chapter 14](ch14-where-next.qmd) | Project‑oriented application of course content |   |
+| 16 | 21-Apr | <span style="color: #7f2704;">**Final Exam** </span> | In class conceptual exam | Review of Chapters 8-14; Labs 6-10 | Exam |
+|  | 23-Apr | <span style="color: #cc4c02;">Open lab – group project work</span>| [Appendix B](appendixB.qmd); [Chapter 14](ch14-where-next.qmd) | Project‑oriented application of course content     | <span style="color: #cc4c02;">GP Step 5 Due </span> |
+| 17  | 1-May | <span style="color: #cc4c02;">Final group presentations (10:30–12:30)</span>| [Appendix B](appendixB.qmd)| Capstone, reflections, and next steps  | <span style="color: #cc4c02;">GP Step 6-7 Due </span>|
 :::
 
 ## Key Dates

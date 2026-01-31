@@ -2,6 +2,7 @@
 title: "Reading Genomes: What Bioinformatics Is For"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
 ## Genomics timeline: from Sanger to the data deluge {#sec-ch1}
@@ -13,7 +14,7 @@ In the roughly twenty‑five years since the first complete animal and plant gen
 ::: callout-note
 #### Figure 1.1 – Milestones in genomics
 
-![Milestones in genomics](images/Fig_1_1_genomics_timeline.png){#fig-genomics-timeline width="80%"}
+![Milestones in genomics](images/Fig_1_1_genomics_timeline.png){#fig-genomics-timeline width="80%" fig-alt="A timeline of the history of the field of genomics"}
 
 This figure presents a timeline of key technological innovations and landmark projects that shaped modern genomics, from the recognition of DNA as the hereditary material and the description of its double‑helix structure through the development of PCR, first‑generation Sanger sequencing, and early automated sequencers. It then highlights the launch and 2003 completion of the Human Genome Project and related large‑scale efforts, such as the generation of reference genomes for multiple organisms and subsequent population‑scale initiatives like the 1000 Genomes Project and the Human Microbiome Project, which collectively established comprehensive genomic resources for research and medicine. The upper portion of the figure tracks the transition from low‑throughput first‑generation methods to second‑generation short‑read platforms and, more recently, to third‑generation long‑read technologies such as single‑molecule real‑time and nanopore sequencing, which now enable routine production of near‑complete, reference‑quality assemblies, including end‑to‑end human genomes.
 
@@ -33,7 +34,7 @@ Two core computational operations recur throughout this course. **Alignment** is
 ::: callout-note
 #### Figure 1.2 – Core genome concepts
 
-![Core Concepts](images/Figure 1.2 Core Concepts.png){#fig-concepts width="75%"}
+![Core Concepts](images/Figure 1.2 Core Concepts.png){#fig-concepts width="75%" fig-alt="A four panel diagram of core concepts in genomics."}
 
 Typical eukaryotic gene model illustrating exons and introns along a genomic region (A). Schematic of core “omes” for a single cell: DNA as the genome, transcribed RNA molecules as the transcriptome, translated polypeptides as the proteome, and chromatin with chemical modifications representing the epigenome (B). Reference-based alignment, showing sequencing reads stacked over a reference genome coordinate axis (C). Genome assembly, in which clusters of overlapping reads form contigs that are joined into an assembled scaffold (D). Created with BioRender.com.
 :::
@@ -51,7 +52,7 @@ The software and methods landscape in bioinformatics changes rapidly: new alignm
 ::: callout-note
 #### Figure 1.3 – From data generation to interpretation
 
-![Bioinformatics Bottleneck](images/Figure 1.3 Bioinformatic Bottleneck.png){#fig-bottleneck}
+![Bioinformatics Bottleneck](images/Figure 1.3 Bioinformatic Bottleneck.png){#fig-bottleneck fig-alt="A three part sequence showing how sequencing output exceeds the ability to do bioinformatics, creating a bottleneck. Bioinformatics involved data cleaning, filtering and analysis, which is then followed by interpretation, visualization and publication."}
 
 From data generation to interpretation and publication. Sequencing instruments generate large volumes of raw DNA reads from prepared libraries, a step that is now relatively easy to purchase and scale. The resulting data must then pass through a bottleneck of data cleaning, filtering, and analysis—where analysts perform quality control, alignment or assembly, and downstream processing while maintaining documentation, reproducible code, and version control. Finally, cleaned and analyzed results are interpreted, visualized, and synthesized into figures, genomic summaries, and manuscripts for publication and broader communication. Created with BioRender.com.
 :::
@@ -134,7 +135,7 @@ International agreements and community norms now guide data sharing and **equity
 ::: callout-note
 #### Figure 1.4 – Applications and equity
 
-![Equity](images/Figure_1.4_Equity.jpeg){#fig-equity width="50%"}
+![Equity](images/Figure_1.4_Equity.jpeg){#fig-equity width="50%" fig-alt="A four panel diagram of major application areas of genomics."}
 
 A four‑quadrant schematic illustrates major application areas of genomics: medical genetics (top left), agriculture and food security (top right), ecology and conservation (bottom left), and public health and pathogen genomics (bottom right). Each quadrant contains simple domain‑specific icons (for example, DNA and a clinical symbol, crop plants, ecosystems, and pathogens) to emphasize the diversity of contexts in which genomic data are generated and used. Surrounding the central square, icons for consent, privacy, benefit‑sharing, and global participation highlight that technical choices in genomic research and applications are embedded within ethical, legal, and social frameworks that should be considered across all domains. Figure concept and artwork generated with an AI‑assisted illustration tool.
 :::
