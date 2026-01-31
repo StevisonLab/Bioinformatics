@@ -4,7 +4,7 @@ csl: nature.csl
 lang: en-US
 ---
 
-# Preface {.unnumbe#7f2704}
+# Preface {.unnumbered}
 
 This is a Quarto book. This companion textbook is a draft teaching resource created specifically for students enrolled in BIOL 5860/6860: Bioinformatics and Genome Analysis at Auburn University during the Spring 2026 term. _It is not intended for general public use, redistribution, or citation as a finalized scholarly work._
 

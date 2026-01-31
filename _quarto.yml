@@ -45,7 +45,8 @@ book:
 
 format:
   html:
-    theme: cosmos
+    theme: default
+    highlight-style: a11y
     toc: true
     number-sections: true
     csl: nature.csl
@@ -55,11 +56,4 @@ format:
     anchor-sections: true
     smooth-scroll: true
     css: accessibility.css
-    include-in-header:
-      - text: |
-          <script>
-            window.onload = function() {
-              // The exact ID may vary, verify with browser developer tools
-              document.getElementById("autocomplete-0-input").setAttribute("aria-label", "Sitewide search");
-            };
-          </script>
+
