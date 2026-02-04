@@ -4,82 +4,102 @@ bibliography: references.bib
 csl: nature.csl
 ---
 
-#Lab 5: BLAST on the Command Line Exercise
+## Using BLAST to faciliate homolog discovery
 
----
+Annotation in newly sequenced genomes is often a mess. BLAST can be used to add to existing annotations for things like patLab_ay analysis. BLAST can also facilitate identification of putative homologs and paralogs within newly sequenced genomes. 
 
-###Annotation in newly sequenced genomes is often a mess. BLAST can be used to add to existing annotations for things like patLab_ay analysis. BLAST can also facilitate identification of putative homologs and paralogs within newly sequenced genomes. 
+For this exercise, assume you have assembled a novel genome and identified genes using transcript data. Now, your goal is to **identify annotations** for the genes using the closest relative with a well annotated genome. This project was done in plants, so you will use the *Arabidopsis thaliana* genome. At the end, you will find out how many of your transcripts are part of the mitochondrial, chloroplast, or nuclear genome. 
 
-####For this exercise, assume you have assembled a novel genome and identified genes using transcript data. Now, your goal is to identify annotations for the genes using the closest relative with a well annotated genome. This project was done in plants, so you will use the *Arabidopsis thaliana* genome. At the end, you will find out how many of your transcripts are part of the mitochondrial, chloroplast, or nuclear genome. 
-
-1.	Make a directory for Lab\_5 in your home directory on the ASC. Copy the files from the Lab\_5 folder in `bioinf_shared` to your new directory.
+1.	Make a directory for `Lab\_5` in your home directory on the ASC. Copy the files from the Lab\_5 folder in `bioinf_shared` to your new directory.
 
 2.	Open the file `Example_script.sh` in your favorite text editor. Use this file to place your commands throughout this exercise so you will have a useable script at the end.
 
 3.	The file `test.fasta` will be the query set of sequences. The other fasta files copied over will be used to make blast databases to compare the query sequences against. 
 
- a. 	Use `grep` to get a count of how many sequences are in the file `test.fasta`. **Hint**: Which features of the fasta format make this step easy? Check the `man` page for grep to find the option to output a count of matches.
+  a. Use `grep` to get a count of how many sequences are in the file `test.fasta`. 
+  
+  >**Hint**: Which features of the fasta format make this step easy? Check the `man` page for grep to find the option to output a count of matches.
 
 4.	Next, build a blast database for all three fasta files you copied (not `test.fasta`). Run the command `makeblastdb -help`. This output will guide you as you construct your command argument. Documentation on this tool can be found [here](https://www.ncbi.nlm.nih.gov/books/NBK52640/).
 
 5.	Once you've created your databases, you are ready to blast your query sequence against each database. Use the image below as a guide to choose the blast program you will need to run. Read over `blastn -help` for help in constructing command arguments to query the three databases you created in Step 4.
 
- ![](images/Figure4_2.png) 
+
+ ![Overview of BLAST five main Algorithms](images/Figure4_2.png){#fig-blast fig-alt="Overview of the five main BLAST Algorithms"}
 
 6.	Now you are ready to run blast. Once you get your output, play around with some of the command options within blast:
 
- a.	Use `less` to explore the output.
+    a. Use `less` to explore the output.
  
- b.	Change the output file format using the option `-outfmt`. Which one do you think is most “parseable”? **Hint**: Examine output option 6 versus 7.
+    b. Change the output file format using the option `-outfmt`. Which one do you think is most “parseable”? 
+    
+    >**Hint**: Examine output option 6 versus 7.
  
- c.	Once you have constructed your command argument (generating a parsable output format), repeat your blast query against each database you created in Step 4.
+    c. Once you have constructed your command argument (generating a parsable output format), repeat your blast query against each database you created in Step 4.
+ 
 
 7.	Next, generate a *symbolic link* to the genome sequence for *Arabidopsis thaliana* located on the ASC: 
 
- a. Run this command: `ln -s /datasets/unzipped/genomes/Arabidopsis_thaliana`.
+    a. Run this command: `ln -s /datasets/unzipped/genomes/Arabidopsis_thaliana`.
 
- b.	Repeat to get only chromosome one (CHR_I) of the genome.
+    b.	Repeat to get only chromosome one (CHR_I) of the genome.
+ 
 
 8.	Now, run a combined blast with this sequence and the other fasta files together:
 `blastn -db "ATcp.fasta ATchrV.fasta Arabidopsis_thaliana/CHR_I/NC_003070.gbk ATmt.fasta" -query test.fasta -outfmt 6 >raw.output.txt`. 
 
- a. How does the size of the database affect the e-value in your blast search? Compare the results for one of your hits in this larger search versus against only one database.
+    a. How does the size of the database affect the e-value in your blast search? Compare the results for one of your hits in this larger search versus against only one database.
 
 9.	Now continue to pare down the output using some text manipulation (sed/awk/grep/sort/uniq). Try to string these commands together into a one-liner with pipes!
  
- a.	Capture the first two columns of the output. **Hint**: Which tool works best with columnar data?
+    a.	Capture the first two columns of the output. 
+    
+    >**Hint**: Which tool works best with columnar data?
  
- b.	Sort and only keep the unique hits. **Hint**: Pull up the `man` page for the command `sort`.
+    b.	Sort and only keep the unique hits. 
+    
+    >**Hint**: Pull up the `man` page for the command `sort`.
  
- c.	Now, keep only the 2nd column since the first is part of our query.
+    c.	Now, keep only the 2nd column since the first is part of our query.
  
- d.	Use the `-c` flag of `uniq` to get a count of how many hits per database are returned. **Hint**: You may need to sort the output first.
+    d.	Use the `-c` flag of `uniq` to get a count of how many hits per database are returned. 
+    
+    >**Hint**: You may need to sort the output first.
  
- e.	Both chrV and chrI should be “NT”, but since we used a symbolic link for chrI, it shows up differently in our output. Let’s use `sed` to convert it to ***NT*** so we can combine hits for these two chromosomes.
+    e.	Both chrV and chrI should be “NT”, but since we used a symbolic link for chrI, it shows up differently in our output. Let’s use `sed` to convert it to ***NT*** so we can combine hits for these two chromosomes.
  
- f.	Once you get a final one-liner with pipes, direct the final output to a file called `RawCounts.txt`.
+    f.	Once you get a final one-liner with pipes, direct the final output to a file called `RawCounts.txt`.
+
 
 10.	Finally, check how many query sequences had no hits in any database. 
  
- a.Use `grep` to find lines with 0 hits in the raw output.
+    a. Use `grep` to find lines with 0 hits in the raw output.
  
- b.	Use the `-c` flag to count the lines.
+    b.	Use the `-c` flag to count the lines.
  
- c.	Print this result to the bottom of your `RawCounts.txt` file.
+    c.	Print this result to the bottom of your `RawCounts.txt` file.
  
-11. Now that you are done, consider the following questions:
+ 
+## Reflection Questions
 
- a. What are some reasons someone might prefer to use command line blast over web-based blast?
+Now that you are done, reflect on the following questions:
+
+1. What are some reasons someone might prefer to use command line blast over web-based blast?
  
- b. For identifying orthologs, is it better to blast nucleotides or proteins? Why?
+2. For identifying orthologs, is it better to blast nucleotides or proteins? Why?
  
- c. How many novel transcripts are in your assembled transcriptome? How would you go about assigning function to these transcripts? 
+3. How many novel transcripts are in your assembled transcriptome? How would you go about assigning function to these transcripts? 
 
-12.	Upload your script, the answers to questions in Step 11, and the `RawCounts.txt` file to canvas.
+## Deliverables	
 
-#####This lab assignment has been adapted from activity initially composed by Dr. Nathan Hall from Auburn University.
+Upload your script and the `RawCounts.txt` file to canvas, along with your answers to reflection questions.
 
-####Additional Resources:
+
+## Acknowledgement
+
+This lab assignment has been adapted from activity initially composed by Dr. Nathan Hall from Auburn University.
+
+## Additional Resources:
 
 - [SeqAnswers Thread for automating BLAST to find orthologs](http://seqanswers.com/forums/showthread.php?t=27735)
   - This could be adopted for our class project to find additional PRDM9 orthologs from some of the genomes lacking annotated references. Definitely a good starting point for our manual annotation group! 	
