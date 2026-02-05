@@ -84,7 +84,7 @@ Each chapter includes “Lab connections” callouts that point to relevant labs
 | 6  | 10-Feb | Genome assembly guest lecture  | [Chapter 6](ch06-genome-align-assembly.qmd)  | Algorithms and case studies                            |                              |
 |  | 12-Feb | <span style="color: blue;">Lab day – BLAST on the command line </span>| Ch. 5 Sequence Alignment| BLAST concepts and practice on the HPC| [Lab 5](Lab05.qmd)|
 | 7  | 17-Feb | Various genome analysis workflows                       | [Chapter 8](ch08-alt-workflows.qmd)      | Multi-omics workflows and human case studies           | <span style="color: #cc4c02;">Meet with Dr. S</span>              |
-|  | 19-Feb | <span style="color: blue;">Lab day – HMMs for gene annotation</span>| [Chapter 9](ch09-hmms.qmd) | HMM intuition and gene‑finding  | [Lab 6](Lab06.qmd) |
+|  | 19-Feb | <span style="color: blue;">Lab day – HMMs for gene annotation</span>| [Chapter 9](ch09-hmms.qmd),[@eddy_what_2004] | HMM intuition and gene‑finding  | [Lab 6](Lab06.qmd) |
 | 8  | 24-Feb | Intro to variant calling/filtering | [Chapter 10](ch10-variant-calling.qmd)       | From alignment to variants using GATK | |
 |  | 26-Feb |<span style="color: #7f2704;">**Midterm Exam**</span>| In class conceptual exam| Assessment of Chapters 1-7; Labs 1-5; Appendices | Exam                         |
 | 9  | 3-Mar| <span style="color: blue;">Lab day – Variant filtering and QC </span> | [Appendix C](appendixC.qmd) | Practical filtering and interpretation | [Lab 7](Lab07.qmd); <span style="color: #cc4c02;">GP Step 2 Due</span> |
