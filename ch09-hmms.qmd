@@ -163,52 +163,34 @@ Monte Carlo EM algorithms represent a hybrid approach that uses sampling to appr
 
 ## Practice Problem Sets
 
-1. **Basic HMM Concepts**  
-   Consider a simple HMM with two states: C (CpG island) and N (non-CpG island). The emission probabilities for state C give equal probability (0.25) to all four nucleotides, while state N is AT-rich with \( e_N(A) = e_N(T) = 0.35 \) and \( e_N(C) = e_N(G) = 0.15 \). The transition probability from C to N is 0.1, and from N to C is 0.05. Calculate the probability that this HMM generates the sequence ACGT starting in state C and ending in state N along the state path C–C–C–N.
+1. **Basic HMM Concepts**: Consider a simple HMM with two states: C (CpG island) and N (non-CpG island). The emission probabilities for state C give equal probability (0.25) to all four nucleotides, while state N is AT-rich with $e_N(A) = e_N(T) = 0.35$ and $e_N(C) = e_N(G) = 0.15$. The transition probability from C to N is 0.1, and from N to C is 0.05. Calculate the probability that this HMM generates the sequence ACGT starting in state C and ending in state N along the state path C–C–C–N.
 
-2. **Gene Finding with GHMMs**  
-   Explain why generalized hidden Markov models are more appropriate than standard HMMs for eukaryotic gene prediction. What specific biological features of genes necessitate the variable-length emissions allowed by GHMMs? How would you modify a GHMM to model alternative splicing?
+2. **Gene Finding with GHMMs**: Explain why generalized hidden Markov models are more appropriate than standard HMMs for eukaryotic gene prediction. What specific biological features of genes necessitate the variable-length emissions allowed by GHMMs? How would you modify a GHMM to model alternative splicing?
 
-3. **Profile HMM Construction**  
-   Given a multiple sequence alignment with seven columns, three sequences, and the following pattern:  
+3. **Profile HMM Construction**: Given a multiple sequence alignment with seven columns, three sequences, and the following pattern:  
    `Seq1: ACGT-GA`  
    `Seq2: ACG--GA`  
    `Seq3: ACGTTGA`  
    Determine which columns should be represented by match states versus insert states using a simple gap/residue heuristic. Sketch the resulting profile HMM structure and estimate the emission probabilities for the match states.
 
-4. **Pair HMM Alignment**  
-   A pair HMM for protein sequence alignment has three states: M (match/mismatch), X (insert in sequence 1), and Y (insert in sequence 2). If you observe an alignment of length 10 that contains 7 matched positions and 3 positions where residues in sequence 1 are gapped, write out a plausible state path through the pair HMM. How does this state path correspond to the standard representation of a gapped alignment?
+4. **Pair HMM Alignment**: A pair HMM for protein sequence alignment has three states: M (match/mismatch), X (insert in sequence 1), and Y (insert in sequence 2). If you observe an alignment of length 10 that contains 7 matched positions and 3 positions where residues in sequence 1 are gapped, write out a plausible state path through the pair HMM. How does this state path correspond to the standard representation of a gapped alignment?
 
-5. **Selection on Neanderthal Ancestry**  
-   Based on the case study in this chapter, explain how HMMs enabled researchers to identify regions of the genome under positive or negative selection following Neanderthal introgression. Why is the temporal dimension—having ancient as well as modern genomes—crucial for distinguishing selection from genetic drift?
+5. **Model Selection**: You have built two different HMMs to model a protein family—one simple model with 15 states and one complex model with 45 states. The complex model achieves higher likelihood on your training sequences. What concerns might you have about using the complex model for searching databases? How could you evaluate which model generalizes better to new sequences?
 
-6. **Computational Complexity**  
-   The Viterbi algorithm for finding the optimal state path through an HMM with \( M \) states and a sequence of length \( L \) has time complexity \( O(M^2 L) \). Explain intuitively why the complexity is quadratic in the number of states. How does this complexity change for pair HMMs, which must align two sequences of lengths \( L_1 \) and \( L_2 \)?
-
-7. **Model Selection**  
-   You have built two different HMMs to model a protein family—one simple model with 15 states and one complex model with 45 states. The complex model achieves higher likelihood on your training sequences. What concerns might you have about using the complex model for searching databases? How could you evaluate which model generalizes better to new sequences?
-
-8. **RNA Secondary Structure**  
-   Context-sensitive HMMs can model base-pairing interactions by using memory to store emitted bases and later retrieve them at complementary positions. Sketch a csHMM that could model a simple hairpin structure with a 6-nucleotide stem (three base pairs) and a 4-nucleotide loop. Label the states as pairwise-emission, context-sensitive, or single-emission, and indicate which states use memory.
+8. **RNA Secondary Structure**: Context-sensitive HMMs can model base-pairing interactions by using memory to store emitted bases and later retrieve them at complementary positions. Sketch a csHMM that could model a simple hairpin structure with a 6-nucleotide stem (three base pairs) and a 4-nucleotide loop. Label the states as pairwise-emission, context-sensitive, or single-emission, and indicate which states use memory.
 
 ## Reflection Questions
 
-1. **Integration of Evidence**  
-   In your Manual Annotation Project, you performed manual gene annotation using GeneWise to make homology-based predictions. Reflect on how an HMM-based gene finder like AUGUSTUS integrates different types of evidence (splice signals, codon bias, length distributions). What are the advantages and limitations of having the computer automatically weight these different information sources compared to a human curator making judgment calls? When might you trust the HMM more than your own assessment, and when might your expert judgment carry more weight?
+1. **Integration of Evidence**: In your Manual Annotation Project, you performed manual gene annotation using GeneWise to make homology-based predictions. Reflect on how an HMM-based gene finder like AUGUSTUS integrates different types of evidence (splice signals, codon bias, length distributions). What are the advantages and limitations of having the computer automatically weight these different information sources compared to a human curator making judgment calls? When might you trust the HMM more than your own assessment, and when might your expert judgment carry more weight?
 
-2. **The Hidden Information Problem**  
-   Throughout this chapter, we emphasized that HMMs model two parallel processes—a visible sequence and a hidden state path. Think about other biological problems beyond those discussed where you observe some data but care primarily about hidden underlying processes. For example, consider ChIP-seq data showing protein–DNA binding across a genome, or Hi-C data showing chromosome conformation. Could HMMs be useful for these problems? What would the states represent? What would the observations be?
+2. **The Hidden Information Problem**:  Throughout this chapter, we emphasized that HMMs model two parallel processes—a visible sequence and a hidden state path. Think about other biological problems beyond those discussed where you observe some data but care primarily about hidden underlying processes. For example, consider ChIP-seq data showing protein–DNA binding across a genome, or Hi-C data showing chromosome conformation. _Could HMMs be useful for these problems? What would the states represent? What would the observations be?_
 
-3. **Probabilistic vs. Deterministic Approaches**  
-   Compare the HMM framework to simpler, deterministic approaches for sequence analysis, such as scanning for exact motif matches or using fixed score thresholds. What are the conceptual and practical advantages of a fully probabilistic approach? In what situations might a simpler deterministic method actually be preferable despite being less statistically sophisticated?
+3. **Probabilistic vs. Deterministic Approaches**: Compare the HMM framework to simpler, deterministic approaches for sequence analysis, such as scanning for exact motif matches or using fixed score thresholds. What are the conceptual and practical advantages of a fully probabilistic approach? In what situations might a simpler deterministic method actually be preferable despite being less statistically sophisticated?
 
-4. **Model Design and Biological Understanding**  
-   One appealing feature of HMMs is that designing a model often involves drawing an intuitive picture. Reflect on whether this simplicity could be a double-edged sword. Does the ease of sketching an HMM architecture risk oversimplifying biology? How would you guard against building models that are mathematically elegant but biologically unrealistic?
+4. **Model Design and Biological Understanding**: One appealing feature of HMMs is that designing a model often involves drawing an intuitive picture. Reflect on whether this simplicity could be a double-edged sword. Does the ease of sketching an HMM architecture risk oversimplifying biology? How would you guard against building models that are mathematically elegant but biologically unrealistic?
 
-5. **Ancient DNA and Temporal Genomics**  
-   The Neanderthal ancestry case study illustrates how ancient DNA provides a time series of genomic data. How does having observations from multiple time points fundamentally change what we can infer about evolutionary processes? Consider other questions in evolutionary biology or medical genetics where access to historical samples might provide decisive evidence. What are the practical and ethical challenges of obtaining such samples?
+5. **Ancient DNA and Temporal Genomics**: The Neanderthal ancestry case study illustrates how ancient DNA provides a time series of genomic data. How does having observations from multiple time points fundamentally change what we can infer about evolutionary processes? Consider other questions in evolutionary biology or medical genetics where access to historical samples might provide decisive evidence. What are the practical and ethical challenges of obtaining such samples?
 
-6. **The Limits of HMMs**  
-   We mentioned that HMMs struggle with long-range correlations because each emission depends only on the current state. Yet we have seen various workarounds—context-sensitive states for RNA, triplet-emitting states for codons. Reflect on whether these extensions maintain the conceptual elegance of HMMs or whether they indicate that fundamentally different approaches (like deep learning models) might be needed for some problems. What would we lose by abandoning the HMM framework, and what might we gain?
+6. **The Limits of HMMs**: We mentioned that HMMs struggle with long-range correlations because each emission depends only on the current state. Yet we have seen various workarounds—context-sensitive states for RNA, triplet-emitting states for codons. Reflect on whether these extensions maintain the conceptual elegance of HMMs or whether they indicate that fundamentally different approaches (like deep learning models) might be needed for some problems. What would we lose by abandoning the HMM framework, and what might we gain?
 
 ## References
