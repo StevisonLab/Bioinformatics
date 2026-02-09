@@ -1,108 +1,336 @@
 ---
-title: "Lab05: BLAST on the Command Line Exercise"
+title: "Lab05: BLAST on the Command Line"
 bibliography: references.bib
 csl: nature.csl
+lang: en-US
 ---
 
-## Using BLAST to faciliate homolog discovery
+For this lab, you will learn to use BLAST (Basic Local Alignment Search Tool) on the command line to identify sequence homology and annotate unknown sequences. While web-based BLAST is convenient for single queries, command-line BLAST is essential for analyzing large datasets, automating repetitive tasks, and integrating BLAST into bioinformatics pipelines. This lab will walk you through creating BLAST databases, running searches, and parsing results—skills that are fundamental to genome annotation, comparative genomics, and evolutionary studies.
 
-Annotation in newly sequenced genomes is often a mess. BLAST can be used to add to existing annotations for things like patLab_ay analysis. BLAST can also facilitate identification of putative homologs and paralogs within newly sequenced genomes. 
+## Background: Why Command Line BLAST?
 
-For this exercise, assume you have assembled a novel genome and identified genes using transcript data. Now, your goal is to **identify annotations** for the genes using the closest relative with a well annotated genome. This project was done in plants, so you will use the *Arabidopsis thaliana* genome. At the end, you will find out how many of your transcripts are part of the mitochondrial, chloroplast, or nuclear genome. 
+BLAST is the most widely used bioinformatics tool, with the original publication cited nearly 80,000 times [@altschul1990]. While the web interface at NCBI is user-friendly, command-line BLAST [@camacho2009] offers several advantages:
 
-1.	Make a directory for `Lab\_5` in your home directory on the ASC. Copy the files from the Lab\_5 folder in `bioinf_shared` to your new directory.
+- **Batch processing**: Query thousands of sequences automatically
+- **Custom databases**: Search against your own sequences, not just NCBI's databases
+- **Reproducibility**: Scripts can be shared and rerun exactly
+- **Integration**: Combine BLAST with other tools in analysis pipelines
+- **Control**: Fine-tune parameters and output formats for downstream analysis
 
-2.	Open the file `Example_script.sh` in your favorite text editor. Use this file to place your commands throughout this exercise so you will have a useable script at the end.
+In this lab, you'll work with a **realistic scenario**: you've assembled transcripts from a newly sequenced plant genome and need to annotate them using the well-characterized *Arabidopsis thaliana* genome. Your goal is to determine which transcripts correspond to mitochondrial, chloroplast, or nuclear genes.
 
-3.	The file `test.fasta` will be the query set of sequences. The other fasta files copied over will be used to make blast databases to compare the query sequences against. 
+## Setup
 
-  a. Use `grep` to get a count of how many sequences are in the file `test.fasta`. 
-  
-  >**Hint**: Which features of the fasta format make this step easy? Check the `man` page for grep to find the option to output a count of matches.
+1. Login to your ASC account and make a folder for Lab 5 called `Lab5`.
 
-4.	Next, build a blast database for all three fasta files you copied (not `test.fasta`). Run the command `makeblastdb -help`. This output will guide you as you construct your command argument. Documentation on this tool can be found [here](https://www.ncbi.nlm.nih.gov/books/NBK52640/).
+2. Copy all files from the shared folder `~/bioinf_shared/Lab5_BLAST_CL` into your `Lab5` directory. **Important**: Copy these files, do not move them!
 
-5.	Once you've created your databases, you are ready to blast your query sequence against each database. Use the image below as a guide to choose the blast program you will need to run. Read over `blastn -help` for help in constructing command arguments to query the three databases you created in Step 4.
+3. List the files in your directory. You should see:
+   - `test.fasta` (your query sequences - the unknown transcripts)
+   - `ATcp.fasta` (*Arabidopsis* chloroplast genome)
+   - `ATmt.fasta` (*Arabidopsis* mitochondrial genome)
+   - `ATchrV.fasta` (*Arabidopsis* chromosome V - a sample nuclear chromosome)
+   - `Example_script.sh` (template for your commands)
 
+4. Open `Example_script.sh` in your preferred text editor. This script will be your working file throughout the lab. You'll add commands to it as you progress, building a complete, reusable BLAST workflow by the end.
 
- ![Overview of BLAST five main Algorithms](images/Figure4_2.png){#fig-blast fig-alt="Overview of the five main BLAST Algorithms"}
+5. Replace your username at the top:
 
-6.	Now you are ready to run blast. Once you get your output, play around with some of the command options within blast:
+   ```bash
+   DIR="/home/aubclsXX/Lab5" # Replace with your username
+   ```
 
-    a. Use `less` to explore the output.
- 
-    b. Change the output file format using the option `-outfmt`. Which one do you think is most “parseable”? 
-    
-    >**Hint**: Examine output option 6 versus 7.
- 
-    c. Once you have constructed your command argument (generating a parsable output format), repeat your blast query against each database you created in Step 4.
- 
+## Step 1: Examine Your Query Sequences
 
-7.	Next, generate a *symbolic link* to the genome sequence for *Arabidopsis thaliana* located on the ASC: 
+Before running BLAST, you should understand your input data.
 
-    a. Run this command: `ln -s /datasets/unzipped/genomes/Arabidopsis_thaliana`.
+1. Use `less` to view the `test.fasta` file. Recall that FASTA format consists of a header line starting with `>` followed by the sequence on subsequent lines.
 
-    b.	Repeat to get only chromosome one (CHR_I) of the genome.
- 
+2. Count how many sequences are in `test.fasta`. 
 
-8.	Now, run a combined blast with this sequence and the other fasta files together:
-`blastn -db "ATcp.fasta ATchrV.fasta Arabidopsis_thaliana/CHR_I/NC_003070.gbk ATmt.fasta" -query test.fasta -outfmt 6 >raw.output.txt`. 
+   **Hint**: The `>` symbol marks each new sequence header. Use `grep` with the `-c` flag to count matching lines. Check `man grep` if needed.
 
-    a. How does the size of the database affect the e-value in your blast search? Compare the results for one of your hits in this larger search versus against only one database.
+3. Record this number—you'll need it later to determine how many sequences had no BLAST hits.
 
-9.	Now continue to pare down the output using some text manipulation (sed/awk/grep/sort/uniq). Try to string these commands together into a one-liner with pipes!
- 
-    a.	Capture the first two columns of the output. 
-    
-    >**Hint**: Which tool works best with columnar data?
- 
-    b.	Sort and only keep the unique hits. 
-    
-    >**Hint**: Pull up the `man` page for the command `sort`.
- 
-    c.	Now, keep only the 2nd column since the first is part of our query.
- 
-    d.	Use the `-c` flag of `uniq` to get a count of how many hits per database are returned. 
-    
-    >**Hint**: You may need to sort the output first.
- 
-    e.	Both chrV and chrI should be “NT”, but since we used a symbolic link for chrI, it shows up differently in our output. Let’s use `sed` to convert it to ***NT*** so we can combine hits for these two chromosomes.
- 
-    f.	Once you get a final one-liner with pipes, direct the final output to a file called `RawCounts.txt`.
+## Step 2: Create BLAST Databases
 
+When you use BLAST on the NCBI website, you're searching against pre-built databases. To use BLAST on the command line with custom sequences, you must first build your own databases.
 
-10.	Finally, check how many query sequences had no hits in any database. 
- 
-    a. Use `grep` to find lines with 0 hits in the raw output.
- 
-    b.	Use the `-c` flag to count the lines.
- 
-    c.	Print this result to the bottom of your `RawCounts.txt` file.
- 
- 
+1. Load the BLAST module to access the BLAST+ tools:
+
+   ```bash
+   module load blast+/2.15.0
+   ```
+
+2. Examine the database creation tool:
+
+   ```bash
+   makeblastdb -help
+   ```
+
+   Look through the documentation to identify the required parameters. Key options include:
+   - `-in`: Input FASTA file
+   - `-dbtype`: Type of sequences (`nucl` for nucleotides, `prot` for proteins)
+   - `-out`: Output database name (optional; defaults to input filename)
+   
+   >Documentation on this module can be found on the [ASC Documentation Site](https://hpcdocs.asc.edu/content/blast). Additional documentation on this tool can be found [at NCBI](https://www.ncbi.nlm.nih.gov/books/NBK52640/).
+
+3. Determine the sequence type in your FASTA files. Open one of the `AT*.fasta` files with `less`. Are these nucleotide or protein sequences?
+
+4. Create a BLAST database for each of the three *Arabidopsis* sequence files (`ATcp.fasta`, `ATmt.fasta`, and `ATchrV.fasta`). Do **not** create a database from `test.fasta`—this will be your query.
+
+   For example, for the chloroplast:
+   ```bash
+   makeblastdb -in ATcp.fasta -dbtype nucl
+   ```
+
+   **Tip**: To make your script more flexible, use variables as shown in the example script. For instance:
+   ```bash
+   cp=ATcp.fasta
+   makeblastdb -in $cp -dbtype nucl
+   ```
+
+5. Add these three `makeblastdb` commands to your `Example_script.sh` file.
+
+6. Submit your script to the ASC queue with these parameters:
+   - Number of CPUs = 1
+   - RAM/Memory = 50MB
+   - Queue = class
+   - Time = 01:00:00 (1 hour)
+
+7. After the job completes, check the standard output file (ending in `.o` followed by the job number) for errors. Then list your directory contents.
+
+8. You should now see multiple new files for each database (with extensions like `.nhr`, `.nin`, `.nsq`, etc.). These are the indexed database files that BLAST will use for rapid searching. Count how many new files were created per input FASTA file.
+
+9. Check your job efficiency using `jobinfo -j JOBNUMBER`. Note the memory and CPU usage—this information helps you optimize future jobs. What was your memory efficiency? CPU efficiency?
+
+## Step 3: Run Your First BLAST Search
+
+Now you'll compare your unknown transcripts `test.fasta` against each of the three databases you created. First, examine @fig-blast to determine which program to use within BLAST. 
+
+::: callout-note
+## Programs within BLAST
+
+![Overview of BLAST five main Algorithms](images/Figure4_2.png){#fig-blast width="65%" fig-alt="Overview of the five main BLAST Algorithms"}
+
+There are five major algorithms within BLAST. In making your database, you already know your input sequences are nucelotides. Example the input file `test.fasta` to determine which of the five programs you will use when running your BLAST search.
+:::
+
+1. Since both your query and database sequences are nucleotides, you'll use the `blastn` program. Review the available options:
+
+   ```bash
+   blastn -help
+   ```
+
+   The essential parameters are:
+   - `-query`: Your input FASTA file
+   - `-db`: The database to search against
+   - `-out`: Output file name
+
+2. Run BLAST to compare `test.fasta` against the chloroplast database. For example:
+
+   ```bash
+   blastn -query test.fasta -db ATcp.fasta -out test_vs_cp.blastn_out
+   ```
+
+   Use a descriptive output filename that indicates the query and database (e.g., `test_vs_cp.blastn_out` for test query versus chloroplast database).
+
+3. Repeat for the other two databases (mitochondrial and chromosome V). Add all three BLAST commands to your script.
+
+4. Submit your updated script to the queue:
+   - Number of CPUs = 1
+   - RAM/Memory = 100MB
+   - Queue = class
+   - Time = 01:00:00
+
+   >**Tip**: After successfully creating the blast databases, comment out the `makeblastdb` commands (add `#` at the start of each line) so they don't rerun unnecessarily as we continue to add to this script.
+
+5. Once the job completes, examine one of the output files using `less`. This is BLAST's default "pairwise" format, similar to what you see on the NCBI website. While human-readable, it's difficult to parse computationally.
+
+## Step 4: Optimize Output Format for Parsing
+
+The default BLAST output is verbose and hard to parse with command-line tools. BLAST offers alternative formats that are more suitable for automated analysis.
+
+1. Review the `-outfmt` option in the `blastn -help` output. You'll see numbered format options (0-18). Formats 6 and 7 are tabular and particularly useful for parsing.
+
+2. Rerun one of your BLAST searches using `-outfmt 6`:
+
+   ```bash
+   blastn -query test.fasta -db ATcp.fasta -outfmt 6 -out test_vs_cp.tab
+   ```
+
+3. Examine the output with `less`. Format 6 produces tab-delimited columns:
+   - Column 1: Query sequence ID
+   - Column 2: Subject (database) sequence ID
+   - Column 3: Percent identity
+   - Column 4: Alignment length
+   - Column 5: Number of mismatches
+   - Columns 6-12: Additional alignment statistics including E-value
+
+4. Compare format 6 to format 7 (which includes column headers). Which do you prefer? As a class, decide on one format to use consistently.
+
+5. Update your script to use your chosen output format for all three BLAST searches. Update the queue parameters based on your previous job's runtime and memory usage (check with `jobinfo`):
+   - Number of CPUs = 1
+   - RAM/Memory = ? (what did you actually use last time?)
+   - Queue = class
+   - Time = ? (how long did it actually take?)
+
+6. Comment out the previous BLAST commands and add the new versions. Submit to the queue.
+
+## Step 5: Understanding Database Size Effects on E-values
+
+The E-value (expect value) represents the number of hits you'd expect to see by chance in a database of this size. Larger databases generally produce larger E-values for the same match.
+
+1. To avoid duplicating large files, I have pre-downloaded Chr1 of the *Arabidopsis* genome. You'll create a symbolic link to the database folder (make sure to replace your username as you did during setup):
+
+   ```bash
+   ln -s /home/aubclsXX/bioinf_shared/Arabidopsis_thaliana/CHR_I
+   ```
+
+   A symbolic link acts like a shortcut—the files appear in your directory but remain stored in the original location.
+
+2. BLAST allows you to search multiple databases simultaneously by listing them in quotes:
+
+   ```bash
+   blastn -db "ATcp.fasta ATchrV.fasta CHR_I/NC_003070.fasta ATmt.fasta" \
+     -query test.fasta -outfmt 6 -out combined_search.txt
+   ```
+
+   This searches all four databases (chloroplast, chrV, chrI, and mitochondrial) in one run.
+
+3. Add this command to your script, comment out previous lines, and submit to the queue with updated parameters.
+
+4. After completion, compare the E-values for a specific hit:
+   - Find a transcript that matched the chloroplast in your earlier single-database search
+   - Look up the same transcript in your combined search output
+   - How did the E-value change? Why? **Consider**: The combined database is much larger than the chloroplast alone.
+
+## Step 6: Parse BLAST Output to Count Hits Per Database
+
+Now you'll use command-line text processing tools to extract meaningful summaries from your BLAST results. The goal is to count how many of your query transcripts match each database (mitochondrial, chloroplast, or nuclear chromosomes). You will be making a long one-liner with multiple piped steps that you will build incrementally below.
+
+1. Your BLAST output columns 1 and 2 contain the query name and database hit. Extract just these columns using `awk`:
+
+   ```bash
+   blastn -db "ATcp.fasta ATchrV.fasta CHR_I/NC_003070.fasta ATmt.fasta" \
+     -query test.fasta -outfmt 6 | awk '{print $1,$2}'
+   ```
+
+   The `|` (pipe) sends BLAST output directly to `awk` without creating an intermediate file. In the next several steps, add each command via pipe to this command line argument. In the end, you will redirect the output to a file.
+   
+   >Keep in mind that if you run the command above by itself, the output will be LARGE! So if you want to test each step of your piped one-liner, simplify the output by piping it to `head` periodically. But **beware**! Do not accidentally leave a `| head | ` in the middle of your one-liner which will effectively remove a vast majority of your output hits!
+
+2. Each query might have multiple hits to the same database sequence. Remove duplicates with another pipe to `sort` and then `uniq` to yield unique query-database pairs (one line per transcript-database match).
+
+>Hint: Do not forget to use the man page when needed to remind yourself how to use these tools.
+
+3. Now focus only on which databases were hit by adding a pipe to awk to isolate only column 2. This will remove the query names.
+
+4. Next, count how many times each database appears by piping the output to `uniq -c` (which requires sorted input).
+
+5. Sort the counts numerically and save to a file called `RawCounts.txt`.
+
+6. Examine `RawCounts.txt`. You should see counts for each database. Did you get more hits to chromosome I (the full chromosome) or to chromosome V (partial)? Why might that be?
+
+7. Both chrV and chrI should be “NT”, but since we used a symbolic link for chrI, it shows up differently in our output. Use `sed` to convert chrI hits to ***NT*** so we can combine hits for these two chromosomes.
+
+8. Add this complete one-liner to your script. This is a powerful example of piping multiple tools together—a common pattern in bioinformatics.
+
+## Step 7: Identify Sequences with No BLAST Hits
+
+Some of your query transcripts may not match any database, suggesting they could be novel genes, misassembled sequences, or contamination.
+
+1. Sequences with no BLAST hits won't appear in your output file at all. Calculate the number:
+   - Total sequences in `test.fasta` (you counted this in Step 1)
+   - Minus: Number of sequences with at least one hit
+
+2. To count sequences with hits, extract unique query IDs from your BLAST output:
+
+   ```bash
+   awk '{print $1}' combined_search.txt | sort | uniq | wc -l
+   ```
+
+3. Calculate: `(total sequences) - (sequences with hits) = sequences with no hits`
+
+4. Alternatively, if you want to know which specific sequences had no hits, you could:
+   - Extract all sequence IDs from `test.fasta`: `grep ">" test.fasta > all_queries.txt`
+   - Extract hit IDs from BLAST output: `awk '{print $1}' combined_search.txt | sort | uniq > hit_queries.txt`
+   - Find the difference: `comm -23 all_queries.txt hit_queries.txt`
+
+5. Add the count of sequences with no hits to the bottom of your `RawCounts.txt` file using `echo`:
+
+   ```bash
+   echo "No hits: [your count]" >> RawCounts.txt
+   ```
+
+## Step 8: Finalize Your Script
+
+1. Review your `Example_script.sh`. It should now contain:
+   - Commands to create three BLAST databases
+   - Commands to run BLAST searches (with appropriate output formatting)
+   - A one-liner to parse results and count hits per database
+   - Calculation of sequences with no hits
+
+2. Add comments throughout your script to explain what each section does. 
+
+3. Test that your script runs successfully from start to finish. You can do this by:
+   - Removing all output files
+   - Resubmitting the script (with all commands uncommented)
+   - Verifying all expected outputs are generated
+
+This script is now a reusable tool. With minor modifications, you could use it to annotate sequences from any organism against any reference genome.
+
 ## Reflection Questions
 
-Now that you are done, reflect on the following questions:
+Now that you've completed the lab, reflect on the following:
 
-1. What are some reasons someone might prefer to use command line blast over web-based blast?
- 
-2. For identifying orthologs, is it better to blast nucleotides or proteins? Why?
- 
-3. How many novel transcripts are in your assembled transcriptome? How would you go about assigning function to these transcripts? 
+1. **Command-line advantages**: What are some specific scenarios where command-line BLAST would be preferable to web-based BLAST? Consider factors like:
+   - Number of sequences
+   - Database selection
+   - Reproducibility
+   - Integration with other tools
+
+2. **Nucleotide vs. protein BLAST**: For identifying orthologs across distantly related species, is it better to use nucleotide sequences (blastn) or protein sequences (blastp/blastx)? Why? *Hint: Consider how DNA vs. protein sequences evolve over time.*
+
+3. **Novel sequences**: Based on your `RawCounts.txt` results:
+   - How many transcripts matched the chloroplast genome?
+   - How many matched the mitochondrial genome?
+   - How many matched nuclear chromosomes?
+   - How many had no hits in any database?
+   
+   For the sequences with no hits, what are possible biological explanations? What would you do next to characterize these sequences?
+
+4. **E-value interpretation**: You observed how database size affects E-values. If you're comparing BLAST results from different studies that used different reference databases, why is it important to consider database size? How might this affect your interpretation of "significant" hits?
+
+5. **Applications**: Beyond annotation, describe two other biological questions or research applications where command-line BLAST would be useful. Be specific about what you'd search and why.
 
 ## Deliverables	
 
-Upload your script and the `RawCounts.txt` file to canvas, along with your answers to reflection questions.
+Upload the following to Canvas:
 
+1. Your completed `Example_script.sh` file (with comments explaining each section)
+2. Your `RawCounts.txt` file
+3. Answers to the five reflection questions above (in a Word document or PDF)
 
 ## Acknowledgement
 
-This lab assignment has been adapted from activity initially composed by Dr. Nathan Hall from Auburn University.
+This lab assignment has been adapted from an activity initially composed by Dr. Nathan Hall from Auburn University. It has been further modified through multiple cohorts of students and more recently with the assistance of AI.
 
-## Additional Resources:
+## Additional Resources
 
-- [SeqAnswers Thread for automating BLAST to find orthologs](http://seqanswers.com/forums/showthread.php?t=27735)
-  - This could be adopted for our class project to find additional PRDM9 orthologs from some of the genomes lacking annotated references. Definitely a good starting point for our manual annotation group! 	
-- Another use of BLAST, can be to design PCR primers and then checking primer specificity. The web may be fine for small batches, but if you are designing a bunch of primers for several loci (say more than 5), finding a way to automate these steps can save a lot of time.  Python has a wrapper of [primer3](https://primer3.org/manual.html) and there are likely several more out there. 
-- For alignment, BLAST may not be ideal. Other options include [lastz](http://www.bx.psu.edu/~rsharris/lastz/) and [BWA](http://bio-bwa.sourceforge.net/). For multiple genome alignment, you can also use [mauve](http://darlinglab.org/mauve/mauve.html).
-- For visualization, the web-application is best for producing dotplots. But if you want to make plots in R for genome annotations and alignments, consider the R package [genoplotR](http://genoplotr.r-forge.r-project.org/index.php), which can read in BLAST and mauve outputs. 
+**Extending Your BLAST Skills:**
+
+- **Primer design**: BLAST can verify primer specificity. For large-scale primer design (>5 loci), automating BLAST checks saves time. Python's [primer3](https://primer3.org/manual.html) wrapper can be integrated with command-line BLAST.
+
+- **Ortholog discovery**: [SeqAnswers Thread](http://seqanswers.com/forums/showthread.php?t=27735) discusses automating BLAST for ortholog identification across multiple genomes—useful for comparative genomics projects.
+
+- **Alternative alignment tools**: 
+  - [LASTZ](http://www.bx.psu.edu/~rsharris/lastz/): Better for whole-genome alignments
+  - [BWA](http://bio-bwa.sourceforge.net/): Optimized for mapping short reads to reference genomes
+  - [Mauve](http://darlinglab.org/mauve/mauve.html): Multiple genome alignment and visualization
+
+- **Visualization in R**: The [genoPlotR](http://genoplotr.r-forge.r-project.org/) package creates publication-quality figures from BLAST and Mauve outputs, useful for comparing genome organization.
+
+- **BLAST+ Documentation**: Comprehensive guide to all BLAST+ tools and parameters: [NCBI BLAST+ Command Line Applications User Manual](https://www.ncbi.nlm.nih.gov/books/NBK279690/)
+
+## References
