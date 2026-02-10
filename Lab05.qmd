@@ -37,7 +37,7 @@ In this lab, you'll work with a **realistic scenario**: you've assembled transcr
 5. Replace your username at the top:
 
    ```bash
-   DIR="/home/aubclsXX/Lab5" # Replace with your username
+   DIR="/home/aubclsfXXXX/Lab5" # Replace with your username
    ```
 
 ## Step 1: Examine Your Query Sequences
@@ -184,7 +184,7 @@ The E-value (expect value) represents the number of hits you'd expect to see by 
 1. To avoid duplicating large files, I have pre-downloaded Chr1 of the *Arabidopsis* genome. You'll create a symbolic link to the database folder (make sure to replace your username as you did during setup):
 
    ```bash
-   ln -s /home/aubclsXX/bioinf_shared/Arabidopsis_thaliana/CHR_I
+   ln -s /home/aubclsfXXXX/bioinf_shared/Arabidopsis_thaliana/CHR_I
    ```
 
    A symbolic link acts like a shortcut—the files appear in your directory but remain stored in the original location.
@@ -197,6 +197,8 @@ The E-value (expect value) represents the number of hits you'd expect to see by 
    ```
 
    This searches all four databases (chloroplast, chrV, chrI, and mitochondrial) in one run.
+   
+   >Note: If you named your BLAST databases something different than the default names, then you will need to edit this to match your database naming conventions here.
 
 3. Add this command to your script, comment out previous lines, and submit to the queue with updated parameters.
 
