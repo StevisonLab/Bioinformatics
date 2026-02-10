@@ -21,26 +21,24 @@ Hidden Markov models (HMMs) are a set of mathematical tools that can be used to 
 
 ### Part 1: Reviewing the basics
 
-The first part of this lab activity reviews some of the concepts introduced in class on how HMMs work to predict a specific gene model based on a DNA sequence. Specifically, you will use a simple Hidden Markov Model introduced in class to calculate the various transition and emmission probabilities of given State Paths. This approach is used to identify the most likely path, thus identifying the location of the transition from exon to 5'SS to intron, or gene model.
+The first part of this lab activity reviews some of the concepts introduced in [Chapter 9](ch09-hmms.qmd) on how HMMs work to predict a specific gene model based on a DNA sequence. Specifically, you will use the simple Hidden Markov Model introduced in @fig-toy-hmm to calculate the various transition and emmission probabilities of given State Paths. This approach is used to identify the most likely path, thus identifying the location of the transition from exon to 5'SS to intron, or gene model.
 
-1. On a separate sheet of paper, draw a state diagram for an HMM that will scan an un-annotated genome for genes with a start codon, a stop codon, exons, introns, a 5’ splice site and a 3’ splice site.
+1. On a separate sheet of paper, draw a state diagram for an HMM that will scan an un-annotated genome for genes with a start codon, a stop codon, exons, introns, a 5' splice site and a 3’ splice site. Use @fig-toy-hmm as a guide.
 
   - What are the "states" of the model that you have drawn?
 
-2. Using the simple state HMM below, calculate the probability of state paths list in the table:
-   <p align="center" width="20%">
-   	<img width="75%" src="images/simple_hmm.png">
-	</p>	
+2. Using the simple state HMM you have drawn out, calculate the probability of EACH of the state paths listed in the table below given the observed DNA sequence shown in the top row. 
 
- - Which of the state paths below is the most likely one to annotate the DNA sequence at the top correctly?
-	
-	| |  | A|G|T|G|A||
+>To calculate the probability of each possible state path, multiply all of the transition and emission probabilities for each base in the sequence above given the state in each part of the path. Take the log of the product of all probabilities across all states in a path to obtain the log P (see @nte-hmm).
+
+ | |  | A|G|T|G|A||
  |----| ----| --- |--- |--- |--- |--- |--- |
  | Path 1 | *Start* | E| E|E|5|I|*End*|
  | Path 2 | *Start*| E|E|5|I|I|*End*|
  | Path 3 | *Start*| E|5|I|I|I|*End*|
-  
- - Note that each state path has the 5’ splice site at a different position in the sequence.  Which 5’ splice site is likely to be the correct one?
+ 
+ - **Which of the state paths below is the most likely one to annotate the DNA sequence at the top correctly?**
+ - Note that each state path has the 5' splice site at a different position in the sequence.  Which 5' splice site is likely to be the correct one?
 
  - Given what you know about splice sites in eukaryotic genes, does anything in this model seem problematic?
 
@@ -48,7 +46,7 @@ The first part of this lab activity reviews some of the concepts introduced in c
 
 ### Part 2: Exploring an HMM
 
-For the next part of the lab, we will use an excel spreadsheet provided by Anton Weisstein to explore properties of Hidden Markov Models. The Excel workbook "Hidden Markov Model" illustrates the mathematical workings of an HMM, using the example of locating the 5' splice site within a DNA sequence (see [Chapter 9](ch09-hmms.qmd) for more detail).  By manipulating model parameters such as the average length and base composition of introns vs. exons, the user can study how such changes influence the model's decisions about where the splice site is likeliest to occur.  For ease of demonstration, the workbook begins by analyzing a very short sequence (6 bp) before re-creating Eddy's full, 26-bp model.
+For the next part of the lab, we will use an excel spreadsheet provided by Anton Weisstein to explore properties of Hidden Markov Models. The Excel workbook "Hidden Markov Model" illustrates the mathematical workings of an HMM, using the example of locating the 5' splice site within a DNA sequence (see [Chapter 9](ch09-hmms.qmd) for more detail).  By manipulating model parameters such as the average length and base composition of introns vs. exons, the user can study how such changes influence the model's decisions about where the splice site is likeliest to occur.  For ease of demonstration, the workbook begins by analyzing a very short sequence (6 bp) before re-creating Eddy's full, 26-bp model @eddy_what_2004.
 
 1. Download and open the excel file "[HiddenMarkovModel.intron.xls](datasets/Hidden Markov Model.intron.xls)".  Before changing any of the sliders on the spreadsheet, save a copy of the file under a different name. 
 
@@ -63,13 +61,21 @@ For the next part of the lab, we will use an excel spreadsheet provided by Anton
    - Cells **F12–I14** give the state-specific probability of producing, or emitting, a particular nucleotide.  In the initial model, all four nucleotides are equally likely to occur in an exon, but introns are GC-poor.  For the sake of simplicity, the splice site is considered to be only one nucleotide long: in the initial model, that nucleotide is always a guanine.  
    - Finally, Cells **B17–G17** contain the nucleotide sequence to be analyzed.
 
-3. Cells **B21–L51** show the model's calculations.  For each potential state path, the model computes: (i) the probability that the DNA sequence starts in the appropriate state, (ii) the probability of precisely following the state path, and (iii) the probability of emitting the observed DNA sequence if the state path is followed.  For example, state path 1 (Cells **B21–H21**) posits that the first nucleotide, a cytosine, occurs in an intron.  The initial model gives a 0% probability of starting in an intron (Cell **B4**), and a 10% frequency of cytosines within an intron (Cell **G14**), so these values are reported.  The second nucleotide, a guanine, is also proposed to occur in an intron.  The initial model therefore reports the 90% probability of remaining within an intron (Cell **H6**) and the 10% frequency of guanines within an intron (Cell **H14**).  This process continues through all six nucleotides, then reports the 10% probability of transitioning from the last nucleotide's state — an intron — to the end of the sequence (Cell **I6**).
+3. Cells **B21–L51** show the model's calculations.  For each potential state path, the model computes: 
 
-   - HMMs assume that each nucleotide is independent of the others, much as the result of a coin flip does not depend on previous or future flips.  This assumption of independence is biologically unrealistic, but it greatly simplifies the math: each nucleotide's individual probabilities can be simply multiplied together to calculate the total probability of the overall sequence.  For state path 1, this combined probability is reported in Cell **J22**.  Unsurprisingly, given that one of the numbers being multiplied was zero, the resulting product is also zero, meaning that this state path is not consistent with the observed sequence.  In fact, under the initial model, state paths 3 and 5 are the only ones possible, because only they correctly place the splice site at a G.
+   i. the probability that the DNA sequence starts in the appropriate state, 
 
-   - Computationally, it is faster to add numbers together than to multiply them.  This can make a huge difference when running a large HMM that may contain many millions of state paths.  For this reason, most HMMs calculate the combined probability of a state path not by multiplying the individual nucleotide probabilities, but by adding the logarithms of those probabilities, using the identity.  The resulting log-probabilities are reported in Column K.  Note that ln(0) is undefined, so state paths with probability zero yield an error message in this column.
+   ii. the probability of precisely following the state path, and 
 
-   - If the model correctly includes all possible state paths, adding up all of the probabilities in Column J should give the total probability p of emitting the observed sequence.  But by definition, that sequence has indeed been observed, so the individual state path probabilities should be calibrated to sum to one.  (In much the same way, if I have prior knowledge that a poker player is holding either a flush or a full house, each of those two hands is much likelier than if I lacked such knowledge.)  Each state path's probability is therefore divided by the total probability p to compute the path's likelihood given observed DNA sequence.  The results are displayed in Column L (which does sum to 1) and graphed in the likelihood profile at the bottom of the worksheet.
+   iii. the probability of emitting the observed DNA sequence if the state path is followed.  
+
+For example, state path 1 (Cells **B21–H21**) posits that the first nucleotide, a cytosine, occurs in an intron.  The initial model gives a 0% probability of starting in an intron (Cell **B4**), and a 10% frequency of cytosines within an intron (Cell **G14**), so these values are reported.  The second nucleotide, a guanine, is also proposed to occur in an intron.  The initial model therefore reports the 90% probability of remaining within an intron (Cell **H6**) and the 10% frequency of guanines within an intron (Cell **H14**).  This process continues through all six nucleotides, then reports the 10% probability of transitioning from the last nucleotide's state — an intron — to the end of the sequence (Cell **I6**).
+
+   - HMMs assume that each nucleotide is **independent** of the others, much as the result of a coin flip does not depend on previous or future flips.  This assumption of independence is biologically unrealistic, but it greatly simplifies the math: each nucleotide's individual probabilities can be simply **multiplied** together to calculate the total probability of the overall sequence.  For state path 1, this combined probability is reported in Cell **J22**.  Unsurprisingly, given that one of the numbers being multiplied was zero, the resulting product is also zero, meaning that this state path is not consistent with the observed sequence.  In fact, under the initial model, state paths 3 and 5 are the only ones possible, because only they correctly place the splice site at a G.
+
+   - Computationally, it is faster to add numbers together than to multiply them.  This can make a huge difference when running a large HMM that may contain many millions of state paths.  For this reason, most HMMs calculate the combined probability of a state path not by multiplying the individual nucleotide probabilities, but by **adding the logarithms** of those probabilities, using the identity.  The resulting log-probabilities are reported in Column K.  Note that ln(0) is undefined, so state paths with probability zero yield an error message in this column.
+
+   - If the model correctly includes all possible state paths, adding up all of the probabilities in **Column J** should give the total probability p of emitting the observed sequence.  But by definition, that sequence has indeed been observed, so the individual state path probabilities should be calibrated to **sum to one**.  (In much the same way, if I have prior knowledge that a poker player is holding either a flush or a full house, each of those two hands is much likelier than if I lacked such knowledge.)  Each state path's probability is therefore divided by the total probability p to compute the path's likelihood given observed DNA sequence.  The results are displayed in **Column L** (which does sum to 1) and graphed in the **likelihood profile** at the bottom of the worksheet.
 
    ***Now that we have reviewed how this worksheet works, let's perturb it to better understand WHY it works!***
 
@@ -87,7 +93,7 @@ For the next part of the lab, we will use an excel spreadsheet provided by Anton
    | 0.6 | 0.9 |  |  |  |
    | 0.6 | 1.0 |  |  |  |
    
-   When you are done, reset to the original 0.6 exon→splice and 0.9 splice→intron transition probabilities.
+   When you are done, reset to the original 0.6 exon→splice and 0.9 intron→intron transition probabilities.
 
 5. Now systematically vary the **emission probabilities** for the splice site state. Starting with the default model where G = 1.0 at the splice site, change the emission probabilities to make the splice site less specific. **Record in the table below how reducing the G content at the splice site affects the model's predictions. What does this tell you about the importance of strong splice site consensus sequences?**
 
@@ -107,39 +113,157 @@ For the next part of the lab, we will use an excel spreadsheet provided by Anton
 
 ### Part 3: Model Perturbations
 
-In this part of the lab, I want you to play around with the model by making some modifications. As part of what you turn in, write down the changes you made and what happens to the probabilities and most likely gene annotation.
+In this part of the lab, you will explore how modifications to the HMM affect its predictions. Choose **at least one** of the following explorations (items 1-4), document the changes you make, and record the resulting effects on the model's splice site predictions. For each exploration you choose, you should test multiple parameter values to observe trends, not just a single change.
 
-1. Change the observed DNA sequence.  Alterations in GC richness and in the position of any G nucleotides may influence the likelihood of the 5’ splice site occurring at a specific position.  Note that the sequence must consist only of standard DNA nucleotides (A, C, G, and T).
+1. **Change the observed DNA sequence.**  Alterations in GC richness and in the position of any G nucleotides may influence the likelihood of the 5' splice site occurring at a specific position.  Note that the sequence must consist only of standard DNA nucleotides (A, C, G, and T).
+   
+   *Suggestion: Try sequences with different numbers of G's and/or different GC content (e.g., GC-rich vs. AT-rich).*
 
-2. Change the base emission probabilities.  Alterations in the base composition of exons vs. introns will affect the model’s inferences about the best splice site position.  In particular, changing the emission probabilities so that exons and introns have similar base compositions will severely degrade the model’s ability to predict the splice site location with any degree of confidence.  
-
- >Note that each position within a given gene region must be occupied by one of the four nucleotides, so each row of the matrix must sum to one.  If this condition is violated, the offending row will be highlighted in red.
+2. **Change the base emission probabilities for exon and/or intron states.**  Alterations in the base composition of exons vs. introns will affect the model's inferences about the best splice site position. In particular, changing the emission probabilities so that exons and introns have similar base compositions will severely degrade the model's ability to predict the splice site location with any degree of confidence.  
+   
+   >Note that each position within a given gene region must be occupied by one of the four nucleotides, so each row of the emission probability matrix must sum to one. If this condition is violated, the offending row will be highlighted in red.
+   
+   *Suggestion: Try making introns more GC-rich or making exons and introns compositionally similar.*
  
-3. Change the state transition probabilities using the built-in scrollbars.  Again, each row of the matrix must sum to one.  
+3. **Change the state transition probabilities using the built-in scrollbars.**  Again, each row of the transition matrix must sum to one.  
+   
+   >Note that the transition probability (p) for the exon state to the splice site state is the reciprocal of the average exon length. (This is because the mean of a geometric distribution is 1/p.) For example, if the transition probability for the exon-to-splice site state is 10%, then the average exon will be 10 bp long. Similarly, the intron-to-end transition probability is the reciprocal of the average intron length. Adjusting these parameters will therefore shift the most likely splice site position to earlier or later in the sequence. The model assumes that the splice site consists of a single nucleotide, so the probabilities in the middle row cannot be changed.
+   
+   *Suggestion: Experiment with different average exon and intron lengths by adjusting transition probabilities. What happens with very short vs. very long predicted gene features?*
 
- >Note that the transition probability (p) for the exon state to the splice site state is the reciprocal of the average exon length. (This is because the mean of a geometric distribution is 1/p.) For example, if the transition probability for the exon-to-splice site state is 10%, then the average exon will be 10 bp long.  Similarly, the intron-to-end transition probability is the reciprocal of the average intron length.  Adjusting these parameters will therefore shift the most likely splice site position to earlier or later in the sequence.  The model assumes that the splice site consists of a single nucleotide, so the probabilities in the middle row cannot be changed.
+4. **Change the vector of initial state probabilities.**  The original model assumes that the DNA sequence starts in an exon (100% probability in cell B2). However, the start of the DNA sequence could be part of an intron or even at the splice site itself. A better model should account for this possibility and assign non-zero initial probabilities to all three states.  
+   
+   >Note that, by definition, the sequence must start in one of these three states and these initial probabilities must sum to one.
+   
+   *Suggestion: Try splitting the initial probability equally among all three states, or giving higher probability to intron starts.*
 
-4. Change the vector of initial state probabilities.  The original model assumes that the DNA sequence starts in an exon.  However, the start of the DNA sequence could be part of an intron or even at the splice site itself.  A better model should account for this possibility and assign non-zero initial probabilities to all three states.  
+**For the exploration you choose to conduct document:**
 
- >Note that, by definition, the sequence must start in one of these three states and these initial probabilities must sum to one.
+- The specific parameter(s) you changed and the values you tested
+- The effect on the predicted splice site position(s)
+- The effect on the likelihood values
+- Your interpretation of why these changes had the observed effects
 
-5. The second sheet of the “Hidden Markov Model” workbook contains an exact replica of the HMM described by Eddy (2004) [@eddy_what_2004]. This sheet can be reached using the navigation tabs at the bottom of the Excel workspace. Eddy’s HMM is designed to handle DNA sequences up to 26 bp in length; moreover, under the initial settings, the splice site can occur at either an A or a G, although the latter is far more likely.
+### Part 4: Exploration of the Full Model
+
+The second sheet of the "Hidden Markov Model" workbook contains an exact replica of the HMM described by Eddy (2004) [@eddy_what_2004]. This sheet can be reached using the navigation tabs at the bottom of the Excel workspace. Eddy's HMM is designed to handle DNA sequences up to 26 bp in length; moreover, under the initial settings, the splice site can occur at either an A or a G, although the latter is far more likely.
 
    <p align="center" width="20%">
    	<img width="75%" src="images/FullModel.jpg">
 	</p>
 
- This sheet’s controls work almost exactly the same way as those for the preceding model.  The only major difference is that the user may paste a DNA sequence directly into Cell E16: the worksheet itself will extract the individual nucleotides for analysis.  The interface is also streamlined to focus attention on the model’s controls and graph rather than on the detailed calculations involved.  However, the user can still view the relevant calculations by scrolling down to Rows 44–183 and/or by navigating to the “Additional Calculations” sheet.
+**Key differences from the Simple Model:**
 
-6. Optional explorations using the full model:
+- Handles sequences up to 26 nucleotides instead of just 6
+- The splice site can occur at either an A or a G (though G is far more likely)
+- You can paste sequences directly into Cell E16 rather than entering individual nucleotides
+- The likelihood profile shows more nuanced predictions across a longer sequence
+- Additional calculations are available in separate worksheets for those interested in the mathematical details
 
-- Study the effect of increasing or decreasing the base composition difference of exons vs. introns.  How would you numerically measure the model’s statistical power to resolve the splice site’s location for a particular level of composition difference?  Graph the model’s power as a function of composition difference, and determine the minimum difference needed to infer the splice site location of a 26-bp sequence with 95% confidence.
+This sheet's controls work similarly to the Simple Model. The interface is streamlined to focus on the model's controls and output graph. If you want to examine the detailed calculations, scroll down to Rows 44–183 or navigate to the "Additional Calculations" sheet.
 
-- Using online resources, find the distribution of exon and intron lengths for a specific class of gene or a specific organism.  How would you reduce this distribution to a single average length for use in the model?  Enter the appropriate values in the transition probability matrix and calculate the likelihood profile for the splice site’s location.  Compare your results to those of a neighbor who used the same DNA sequence but focused on a different gene or organism: how much do the results depend on the model’s transition matrix?
+**Exploratory Activity:** Choose **ONE** exploration from the options below. Test multiple parameter values or sequences to observe trends and patterns. Document what you changed, what happened, and your interpretation of the results.
+
+#### Option 1: Base Composition Effects
+
+Investigate how the compositional difference between exons and introns affects splice site prediction. Start with the default settings where exons have equal base frequencies (25% each) and introns are AT-rich (A=40%, T=40%, G=10%, C=10%). 
+
+Systematically change the emission probabilities to make introns less AT-rich (more similar to exons). Test at least 3-4 different scenarios ranging from strong contrast to no contrast. For each scenario, record which position is predicted as the splice site and the maximum likelihood value.
+
+**Key questions to explore:** How much compositional difference is needed for confident predictions? What happens when exons and introns have identical base composition?
+
+#### Option 2: Sequence Variation
+
+Test how different DNA sequences are interpreted by the model while keeping all parameters constant. Generate or find at least 3-4 different 26 bp sequences with varying characteristics (GC-rich, AT-rich, multiple G's in different positions, random sequences, or real genomic sequences).
+
+For each sequence, note its GC content, where G nucleotides are located, and where the model predicts the splice site. 
+
+**Key questions to explore:** Does the model always pick the first G? What happens with closely spaced G's? How important is the position of G nucleotides versus overall sequence composition?
+
+#### Option 3: Species-Specific Gene Architecture
+
+Research typical exon and intron lengths for a specific organism (budding yeast, fruit fly, human, arabidopsis, or another of your choice). Use online databases like NCBI Gene, Ensembl, or model organism databases to find this information for several genes.
+
+Calculate average lengths and convert them to transition probabilities using the formula: self-transition probability ≈ (average length - 1) / (average length). Enter these organism-specific values into the model and observe how predictions change.
+
+**Key questions to explore:** How do your organism's gene architecture parameters differ from the defaults? What would happen if you used a yeast-trained HMM to predict human genes, or vice versa?
+
+#### Option 4: Statistical Power Analysis
+
+Explore the relationship between base composition difference and prediction confidence. Create a series of tests where you systematically vary the AT content difference between exons and introns (e.g., 30%, 20%, 10%, 5%, 0% difference).
+
+For each level of difference, record the maximum likelihood value from the profile. You might create a simple graph (by hand or in Excel) showing how prediction confidence changes as compositional difference decreases.
+
+**Key questions to explore:** At what compositional difference does prediction confidence drop below 50%? Is there a threshold where the model essentially "gives up" and spreads probability across many positions?
 
 ---
 
-Congratulations! The goal of this lab is to give you real world experience with an HMM and to try to understand what properties lead to variation across software tools in gene model predictions. Please turn in your answers throughout this assignment into Canvas for a grade on this lab.
+**For your chosen exploration, document:**
+
+- Which option you selected and why
+- Specific parameters or sequences you tested (at least 3-4 different conditions)
+- What happened in each test (predicted positions and approximate likelihoods)
+- Patterns or trends you observed
+- Your interpretation: Why did the model behave this way?
+
+## Reflection Questions
+
+Now that you've completed the lab, reflect on the following questions. Your answers should demonstrate understanding of HMM principles and their application to gene prediction.
+
+1. **Parameter sensitivity**: Based on your systematic explorations in Part 2 (transition probabilities and emission probabilities), which type of parameter seems to have the strongest effect on splice site prediction accuracy? Explain your reasoning using specific examples from your completed tables. How does this relate to the way real gene prediction software is trained?
+
+2. **Model complexity trade-offs**: The toy model in this lab uses just three states (Exon, Splice, Intron) and models the splice site as a single nucleotide with strong G preference. Real gene finders like AUGUSTUS use dozens of states and model splice sites with position-specific weight matrices spanning multiple nucleotides. What are the advantages and disadvantages of increasing model complexity? Consider factors like:
+   - Prediction accuracy
+   - Amount of training data required
+   - Computational cost
+   - Risk of overfitting
+   - Interpretability
+
+3. **Integration with other data**: In question 6 of Part 2, you considered how RNA-Seq data could help resolve ambiguous splice site predictions. Describe in detail how you would integrate RNA-Seq evidence with HMM-based predictions. What would you look for in the RNA-Seq data? How would you handle cases where they disagree?
+
+4. **Simple versus Full Model**: Compare your experience working with the Simple Model (6 bp, Part 2) versus the Full Model (26 bp, Part 4). What additional insights did the longer sequence provide? What made the Full Model more challenging or interesting to work with? How does the increased sequence length affect the clarity of predictions?
+
+5. **Beyond gene prediction**: HMMs are used throughout bioinformatics for diverse applications including protein domain identification (profile HMMs), sequence alignment (pair HMMs), and ancestry inference (as discussed in [Chapter 9](ch09-hmms.qmd)). Choose one application of HMMs from the chapter that is NOT gene prediction and explain:
+   - What are the "states" in that application?
+   - What are the "observations" (emissions)?
+   - Why is an HMM appropriate for that problem?
+   - How is it similar to or different from the gene prediction HMM you worked with in this lab?
+
+## Deliverables
+
+Upload the following to Canvas:
+
+1. **Part 1** (can be photo/scan of handwritten work or typed):
+   - Your hand-drawn state diagram for a complete gene (with start codon, stop codon, exons, introns, 5' SS, and 3' SS)
+   - Calculations for the three state paths (showing your work for at least one path in detail)
+   - Answers to the follow-up questions about which path is most likely and what seems problematic
+
+2. **Part 2 Completed Tables**:
+   - Completed table from question 4 (transition probability perturbations) with all cells filled in
+   - Completed table from question 5 (emission probability perturbations) with all cells filled in
+   - Brief description of the key patterns you observed across these systematic perturbations (2-3 sentences)
+
+3. **Part 2 Short Answer Questions**:
+   - Answers to questions 3, 6, and 7 from Part 2
+
+4. **Part 3 Exploration Summary** (2-3 sentences):
+   - For your chosen exploration of the simple model:
+     - Description of parameter changes you made (be specific about values)
+     - Table or organized list of results showing how predictions changed
+     - Interpretation of findings (why did the model behave this way?)
+   - Include screenshots or sketches if they help illustrate your results
+
+5. **Part 4 Exploration Summary** (1 paragraph, ~150-250 words):
+   - State which exploration option you chose
+   - Briefly describe what you tested
+   - Summarize your key findings
+   - Include one insight about what this taught you regarding HMM-based gene prediction
+
+6. **Reflection Questions**: Answers to all five reflection questions above (in a Word document or PDF). 
+
+---
+
+Congratulations! The goal of this lab is to give you real-world experience with an HMM and to help you understand what properties lead to variation across software tools in gene model predictions.
 
 ## Acknowledgement
 
