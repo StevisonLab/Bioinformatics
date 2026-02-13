@@ -4,10 +4,9 @@ bibliography: references.bib
 csl: nature.csl
 ---
 
-## Lab #8: Beyond GATK: Comparing Variant Calling Methods
-Lab 8 will be based on an IN CLASS discussion of various papers. I have found several recent studies comparing various variant calling workflows (as a way of going beyond GATK, which we have covered in class). I will assign multiple students to read EACH paper before class on 3/5. We will have an activity in class based on your reading that will require you to have a good understanding of the paper assigned for class. Below are the assignments for this in class activity. Since you will be preparing for the activity, please make sure to attend class on 3/5 to get credit for Lab 8 since we will not have an out of class component (meaning it will be due in class as part of the activity).
+Lab 8 will be based on an IN CLASS discussion of various papers. I have found several recent studies comparing various variant calling workflows (as a way of going beyond GATK, which we have covered in class). I will assign multiple students to read EACH paper before class . We will have an activity in class based on your reading that will require you to have a good understanding of the paper assigned for class. Below are the assignments for this in class activity. Since you will be preparing for the activity, please make sure to attend class on the Lab Day to get credit for Lab 8 since we will not have an out of class component (meaning it will be due in class as part of the activity).
 
-### Guiding Questions for Reading:
+## Guiding Questions for Reading:
 - What are the main goals of the pipeline evaluations in the paper?
 - Which aligners and variant callers are compared, and what are their strengths/weaknesses?
 - What are the key findings regarding accuracy, speed, and robustness?

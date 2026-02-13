@@ -4,15 +4,11 @@ bibliography: references.bib
 csl: nature.csl
 ---
 
-#Lab 7: Variant Calling via GATK Best Practices
+The primary goal of most NGS Workflows is to generate genetic variants for downstream biological analysis. However, NGS data is very noisy with lots of sequencing errors. For this reason, there are a large number of false positives that can lead to false inferences in downstream applications. Following up on where we left off with Lab 4, this lab exercise will walk you through the Genome Analysis Toolkit (GATK) best practices workflow. Here, we will use "hard variant filtering" to ensure the quality of the resulting data you would use for downstream analysis.  
 
----
+## Step 1 (post-processing and variant calling):
 
-###The primary goal of most NGS Workflows is to generate genetic variants for downstream biological analysis. However, NGS data is very noisy with lots of sequencing errors. For this reason, there are a large number of false positives that can lead to false inferences in downstream applications. Following up on where we left off with Lab 4, this lab exercise will walk you through the Genome Analysis Toolkit (GATK) best practices workflow. Here, we will use "hard variant filtering" to ensure the quality of the resulting data you would use for downstream analysis.  
-
-###Step 1 (post-processing and variant calling):
-
-####The goal of this part of the exercise is to learn how to complete post-processing, QC, and variant calling. Remember from class that variant calling uses a 3-step process depending on how many samples you have. Here, we will just have one sample, so we will skip the middle step of combining gVCF files.
+The goal of this part of the exercise is to learn how to complete post-processing, QC, and variant calling. Remember from class that variant calling uses a 3-step process depending on how many samples you have. Here, we will just have one sample, so we will skip the middle step of combining gVCF files.
 
 1. First, return to the directory in your ASC home directory titled `Lab4` that you made previously. Let's continue working here since all the files we need are in here.
 
@@ -30,9 +26,9 @@ csl: nature.csl
 
 5. Compare the flagstat output to the one [here](https://github.com/AUBioInformatics25/BamQC/blob/main/flagstat.md).  
 
-###Step 2 (variant filtering):
+## Step 2 (variant filtering):
 
-####The goal of this part of the exercise is to learn how to filter variants using GATK and plot summaries of various variant metrics in R. These plots will then be used to decide on your best set of filtering parameters for your data. 
+The goal of this part of the exercise is to learn how to filter variants using GATK and plot summaries of various variant metrics in R. These plots will then be used to decide on your best set of filtering parameters for your data. 
 
 1. Examine carefully the script "6_GATK_Variant_Filtering.sh" to walk through what it is doing and the tools it uses. This script will perform hard filtering based on the filtering criteria recommended by GATK. It then runs a custom Perl script to produce density plots of the various parameters that are output as PDFs.
 
@@ -56,6 +52,7 @@ csl: nature.csl
  | % reads mapped to reference | | |
  | % duplicate reads | | |
 
+
 5. Next, examine the PDF plots you download. Based on these density plots, decide whether to adjust the filtering or not. Look back at the script to see what it is using as cutoffs and then determine if these are appropriate or if they need to be adjusted. 
 
 6. Finally, compare the number of raw SNPs to the number of filtered SNPs to see how stringent you are currently:
@@ -65,7 +62,8 @@ csl: nature.csl
  | SRR1693691.SNPs.vcf | | |
  | SRR1693691.SNPs.filtered.vcf | | |
 
-###Step 3 (refilter and compare):
+
+## Step 3 (refilter and compare):
 
 1. Once you decide on your new filtering criteria (note: you do not need to adjust ALL parameters, just tweak it a bit!), you are ready to apply them. Open the script `6_GATK_variant_calling_example.sh` and make edits to the variant filtering part of the script to match your adjusted filtering criteria. Rename the output file so it does not overwrite the one you already have (e.g. SRR1693691.SNPs.filtered2.vcf). 
 
@@ -92,7 +90,7 @@ csl: nature.csl
  - Which two have the least overlap? 
  - Does this make sense based on the differences in the stringency of these two sets of filtering parameters you used?
 
-###Congratulations!
+## Congratulations!
 
 Now that you are done, please upload the following to Canvas for a final grade:
 
@@ -103,8 +101,8 @@ Now that you are done, please upload the following to Canvas for a final grade:
 - Filled in tables from Step 2
 
 
-#####This exercise provides a real world experience of the challenges of variant filtering.  Not being stringent enough can lead to false positives while filtering at too high stringency could exclude real variants. The best practice is to experiment with options and filtering levels and erring on the side of caution.
+This exercise provides a real world experience of the challenges of variant filtering.  Not being stringent enough can lead to false positives while filtering at too high stringency could exclude real variants. The best practice is to experiment with options and filtering levels and erring on the side of caution.
 
-#####As mentioned in class, another approach to filtering SNPs would be to perform Variant Quality Score Recalibration (VQSR). Much like BQSR, this requires a set of KNOWN variants, making it less ideal for non-model systems. It is also computationally intensive, so we will not be doing that as part of our genome analysis this semester. More recently, researchers validate SNP calls by using different variant calling softwares or different types of genomic data (e.g. high coverage exome data), where a larger fraction of the genome can be validated. These approaches allow you to better estimate the true and false positive rate in your dataset and make adjustments to your filtering accordingly.
+As mentioned in class, another approach to filtering SNPs would be to perform Variant Quality Score Recalibration (VQSR). Much like BQSR, this requires a set of KNOWN variants, making it less ideal for non-model systems. It is also computationally intensive, so we will not be doing that as part of our genome analysis this semester. More recently, researchers validate SNP calls by using different variant calling softwares or different types of genomic data (e.g. high coverage exome data), where a larger fraction of the genome can be validated. These approaches allow you to better estimate the true and false positive rate in your dataset and make adjustments to your filtering accordingly.
 
-#####Some studies will also incorporate empirical validation, but this can be costly given the number of variants. For example if you identify 100,000 SNPs (a modest size), and you want to validate 1%, that requires you to validate 1000 SNPs, which can be costly and time intensive (especially using traditional methods such as Sanger sequencing). 
+Some studies will also incorporate empirical validation, but this can be costly given the number of variants. For example if you identify 100,000 SNPs (a modest size), and you want to validate 1%, that requires you to validate 1000 SNPs, which can be costly and time intensive (especially using traditional methods such as Sanger sequencing). 
