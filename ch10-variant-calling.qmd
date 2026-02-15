@@ -9,7 +9,18 @@ lang: en-US
 
 The journey from raw sequencing reads to biological insights requires multiple processing steps, each building on the previous work. In Chapter 6, you learned how short-read aligners like BWA use sophisticated indexing strategies to map billions of reads to reference genomes, producing BAM files that represent the best estimate of where each sequenced fragment originated in the genome. These aligned reads, however, are not the final product of a genome analysis pipeline. Rather, they serve as the raw material for variant calling—the process of identifying positions where sequenced individuals differ from the reference genome or from each other. Understanding this distinction is essential: alignment tells us where reads came from, while variant calling tells us how those reads differ from expectation, and those differences are often the biological signal we seek[@depristo_framework_2011; @mckenna_genome_2010].
 
-The Genome Analysis Toolkit, commonly known as GATK, has become the *de facto* standard for germline variant discovery in human genomics and is widely applied to model organisms as well[@mckenna_genome_2010]. Originally developed at the Broad Institute as a MapReduce framework for parallelizing variant calling across large cohorts, GATK implements a series of "best practices" workflows that have been refined through years of application to projects such as the 1000 Genomes Project and The Cancer Genome Atlas[@depristo_framework_2011; @mckenna_genome_2010]. These workflows balance sensitivity—the ability to discover real variants—with specificity—the ability to avoid calling sequencing errors or alignment artifacts as true biological variation. In this chapter, you will learn the logic behind GATK's approach to variant calling, beginning with post-alignment quality improvements, moving through the mechanics of the HaplotypeCaller algorithm, and concluding with the critical step of variant filtering that separates high-confidence calls from noise[@nielsen_genotype_2011].
+::: {.callout-note}
+## Figure 10.1 – GATK Best Practices Workflow
+
+![Alt text: Schematic of an NGS analysis workflow from sequencing instrument through FastQC, trimming, alignment with BWA, BAM generation, GATK-based post-processing, HaplotypeCaller, gVCF, joint genotyping, variant filtering, and final visualization in IGV.](images/Figure_10.1_Workflow.png){#fig-gatk-workflow2 width="90%"}
+
+This figure summarizes the end-to-end workflow you will implement in this course, starting from raw Illumina reads and ending with a filtered VCF that can be explored in IGV. The upper portion shows the familiar pre-processing steps from earlier chapters: raw data are evaluated with FastQC, trimmed to remove adapters and low-quality bases, aligned to a reference genome with BWA, and converted into coordinate-sorted BAM files using SAMtools. The lower portion highlights the GATK best practices pipeline that this chapter focuses on: duplicate reads are marked, quality control is collected on the resulting BAM files, variants are called with HaplotypeCaller in reference-confidence mode to produce gVCFs, joint genotyping (where applicable) produces a cohort VCF, and hard-filtering steps refine this callset before variants are examined in IGV.
+
+Created with BioRender.com.
+:::
+
+
+The Genome Analysis Toolkit, commonly known as GATK, has become the *de facto* standard for germline variant discovery in human genomics and is widely applied to model organisms as well (this workflow is shown above in @fig-gatk-workflow2, but see also @fig-gatk-workflow). Originally developed at the Broad Institute as a MapReduce framework for parallelizing variant calling across large cohorts, GATK implements a series of "best practices" workflows that have been refined through years of application to projects such as the 1000 Genomes Project and The Cancer Genome Atlas[@depristo_framework_2011; @mckenna_genome_2010]. These workflows balance sensitivity—the ability to discover real variants—with specificity—the ability to avoid calling sequencing errors or alignment artifacts as true biological variation. In this chapter, you will learn the logic behind GATK's approach to variant calling, beginning with post-alignment quality improvements, moving through the mechanics of the HaplotypeCaller algorithm, and concluding with the critical step of variant filtering that separates high-confidence calls from noise[@nielsen_genotype_2011].
 
 The yeast experimental evolution dataset introduced in Appendix C provides a concrete example throughout this chapter. Recall that this dataset represents pooled genomic DNA from a *Saccharomyces cerevisiae* population that experienced hundreds of generations of selection, so the variants you will call reflect both standing genetic variation present in the ancestral population and allele frequency shifts driven by adaptation[@burke_standing_2014]. Because this is a pooled sample rather than a single diploid individual, some of the assumptions built into GATK's germline variant calling model do not apply perfectly, but the core workflow—post-processing, variant calling, filtering, and visual inspection—remains the same and provides essential training for human and biomedical genomics where these methods were originally developed.
 
@@ -27,9 +38,31 @@ This chapter connects directly to two applied labs:
 
 The BAM file produced by BWA represents the aligner's best guess about where each read originated, but it is not yet ready for variant calling. Post-alignment processing steps refine this initial alignment by identifying and marking artifacts that can mislead downstream analyses, and by adjusting quality scores to better reflect the true probability of error at each base[@depristo_framework_2011]. These steps do not change read positions or CIGAR strings—the reads remain where BWA placed them—but they add metadata and recalibrate scores so that the variant caller can make better-informed decisions about which differences between reads and reference are likely to be real biological variants versus technical noise.
 
+::: {.callout-note}
+## Figure 10.2 – IGV Overview of Yeast Alignments
+
+![Alt text: IGV screenshot showing high-coverage short-read alignments from the yeast experimental evolution dataset across a 23 kb window of chromosome II, with an upper coverage track and multicolored base-level alignments below indicating numerous SNPs and small indels.](images/Figure_10.2_Pre-processing.jpg){#fig-yeast-igv-overview width="100%"}
+
+This IGV view shows a broad 23 kb region of the sacCer3 yeast genome from the pooled experimental evolution sample introduced in Appendix C. The top gray histogram track reports depth of coverage across the window, illustrating how read depth fluctuates but remains generally high enough for confident variant calling. The lower track displays individual reads as horizontal bars colored by base identity, revealing dense clusters of mismatches that correspond to SNPs and small indels scattered across the region. This global perspective helps you recognize typical coverage patterns, identify regions of unusually low or high depth, and appreciate how many potential variant sites are evaluated by the GATK pipeline in a single dataset.
+
+Data shown are from the yeast experimental evolution dataset SRR1693691 mapped to sacCer3.
+:::
+
+
 ### Marking Duplicate Reads
 
 Nearly all second-generation sequencing platforms include a PCR amplification step during library preparation, and this amplification can create multiple copies of the same original DNA molecule[@mckenna_genome_2010]. When these PCR duplicates are sequenced, they appear as independent reads with identical or nearly identical start and end coordinates on the reference genome, but they do not represent independent sampling of the genome—they are replicates of a single molecule. If these duplicates are treated as independent observations during variant calling, they can artificially inflate our confidence in alleles that may actually stem from a single sequencing error that was copied during PCR. This is particularly problematic at low-coverage sites, where a single PCR-duplicated molecule carrying an error could dominate the read pileup and cause a false-positive variant call[@nielsen_genotype_2011].
+
+::: {.callout-note}
+## Figure 10.3 – Why Mark Duplicate Reads?
+
+![Alt text: Conceptual diagram showing multiple overlapping read stacks derived from the same original DNA fragment, with red X symbols marking a propagated sequencing error, and a simplified post-processing view in which duplicate reads are collapsed to a single representative.](images/Figure_10.3_MarkDups.png){#fig-mark-duplicates width="80%"}
+
+This figure illustrates why duplicate reads must be identified and marked before variant calling. On the left, a single library molecule has been over-amplified during PCR, producing many reads that share identical start and end positions in the alignment. A sequencing error (red X) present in the original molecule is propagated to all duplicates, creating the illusion of strong support for a false variant. MarkDuplicates flags these non-independent observations so that only one representative read contributes to genotype likelihood calculations, mitigating the impact of library artifacts on downstream analyses. In practical terms, this step prevents overconfident false positives at low-coverage sites and provides a useful summary metric—the percentage of duplicate reads—for evaluating library complexity.
+
+Adapted from GATK training materials; used here for instructional purposes.
+:::
+
 
 Duplicate marking algorithms identify clusters of reads that likely arose from the same original fragment and flag all but one representative read as duplicates. The most common approach, implemented in both Picard MarkDuplicates and GATK MarkDuplicates, examines read pairs with identical 5′ start coordinates on both mates. For paired-end data, this means looking for pairs of reads where both the forward and reverse read map to the exact same genomic positions, which is unlikely to occur by chance if the reads truly represent independent DNA molecules[@mckenna_genome_2010]. Optical duplicates—clusters of reads that arise from a single cluster on the flow cell being incorrectly called as multiple clusters—are also flagged by examining pixel distances in the original sequencing images, though this requires access to tile and coordinate metadata in the FASTQ headers.
 
@@ -51,6 +84,17 @@ In this course, we will *not* require you to run BQSR on the yeast dataset in La
 
 With duplicates marked and optionally quality scores recalibrated, the BAM file is now ready for variant discovery. GATK's **HaplotypeCaller** is a sophisticated variant caller that differs fundamentally from earlier, simpler approaches that examined each genomic position independently[@depristo_framework_2011; @mckenna_genome_2010]. Instead of asking "does this single position differ from the reference?" HaplotypeCaller takes a more holistic approach: it identifies regions of the genome that show evidence of variation, performs local *de novo* assembly of the reads spanning those regions into candidate haplotypes, realigns each read against these candidate haplotypes, and then uses a Bayesian model to determine the most likely genotype at each variant site conditional on the full haplotype context[@depristo_framework_2011]. This haplotype-aware strategy dramatically improves accuracy, particularly for insertions and deletions (indels), which are notoriously difficult to call correctly because they disrupt local read alignment and create characteristic error patterns in naive pileup-based callers[@nielsen_genotype_2011].
 
+::: {.callout-note}
+## Figure 10.4 – HaplotypeCaller Local Assembly and Genotyping
+
+![Alt text: Flow diagram for GATK HaplotypeCaller showing three stages: identifying ActiveRegions with mismatching reads, assembling plausible haplotypes in a small graph, computing per-read likelihoods with a pair-HMM, and finally genotyping the sample based on genotype likelihoods.](images/Figure_10.4_HaplotypeCaller.png){#fig-haplotypecaller-workflow width="90%"}
+
+This schematic decomposes the HaplotypeCaller algorithm into its major conceptual stages. First, the tool scans the genome to identify ActiveRegions where the pileup of reads shows evidence of divergence from the reference sequence. Within each ActiveRegion, reads are assembled into a small De Bruijn graph to generate a finite set of candidate haplotypes that might explain the observed mismatches and indels. HaplotypeCaller then uses a pair-HMM to compute, for each read, the likelihood that it was generated from each candidate haplotype given the observed bases and their quality scores. Finally, these likelihoods are combined into genotype likelihoods for each possible genotype, and the most probable genotype is chosen while variant-level annotations are recorded for filtering. This haplotype-aware strategy improves accuracy for indels and complex variants compared to simple pileup-based callers.
+
+Adapted from Broad Institute GATK tutorial figures; reproduced for educational use.
+:::
+
+
 ### ActiveRegions and Local Assembly
 
 HaplotypeCaller does not attempt to reassemble every base of the genome. Instead, it scans the BAM file to identify **ActiveRegions**—intervals where the reads show sufficient evidence of variation compared to the reference that local reassembly is warranted[@depristo_framework_2011]. Evidence for variation can come from mismatches, soft-clipped bases, or indels in the initial BWA alignment. Once an ActiveRegion is identified, HaplotypeCaller extracts all reads overlapping that region and performs a localized *de novo* assembly using a De Bruijn graph, much like the genome assemblers discussed in Chapter 6[@depristo_framework_2011]. This produces a set of candidate haplotypes—plausible sequences that could explain the observed reads. Typically, one of these haplotypes will be the reference sequence itself, and others will carry one or more variants (SNPs, insertions, or deletions).
@@ -65,7 +109,29 @@ One challenge in variant calling is distinguishing true variant sites from regio
 
 GATK addresses this with **reference confidence mode**, enabled by the `-ERC GVCF` flag (or `--emit-ref-confidence GVCF` in GATK4) when running HaplotypeCaller[@haplotypecaller_2025]. In this mode, HaplotypeCaller outputs a **gVCF** (genomic VCF) file that lists not only variant sites but also blocks of reference-matching sites along with a confidence estimate for each block[@gvcf_2024; @logic_2024]. These reference blocks indicate "we examined this region and found no evidence of variation, with this level of confidence," which allows downstream joint genotyping tools to distinguish confidently homozygous-reference sites from sites that were simply not evaluated[@gvcf_2024].
 
+::: {.callout-note}
+## Figure 10.5 – Reference Confidence and gVCF Structure
+
+![Alt text: Comparison diagram between a regular VCF and two flavors of HaplotypeCaller output (gVCF and base-pair-resolution gVCF), highlighting that regular VCFs contain only variant site records whereas gVCFs interleave variant records with non-variant block records that encode reference confidence.](images/Figure_10.5_RefConfidence.png){#fig-reference-confidence width="50%"}
+
+This figure contrasts a conventional VCF with the richer representation produced by HaplotypeCaller in reference-confidence mode. A standard VCF lists only positions where a variant was called, leaving ambiguity about whether other sites truly match the reference or were simply not evaluated. In contrast, a gVCF alternates variant site records with non-variant block records that summarize stretches of homozygous-reference genotype along with calibrated confidence estimates. Base-pair-resolution gVCFs go further by recording a separate entry for every position, although this is rarely necessary in practice. The gVCF format enables joint genotyping workflows by preserving information about both variant and confidently non-variant sites for each sample, allowing downstream tools like GenotypeGVCFs to distinguish true reference calls from missing data.
+
+Adapted from GATK reference confidence tutorials; reproduced for educational purposes.
+:::
+
+
 Producing a gVCF is now the recommended first step in GATK's germline variant calling workflow, even for single-sample projects, because it preserves maximum information for future reanalysis or for adding new samples later[@haplotypecaller_2025; @gvcf_2024]. The gVCF files can be quite large because they cover the entire genome, but GATK provides tools to consolidate or database multiple gVCFs efficiently in preparation for joint genotyping[@haplotypecaller_2025].
+
+::: {.callout-note}
+## Figure 10.6 – gVCF Blocks and Variant Records
+
+![Alt text: Diagram showing how HaplotypeCaller in gVCF mode encodes long stretches of homozygous-reference sequence as single non-variant blocks interspersed with individual variant records, suitable for joint genotyping downstream.](images/Figure_10.6_gVCF.png){#fig-gvcf-blocks width="85%"}
+
+This figure zooms in on how gVCF records represent continuous genomic sequence for a single sample. Rather than writing an explicit record for every base, HaplotypeCaller groups consecutive homozygous-reference positions with similar confidence into non-variant blocks, each annotated with depth and genotype quality for that interval. When a variant is encountered—such as a SNP or small indel—the block is interrupted by a standard variant record that includes alternate alleles and detailed annotations. During joint genotyping, these blocks allow GenotypeGVCFs to reconstruct site-by-site genotype likelihoods across many samples without inflating file size, efficiently distinguishing true reference positions from low-confidence or uncovered sites.
+
+Adapted from Broad Institute GATK documentation on gVCF format; used here for instruction.
+:::
+
 
 ### Joint Genotyping with GenotypeGVCFs
 
@@ -135,6 +201,17 @@ To inspect variants in IGV, you first load the reference genome (in FASTA format
 
 IGV's interface presents a genome-wide overview at the top, showing the positions of all loaded features across chromosomes, and a zoomed-in view below that displays individual reads and annotations at base-pair resolution once you zoom in sufficiently[@Robinson2011IGV]. Track display options allow you to color reads by various attributes: pairing status, mapping quality, read strand, or whether reads are marked as duplicates[@Robinson2011IGV]. For variant inspection, coloring by read strand is particularly useful because it immediately reveals strand bias—if all reads supporting the alternate allele come from one strand, the variant is likely an artifact[@Robinson2011IGV; @nielsen_genotype_2011].
 
+::: {.callout-note}
+## Figure 10.7 – Inspecting a Yeast Coding SNP in IGV
+
+![Alt text: IGV close-up of a single SNP in a yeast coding exon, with coverage tracks for pre- and post-duplicate-marking BAM files, reads colored by strand, a highlighted column of C bases at the variant position, and an amino acid translation track showing the codon and predicted amino acid change.](images/Figure_10.7_IGV.jpg){#fig-yeast-igv-coding-snp width="100%"}
+
+This IGV screenshot focuses on a single high-confidence SNP in a coding region of the yeast genome. Two BAM tracks are shown: the upper track corresponds to the original alignments, while the lower track displays the duplicate-marked alignment used for variant calling, with reads colored by strand to reveal any strand bias. At the highlighted position, a vertical column of C bases indicates consistent support for the alternate allele across many independent reads on both strands, with uniform mapping and base quality. The gene annotation and translation tracks at the bottom of the window show that this nucleotide change alters a codon in the HXT14 open reading frame, leading to a specific amino-acid substitution. This example illustrates how IGV can be used to validate the technical quality of variant calls and immediately assess their potential functional impact in the context of coding sequences.
+
+Data are from the yeast experimental evolution dataset SRR1693691 aligned to the sacCer3 reference genome.
+:::
+
+
 ### Interpreting Read Evidence at Variant Sites
 
 When you navigate to a variant site in IGV, you see a vertical alignment or "pileup" of all reads covering that position[@Robinson2011IGV]. Each read is displayed as a horizontal bar, with matches to the reference shown in gray and mismatches highlighted in color (A=green, C=blue, G=yellow/orange, T=red by default). Insertions appear as purple I markers, and deletions as black dashes[@Robinson2011IGV]. The height and density of colored bases at a given position immediately convey the read support for each allele[@Robinson2011IGV].
@@ -142,6 +219,14 @@ When you navigate to a variant site in IGV, you see a vertical alignment or "pil
 For high-quality SNPs, you expect to see the alternate allele represented on both forward and reverse strands, distributed across multiple reads that have high mapping quality (thick bars rather than translucent, low-MQ bars), and supported by bases with high per-base quality (IGV can optionally shade bases by quality score)[@Robinson2011IGV; @nielsen_genotype_2011]. For heterozygous calls in a diploid sample, you expect roughly equal numbers of reads supporting reference and alternate alleles, though stochastic sampling means small deviations are normal[@depristo_framework_2011].
 
 Artifacts often exhibit characteristic patterns: PCR duplicates appear as stacks of identical reads with identical start and end coordinates, all supporting the same allele; strand-biased artifacts show the variant allele only on forward or only on reverse reads; mapping artifacts cluster in regions with low mapping quality or high mismatch rates across all reads; and sequencing errors tend to occur at low-quality bases near the ends of reads[@nielsen_genotype_2011; @Robinson2011IGV]. By learning to recognize these patterns, you develop an intuition for which variants are trustworthy and which require additional scrutiny or experimental validation.
+
+::: {.callout-note}
+## Lab connections: Completing the Yeast Workflow (Lab 9)
+
+In **[Lab 9](Lab09.qmd) (Genome Visualization with IGV)**, you will complete the end-to-end workflow introduced in @fig-gatk-workflow2 by moving from filtered variant calls to biological interpretation. Starting with the filtered VCFs you generated in **Lab 7**, you will load the sacCer3 reference genome, the pre-filtering BAM (`SRR1693691.sorted.bam`), the duplicate-marked BAM (`SRR1693691.markdup.bam`), and one or more filtered VCF files into IGV. With these tracks side-by-side, you will navigate to specific SNPs identified as high-confidence by your filtering criteria, visually evaluate the read evidence supporting each variant, and decide which calls you trust, which you question, and why.
+
+A central goal of Lab 9 is to connect technical quality metrics to biological meaning in the *Saccharomyces cerevisiae* experimental evolution dataset described in [Appendix C](appendixC.qmd). By the end of the lab, you will have followed the yeast dataset all the way from raw FASTQ files in Lab 4 through alignment, GATK variant calling, filtering in Lab 7, and finally visual, function-focused interpretation in IGV—mirroring the complete variant discovery workflow used in modern genomics.
+:::
 
 ### Using IGV to Evaluate Functional Impact
 
