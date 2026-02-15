@@ -12,11 +12,9 @@ The journey from raw sequencing reads to biological insights requires multiple p
 ::: {.callout-note}
 ## Figure 10.1 – GATK Best Practices Workflow
 
-![Alt text: Schematic of an NGS analysis workflow from sequencing instrument through FastQC, trimming, alignment with BWA, BAM generation, GATK-based post-processing, HaplotypeCaller, gVCF, joint genotyping, variant filtering, and final visualization in IGV.](images/Figure_10.1_Workflow.png){#fig-gatk-workflow2 width="90%"}
+![GATK Best Practices Workflow](images/Figure_10.1_Workflow.png){#fig-gatk-workflow2 width="90%" fig-alt="Schematic of an NGS analysis workflow from sequencing instrument through FastQC, trimming, alignment with BWA, BAM generation, GATK-based post-processing, HaplotypeCaller, gVCF, joint genotyping, variant filtering, and final visualization in IGV."}
 
-This figure summarizes the end-to-end workflow you will implement in this course, starting from raw Illumina reads and ending with a filtered VCF that can be explored in IGV. The upper portion shows the familiar pre-processing steps from earlier chapters: raw data are evaluated with FastQC, trimmed to remove adapters and low-quality bases, aligned to a reference genome with BWA, and converted into coordinate-sorted BAM files using SAMtools. The lower portion highlights the GATK best practices pipeline that this chapter focuses on: duplicate reads are marked, quality control is collected on the resulting BAM files, variants are called with HaplotypeCaller in reference-confidence mode to produce gVCFs, joint genotyping (where applicable) produces a cohort VCF, and hard-filtering steps refine this callset before variants are examined in IGV.
-
-Created with BioRender.com.
+This figure summarizes the end-to-end workflow you will implement in this course, starting from raw Illumina reads and ending with a filtered VCF that can be explored in IGV. The upper portion shows the familiar pre-processing steps from earlier chapters: raw data are evaluated with FastQC, trimmed to remove adapters and low-quality bases, aligned to a reference genome with BWA, and converted into coordinate-sorted BAM files using SAMtools. The lower portion highlights the GATK best practices pipeline that this chapter focuses on: duplicate reads are marked, quality control is collected on the resulting BAM files, variants are called with HaplotypeCaller in reference-confidence mode to produce gVCFs, joint genotyping (where applicable) produces a cohort VCF, and hard-filtering steps refine this callset before variants are examined in IGV. Created with BioRender.com.
 :::
 
 
@@ -39,13 +37,11 @@ This chapter connects directly to two applied labs:
 The BAM file produced by BWA represents the aligner's best guess about where each read originated, but it is not yet ready for variant calling. Post-alignment processing steps refine this initial alignment by identifying and marking artifacts that can mislead downstream analyses, and by adjusting quality scores to better reflect the true probability of error at each base[@depristo_framework_2011]. These steps do not change read positions or CIGAR strings—the reads remain where BWA placed them—but they add metadata and recalibrate scores so that the variant caller can make better-informed decisions about which differences between reads and reference are likely to be real biological variants versus technical noise.
 
 ::: {.callout-note}
-## Figure 10.2 – IGV Overview of Yeast Alignments
+## Figure 10.2 – IGV reveals need for Post-Alignment Processing
 
-![Alt text: IGV screenshot showing high-coverage short-read alignments from the yeast experimental evolution dataset across a 23 kb window of chromosome II, with an upper coverage track and multicolored base-level alignments below indicating numerous SNPs and small indels.](images/Figure_10.2_Pre-processing.jpg){#fig-yeast-igv-overview width="100%"}
+![Post-alignment processing](images/Figure_10.2_Pre-processing.jpg){#fig-yeast-igv-overview width="100%" fig-alt="IGV screenshot showing high-coverage short-read alignments from the yeast experimental evolution dataset across a 23 kb window of chromosome II, with an upper coverage track and multicolored base-level alignments below indicating numerous SNPs and small indels."}
 
-This IGV view shows a broad 23 kb region of the sacCer3 yeast genome from the pooled experimental evolution sample introduced in Appendix C. The top gray histogram track reports depth of coverage across the window, illustrating how read depth fluctuates but remains generally high enough for confident variant calling. The lower track displays individual reads as horizontal bars colored by base identity, revealing dense clusters of mismatches that correspond to SNPs and small indels scattered across the region. This global perspective helps you recognize typical coverage patterns, identify regions of unusually low or high depth, and appreciate how many potential variant sites are evaluated by the GATK pipeline in a single dataset.
-
-Data shown are from the yeast experimental evolution dataset SRR1693691 mapped to sacCer3.
+This IGV view shows a broad 23 kb region of the sacCer3 yeast genome from the pooled experimental evolution sample introduced in Appendix C. The top gray histogram track reports depth of coverage across the window, illustrating how read depth fluctuates but remains generally high enough for confident variant calling. The lower track displays individual reads as horizontal bars colored by base identity, revealing dense clusters of mismatches that correspond to SNPs and small indels scattered across the region. This global perspective offers insight into just how messy the initial BAM output can be and how many putative variant sites need to be evaluated by the GATK pipeline.
 :::
 
 
@@ -56,11 +52,9 @@ Nearly all second-generation sequencing platforms include a PCR amplification st
 ::: {.callout-note}
 ## Figure 10.3 – Why Mark Duplicate Reads?
 
-![Alt text: Conceptual diagram showing multiple overlapping read stacks derived from the same original DNA fragment, with red X symbols marking a propagated sequencing error, and a simplified post-processing view in which duplicate reads are collapsed to a single representative.](images/Figure_10.3_MarkDups.png){#fig-mark-duplicates width="80%"}
+![Why Mark Duplicate Reads?](images/Figure_10.3_MarkDups.png){#fig-mark-duplicates width="80%" fig-alt="Conceptual diagram showing multiple overlapping read stacks derived from the same original DNA fragment, with red X symbols marking a propagated sequencing error, and a simplified post-processing view in which duplicate reads are collapsed to a single representative."}
 
-This figure illustrates why duplicate reads must be identified and marked before variant calling. On the left, a single library molecule has been over-amplified during PCR, producing many reads that share identical start and end positions in the alignment. A sequencing error (red X) present in the original molecule is propagated to all duplicates, creating the illusion of strong support for a false variant. MarkDuplicates flags these non-independent observations so that only one representative read contributes to genotype likelihood calculations, mitigating the impact of library artifacts on downstream analyses. In practical terms, this step prevents overconfident false positives at low-coverage sites and provides a useful summary metric—the percentage of duplicate reads—for evaluating library complexity.
-
-Adapted from GATK training materials; used here for instructional purposes.
+This figure illustrates why duplicate reads must be identified and marked before variant calling. On the left, a single library molecule has been over-amplified during PCR, producing many reads that share identical start and end positions in the alignment. A sequencing error (red X) present in the original molecule is propagated to all duplicates, creating the illusion of strong support for a false variant. MarkDuplicates flags these non-independent observations so that only one representative read contributes to genotype likelihood calculations, mitigating the impact of library artifacts on downstream analyses. In practical terms, this step prevents overconfident false positives at low-coverage sites and provides a useful summary metric—the percentage of duplicate reads—for evaluating library complexity. Adapted from GATK training materials and modified with the use of BioRender AI Tools.
 :::
 
 
@@ -87,7 +81,7 @@ With duplicates marked and optionally quality scores recalibrated, the BAM file 
 ::: {.callout-note}
 ## Figure 10.4 – HaplotypeCaller Local Assembly and Genotyping
 
-![Alt text: Flow diagram for GATK HaplotypeCaller showing three stages: identifying ActiveRegions with mismatching reads, assembling plausible haplotypes in a small graph, computing per-read likelihoods with a pair-HMM, and finally genotyping the sample based on genotype likelihoods.](images/Figure_10.4_HaplotypeCaller.png){#fig-haplotypecaller-workflow width="90%"}
+![HaplotypeCaller Local Assembly and Genotyping](images/Figure_10.4_HaplotypeCaller.png){#fig-haplotypecaller-workflow width="90%" fig-alt="Flow diagram for GATK HaplotypeCaller showing three stages: identifying ActiveRegions with mismatching reads, assembling plausible haplotypes in a small graph, computing per-read likelihoods with a pair-HMM, and finally genotyping the sample based on genotype likelihoods."}
 
 This schematic decomposes the HaplotypeCaller algorithm into its major conceptual stages. First, the tool scans the genome to identify ActiveRegions where the pileup of reads shows evidence of divergence from the reference sequence. Within each ActiveRegion, reads are assembled into a small De Bruijn graph to generate a finite set of candidate haplotypes that might explain the observed mismatches and indels. HaplotypeCaller then uses a pair-HMM to compute, for each read, the likelihood that it was generated from each candidate haplotype given the observed bases and their quality scores. Finally, these likelihoods are combined into genotype likelihoods for each possible genotype, and the most probable genotype is chosen while variant-level annotations are recorded for filtering. This haplotype-aware strategy improves accuracy for indels and complex variants compared to simple pileup-based callers.
 
@@ -112,7 +106,7 @@ GATK addresses this with **reference confidence mode**, enabled by the `-ERC GVC
 ::: {.callout-note}
 ## Figure 10.5 – Reference Confidence and gVCF Structure
 
-![Alt text: Comparison diagram between a regular VCF and two flavors of HaplotypeCaller output (gVCF and base-pair-resolution gVCF), highlighting that regular VCFs contain only variant site records whereas gVCFs interleave variant records with non-variant block records that encode reference confidence.](images/Figure_10.5_RefConfidence.png){#fig-reference-confidence width="50%"}
+![Why Reference Confidence Mode Matters?](images/Figure_10.5_RefConfidence.png){#fig-reference-confidence width="50%" fig-alt="Comparison diagram between a regular VCF and two flavors of HaplotypeCaller output (gVCF and base-pair-resolution gVCF), highlighting that regular VCFs contain only variant site records whereas gVCFs interleave variant records with non-variant block records that encode reference confidence."}
 
 This figure contrasts a conventional VCF with the richer representation produced by HaplotypeCaller in reference-confidence mode. A standard VCF lists only positions where a variant was called, leaving ambiguity about whether other sites truly match the reference or were simply not evaluated. In contrast, a gVCF alternates variant site records with non-variant block records that summarize stretches of homozygous-reference genotype along with calibrated confidence estimates. Base-pair-resolution gVCFs go further by recording a separate entry for every position, although this is rarely necessary in practice. The gVCF format enables joint genotyping workflows by preserving information about both variant and confidently non-variant sites for each sample, allowing downstream tools like GenotypeGVCFs to distinguish true reference calls from missing data.
 
@@ -125,7 +119,7 @@ Producing a gVCF is now the recommended first step in GATK's germline variant ca
 ::: {.callout-note}
 ## Figure 10.6 – gVCF Blocks and Variant Records
 
-![Alt text: Diagram showing how HaplotypeCaller in gVCF mode encodes long stretches of homozygous-reference sequence as single non-variant blocks interspersed with individual variant records, suitable for joint genotyping downstream.](images/Figure_10.6_gVCF.png){#fig-gvcf-blocks width="85%"}
+![Difference between VCF and gVCF file formats](images/Figure_10.6_gVCF.png){#fig-gvcf-blocks width="85%" fig-alt="Diagram showing how HaplotypeCaller in gVCF mode encodes long stretches of homozygous-reference sequence as single non-variant blocks interspersed with individual variant records, suitable for joint genotyping downstream."}
 
 This figure zooms in on how gVCF records represent continuous genomic sequence for a single sample. Rather than writing an explicit record for every base, HaplotypeCaller groups consecutive homozygous-reference positions with similar confidence into non-variant blocks, each annotated with depth and genotype quality for that interval. When a variant is encountered—such as a SNP or small indel—the block is interrupted by a standard variant record that includes alternate alleles and detailed annotations. During joint genotyping, these blocks allow GenotypeGVCFs to reconstruct site-by-site genotype likelihoods across many samples without inflating file size, efficiently distinguishing true reference positions from low-confidence or uncovered sites.
 
@@ -204,7 +198,7 @@ IGV's interface presents a genome-wide overview at the top, showing the position
 ::: {.callout-note}
 ## Figure 10.7 – Inspecting a Yeast Coding SNP in IGV
 
-![Alt text: IGV close-up of a single SNP in a yeast coding exon, with coverage tracks for pre- and post-duplicate-marking BAM files, reads colored by strand, a highlighted column of C bases at the variant position, and an amino acid translation track showing the codon and predicted amino acid change.](images/Figure_10.7_IGV.jpg){#fig-yeast-igv-coding-snp width="100%"}
+![Using IGV to Inspect Putative Functional Impact of Filtered Variants](images/Figure_10.7_IGV.jpg){#fig-yeast-igv-coding-snp width="100%" fig-alt="IGV close-up of a single SNP in a yeast coding exon, with coverage tracks for pre- and post-duplicate-marking BAM files, reads colored by strand, a highlighted column of C bases at the variant position, and an amino acid translation track showing the codon and predicted amino acid change."}
 
 This IGV screenshot focuses on a single high-confidence SNP in a coding region of the yeast genome. Two BAM tracks are shown: the upper track corresponds to the original alignments, while the lower track displays the duplicate-marked alignment used for variant calling, with reads colored by strand to reveal any strand bias. At the highlighted position, a vertical column of C bases indicates consistent support for the alternate allele across many independent reads on both strands, with uniform mapping and base quality. The gene annotation and translation tracks at the bottom of the window show that this nucleotide change alters a codon in the HXT14 open reading frame, leading to a specific amino-acid substitution. This example illustrates how IGV can be used to validate the technical quality of variant calls and immediately assess their potential functional impact in the context of coding sequences.
 
@@ -242,7 +236,7 @@ While GATK has become the standard for germline variant calling in human genomic
 
 The earliest generation of variant callers, including **samtools mpileup** and **bcftools call**, operate on a simple per-position pileup model: they examine each genomic position independently, count the number of reads supporting each allele, and apply a statistical model (often a Bayesian model assuming binomial or multinomial sampling) to call genotypes[@nielsen_genotype_2011]. These tools are fast and require minimal memory, making them suitable for large genomes and high-throughput projects. However, they struggle with indels and with complex variants (such as nearby SNPs that form haplotypes), because each site is evaluated in isolation without considering the broader sequence context[@nielsen_genotype_2011].
 
-For projects where computational resources are limited or where indel calling is not a priority, samtools/bcftools remains a viable option, particularly for bacterial genomes or other small genomes where variants are sparse and mostly SNPs[@nielsen_genotype_2011]. The bcftools suite also offers powerful filtering and manipulation utilities that complement GATK's VCFtools, and many researchers use bcftools for post-processing even if they call variants with GATK.
+Recent benchmarking in non-human species suggests that bcftools can still perform competitively with GATK HaplotypeCaller for SNP discovery under realistic coverage and error profiles, especially when calling variants on high-quality, well-assembled references[@lefouili_evaluation_2022]. For projects where computational resources are limited or where indel calling is not a priority, samtools/bcftools therefore remains a viable option, particularly for bacterial genomes or other small genomes where variants are sparse and mostly SNPs[@nielsen_genotype_2011; @lefouili_evaluation_2022]. The bcftools suite also offers powerful filtering and manipulation utilities that complement GATK's VCFtools, and many researchers use bcftools for post-processing even if they call variants with GATK[@nielsen_genotype_2011; @lefouili_evaluation_2022].
 
 ### Haplotype-Aware Callers: FreeBayes and Platypus
 
@@ -278,76 +272,64 @@ Structural variant (SV) calling—detecting large deletions, insertions, inversi
 
 ## Problem Set
 
-### Problem 1: Duplicate Marking and Coverage Impact
+1. Duplicate Marking and Coverage Impact: You have aligned 50 million paired-end 150 bp reads from a diploid human exome to the reference genome. Before marking duplicates, `samtools flagstat` reports that 48 million reads are properly paired. After running GATK MarkDuplicates, you find that 15 percent of reads are flagged as duplicates.
 
-You have aligned 50 million paired-end 150 bp reads from a diploid human exome to the reference genome. Before marking duplicates, `samtools flagstat` reports that 48 million reads are properly paired. After running GATK MarkDuplicates, you find that 15 percent of reads are flagged as duplicates.
+   a. Calculate the effective coverage over the exome (assume the exome is 50 Mb) before and after accounting for duplicates.
 
-a) Calculate the effective coverage over the exome (assume the exome is 50 Mb) before and after accounting for duplicates.
+   b. Explain why GATK recommends marking but not removing duplicates, and describe one situation in which you might choose to remove duplicates instead.
 
-b) Explain why GATK recommends marking but not removing duplicates, and describe one situation in which you might choose to remove duplicates instead.
+   c. If you observe 30 percent duplication in one sample but 10 percent in all others from the same sequencing run, propose two possible explanations and outline how you would investigate which explanation is correct.
 
-c) If you observe 30 percent duplication in one sample but 10 percent in all others from the same sequencing run, propose two possible explanations and outline how you would investigate which explanation is correct.
+2. Interpreting HaplotypeCaller Annotations: Below is an excerpt from a VCF file produced by HaplotypeCaller for a diploid sample:
 
-### Problem 2: Interpreting HaplotypeCaller Annotations
+   ```
+#CHROM  POS     REF ALT QUAL    FILTER  INFO     FORMAT  SAMPLE1
+   chr1    12345   A   G   456.77  .        DP=45;QD=10.15;MQ=60.0;FS=0.0;SOR=0.5;ReadPosRankSu m=0.2;MQRankSum=0.0   GT:AD:GQ    0/1:22,23:99
+   chr1    67890   C   T   89.5    .       DP=8;QD=11.19;MQ=35.2;FS=12.3;SOR=1.8;ReadPosRankSum=-2.1;MQRankSum=-1.5 GT:AD:GQ    0/1:4,4:89
+   chr1    11111   G   A   1205.3  .       DP=60;QD=20.09;MQ=58.7;FS=85.4;SOR=5.2;ReadPosRankSum=-7.8;MQRankSum=-0.3 GT:AD:GQ    0/1:15,45:99
+   ```
 
-Below is an excerpt from a VCF file produced by HaplotypeCaller for a diploid sample:
+   a. For each variant, determine whether it would pass standard GATK hard filters (QD ≥ 2.0, MQ ≥ 40.0, FS ≤ 60.0, SOR ≤ 3.0, ReadPosRankSum ≥ -8.0, MQRankSum ≥ -12.5). Identify which filter(s), if any, each variant fails.
 
-```
-#CHROM  POS     REF ALT QUAL    FILTER  INFO    FORMAT  SAMPLE1
-chr1    12345   A   G   456.77  .       DP=45;QD=10.15;MQ=60.0;FS=0.0;SOR=0.5;ReadPosRankSum=0.2;MQRankSum=0.0   GT:AD:GQ    0/1:22,23:99
-chr1    67890   C   T   89.5    .       DP=8;QD=11.19;MQ=35.2;FS=12.3;SOR=1.8;ReadPosRankSum=-2.1;MQRankSum=-1.5 GT:AD:GQ    0/1:4,4:89
-chr1    11111   G   A   1205.3  .       DP=60;QD=20.09;MQ=58.7;FS=85.4;SOR=5.2;ReadPosRankSum=-7.8;MQRankSum=-0.3 GT:AD:GQ    0/1:15,45:99
-```
+   b. For the variant at position 67890, the mapping quality (MQ) is 35.2, below the recommended threshold of 40. Explain what this low MQ suggests about the reads at this site and whether you would trust this variant call.
 
-a) For each variant, determine whether it would pass standard GATK hard filters (QD ≥ 2.0, MQ ≥ 40.0, FS ≤ 60.0, SOR ≤ 3.0, ReadPosRankSum ≥ -8.0, MQRankSum ≥ -12.5). Identify which filter(s), if any, each variant fails.
+   c. For the variant at position 11111, the strand bias metric FS is 85.4 (above the recommended 60.0 threshold). Describe what you would look for in IGV to decide whether this variant is a true polymorphism or a technical artifact.
 
-b) For the variant at position 67890, the mapping quality (MQ) is 35.2, below the recommended threshold of 40. Explain what this low MQ suggests about the reads at this site and whether you would trust this variant call.
+3. Designing a Filtering Strategy: You have called variants on a non-model plant species with no high-quality variant database, so VQSR is not an option. Your raw VCF contains 1.2 million putative SNPs and 150,000 putative indels.
 
-c) For the variant at position 11111, the strand bias metric FS is 85.4 (above the recommended 60.0 threshold). Describe what you would look for in IGV to decide whether this variant is a true polymorphism or a technical artifact.
+   a. Outline a hard-filtering workflow: which tools (GATK SelectVariants, GATK VariantFiltration, VCFtools) would you use, in what order, and with what initial threshold values (you may use GATK-recommended defaults as a starting point).
 
-### Problem 3: Designing a Filtering Strategy
+   b. Describe how you would use VCFtools to generate summary statistics (depth, quality scores, and allele frequency distributions) before and after filtering, and what plots you would create to evaluate whether your thresholds are appropriate.
 
-You have called variants on a non-model plant species with no high-quality variant database, so VQSR is not an option. Your raw VCF contains 1.2 million putative SNPs and 150,000 putative indels.
+   c. Suppose that after applying your initial filters, you retain only 50 percent of SNPs but 80 percent of indels. Interpret this result: does it suggest that your SNP filters are too strict, your indel filters too lenient, or that SNPs and indels in your dataset have genuinely different quality profiles? What additional information would help you decide?
 
-a) Outline a hard-filtering workflow: which tools (GATK SelectVariants, GATK VariantFiltration, VCFtools) would you use, in what order, and with what initial threshold values (you may use GATK-recommended defaults as a starting point).
+4. Visual Inspection in IGV: You load your filtered VCF and duplicate-marked BAM into IGV and navigate to a heterozygous SNP that passed all filters. At this site, you observe the following:
 
-b) Describe how you would use VCFtools to generate summary statistics (depth, quality scores, and allele frequency distributions) before and after filtering, and what plots you would create to evaluate whether your thresholds are appropriate.
+   - Total depth: 40 reads
+   - Reference allele (A): 10 reads, all from the forward strand
+   - Alternate allele (G): 30 reads, 28 from the reverse strand and 2 from the forward strand
+   - Mapping quality: most reads have MQ = 60, but the 2 forward-strand alternate reads have MQ = 10
 
-c) Suppose that after applying your initial filters, you retain only 50 percent of SNPs but 80 percent of indels. Interpret this result: does it suggest that your SNP filters are too strict, your indel filters too lenient, or that SNPs and indels in your dataset have genuinely different quality profiles? What additional information would help you decide?
+   a. Based on this visual evidence, do you believe this variant is a true polymorphism or an artifact? Justify your answer by discussing strand bias, allele balance, and mapping quality.
 
-### Problem 4: Visual Inspection in IGV
+   b. Describe one additional piece of evidence you could gather (from IGV or another tool) to strengthen your conclusion.
 
-You load your filtered VCF and duplicate-marked BAM into IGV and navigate to a heterozygous SNP that passed all filters. At this site, you observe the following:
+   c. If you decide this variant is likely an artifact despite passing automated filters, explain what this reveals about the limitations of hard filtering and how such cases might be handled in a high-throughput pipeline.
 
-- Total depth: 40 reads
-- Reference allele (A): 10 reads, all from the forward strand
-- Alternate allele (G): 30 reads, 28 from the reverse strand and 2 from the forward strand
-- Mapping quality: most reads have MQ = 60, but the 2 forward-strand alternate reads have MQ = 10
+5. Exploring Alternative Callers: Your lab is planning a variant-calling project on a cohort of 200 samples from a non-model fish species. Computational resources are limited, and you want to maximize sensitivity for both SNPs and indels.
 
-a) Based on this visual evidence, do you believe this variant is a true polymorphism or an artifact? Justify your answer by discussing strand bias, allele balance, and mapping quality.
+   a. Compare GATK HaplotypeCaller, FreeBayes, and samtools/bcftools in terms of computational cost, sensitivity for indels, and ease of use. Based on this comparison, recommend one caller for your project and justify your choice.
 
-b) Describe one additional piece of evidence you could gather (from IGV or another tool) to strengthen your conclusion.
+   b. Propose an ensemble calling strategy that combines two of the three callers. Explain how you would reconcile their outputs (for instance, requiring a variant to be called by both callers, or using a weighted voting scheme) and what benefits you expect from this approach.
 
-c) If you decide this variant is likely an artifact despite passing automated filters, explain what this reveals about the limitations of hard filtering and how such cases might be handled in a high-throughput pipeline.
+   c. Describe how you would validate your variant calls experimentally. If you could Sanger-sequence 50 sites, how would you choose which sites to validate (for example, concordant calls, discordant calls, high-impact variants)?
 
-### Problem 5: Exploring Alternative Callers
+6. Joint Genotyping and Population Genetics: You have generated gVCF files for 50 individuals from a single population using HaplotypeCaller in reference-confidence mode. You now plan to run GenotypeGVCFs to produce a multisample VCF.
 
-Your lab is planning a variant-calling project on a cohort of 200 samples from a non-model fish species. Computational resources are limited, and you want to maximize sensitivity for both SNPs and indels.
+   a. Explain the advantages of joint genotyping compared to merging single-sample VCFs produced without reference-confidence mode. Give one example of a population genetic analysis (such as allele frequency estimation or linkage disequilibrium calculation) that benefits from joint genotyping.
 
-a) Compare GATK HaplotypeCaller, FreeBayes, and samtools/bcftools in terms of computational cost, sensitivity for indels, and ease of use. Based on this comparison, recommend one caller for your project and justify your choice.
+   b. After joint genotyping, you observe that some sites that were called as heterozygous in individual-sample gVCFs are now called as homozygous reference in the multisample VCF. Explain how joint genotyping can revise individual genotype calls and why this is usually an improvement.
 
-b) Propose an ensemble calling strategy that combines two of the three callers. Explain how you would reconcile their outputs (for instance, requiring a variant to be called by both callers, or using a weighted voting scheme) and what benefits you expect from this approach.
-
-c) Describe how you would validate your variant calls experimentally. If you could Sanger-sequence 50 sites, how would you choose which sites to validate (for example, concordant calls, discordant calls, high-impact variants)?
-
-### Problem 6: Joint Genotyping and Population Genetics
-
-You have generated gVCF files for 50 individuals from a single population using HaplotypeCaller in reference-confidence mode. You now plan to run GenotypeGVCFs to produce a multisample VCF.
-
-a) Explain the advantages of joint genotyping compared to merging single-sample VCFs produced without reference-confidence mode. Give one example of a population genetic analysis (such as allele frequency estimation or linkage disequilibrium calculation) that benefits from joint genotyping.
-
-b) After joint genotyping, you observe that some sites that were called as heterozygous in individual-sample gVCFs are now called as homozygous reference in the multisample VCF. Explain how joint genotyping can revise individual genotype calls and why this is usually an improvement.
-
-c) Propose a filtering strategy for the multisample VCF that accounts for both site-level quality (QD, MQ, FS) and sample-level missingness (the fraction of individuals with no-call genotypes at each site). What threshold for missingness would you apply, and how would you justify it?
+   c. Propose a filtering strategy for the multisample VCF that accounts for both site-level quality (QD, MQ, FS) and sample-level missingness (the fraction of individuals with no-call genotypes at each site). What threshold for missingness would you apply, and how would you justify it?
 
 ## References
