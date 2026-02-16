@@ -1,50 +1,165 @@
 ---
-title: "Lab08: Beyond GATK: Comparing Variant Calling Methods"
+title: "Lab 8: Beyond GATK – Benchmarking Variant Calling Pipelines"
 bibliography: references.bib
 csl: nature.csl
 ---
 
-Lab 8 will be based on an IN CLASS discussion of various papers. I have found several recent studies comparing various variant calling workflows (as a way of going beyond GATK, which we have covered in class). I will assign multiple students to read EACH paper before class . We will have an activity in class based on your reading that will require you to have a good understanding of the paper assigned for class. Below are the assignments for this in class activity. Since you will be preparing for the activity, please make sure to attend class on the Lab Day to get credit for Lab 8 since we will not have an out of class component (meaning it will be due in class as part of the activity).
+## Overview
 
-## Guiding Questions for Reading:
-- What are the main goals of the pipeline evaluations in the paper?
-- Which aligners and variant callers are compared, and what are their strengths/weaknesses?
-- What are the key findings regarding accuracy, speed, and robustness?
-- How do the papers address biases or limitations in variant calling?
-- Are the recommendations from the paper applicable to different research contexts?
+Lab 8 is an **in-class discussion and synthesis activity** focused on recent benchmarking studies that compare variant calling pipelines across different sequencing platforms, organisms, and data types. Over the past decade, the genomics community has moved beyond asking "which tool is best?" to understanding *when* and *why* different callers excel, and how upstream choices (alignment, preprocessing, population ancestry) shape final variant quality. In this lab, you will critically evaluate five recent papers (2021–2026) that benchmark variant callers on diverse datasets, extract practical recommendations, and synthesize guidelines for choosing pipelines in your own research [@tan_comprehensive_2025; @abdelwahab_performance_2023; @betschart_comparison_2022; @pinto_variant_2026; @guille_benchmarking_2024].
 
-## In-Class Lab: Comparing Variant Calling Workflows
-### Overview:
-In this class, you will work in groups to analyze and compare different variant calling workflows based on pre-assigned papers. Be prepared to discuss key findings, compare methodologies, and brainstorm how to apply these workflows to non-model systems.
+Each student has been assigned one paper based on the first three letters of their last name (see assignments below). You are expected to read your assigned paper carefully before class, guided by the questions provided, and come prepared to contribute to small-group and whole-class discussions. During class, you will work with peers who read the same paper to fill out a structured summary table, present key findings to the class, and collectively build a decision framework for variant calling that addresses common questions facing genomics researchers.
 
-### What to Expect:
-1. Small Group Synthesis (20 min):
+::: {.callout-important}
+## Attendance and Participation Required
 
-- Meet with others who read the same paper.
-- Summarize key recommendations and how they were determined.
-- Create a workflow diagram (drawn on a whiteboard).
+Lab 8 has **no out-of-class deliverable**—the entire assignment takes place during the scheduled lab period. Your grade is based on active participation in group discussions and submission of the completed class summary tables (photographed and uploaded to Canvas before leaving). If you cannot attend, you must notify the instructor in advance to arrange an alternative assignment.
+:::
 
-2. Group Presentations (15 min):
+## Paper Assignments by Last Name
 
-- Each group will give a brief (2-3 min) summary of their paper.
+Find your assigned paper based on the **first three letters of your last name**:
 
-3. Cross-Group Discussion (20 min):
+| Last Name Range | Assigned Paper | Reference Citation |Number of Pages|
+|----------------|----------------|----------------|---|
+| **A – Da** | Tan et al. 2025, *Briefings in Bioinformatics* | @tan_comprehensive_2025 |11|
+| **Db – L** | Abdelwahab et al. 2023, *BMC Bioinformatics* | @abdelwahab_performance_2023 |13|
+| **M – Pa** | Betschart et al. 2022, *Scientific Reports* | @betschart_comparison_2022 |11|
+| **Pb – Pz** | Pinto et al. 2026, *PLoS ONE* | @pinto_variant_2026 |22|
+| **Q – Z** | Guille et al. 2024, *Briefings in Bioinformatics* | @guille_benchmarking_2024 |11|
 
-- Mix into new groups where each student brings insights from a different paper.
-- Compare tools, datasets, and strengths/weaknesses across studies.
+## Pre-Class Preparation: Guiding Questions
 
-4. Case Study Challenge (15 min):
+As you read your assigned paper, take notes on the following questions. You will use these notes during the in-class small-group synthesis.
 
-- Brainstorm how to design a variant calling benchmark for a non-model system or other application.
+### Study Design and Scope
+1. What is the main goal of the benchmarking study? (e.g., comparing germline vs. somatic callers, evaluating AI-based tools, assessing performance on non-model organisms)
+2. Which datasets were used? (e.g., Genome in a Bottle reference samples, monozygotic twins, cancer exomes, specific organisms)
+3. Which sequencing platforms and read lengths were analyzed? (Illumina short reads, PacBio HiFi, Oxford Nanopore, or a mix)
 
-5. Wrap-Up Discussion (5 min):
+### Tools and Pipelines
+4. Which **aligners** were tested (if applicable)? (e.g., BWA-MEM, Bowtie2, minimap2)
+5. Which **variant callers** were compared? (e.g., GATK HaplotypeCaller, bcftools, FreeBayes, Platypus, DeepVariant, others)
+6. Did the study evaluate **ensemble or voting-based methods**? If so, how were results combined?
 
-- Reflect on which workflows were most reliable and identify gaps in current methods.
+### Performance Metrics and Results
+7. Which metrics were used to assess performance? (e.g., precision, recall, F1-score, concordance with truth sets, computational time, memory usage)
+8. Which tools performed best for **SNPs**? Which for **indels**?
+9. Were there differences in performance by **genomic context** (e.g., exonic vs. intergenic, high-GC regions, repetitive regions)?
+10. Did computational cost (runtime, memory) play a role in the recommendations?
 
-## Preparation:
-- Review your assigned paper using the guiding questions provided.
-- Be ready to discuss, compare workflows, and contribute to group diagrams.
+### Key Findings and Recommendations
+11. What are the paper's main recommendations? (e.g., "use GATK for high-coverage human genomes," "ensemble methods reduce false positives in somatic calling")
+12. Did the authors identify biases or limitations? (e.g., training on European-ancestry genomes, poor performance in non-model systems, platform-specific errors)
+13. Are the recommendations generalizable to other organisms, coverages, or research questions? Why or why not?
 
-## Assignment:
-- Submit a screenshot/photo of your workflow diagram in Canvas after class.
-- Grading is participation-based—no written report required.
+::: {.callout-tip}
+## Tips for Success
+
+- **Read your paper thoroughly** before class. Annotate it and bring notes—you cannot participate meaningfully without preparation.
+- **Be ready to explain, not just summarize.** Your classmates will rely on you to interpret your paper's findings.
+- **Ask questions during presentations.** Benchmarking studies often use different metrics or datasets—clarify what makes results comparable.
+- **Think critically about generalizability.** A tool that works well for human exomes may fail for non-model organisms or low-coverage data.
+:::
+
+## In-Class Activity Structure (75 minutes)
+
+### Part 1: Small-Group Synthesis (20 minutes)
+
+Meet with others who read the same paper. As a group, discuss your answers to the guiding questions and work together to fill out the **Paper Summary Table** for your study (template below). One member of your group should cast their screen so the table can be filled and photographed later. Focus on extracting key details that will help the class compare across papers:
+
+**Paper Summary Table Template:**
+
+| **Category** | **Details** |
+|--------------|-------------|
+| **Study Citation** | Author, Year, Journal |
+| **Study Goal** | Brief statement of main objective |
+| **Datasets Used** | Organism(s), reference samples, sample size |
+| **Read Length(s)** | e.g., 150 bp paired-end, 15 kb HiFi |
+| **Sequencing Platform(s)** | Illumina, PacBio, ONT, etc. |
+| **Tools/Pipelines Tested** | Aligner(s) + Caller(s) |
+| **Variant Callers Compared** | List key callers (GATK, bcftools, FreeBayes, DeepVariant, etc.) |
+| **Ensemble Strategy (if any)** | Voting, intersection, machine learning meta-classifier |
+| **Performance Metrics** | Precision, recall, F1, concordance, runtime, etc. |
+| **Best Tool(s) for SNPs** | Tool name and brief reason |
+| **Best Tool(s) for Indels** | Tool name and brief reason |
+| **Key Recommendation** | One-sentence practical takeaway |
+| **Limitations/Caveats** | What contexts or questions are NOT covered? |
+
+Your group will present this table to the class in Part 2.
+
+### Part 2: Group Presentations (15 minutes)
+
+Each paper group gives a **3-minute presentation** summarizing their study. Focus on:
+
+- Study goal and dataset (30 seconds)
+- Tools compared and metrics used (1 minute)
+- Key findings: which tools performed best for SNPs and indels, and under what conditions (1 minute)
+- Main recommendation and limitations (30 seconds)
+
+While other groups present, **take notes** on their summary tables—you will need this information for Part 3.
+
+### Part 3: Synthesis Across Papers (20 minutes)
+
+Now that all five papers have been presented, work as a class to fill out the **Cross-Study Synthesis Table** on the board. The instructor will lead a discussion to populate this table by extracting common themes and differences across the five benchmarking studies.
+
+**Cross-Study Synthesis Table Template:**
+
+| **Question** | **Insights from Tan2025** | **Insights from Abdelwahab2023** | **Insights from Betschart2022** | **Insights from Pinto2026** | **Insights from Guille2024** |
+|--------------|---------------------------|----------------------------------|--------------------------------|----------------------------|------------------------------|
+| **When should I use GATK HaplotypeCaller?** | | | | | |
+| **When should I use bcftools/samtools?** | | | | | |
+| **When is an ensemble approach worth the effort?** | | | | | |
+| **How do I choose filter thresholds?** | | | | | |
+| **What are pitfalls of applying human-optimized pipelines to non-model systems?** | | | | | |
+| **Do AI-based callers (e.g., DeepVariant) outperform traditional tools?** | | | | | |
+| **Does alignment choice matter as much as caller choice?** | | | | | |
+
+This table will be filled in collaboratively during discussion. One or more students should photograph the final version for submission.
+
+### Part 4: Case Study Challenge (15 minutes)
+
+Break into mixed groups (each group should have at least one representative from each paper). Your challenge:
+
+**Design a variant calling benchmark for a non-model insect species** with the following constraints:
+
+- No high-quality reference panel (like Genome in a Bottle) exists.
+- You have 30× coverage Illumina short reads from 10 individuals.
+- Your goal is to identify population-level SNPs for a GWAS study.
+
+Discuss and sketch answers to:
+
+1. Which variant caller(s) would you use, and why?
+2. How would you validate your calls without a truth set?
+3. What filtering strategy would you adopt?
+4. Would you use an ensemble approach? Why or why not?
+
+Be prepared to share one key insight from your group during wrap-up.
+
+### Part 5: Wrap-Up and Reflection (5 minutes)
+
+Class discussion:
+
+- Which study provided the most actionable recommendations?
+- What gaps remain in current benchmarking literature? (e.g., underrepresented organisms, low-coverage data, structural variants)
+- If you were designing a variant calling pipeline for your own research, what is the one takeaway from today that will influence your decision?
+
+## Deliverable and Grading
+
+Your Lab 8 grade is based on **attendance and active participation**. To receive credit, you must:
+
+1. **Attend the full lab session** and actively participate in all four parts of the activity.
+2. **Photograph and upload** the completed **Paper Summary Table** (from your small group in Part 1) and the **Cross-Study Synthesis Table** (from the whole-class discussion in Part 3) to Canvas **before leaving lab**.
+3. **Case study challenge**: briefly write up your tables design for the case study challenge and upload it to Canvas **before leaving lab**.
+
+::: {.callout-warning}
+## Submission Instructions
+
+- Take clear, legible photos of both tables (or a single photo if they fit on one board/page).
+- Upload to Canvas under "Lab 8 Submission" before the end of the lab period.
+- If working digitally, you may submit a shared Google Doc or screenshot instead.
+- **All group members** must submit their own photo/screenshot, even if the content is identical—this confirms individual attendance.
+- AI can be used to help with the initial paper summary and parsing of information, but the tables and case study design should be based on what you and your group generated during class without the use of generative AI.
+:::
+
+## References
