@@ -13,12 +13,12 @@ Each student has been assigned one paper based on the first three letters of the
 ::: {.callout-important}
 ## Attendance and Participation Required
 
-Lab 8 has **no out-of-class deliverable**—the entire assignment takes place during the scheduled lab period. Your grade is based on active participation in group discussions and submission of the completed class summary tables (photographed and uploaded to Canvas before leaving). If you cannot attend, you must notify the instructor in advance to arrange an alternative assignment.
+The entire Lab 8 assignment takes place during the scheduled lab period. Your grade is based on active participation in group discussions and submission of the completed class summary tables (photographed and uploaded to Canvas before leaving). If you cannot attend, you must notify the instructor in advance to arrange an alternative assignment.
 :::
 
-## Paper Assignments by Last Name
+## Paper Assignment by Last Name
 
-Find your assigned paper based on the **first three letters of your last name**:
+Each student is responsible for reading ONE of the five papers for the Lab 8 discussion. Find your assigned paper based on the **first three letters of your last name** as listed in Canvas:
 
 | Last Name Range | Assigned Paper | Reference Citation |Number of Pages|
 |----------------|----------------|----------------|---|
@@ -70,21 +70,21 @@ Meet with others who read the same paper. As a group, discuss your answers to th
 
 **Paper Summary Table Template:**
 
-| **Category** | **Details** |
-|--------------|-------------|
-| **Study Citation** | Author, Year, Journal |
-| **Study Goal** | Brief statement of main objective |
-| **Datasets Used** | Organism(s), reference samples, sample size |
-| **Read Length(s)** | e.g., 150 bp paired-end, 15 kb HiFi |
-| **Sequencing Platform(s)** | Illumina, PacBio, ONT, etc. |
-| **Tools/Pipelines Tested** | Aligner(s) + Caller(s) |
-| **Variant Callers Compared** | List key callers (GATK, bcftools, FreeBayes, DeepVariant, etc.) |
-| **Ensemble Strategy (if any)** | Voting, intersection, machine learning meta-classifier |
-| **Performance Metrics** | Precision, recall, F1, concordance, runtime, etc. |
-| **Best Tool(s) for SNPs** | Tool name and brief reason |
-| **Best Tool(s) for Indels** | Tool name and brief reason |
-| **Key Recommendation** | One-sentence practical takeaway |
-| **Limitations/Caveats** | What contexts or questions are NOT covered? |
+| **Category** | **Details** | **Your Paper**|
+|--------------|-------------|-------------|
+| **Study Citation** | Author, Year, Journal ||
+| **Study Goal** | Brief statement of main objective ||
+| **Datasets Used** | Organism(s), reference samples, sample size ||
+| **Read Length(s)** | e.g., 150 bp paired-end, 15 kb HiFi ||
+| **Sequencing Platform(s)** | Illumina, PacBio, ONT, etc. ||
+| **Tools/Pipelines Tested** | Aligner(s) + Caller(s) ||
+| **Variant Callers Compared** | List key callers (GATK, bcftools, FreeBayes, DeepVariant, etc.) ||
+| **Ensemble Strategy (if any)** | Voting, intersection, machine learning meta-classifier ||
+| **Performance Metrics** | Precision, recall, F1, concordance, runtime, etc. ||
+| **Best Tool(s) for SNPs** | Tool name and brief reason ||
+| **Best Tool(s) for Indels** | Tool name and brief reason ||
+| **Key Recommendation** | One-sentence practical takeaway ||
+| **Limitations/Caveats** | What contexts or questions are NOT covered? ||
 
 Your group will present this table to the class in Part 2.
 

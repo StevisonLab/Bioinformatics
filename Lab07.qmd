@@ -4,19 +4,32 @@ bibliography: references.bib
 csl: nature.csl
 ---
 
-The primary goal of most NGS Workflows is to generate genetic variants for downstream biological analysis. However, NGS data is very noisy with lots of sequencing errors. For this reason, there are a large number of false positives that can lead to false inferences in downstream applications. Following up on where we left off with Lab 4, this lab exercise will walk you through the Genome Analysis Toolkit (GATK) best practices workflow. Here, we will use "hard variant filtering" to ensure the quality of the resulting data you would use for downstream analysis.  
+## Overview and Learning Objectives
 
-## Step 1 (post-processing and variant calling):
+The primary goal of most NGS workflows is to generate high-quality genetic variants for downstream biological analysis. However, as you learned in **Chapter 10**, raw NGS data is inherently noisy, containing sequencing errors, PCR duplicates, and alignment artifacts that can generate thousands of false-positive variant calls. Without careful post-processing and filtering, these technical artifacts can lead to incorrect biological inferences—for example, mistakenly identifying a sequencing error as a true adaptive mutation in an experimental evolution study.
 
-The goal of this part of the exercise is to learn how to complete post-processing, QC, and variant calling. Remember from class that variant calling uses a 3-step process depending on how many samples you have. Here, we will just have one sample, so we will skip the middle step of combining gVCF files.
+This lab walks you through the **GATK Best Practices workflow** (see **Figure 10.1** in Chapter 10) using the *Saccharomyces cerevisiae* experimental evolution dataset introduced in **Appendix C** and first analyzed in **Lab 4**. You will complete three major steps:
+
+1. **Post-processing and variant calling**: Mark PCR duplicates, call variants using GATK HaplotypeCaller, and assess alignment quality.
+2. **Hard filtering and quality assessment**: Apply GATK's recommended filter thresholds, visualize variant quality distributions, and evaluate whether standard cutoffs are appropriate for your yeast dataset.
+3. **Iterative refinement and comparison**: Adjust filter parameters based on quality plots, generate a second filtered callset, and compare all three VCFs (raw, GATK-filtered, custom-filtered) using an UpSet plot to understand how filtering decisions affect the final variant set.
+
+By the end of this lab, you will understand why **filtering is iterative and context-dependent**, and you will have hands-on experience making the kinds of decisions that real genomics researchers face when balancing sensitivity (retaining true variants) against specificity (excluding false positives).
+
+## Step 1: Post-processing and variant calling
+
+### Goal
+Learn how to complete post-processing (duplicate marking), run quality control checks, and call variants using GATK HaplotypeCaller. This step corresponds to @fig-gatk-workflow2 (boxes for "Mark Duplicates" and "GATK HaplotypeCaller") and the concepts in **Chapter 10, Sections 10.3–10.4**.
 
 1. First, return to the directory in your ASC home directory titled `Lab4` that you made previously. Let's continue working here since all the files we need are in here.
 
-2. Copy the contents of the folder `~/bioinf_shared/Lab6_VariantCalling/` to your working directory. Examine carefully the script "5\_GATK\_Variant\_Calling.sh" to walk through what it is doing and the tools it uses.
+2. Copy the contents of the folder `~/bioinf_shared/Lab7_VariantCalling/` to your working directory. Examine carefully the script "5\_GATK\_Variant\_Calling.sh" to walk through what it is doing and the tools it uses (refer to @fig-gatk-workflow2 as you read).
 
 3. Using your favorite text editor, open the script "5\_GATK\_Variant\_Calling.sh". Edit this script in the following ways:
  - Change the path to your current working directory
- - Add a QC step to the script like you did in Lab 4 to run `samtools flagstat` on the "*.markdup.bam" output. This is the last bam formatted file in your pipeline.  
+ - Add a QC step to the script like you did in Lab 4 to run `samtools flagstat` on the "*.markdup.bam" output. This is the last bam formatted file in your pipeline. 
+ 
+ >Make sure to include the loading of the samtools module in your script (see script #4 as an example), as well as redirect the output to a file. 
 
 4. Submit this script to the ASC class queue using the following parameters:
   - Number of CPUs = 1
@@ -24,11 +37,19 @@ The goal of this part of the exercise is to learn how to complete post-processin
   - Queue = class
   - Time = default (press enter to keep default time)
 
-5. Compare the flagstat output to the one [here](https://github.com/AUBioInformatics25/BamQC/blob/main/flagstat.md).  
+5. Compare the flagstat output to the one [here](https://github.com/AUBioInformatics26/BamQC/blob/main/flagstat.md).  
 
-## Step 2 (variant filtering):
+>Note: if this link does not work for you, make sure you are logged into GitHub. This link goes to a private repository in the GitHub organization for our class this semester. If you have not yet joined, please refer back to an earlier announcement from the LA Chipper Johnson on this topic.
 
-The goal of this part of the exercise is to learn how to filter variants using GATK and plot summaries of various variant metrics in R. These plots will then be used to decide on your best set of filtering parameters for your data. 
+## Step 2: Variant Filtering
+
+### Goal
+Learn how to filter variants using GATK's **VariantFiltration** tool, visualize the distributions of key quality metrics, and evaluate whether the standard GATK-recommended thresholds are appropriate for your yeast dataset. This step corresponds to **Section 10.5 (Hard Filtering)** and builds your intuition for **why filtering is iterative and data-dependent**.
+
+### Why Filter Variants?
+The raw VCF from HaplotypeCaller (`SRR1693691.SNPs.vcf`) contains thousands of putative SNPs, but many are false positives caused by sequencing errors, mapping artifacts, or systematic biases (e.g., strand bias, where all variant-supporting reads come from one DNA strand). **Section 10.5** describes the key quality metrics used for filtering.
+
+GATK provides **recommended thresholds** for these metrics (based on human whole-genome sequencing), but these may not be optimal for yeast or other organisms. Your task in this step is to apply the recommended filters, examine the distributions of quality scores, and decide whether adjustments are needed.
 
 1. Examine carefully the script "6_GATK_Variant_Filtering.sh" to walk through what it is doing and the tools it uses. This script will perform hard filtering based on the filtering criteria recommended by GATK. It then runs a custom Perl script to produce density plots of the various parameters that are output as PDFs.
 
@@ -38,6 +59,8 @@ The goal of this part of the exercise is to learn how to filter variants using G
  - Add another QC step to the script. Here use the tool [multiqc](https://hpcdocs.asc.edu/search/node/multiqc) to point to your directory to generate a comprehensive summary of ALL the QC files you have made along the way:
      - `module load multiqc` 
      -  `multiqc ${path}/*` 
+     
+>MultiQC will scan your directory for FastQC reports, flagstat outputs, GATK logs, and VCFtools summaries, and compile them into a single interactive HTML report (`multiqc_report.html`). This gives you a bird's-eye view of the entire Lab 4 → Lab 7 workflow.
 
 3. Submit this script to the ASC class queue using the following parameters:
   - Number of CPUs = 1
@@ -47,25 +70,72 @@ The goal of this part of the exercise is to learn how to filter variants using G
   
 4. After inspecting the standard out job file to make sure all ran OK, download the Html multiqc report and the resulting PDFs to your local computer. Examine the multiqc report. Fill in the table below based on what you see with both the result as well as which tool was used to get this information:
 
- | QC Metric| Result | Tool|
- |----| ----| --- |
- | % reads mapped to reference | | |
- | % duplicate reads | | |
+   Fill in the table below based on the MultiQC html report downloaded from the ASC:
 
+   | **QC Metric** | **Result** | **Tool Used** |
+   |---------------|------------|---------------|
+   | % reads mapped to reference | | |
+   | % duplicate reads | | |
 
-5. Next, examine the PDF plots you download. Based on these density plots, decide whether to adjust the filtering or not. Look back at the script to see what it is using as cutoffs and then determine if these are appropriate or if they need to be adjusted. 
+   ::: {.callout-note}
+   ## Finding metrics in MultiQC
 
-6. Finally, compare the number of raw SNPs to the number of filtered SNPs to see how stringent you are currently:
+   - **% mapped**: Look under the "SAMtools flagstat" section. The report will show a bar chart for each BAM file with the percentage of mapped reads.
+   - **% duplicates**: Also in the SAMtools flagstat section. This is the fraction of reads marked as duplicates by GATK MarkDuplicates.
 
- | File| # SNPs | Depth
- |----| ----| --- |
- | SRR1693691.SNPs.vcf | | |
- | SRR1693691.SNPs.filtered.vcf | | |
+   Typical values for this yeast dataset: **~99% mapped**, **~10–15% duplicates**.
+   :::
 
+5. Next, compare the number of raw SNPs to the number of filtered SNPs to see how stringent you are currently:
 
-## Step 3 (refilter and compare):
+   Fill in the table below:
 
-1. Once you decide on your new filtering criteria (note: you do not need to adjust ALL parameters, just tweak it a bit!), you are ready to apply them. Open the script `6_GATK_variant_calling_example.sh` and make edits to the variant filtering part of the script to match your adjusted filtering criteria. Rename the output file so it does not overwrite the one you already have (e.g. SRR1693691.SNPs.filtered2.vcf). 
+   | **File** | **# SNPs** | **Mean Depth** |
+   |----------|------------|----------------|
+   | SRR1693691.SNPs.vcf (raw) | | |
+   | SRR1693691.SNPs.filtered.vcf (GATK filters) | | |
+
+   **Interpretation**: If filtering removes 30–50% of raw variants, this is typical—many low-quality sites are being excluded. If filtering removes <10%, the thresholds may be too permissive. If filtering removes >70%, the thresholds may be too strict, and you risk losing true variants.
+   
+6. Transfer all PDF files (named like `QD_density.pdf`, `FS_density.pdf`, etc.) to your computer. Open each plot and inspect the distribution of quality scores. For each metric, ask yourself:
+
+   - **Where does the GATK threshold fall?** (The script annotates the threshold as a vertical red line on each plot.)
+   - **Do most of my variants pass or fail?** If 90% of variants are above the threshold, the filter is not very stringent. If 50% fail, the filter is aggressive.
+   - **Does the distribution have outliers?** A few extreme values might be real rare variants or artifacts—context matters.
+
+Based on your understanding of these density plots, decide whether to adjust the filtering or not. See Section 10.4.2 for a description of each of these criteria and the GATK recommended cutoffs.
+
+## Step 3: Refilter and Compare
+
+### Goal
+Apply your adjusted filter criteria, generate a second filtered callset, and compare all three VCFs (raw, GATK-filtered, custom-filtered) using an **UpSet plot** to visualize the overlaps and differences between filtering strategies. This step reinforces the key lesson of **Section 10.5**: filtering is iterative, context-dependent, and involves trade-offs.
+
+### Why Compare Multiple Filtered Callsets?
+In real research, you rarely get filtering right on the first try. By generating multiple filtered VCFs and comparing them, you can see:
+
+- **Which variants are robust** (present in all callsets, regardless of filter stringency)
+- **Which variants are borderline** (present in permissive filters but not strict ones)
+- **How much overlap exists** between GATK's recommended filters and your custom filters
+
+UpSet plots (introduced in **Chapter 10** as a superior alternative to Venn diagrams) show these relationships clearly, especially when comparing more than two sets.
+
+### Instructions
+
+1. **Decide on your adjusted filter criteria**:
+
+   Based on the density plots and tables from Step 2, choose new thresholds for **one or two metrics**. For example:
+
+   - If the GATK QD threshold (QD > 2.0) looks too permissive (most variants have QD > 10), raise it to QD > 5.0.
+   - If the FS threshold (FS < 60.0) excludes very few variants, tighten it to FS < 40.0.
+
+   Write down your new thresholds—you will need them in the next step.
+
+2. **Edit the filtering script to create a second filtered VCF**:
+
+   Open `6_GATK_Variant_Filtering.sh` again and find the `VariantFiltration` command. **Copy the entire command** and paste it below the original, then modify:
+
+   - Change the output filename to `SRR1693691.SNPs.filtered2.vcf` (so it doesn't overwrite the first filtered VCF).
+   - Adjust the filter expressions (`--filter-expression` and `--filter-name`) to reflect your new thresholds.
 
 3. Run the edited script on the ASC. See the suggested queue parameters from the first script and make adjustments based on that job run time and usage.
 
@@ -74,35 +144,83 @@ The goal of this part of the exercise is to learn how to filter variants using G
  - GATK filtered VCF: SRR1693691.SNPs.filtered.vcf
  - Your adjusted filtering VCF: SRR1693691.SNPs.filtered2.vcf
 
-5. Now that you have 3 VCF files, you can compare the sets of variants between the three files using `vcf-compare`, a tool within VCFtools. This will generate a text file that can be used to make VENN diagrams. But of course, we ***HATE*** VENN diagrams, so instead we will make an [UpSet](https://caleydo.org/tools/upset/) plot using the R package [UpSetR](http://gehlenborglab.org/research/projects/upsetr/).
+Now that you have 3 VCF files, you can compare the sets of variants between the three files using `vcf-compare`, a tool within VCFtools. This will generate a text file that can be used to make VENN diagrams. But of course, we ***HATE*** VENN diagrams, so instead we will make an [UpSet](https://caleydo.org/tools/upset/) plot using the R package [UpSetR](http://gehlenborglab.org/research/projects/upsetr/).
  
-6. Using less, examine the script `UpSetR.sh`. This script will first use VCFtools to remove all of the sites that were filtered out (GATK only marks them, but does not remove them). It then properly compresses each VCF and indexed them for compatability with `vcf-compare`. These two steps use the tool `tabix` which is one of the modules loaded at the beginning of the script. Submit this script to the ASC queue. 
+5. Using `less`, examine the script `UpSetR.sh`. This script will first use VCFtools to remove all of the sites that were filtered out (GATK only marks them, but does not remove them). It then properly compresses each VCF and indexed them for compatability with `vcf-compare`. These two steps use the tool `tabix` which is one of the modules loaded at the beginning of the script. Submit this script to the ASC queue. 
 
-7. You will notice that the end of this script uses the tools grep and cut to simplify the output from vcf-compare. This is printed into the file "intersection.4upsetR.venn". Examine that file.
+6. You will notice that the end of this script uses the tools grep and cut to simplify the output from vcf-compare. This is printed into the file "intersection.4upsetR.venn". Examine that file.
 
-8. On your OWN computer, open up RStudio and download the R script [UpSetR.R](https://auburn.instructure.com/files/256493957/download?download_frd=1). 
+7. **Generate an UpSet plot in R** (on your local computer):
 
-9. Copy and paste the numbers from the venn file to this script and use it to produce an upset plot in R on your computer. **Note: You may need to install the UpSetR package if not already on your computer.**
+   a. Download the R script [`UpSetR.R`](datasets/UpSetR_plot.R).
 
-10. You should notice that the raw VCF is the only file that has sites that are unique to that file.
-11. Reflection for Step 3: 
- - Depending on how you adjusted the filtering, which two files have the MOST overlap? 
- - Which two have the least overlap? 
- - Does this make sense based on the differences in the stringency of these two sets of filtering parameters you used?
+   b. Open RStudio on your computer and load the script.
+
+   c. Install the `UpSetR` package if needed:
+   ```r
+   install.packages("UpSetR")
+   ```
+
+   d. Copy the counts from `intersection.4upsetR.venn` into the appropriate lines of the R script (the script has placeholder values—replace them with your actual counts).
+
+   e. Run the script to generate an UpSet plot. The plot shows:
+   - **Vertical bars**: Size of each intersection (e.g., how many variants are in raw only, how many are in all three sets)
+   - **Connected dots below**: Which sets are included in each intersection
+
+   f. Export the plot as a PDF or PNG for your submission.
+
+8. Interpret the Upset Plot and answer the following reflection questions:
+
+  - Depending on how you adjusted the filtering, which two files have the MOST overlap? 
+
+  - Which two files have the least overlap? 
+
+  - Does this make sense based on the differences in the stringency of these two sets of filtering parameters you used?
+ 
+::: {.callout-tip}
+## What if my script fails?
+
+Common issues:
+
+- **Path errors**: Make sure the `path` variable points to your actual working directory and that all input files (sorted BAM, reference genome FASTA and indices) exist.
+- **Module loading errors**: The script loads GATK and SAMtools modules—if you get "module not found," check that the module names are correct for the ASC.
+- **Memory errors**: If the job is killed for exceeding memory, resubmit with 4GB instead of 2GB.
+
+Check the `.e` error file for detailed messages.
+:::
+
+---
+
+## Deliverables and Submission
+
+Upload the following files to Canvas for grading:
+
+1. **PDF density plots** from Step 2 (QD, FS, MQ, SOR, MQRankSum, ReadPosRankSum)
+2. **MultiQC HTML report** and the `multiqc_data/` folder
+3. **Filled-in tables** from Step 2:
+   - QC Metrics table (% mapped, % duplicates)
+   - SNP count and depth table (raw vs. filtered)
+4. **UpSet plot** (PDF or PNG) from Step 3
+5. **Reflection answers** for Step 3 (see questions above)
+
+---
 
 ## Congratulations!
 
-Now that you are done, please upload the following to Canvas for a final grade:
+You have successfully completed the **GATK Best Practices workflow** for variant calling and filtering. This lab provides a real-world experience of the challenges of variant filtering: being too permissive can lead to false positives (mistaking sequencing errors for true variants), while being too stringent can exclude real biological variation. The best practice is to **experiment with filter thresholds, examine quality distributions, and err on the side of caution**—especially for downstream applications where false positives are costly (e.g., functional validation experiments).
 
-- PDF plots from SNPs from Step 2
-- MultiQC html report and folder from whole workflow
-- Answer to reflection questions for Step 3
-- Upset plot from Step 3 
-- Filled in tables from Step 2
+### Alternative Approaches to Filtering
 
+As mentioned in **Section 10.5** and in class, hard filtering is just one approach to variant quality control. Other methods include:
 
-This exercise provides a real world experience of the challenges of variant filtering.  Not being stringent enough can lead to false positives while filtering at too high stringency could exclude real variants. The best practice is to experiment with options and filtering levels and erring on the side of caution.
+- **Variant Quality Score Recalibration (VQSR)**: A machine-learning approach that uses a set of known high-quality variants to train a model that distinguishes true variants from artifacts. VQSR is the gold standard for human genomics but requires a large database of validated variants, making it impractical for non-model organisms like yeast. It is also computationally intensive, so we do not use it in this course.
 
-As mentioned in class, another approach to filtering SNPs would be to perform Variant Quality Score Recalibration (VQSR). Much like BQSR, this requires a set of KNOWN variants, making it less ideal for non-model systems. It is also computationally intensive, so we will not be doing that as part of our genome analysis this semester. More recently, researchers validate SNP calls by using different variant calling softwares or different types of genomic data (e.g. high coverage exome data), where a larger fraction of the genome can be validated. These approaches allow you to better estimate the true and false positive rate in your dataset and make adjustments to your filtering accordingly.
+- **Ensemble calling**: Running multiple variant callers (e.g., GATK, FreeBayes, bcftools) on the same data and taking the intersection of callsets. Variants called by multiple independent algorithms are more likely to be real. You will explore this approach in **Lab 8** when you read benchmarking papers that compare different callers.
 
-Some studies will also incorporate empirical validation, but this can be costly given the number of variants. For example if you identify 100,000 SNPs (a modest size), and you want to validate 1%, that requires you to validate 1000 SNPs, which can be costly and time intensive (especially using traditional methods such as Sanger sequencing). 
+- **Empirical validation**: For high-stakes projects (e.g., clinical diagnostics, identifying causal mutations), researchers validate a subset of variants using orthogonal methods such as Sanger sequencing, high-coverage targeted resequencing, or alternative sequencing platforms (e.g., PacBio long reads). If you identify 100,000 SNPs and want to validate 1%, that requires validating 1,000 sites—costly and time-intensive, but sometimes necessary.
+
+For most research applications, **hard filtering combined with visual inspection in IGV** (which you will do in Lab 9) provides a good balance between rigor and practicality.
+
+### Looking Ahead to Lab 9
+
+In the next lab, you will load the filtered VCFs you generated here into **IGV (Integrative Genomics Viewer)** along with the aligned BAM files and the yeast reference genome. You will navigate to specific SNPs, zoom in to see individual read alignments, and evaluate the evidence for each variant.

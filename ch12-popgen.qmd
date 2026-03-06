@@ -1,30 +1,876 @@
 ---
-title: "Population Genomics and Genome Scans"
+title: "Population Genomics"
+bibliography: references.bib
+csl: nature.csl
+lang: en-US
 ---
 
-## Overview
+## Introduction
 
-Short paragraph linking to previous chapter and framing why this topic matters in the course.
+Population genomics brings together evolutionary theory and genome‑scale data to ask how mutation, recombination, genetic drift, migration, and natural selection shape patterns of genetic variation across the genome. [@ellegren_genome_2014; @leffler_revisiting_2012] Rather than focusing on single loci, population genomics characterizes the “genomic landscape” of diversity and differentiation, providing a richer picture of how genomes evolve in natural populations. [@ellegren_genome_2014] This chapter introduces the historical roots of population genomics, the key summary statistics and evolutionary processes that govern genomic variation, and modern genome‑wide analysis strategies such as sliding‑window and spline‑based approaches.
 
-## Learning objectives
+The goal is to provide a broad conceptual overview rather than a mathematically exhaustive treatment. Readers interested in formal derivations and deeper theory are encouraged to consult dedicated population genetics texts, such as Graham Coop’s _Population and Quantitative Genetics_ notes, which develop the underlying models and statistical machinery in detail. [@coop_popgen_notes] Here, I emphasize intuitive explanations, connections to earlier chapters (e.g., sequence analysis, variant calling, and alignment), and links to labs in which you will compute and interpret population genomic statistics such as nucleotide diversity $\pi$, Tajima’s D, and $F_{ST}$.
 
--   Bullet list of 3–5 concrete things students should be able to do.
+## From the Modern Synthesis to Population Genomics
 
-## Narrative
+### Biological evolution and the forces of change
 
-### Key concepts
+Biological evolution is, at its core, the change over time in the genetic
+composition of a population. [@coop_popgen_notes] A population is made up of a
+set of interbreeding individuals whose collective genomes constitute its genetic
+composition. This composition shifts because individuals are born and die,
+because some individuals migrate in or out, and because individuals vary in how
+many offspring they leave. Every new individual born into the population subtly
+changes things: their genome is a unique combination of their parents' genomes,
+shuffled by segregation and recombination during meiosis, and possibly altered
+by new mutations. These individual events seem small, but the accumulation of
+changes across individuals and generations — compounded over tens, hundreds, and
+millions of generations — produces the remarkable diversity of life on Earth.
+[@coop_popgen_notes]
 
--   2–4 subsections that walk through your bullet points (e.g., “FASTQ and Phred scores”, “QC metrics”, “Design decisions based on QC”).
+**Population genetics** is the study of the genetic composition of natural
+populations and its evolutionary causes and consequences. [@coop_popgen_notes]
+Population genomics extends this to genome-wide data, asking how mutation,
+recombination, genetic drift, migration, and natural selection together shape
+patterns of variation across entire genomes. [@ellegren_genome_2014] To
+understand how these forces interact, population geneticists develop mathematical
+models. As the statistician George Box famously put it, "All models are wrong
+but some are useful" — and the models of population genetics, despite their
+simplifying assumptions, yield surprisingly accurate predictions about patterns
+of genetic diversity in nature. [@coop_popgen_notes]
 
-### Figures and examples
+The five major forces that shape allele frequencies are [@coop_popgen_notes; @charlesworth_hubby_2016]:
 
--   Simple diagrams you sketch yourself (e.g., read‑quality plot, schematic of FASTQ fields, coverage cartoon).
--   One or two short, self‑contained R or shell code blocks where appropriate.
+- **Mutation**: Introduces new alleles at a low rate (~$10^{-8}$ per base pair
+  per generation in humans); the ultimate source of all genetic variation.
+- **Genetic drift**: Random fluctuations in allele frequencies caused by the
+  finite number of individuals that survive and reproduce each generation;
+  strongest in small populations.
+- **Migration (gene flow)**: The movement of individuals and their alleles
+  between populations; tends to homogenize allele frequencies across geographic
+  space.
+- **Recombination**: Shuffles alleles within chromosomes during meiosis,
+  breaking down associations between nearby variants.
+- **Natural selection**: Non-random, directional change in allele frequencies
+  based on differences in survival and reproduction among genotypes.
 
-## Activities and labs
+Understanding population genomics means understanding how these forces operate
+individually, how they interact, and how to distinguish their signatures in
+genomic data.
 
--   Describe how the corresponding lab (e.g., Galaxy vs command line QC) connects to the chapter, and give just enough detail that students can re‑orient later.
+### The modern synthesis: reconciling Mendel and Darwin
 
-## Further reading
+The conceptual foundations of population genomics lie in the early
+twentieth-century **modern synthesis**, which reconciled Mendelian genetics with
+Darwin's theory of natural selection. [@coop_popgen_notes] Darwin's theory
+required heritable variation and differential reproductive success, but he had no
+mechanistic theory of inheritance. Mendel provided particulate, discrete
+heritable factors (what we now call alleles), but his factors initially seemed
+incompatible with the continuous phenotypic variation — height, weight, skin
+tone — observed in nature. The breakthrough came from Fisher, Wright, and
+Haldane, who showed mathematically that Mendelian segregation at many loci, each
+with small effects, produces smooth continuous phenotypic distributions, and that
+changes in allele frequencies under selection follow well-defined rules.
+[@coop_popgen_notes]
 
--   List your resources with 1–2‑sentence annotations each, rather than reproducing any text.
+It is worth appreciating how conceptually remarkable this is. Many of the core
+models of population genetics were developed in the 1920s–1940s, before anyone
+knew that DNA was the molecule of heredity. [@coop_popgen_notes] Yet these
+models have only grown in power and relevance as molecular data became
+available. This is because they are built on the logic of Mendelian transmission
+rules combined with probability theory — a foundation that holds regardless of
+the physical nature of heredity.
+
+Fisher formalized the relationship between genetic variation and evolution in his
+**Fundamental Theorem of Natural Selection**, which links the rate of increase in
+mean fitness to the amount of additive genetic variance for fitness
+[@charlesworth_hubby_2016]. This synthesis laid the groundwork for connecting
+patterns of genetic variation in populations to the action of selection, drift,
+mutation, and migration. Building on these ideas came the modern evolutionary
+synthesis more broadly, integrating insights from paleontology, systematics, and
+ecology into a unified picture of how both short-term evolutionary change and the
+long-term diversification of life can be explained by the gradual accumulation of
+genetic changes within and among populations [@coop_popgen_notes].
+
+::: callout-note
+## A note on Fisher, Wright, and eugenics
+
+The history of population genetics is inseparable from the history of eugenics.
+R.A. Fisher, whose work underpins much of modern evolutionary genetics and
+statistics, was an active proponent of eugenics and devoted substantial attention
+in his landmark 1930 book to arguments about the "genetic quality" of different
+social classes [@coop_popgen_notes]. Many other prominent early geneticists held
+similar views and lent scientific authority to policies — including compulsory
+sterilization laws and immigration restrictions — that caused grave harm,
+particularly to poor, Black, Latino, and Indigenous people. [@coop_popgen_notes]
+
+At the same time, other geneticists — including Thomas Hunt Morgan and Lancelot
+Hogben — criticized eugenic arguments on scientific grounds, emphasizing the
+roles of environment and the complexity of inheritance [@coop_popgen_notes].
+Later, Dobzhansky and Lewontin helped show that most human genetic variation
+occurs within, not between, populations, undermining biological race hierarchies
+[@coop_popgen_notes]. As students of this field, we can engage with early
+scientists' technical contributions while critically examining the frameworks
+they embedded in the discipline and resisting genetic essentialism and
+determinism in our own work [@coop_popgen_notes].
+:::
+
+### The language of population genetics: loci, alleles, and frequencies
+
+Before going further, it helps to establish the basic vocabulary of population
+genetics precisely, because these terms are used more carefully here than in a
+typical introductory genetics course.
+
+A **locus** (plural: *loci*) is a specific position in the genome.
+[@coop_popgen_notes] It could be a single nucleotide base pair or an entire gene
+region. The different genetic variants that can occupy a locus are called
+**alleles**. If every individual in the population carries the same allele at a
+locus, that locus is **monomorphic** — there is no genetic variation at that
+position. If two or more alleles exist in the population, the locus is
+**polymorphic** (also called a **segregating site**) [@coop_popgen_notes].
+
+We call the less common allele at a polymorphic site the **minor allele** and the
+more common one the **major allele**. We also distinguish the **derived allele**
+(the evolutionarily newer one, which arose by mutation) from the **ancestral
+allele** (the older one, typically inferred by comparison to an outgroup
+species). [@coop_popgen_notes] This distinction matters when computing the site
+frequency spectrum and interpreting patterns of variation.
+
+Because we typically work with diploid organisms, every individual carries two
+alleles at each autosomal locus. The **allele frequency** is the proportion of
+all copies of the locus in the population that carry a given allele. If we
+genotype $N$ diploid individuals at a biallelic locus and find $N_{11}$
+homozygotes for allele $A_1$ and $N_{12}$ heterozygotes, the frequency of $A_1$
+is:
+
+$$
+p = \frac{2N_{11} + N_{12}}{2N},
+$$
+
+and the frequency of the alternate allele is simply $q = 1 - p$.
+[@coop_popgen_notes] This formula follows directly from counting allele copies
+and holds regardless of Hardy–Weinberg equilibrium.
+
+### Allozymes and the discovery of abundant molecular variation
+
+The advent of protein gel electrophoresis in the 1960s brought the first
+systematic surveys of molecular genetic variation. Hubby and Lewontin, working in
+*Drosophila pseudoobscura*, and Harris, in humans, used **allozyme** variation —
+electrophoretically distinguishable forms of enzymes — to estimate heterozygosity
+and the proportion of polymorphic loci without pre-selecting genes known to be
+variable. [@charlesworth_hubby_2016] Their surveys were a revelation: many loci
+were polymorphic and individuals were heterozygous at a substantial fraction of
+loci, in stark contrast to the earlier view that wild populations were nearly
+monomorphic. [@charlesworth_hubby_2016]
+
+These studies introduced key summary statistics that remain central today:
+
+- **Proportion polymorphic $P$**: The fraction of loci with more than one allele
+  in the sample.
+- **Average heterozygosity $\bar{H}$**: The expected probability that a randomly
+  chosen individual is heterozygous at a randomly chosen locus, averaged across
+  loci. [@charlesworth_hubby_2016]
+
+A striking and puzzling pattern emerged: levels of allozyme variation were broadly
+similar across species with vastly different census population sizes.
+[@leffler_revisiting_2012; @charlesworth_hubby_2016] A sea squirt with billions
+of individuals and a lynx with far fewer showed far less difference in
+heterozygosity than their census sizes would predict. This helped motivate the
+**neutral theory of molecular evolution** (Kimura, 1968), which proposes that
+most molecular variants are selectively neutral or nearly neutral and that genetic
+drift, rather than natural selection, governs their frequencies.
+[@leffler_revisiting_2012; @coop_popgen_notes]
+
+Allozymes were also instrumental in formalizing population structure. Wright's
+$F_{ST}$ quantifies genetic differentiation among populations. Lewontin's early
+applications to human allozymes showed that the vast majority (~85%) of human
+genetic variation occurs within populations rather than between them — a finding
+with profound implications for how we understand the relationship between human
+genetic diversity and socially constructed racial categories.
+[@charlesworth_hubby_2016]
+
+### From allozymes to DNA sequences and the ADH locus
+
+While allozymes provided a first glimpse of molecular variation, they detected
+only a subset of amino-acid changes and gave no information about synonymous or
+noncoding variation. DNA sequencing changed this. Kreitman's 1983 study of
+nucleotide polymorphism at the *Drosophila melanogaster* alcohol dehydrogenase
+(*Adh*) locus was among the first direct views of DNA-level polymorphism in a
+natural population, revealing extensive synonymous and nonsynonymous variation.
+[@charlesworth_hubby_2016]
+
+The *Adh* locus illustrates the vocabulary of molecular variation clearly. At
+some sites, individuals within *D. melanogaster* differ from each other —
+these are **polymorphisms** (segregating sites). At other sites, *D. melanogaster*
+carries one allele while related species (*D. simulans*, *D. yakuba*) carry
+another, but variation is absent within each species — these are **fixed
+differences**. [@coop_popgen_notes] Comparing the ratio of nonsynonymous to
+synonymous variants at polymorphic sites versus fixed differences between species
+forms the basis of the McDonald–Kreitman test, one of the most widely used tests
+for detecting adaptive protein evolution. [@charlesworth_hubby_2016]
+
+More broadly, nucleotide sequence data from many loci established that:
+
+- Most nonsynonymous variants are rare within populations, consistent with
+  purifying selection removing them.
+- A small fraction of loci show elevated diversity at intermediate frequencies,
+  consistent with balancing selection maintaining multiple alleles.
+- A substantial component of molecular evolution in some taxa (e.g.,
+  *Drosophila*) appears driven by positive selection, while in others (e.g.,
+  humans) adaptive substitutions appear less frequent.
+
+[@charlesworth_hubby_2016; @leffler_revisiting_2012]
+
+These single-locus insights set the stage for asking the same questions across
+entire genomes.
+
+### The omics era and the rise of population genomics
+
+High-throughput sequencing technologies transformed population genetics into
+population genomics. Ellegren describes this transition as the "omics era,"
+characterized by large-scale, quantitative, and integrative analyses.
+[@ellegren_genome_2014] Genome sequencing of non-model organisms is now routine,
+and whole-genome resequencing of many individuals per species enables true
+population genomics: simultaneous analysis of polymorphism and divergence across
+every part of the genome. [@ellegren_genome_2014]
+
+This genomic perspective enables researchers to ask questions that were impossible
+with single loci:
+
+- What fraction of the genome evolves under purifying selection versus
+  neutrally?
+- How prevalent are adaptive substitutions genome-wide?
+- What demographic events — bottlenecks, expansions, admixture — have shaped a
+  population's history, and where are their genomic signatures?
+- How does recombination rate variation shape the landscape of diversity and
+  differentiation?
+
+[@ellegren_genome_2014]
+
+One striking insight from these surveys is that neutral diversity $\pi$ varies
+over a far narrower range across species than census population sizes would
+predict. [@leffler_revisiting_2012] In a survey of 167 species across 14 phyla
+by Leffler et al. (2012), $\pi$ ranged only about 800-fold — from the Eurasian
+lynx ($\pi \approx 0.01\%$, or roughly 1 difference per 10,000 bases) to the sea
+squirt *Ciona savignyi* (~1 difference per 12 bases) — even though census
+population sizes span many more orders of magnitude. [@coop_popgen_notes;
+@leffler_revisiting_2012] This "old riddle" suggests that forces beyond census
+size — including natural selection reducing effective population sizes — constrain
+genetic diversity, and it remains an active research frontier.
+[@leffler_revisiting_2012]
+
+## Evolutionary Processes and Genomic Patterns of Variation
+
+Classical population genetics provides simple null models for how allele and
+genotype frequencies behave under specified assumptions, and population genomics
+extends these ideas across whole genomes. The goal in this section is to connect
+key statistics — $\pi$, Tajima's D, and $F_{ST}$ — to the underlying
+evolutionary processes and to show how these forces leave recognizable signatures
+in genomic data. [@ellegren_genome_2014; @leffler_revisiting_2012;
+@coop_popgen_notes]
+
+### Hardy–Weinberg equilibrium: a null model for genotype frequencies
+
+The simplest population model assumes random mating, infinite population size,
+and no mutation, migration, or selection. Under these conditions, genotype
+frequencies are entirely predictable from allele frequencies — a result known as
+**Hardy–Weinberg equilibrium (HWE)**. [@coop_popgen_notes]
+
+Consider a biallelic locus where allele $A_1$ is at frequency $p$ and allele
+$A_2$ is at frequency $q = 1 - p$. In a randomly mating population, gametes
+fuse independently, so the probability of drawing two $A_1$ copies is $p \times
+p = p^2$. The three genotype frequencies are therefore:
+
+$$
+P(A_1A_1) = p^2, \quad P(A_1A_2) = 2pq, \quad P(A_2A_2) = q^2.
+$$
+
+A key subtlety is that we only need to assume **random mating at the focal
+locus** for these frequencies to hold among newly formed zygotes.
+[@coop_popgen_notes] Selection, drift, and other forces can be acting elsewhere
+in the genome without disrupting Hardy–Weinberg at any given locus, as long as
+individuals mate without regard to their genotype there. This is why HWE often
+holds remarkably well in natural populations: individuals do not mate globally at
+random, but they typically do mate at random with respect to the genotype at most
+individual loci. [@coop_popgen_notes]
+
+**Departures from HWE are informative.** An excess of homozygotes relative to
+HWE expectations (i.e., a deficit of heterozygotes) can arise from inbreeding,
+positive assortative mating, or population subdivision (the Wahlund effect). An
+excess of heterozygotes can arise from disassortative mating or balancing
+selection. [@coop_popgen_notes] In bioinformatics pipelines, HWE tests are also
+used as quality control: large-scale deviations at many loci can indicate
+genotyping errors, sample contamination, or data artifacts rather than real
+biology.
+
+**A worked example: spirit bears.** The Kermode's bear (*Ursus americanus
+kermodei*) of British Columbia offers a memorable illustration. Many bears in
+this subspecies are white — not albinos, but homozygotes for a recessive change
+at the *MC1R* gene. [@coop_popgen_notes] In a sample of 87 island bears (42 AA,
+24 AG, 21 GG), we can estimate allele frequencies ($p_A \approx 0.62$,
+$p_G \approx 0.38$) and compare observed genotype counts to HWE expectations.
+This calculation — moving from allele frequencies to predicted genotype
+frequencies to a test of whether observed counts match — is one of the most
+fundamental exercises in population genetics and directly parallels quality
+control steps in SNP genotyping data.
+
+**Generalized HWE and inbreeding.** When related individuals mate, their
+offspring can inherit two copies of the same allele descended from a common
+ancestor. We call such alleles **identical by descent (IBD)**, and an individual
+carrying them is said to be **homozygous by descent** or **autozygous**.
+[@coop_popgen_notes] We quantify inbreeding using the **inbreeding coefficient**
+$F$, the probability that both alleles in an individual are IBD. When $F > 0$,
+genotype frequencies deviate from standard HWE in a predictable way:
+
+$$
+P(A_1A_1) = (1-F)p^2 + Fp, \quad
+P(A_1A_2) = (1-F)\,2pq, \quad
+P(A_2A_2) = (1-F)q^2 + Fq.
+$$
+
+[@coop_popgen_notes] Inbreeding inflates homozygote frequencies and reduces
+heterozygosity. In conservation genetics this matters enormously: the Mexican
+wolf (*Canis lupus baileyi*), reduced to just five wild individuals before a
+captive breeding program was established, now has an estimated average inbreeding
+coefficient of $\hat{F} \approx 0.33$, meaning roughly a third of each wolf's
+genome is homozygous by descent. [@coop_popgen_notes]
+
+**Runs of homozygosity.** Because related parents transmit alleles in large
+intact blocks — recombination has had few generations to break up IBD segments —
+inbred individuals show long genomic **runs of homozygosity (ROH)**: stretches
+of the genome where an individual is homozygous at essentially every SNP.
+[@coop_popgen_notes] The proportion of the genome in ROH segments ($F_{ROH}$)
+estimates the inbreeding coefficient, and the length distribution of ROH
+encodes timing information: very long ROH reflect recent inbreeding, while many
+shorter ROH reflect accumulation over many generations. [@coop_popgen_notes] In a
+study of 2,500 dogs across many breeds, Doberman Pinschers showed more genome in
+very long ROH (reflecting recent intensive breeding), while English bulldogs had
+more shorter ROH (reflecting a longer cumulative history). [@coop_popgen_notes]
+ROH analysis is now standard in conservation and livestock genomics.
+
+### Measures of genetic variability at the sequence level
+
+When we sequence DNA from multiple individuals, several complementary statistics
+summarize the genetic variation we observe.
+
+**Nucleotide diversity ($\pi$).** The most widely used measure is **nucleotide
+diversity $\pi$**, defined as the average number of pairwise nucleotide
+differences per site between two randomly chosen sequences from the population.
+[@coop_popgen_notes] If at site $i$ the derived allele has estimated frequency
+$\hat{p}_i$ across $L$ sites, a convenient estimator is:
+
+$$
+\hat{\pi} = \frac{1}{L} \sum_{i=1}^{L} 2\hat{p}_i(1 - \hat{p}_i).
+$$
+
+Under a standard neutral model with constant effective population size $N_e$ and
+per-site mutation rate $\mu$ per generation, the expected value is:
+
+$$
+E[\pi] = 4N_e\mu.
+$$
+
+[@coop_popgen_notes; @ellegren_genome_2014] This relationship is fundamental: it
+means $\pi$ provides a window into the product $\theta = 4N_e\mu$, sometimes
+called the **population-scaled mutation rate**. Species with larger long-term
+$N_e$ are expected to harbor more diversity, because more individuals means more
+opportunities for new mutations to arise and persist before being lost to drift.
+[@coop_popgen_notes]
+
+**Watterson's estimator.** A complementary measure of variation is the total
+number of **segregating sites** $S$ in the sample. The number of segregating
+sites grows with sample size, so we standardize using **Watterson's estimator**:
+
+$$
+\hat{\theta}_W = \frac{S}{a_n}, \quad \text{where } a_n = \sum_{k=1}^{n-1}
+\frac{1}{k}.
+$$
+
+[@charlesworth_hubby_2016] Both $\hat{\pi}$ and $\hat{\theta}_W$ estimate the
+same underlying quantity $\theta = 4N_e\mu$ under the standard neutral model,
+but they weight variants differently. $\hat{\pi}$ gives more weight to variants
+at intermediate frequency (because those contribute more to pairwise
+differences), while $\hat{\theta}_W$ gives equal weight to every segregating
+site, including rare singletons. This difference is the foundation of Tajima's D.
+
+**The site frequency spectrum.** Beyond counting polymorphic sites, we can ask
+about the **distribution of allele frequencies** across sites — a summary called
+the **site frequency spectrum (SFS)**. [@coop_popgen_notes] We count how many
+sites in our sample have a derived allele frequency of $1/n$, $2/n$, $3/n$, and
+so on up to $(n-1)/n$. Alleles found in only one copy are called **singletons**;
+those in two copies, **doubletons**, and so on. Under neutrality with constant
+population size, the SFS has a characteristic shape: many rare variants and fewer
+variants at high frequency. Deviations from this shape encode information about
+demographic history and selection, and the SFS underlies many of the most
+powerful modern methods for demographic inference.
+
+### Genetic drift and effective population size
+
+**Genetic drift** is the random change in allele frequencies caused by the finite
+number of individuals that contribute genes to the next generation.
+[@coop_popgen_notes; @leffler_revisiting_2012] In any generation, only a sample
+of all possible gametes actually form the next generation, and by chance some
+alleles leave more descendants than others — regardless of their fitness effects.
+The strength of drift is inversely proportional to population size: in a large
+population, random fluctuations average out and allele frequencies change slowly;
+in a small population, random changes can be large.
+
+The clearest consequence of drift is the **loss of heterozygosity** over time.
+In the absence of new mutations, drift will eventually fix one allele and
+eliminate all others. The rate of this loss is:
+
+$$
+H_t = \left(1 - \frac{1}{2N_e}\right)^t H_0 \approx H_0\, e^{-t/2N_e},
+$$
+
+where $H_0$ is the initial heterozygosity and $H_t$ is heterozygosity after $t$
+generations. [@coop_popgen_notes] For a population of $N_e = 1{,}000$,
+heterozygosity falls to about 37% of its original value after roughly
+2,000 generations. For $N_e = 100$, the same decline takes only ~200 generations.
+
+The conservation implications are stark. The black-footed ferret (*Mustela
+nigripes*) crashed to just 18 individuals in 1985 (of which only 7 reproduced),
+causing a sharp drop in heterozygosity that is still visible today even after the
+population has recovered to over 300 individuals. [@coop_popgen_notes] Because
+all living black-footed ferrets are descended from those 7 founders, genetic
+diversity remains low and this reduced variation limits the population's
+long-term adaptive potential.
+
+**Effective population size ($N_e$).** Real populations rarely behave like an
+idealized constant-size population of $N$ individuals all contributing equally
+to reproduction. Variance in reproductive success, fluctuations in census size,
+unequal sex ratios, and geographic structure all cause genetic drift to proceed
+faster than the census size $N$ would suggest. The **effective population size**
+$N_e$ is defined as the size of an idealized Wright–Fisher population that would
+experience the same rate of random allele-frequency change as the real
+population. [@coop_popgen_notes] Almost always, $N_e < N$.
+
+$N_e$ is strongly affected by population bottlenecks. Because the harmonic mean
+of a set of numbers is dominated by the smallest values, a population that
+numbers one million individuals 99% of the time but crashes to 1,000 every
+hundred generations will have an $N_e$ far closer to 1,000 than to one million.
+[@coop_popgen_notes] For humans, the global census size exceeds 8 billion, but
+$N_e$ estimated from genomic diversity is only about 10,000–30,000, reflecting
+ancient bottlenecks (including the out-of-Africa dispersal) and variance in
+reproductive success. [@coop_popgen_notes; @leffler_revisiting_2012]
+
+Importantly, $N_e$ also differs among parts of the genome. Autosomes, the X
+chromosome, the Y chromosome, and mitochondrial DNA (mtDNA) have different modes
+of inheritance and different sensitivities to variance in male versus female
+reproductive success. [@coop_popgen_notes] In many animal species, fewer males
+than females reproduce successfully (e.g., in harem-forming species), which
+reduces the effective number of contributing Y chromosomes relative to mtDNA. A
+striking demonstration comes from ancient horse DNA: comparing Scythian (2,300
+year-old) to modern horses, levels of Y chromosome diversity collapsed far more
+dramatically than mtDNA diversity, reflecting intense selection of a small number
+of stallions during domestication. [@coop_popgen_notes]
+
+**Mutation–drift balance.** When drift removes variation while mutation
+continually introduces new alleles, these forces can reach a dynamic equilibrium.
+At equilibrium, the expected heterozygosity is:
+
+$$
+H \approx 4N_e\mu = \theta,
+$$
+
+[@coop_popgen_notes] the same population-scaled mutation rate estimated by
+$\hat{\pi}$ and $\hat{\theta}_W$. Notice that diversity depends on the *product*
+of $N_e$ and $\mu$, not on either alone. This is partly why species with similar
+census sizes can have very different $\pi$, and why the narrow range of $\pi$
+across species with very different census sizes is so puzzling — additional
+factors such as linked selection (see below) must be suppressing $N_e$ in
+large-census-size species.
+
+### Tajima's D and departures from the standard neutral model
+
+**Tajima's D** exploits the fact that $\hat{\pi}$ and $\hat{\theta}_W$ estimate
+the same $\theta$ under the standard neutral model but are sensitive to different
+parts of the allele frequency distribution. [@coop_popgen_notes] The statistic
+is:
+
+$$
+D = \frac{\hat{\pi} - \hat{\theta}_W}{\sqrt{\operatorname{Var}(\hat{\pi} -
+\hat{\theta}_W)}}.
+$$
+
+When the site frequency spectrum matches neutral expectations, $D \approx 0$.
+Departures in either direction are informative:
+
+- **Negative $D$** (excess of rare variants): occurs after recent population
+  expansion (new mutations enter as singletons), after a recent positive
+  selective sweep (nearby variation is eliminated and then regenerates as rare
+  variants), or under ongoing purifying selection. [@ellegren_genome_2014;
+  @coop_popgen_notes]
+- **Positive $D$** (deficit of rare variants, excess at intermediate
+  frequencies): occurs after a population bottleneck (rare alleles are lost
+  preferentially), or under balancing selection (which actively maintains alleles
+  at intermediate frequencies for long periods). [@ellegren_genome_2014;
+  @coop_popgen_notes]
+
+Empirical examples anchor these interpretations. Genome-wide Tajima's D in many
+human populations tends to be slightly negative, consistent with recent
+population expansion that produced many new rare variants. [@leffler_revisiting_2012]
+Maize (*Zea mays*), domesticated from wild teosinte roughly 10,000 years ago,
+shows a shift toward positive Tajima's D relative to teosinte, consistent with
+the domestication bottleneck eliminating rare alleles and enriching
+intermediate-frequency variants. [@coop_popgen_notes] At loci under balancing
+selection — such as some MHC immune-gene loci in vertebrates — local Tajima's D
+can be strongly positive with elevated $\pi$ compared to neighboring neutral
+regions. [@charlesworth_hubby_2016; @coop_popgen_notes]
+
+In genomic analyses, Tajima's D is typically computed in **sliding windows**
+across chromosomes, producing a landscape of departures from neutrality that can
+be compared to recombination rates, gene density, and functional annotations.
+Windows with strongly negative $D$ and reduced $\pi$ are candidate selective
+sweep regions; windows with strongly positive $D$ are candidate balancing
+selection or bottleneck regions.
+
+### Population structure and $F_{ST}$
+
+Population subdivision is a pervasive feature of natural populations. Individuals
+tend to mate with nearby neighbors rather than with randomly chosen members of
+the entire species, and physical or ecological barriers can further divide
+populations. The degree to which allele frequencies have diverged among
+subpopulations is measured by $F_{ST}$. [@charlesworth_hubby_2016]
+
+One standard formulation compares heterozygosity within versus across populations:
+
+$$
+F_{ST} = \frac{H_T - H_S}{H_T},
+$$
+
+where $H_T$ is the expected heterozygosity in the total pooled population and
+$H_S$ is the average expected heterozygosity within subpopulations.
+[@charlesworth_hubby_2016] Values range from 0 (no differentiation; all
+populations have identical allele frequencies) to 1 (complete fixation of
+different alleles in different populations, so all diversity is among populations
+rather than within them).
+
+**Intuition from identity by descent.** $F_{ST}$ can also be understood through
+inbreeding. When a population is subdivided, an individual within one
+subpopulation is more likely to mate with another member of the same
+subpopulation than with a random individual from the whole species. From the
+perspective of the total population, individuals within subpopulations are
+therefore somewhat "inbred" relative to the global average. $F_{ST}$ measures
+the deficit of heterozygosity within subpopulations compared to the global
+expectation — in other words, the fraction of total genetic variance explained
+by differences among populations. [@coop_popgen_notes]
+
+Under a simple model where one ancestral population of size $N_e$ split $T$
+generations ago into two isolated daughter populations with no subsequent gene
+flow, $F_{ST}$ grows over time as drift differentiates allele frequencies:
+
+$$
+F_{ST} \approx \frac{T}{T + 4N_e}.
+$$
+
+[@coop_popgen_notes] This shows that differentiation depends on the ratio of
+divergence time to $N_e$: populations diverged long ago, or with small $N_e$,
+accumulate higher $F_{ST}$.
+
+**Wright's F-statistics hierarchy.** Wright extended this to a three-level
+hierarchy. $F_{IS}$ measures inbreeding of individuals relative to their
+subpopulation; $F_{ST}$ measures differentiation of subpopulations relative to
+the total; $F_{IT}$ measures overall inbreeding of individuals relative to the
+total population. These satisfy: [@coop_popgen_notes]
+
+$$
+(1 - F_{IT}) = (1 - F_{IS})(1 - F_{ST}).
+$$
+
+**Empirical values.** Among major human continental groups, genome-wide $F_{ST}$
+is typically 0.05–0.15, indicating that most genetic variation is within, not
+between, populations. [@leffler_revisiting_2012] Among strongly isolated island
+populations or distinct ecotypes, $F_{ST}$ can exceed 0.3. [@ellegren_genome_2014]
+Within a species, $F_{ST}$ can vary sharply along the genome: regions containing
+inversions, structural variants, or loci under divergent selection often show
+elevated $F_{ST}$ compared to the genomic background, making windowed $F_{ST}$
+scans a standard first step in searching for regions involved in local adaptation.
+[@ellegren_genome_2014]
+
+### Recombination, linkage disequilibrium, and linked selection
+
+Recombination each generation breaks down associations between alleles at
+different loci. The degree of non-random association between alleles at different
+loci is called **linkage disequilibrium (LD)**. For a pair of biallelic loci with
+alleles $A$/$a$ and $B$/$b$, the LD coefficient is:
+
+$$
+D_{AB} = p_{AB} - p_A p_B,
+$$
+
+where $p_{AB}$ is the haplotype frequency of $AB$. [@coop_popgen_notes] If the
+loci are statistically independent, $D = 0$. LD decays over time as:
+
+$$
+D_t = (1 - c)^t D_0,
+$$
+
+where $c$ is the recombination fraction between the two loci.
+[@coop_popgen_notes] For tightly linked loci, LD can persist for thousands of
+generations; for loci on different chromosomes ($c = 0.5$), LD is halved every
+generation. A striking demonstration of LD decay comes from Neanderthal
+admixture: modern Eurasians carry ~1–4% Neanderthal-derived sequence, and LD
+between Neanderthal-ancestry alleles in modern Europeans decays exponentially
+with genetic distance in a way consistent with admixture ~35,000–47,000 years
+ago. [@coop_popgen_notes]
+
+In practice, LD is often summarized using $r^2$, the squared correlation of
+allele states between loci. Genome sequences and linkage maps together reveal
+highly heterogeneous recombination landscapes with hotspots and cold spots.
+[@ellegren_genome_2014]
+
+**Linked selection.** Recombination also modulates how selection at one site
+affects neutral variation at nearby sites — a phenomenon called **linked
+selection**. Two major forms are: [@ellegren_genome_2014; @coop_popgen_notes]
+
+- **Background selection**: Purifying selection against deleterious alleles
+  reduces diversity at linked neutral sites. When a deleterious allele is
+  eliminated, it drags nearby neutral variation to extinction along with it.
+- **Selective sweeps**: Positive selection on a beneficial allele causes nearby
+  neutral variation to "hitchhike" to high frequency or fixation, reducing
+  diversity in a window around the selected site.
+
+In regions of low recombination, both forms can substantially depress neutral
+diversity, creating "cold spots" in the landscape of $\pi$ even when mutation
+rates are not unusually low. [@ellegren_genome_2014; @leffler_revisiting_2012;
+@coop_popgen_notes] In *Drosophila*, neutral diversity is often lowest near
+centromeres and telomeres, consistent with strong background selection and
+sweeps in low-recombination regions. [@ellegren_genome_2014] This has a
+practical consequence for interpreting population genomic scans: a dip in $\pi$
+near a gene does not necessarily mean *that* gene was the direct target of
+selection — it may simply be in LD with a nearby selected site.
+
+### Natural selection: how fitness differences change allele frequencies
+
+**Natural selection** changes allele frequencies non-randomly, based on fitness
+differences among genotypes. We quantify these differences using the **selection
+coefficient** $s$, which measures the difference in relative fitness between
+alleles. [@coop_popgen_notes]
+
+In the simplest case — a haploid population where allele $A_1$ has fitness 1 and
+$A_2$ has fitness $1 - s$ — the frequency of $A_1$ after $\tau$ generations
+starting from initial frequency $p_0$ is approximately:
+
+$$
+p_\tau \approx \frac{p_0}{p_0 + q_0\, e^{-s\tau}}.
+$$
+
+[@coop_popgen_notes] This logistic equation produces the classic S-shaped
+trajectory of a beneficial allele rising toward fixation. The allele increases
+slowly when rare (it is mostly in heterozygotes, where its advantage may be
+diluted), accelerates as it becomes common, then slows again as the alternate
+allele nears loss.
+
+**How long does a sweep take?** The time for a beneficial allele to rise from a
+single copy to near-fixation in a population of size $N$ is approximately:
+
+$$
+\tau \approx \frac{2}{s}\log(N).
+$$
+
+[@coop_popgen_notes] For a selection coefficient of $s = 0.01$ (a 1% fitness
+advantage) in a population of $N = 10{,}000$, this is about 1,840 generations.
+The real-world example of **lactase persistence** in humans illustrates this well:
+the allele allowing lactase expression in adults was absent in Central Europe more
+than 5,000 years ago and is now at frequencies above 70% in many European
+populations, consistent with a strong selection coefficient ($s \approx
+0.01$–$0.05$) that arose with dairy farming. [@coop_popgen_notes]
+
+**Diploid selection and dominance.** In diploid organisms, the fitness of a
+heterozygote need not be intermediate between the two homozygotes. The
+**dominance coefficient** $h$ captures this:
+
+| Genotype | $A_1A_1$ | $A_1A_2$ | $A_2A_2$ |
+|----------|----------|----------|----------|
+| Fitness  | $1$      | $1 - hs$ | $1 - s$  |
+
+When $h = 0$, allele $A_1$ is fully dominant (the heterozygote has the same
+fitness as the better homozygote). When $h = 1$, $A_1$ is fully recessive.
+[@coop_popgen_notes] Dominance profoundly affects how selection acts on rare
+alleles: a recessive beneficial allele is nearly invisible to selection when rare
+because it is almost always found in heterozygotes.
+
+**Balanced polymorphisms.** Not all selection drives alleles to fixation or loss.
+When heterozygotes have higher fitness than either homozygote —
+**heterozygote advantage** or overdominance — selection maintains both alleles at
+a stable equilibrium. The classic example is sickle-cell anemia: heterozygotes
+are protected from malaria relative to both the normal homozygote (malaria
+susceptible) and the sickle-cell homozygote (severe anemia). A second compelling
+example comes from Soay sheep: two alleles at the *RXFP2* locus affect horn size,
+with each homozygote suffering fitness costs at different life-history stages
+(viability vs. reproductive success), while heterozygotes achieve the highest
+combined fitness. [@coop_popgen_notes] Both alleles are maintained at
+intermediate frequency, and this type of locus shows elevated $\pi$ and positive
+Tajima's D — the genomic signature we expect under balancing selection.
+
+### Drift, migration, and demographic history
+
+Genetic drift and migration jointly shape the distribution of variation within
+and among populations. Drift reduces diversity over time and can fix neutral or
+mildly deleterious alleles; migration (gene flow) tends to homogenize allele
+frequencies and counteract differentiation. [@leffler_revisiting_2012;
+@coop_popgen_notes] Their interplay generates a spectrum of patterns from smooth
+**isolation-by-distance** clines — where genetic differentiation increases
+gradually with geographic separation — to sharp **contact zones** between
+diverging lineages. [@ellegren_genome_2014]
+
+Population genomics leverages whole-genome data to reconstruct **demographic
+histories** by examining the site frequency spectrum, distributions of pairwise
+coalescence times, and patterns of haplotype sharing. [@ellegren_genome_2014]
+Bottlenecks, expansions, and admixture all leave characteristic genomic
+signatures. Because these signatures can sometimes resemble those produced by
+selection at particular loci, it is essential to account for demography when
+interpreting outlier regions in genome-wide scans.
+
+**Coalescent theory** provides the formal framework for relating patterns of
+genomic variation to demographic history by reasoning backward in time.
+[@coop_popgen_notes] Rather than tracking allele frequencies forward through
+generations, coalescent theory asks: looking backward, when did the ancestors of
+our sampled sequences last share a common ancestor? This event is called a
+**coalescence**. In a population of effective size $N_e$, the expected
+coalescence time for a pair of lineages is $2N_e$ generations. For a sample of
+$k$ lineages, the expected time until the first coalescence event is:
+
+$$
+E[T_k] = \frac{2N_e}{\binom{k}{2}}.
+$$
+
+[@coop_popgen_notes] The total expected time to the most recent common ancestor
+(MRCA) of all $n$ sampled sequences is approximately $4N_e(1 - 1/n)$ generations.
+A key insight is that neutral mutations do not affect the coalescent process —
+they are simply scattered onto the coalescent tree at random. This means we can
+think about the tree structure first (shaped by drift and demography) and then
+superimpose mutations (shaped by mutation rate). [@coop_popgen_notes]
+
+Long-term changes in population size alter coalescence rates in predictable ways.
+A recent population bottleneck accelerates coalescence (many lineages find common
+ancestors rapidly in the recent past), while population expansion slows it
+(lineages are slow to coalesce in the larger ancestral population). Methods such
+as PSMC, SMC++, and fastsimcoal2 exploit these relationships to infer detailed
+demographic histories from genomic data.
+
+Under the island-mainland model — a small island population of size $N_I$
+receiving migrants from a large mainland at rate $m$ per generation —
+differentiation between island and mainland reaches an equilibrium where:
+
+$$
+F_{IM} = \frac{1}{1 + 4N_I m}.
+$$
+
+[@coop_popgen_notes] This elegant result shows that even a small number of
+migrants per generation ($N_I m \gtrsim 1$) is enough to substantially suppress
+differentiation. The key parameter is not the migration rate alone, but the
+product of effective population size and migration rate.
+
+::: callout-note
+## Lab Connection: 1000 Genomes Sliding Windows
+
+In Lab 10, you will use an R Shiny app that I built based on 1000 Genomes data to visualize sliding‑window estimates of $F_{ST}$, $\pi$, and Tajima’s D across several human genomic regions. For each assigned region, you will:
+
+- Examine windowed $F_{ST}$ between population pairs to identify peaks of differentiation.  
+- Compare windowed $\pi$ and Tajima’s D within populations to assess diversity and allele frequency shifts.  
+- Use the UCSC Genome Browser to connect these statistical patterns to specific genes and known aspects of human evolution.
+
+This lab provides a concrete example of how the summary statistics introduced in this section are used in practice to link evolutionary processes, genomic variation, and gene function.
+:::
+
+## Sliding Window Analyses, Genome-wide Scans, and Data Challenges
+
+Population genomics often proceeds by scanning the genome for regions where summary statistics deviate from a background pattern, then asking what biological processes might explain those deviations. Sliding‑window approaches are central to this strategy: they smooth noisy site‑level statistics, highlight clusters of extreme values, and provide a natural bridge between population‑genetic theory and genome annotation. [@haasl_payseur_2016; @ellegren_genome_2014]
+
+In a sliding‑window analysis, the genome is divided into consecutive windows, defined either by physical distance (for example, 50 kb) or by a fixed number of SNPs (for example, 100 variants). A statistic of interest—such as mean $F_{ST}$, average $\pi$, or Tajima’s D—is calculated in each window, and the window is then moved along the chromosome, often with overlap, to produce a continuous profile. [@haasl_payseur_2016] Because evolutionary processes such as selection and linked selection typically affect stretches of the genome rather than isolated sites, window‑based statistics are well suited to detecting their footprints.
+
+Different evolutionary scenarios lead to characteristic window‑level signatures. Regions affected by recent positive selection in one population may show a local reduction in $\pi$, negative Tajima’s D, and elevated $F_{ST}$ compared to the genome‑wide background. Regions under balancing selection can show elevated $\pi$ and positive Tajima’s D, and sometimes lower $F_{ST}$ if similar polymorphisms are maintained across populations. Regions strongly influenced by background selection may display reduced $\pi$ without dramatic changes in $F_{ST}$ or Tajima’s D. [@haasl_payseur_2016; @ellegren_genome_2014] Genome‑wide scans exploit these patterns by computing many such statistics in windows and then flagging windows that fall in the tails of their empirical distributions.
+
+Haasl and Payseur review a wide variety of statistics used in genome‑wide scans for selection and emphasize that no single metric is definitive. [@haasl_payseur_2016] Site‑frequency‑based tests (such as Tajima’s D), haplotype‑based tests, and differentiation measures (like $F_{ST}$ or related quantities) each respond differently to selection and demography. Combining them can increase power and specificity. For example, a region with high $F_{ST}$ but otherwise unremarkable $\pi$ and Tajima’s D might reflect drift or demographic history, whereas a region with high $F_{ST}$, strongly reduced $\pi$ in one population, and negative Tajima’s D is more consistent with a localized selective sweep.
+
+Practical choices about window design matter. Larger windows average over more sites, reducing sampling noise but potentially diluting narrow signals of selection; smaller windows increase resolution but yield noisier estimates and more extreme values by chance. [@haasl_payseur_2016] Windows defined by physical distance align naturally with gene models and recombination maps, while SNP‑based windows equalize the number of variants per window but can span very different physical lengths in regions of high or low SNP density. Overlapping windows produce smoother profiles but create strong correlations among neighboring windows; non‑overlapping windows reduce this correlation but may slice through true signals. [@haasl_payseur_2016]
+
+Once candidate windows have been identified, the next step is to connect them to biological features. A typical workflow is to merge adjacent outlier windows into broader candidate regions, intersect these regions with gene annotations and regulatory elements, and then prioritize genes based on known functions, expression patterns, or previous association and QTL studies. [@ellegren_genome_2014; @haasl_payseur_2016] In many systems, such genome‑wide scans have successfully highlighted loci involved in traits such as high‑altitude adaptation, host–pathogen interactions, pigmentation, and domestication.
+
+### Missing data, ascertainment, and robustness of window-based scans
+
+The reliability of sliding‑window analyses depends strongly on data quality and study design. Missing genotypes, uneven coverage, and ascertainment bias can all distort estimates of $F_{ST}$, $\pi$, Tajima’s D, and related statistics. [@haasl_payseur_2016; @sethuraman_missing_2026] These issues are particularly important in reduced‑representation datasets (such as RADseq, GBS, and SNP chips), low‑coverage sequencing, and ancient DNA.
+
+Missing data arise for many reasons. Random dropout, low read depth, and sequencing errors can cause some genotypes to be uncalled or miscalled. Reduced‑representation methods sample only a subset of the genome by design, often with allele dropout at polymorphic restriction sites. Some variants may also be effectively “missing” because they occur in unsampled or extinct “ghost” populations that have contributed ancestry to the sampled groups. [@sethuraman_missing_2026] Each of these mechanisms can affect window‑based statistics in different ways.
+
+Systematic differences in coverage or missingness among populations can bias between‑population statistics. If one population has lower average depth or a higher fraction of missing genotypes, variant callers may preferentially retain high‑frequency alleles in that population, making it appear less diverse and exaggerating $F_{ST}$ in some windows. [@haasl_payseur_2016; @sethuraman_missing_2026] Ascertainment bias—such as SNPs discovered in a subset of populations and then genotyped elsewhere—can skew the site frequency spectrum, reducing the apparent number of rare variants and altering $\hat{\theta}_W$, $\hat{\pi}$, and Tajima’s D. [@haasl_payseur_2016]
+
+Common responses to missing data include discarding sites or individuals with too much missingness, treating missing genotypes as random and ignoring them in likelihood calculations, or imputing missing genotypes from reference panels or local haplotype structure. [@sethuraman_missing_2026] These strategies can work reasonably well when missingness is modest and approximately random, but can introduce biases when missingness is structured across populations or along the genome. Recent work has developed corrected estimators of summary statistics that explicitly account for genotyping errors and missing data, and methods that integrate missingness into demographic or selection models. [@sethuraman_missing_2026]
+
+For sliding‑window analyses, these considerations suggest several best practices. Filters on depth, genotype quality, and call rate should be applied consistently across populations, and sensitivity analyses should be used to check whether apparent peaks in $F_{ST}$ or dips in $\pi$ are robust to reasonable changes in filtering thresholds. [@haasl_payseur_2016] Where possible, neutral simulations or resampling approaches that reproduce the observed missing‑data pattern can be used to assess how often similar extrema would arise by chance. [@haasl_payseur_2016; @sethuraman_missing_2026] Interpreting outlier windows is most convincing when statistical signals align with regions of good data quality and with independent evidence from gene function, expression, or other genomic features.
+
+Overall, sliding‑window analyses, genome‑wide scans for selection, and careful attention to missing data together form a powerful framework for reading the evolutionary history of populations from their genomes. The same summary statistics introduced earlier in the chapter—$\pi$, Tajima’s D, $F_{ST}$, and related measures—play central roles in these analyses, but their interpretation always depends on the biological context, the demographic background, and the limitations of the data.
+
+::: callout-note
+## Placeholder: Case Study – Human Population Genomics
+
+**To be added by the author.** This box will present a detailed case study of human population genomics that parallels Lab 9. It will walk through:
+
+- Computing windowed $\pi$, $F_{ST}$, and Tajima’s D in human populations.
+- Identifying genomic regions with signatures of selection and/or complex demography.
+- Integrating these results with knowledge of human evolutionary history and trait biology.
+
+The case study will serve as a capstone example, demonstrating how the concepts introduced in this chapter come together in a real‑world dataset.
+:::
+
+## Problems
+
+1. **Nucleotide diversity and heterozygosity.**  
+   Consider a sample of $n$ haploid genomes from a population. For each of $L$ SNPs, you estimate the derived allele frequency $\hat{p}_i$.  
+   a. Write down the estimator of nucleotide diversity $\hat{\pi}$ in terms of the $\hat{p}_i$. Explain in words what $\hat{\pi}$ measures and how it relates to the concept of expected heterozygosity at a locus.  
+   b. Suppose that across a set of allozyme loci in a diploid species, the average heterozygosity $\bar{H}$ is 0.12. What does this imply about the expected fraction of loci at which a randomly chosen individual is heterozygous?  
+   c. In a resequenced 1 kb gene region, you estimate $\hat{\pi} = 0.004$ per site. How would you compare this gene’s diversity to the genome‑wide allozyme heterozygosity estimate, and what additional context would you need to make a fair comparison?
+
+2. **Interpreting Tajima’s D.**  
+   You compute Tajima’s D in 10 kb windows across a genome and observe many windows with strongly negative D values.  
+   a. Describe at least two evolutionary scenarios (one demographic, one selective) that could produce genome‑wide negative Tajima’s D.  
+   b. How might you distinguish between these scenarios using additional statistics or data (e.g., recombination maps, functional annotations, or outgroup comparisons)?  
+   c. In a specific genomic region, you observe negative Tajima’s D together with markedly reduced $\pi$ relative to the genomic background. Under what conditions would you interpret this as evidence for a recent selective sweep?
+
+3. **$F_{ST}$ and genomic landscapes of differentiation.**  
+   You have whole‑genome SNP data from two partially isolated populations. You compute windowed $F_{ST}$ (100 kb windows) and find that most windows have low $F_{ST}$ (~0.05), but a small fraction have much higher values (>0.3).  
+   a. Describe at least two possible explanations for these high‑$F_{ST}$ windows (one involving selection, one involving neutral processes).  
+   b. How could you use additional statistics such as $\pi$, $d_{XY}$, and Tajima’s D to help distinguish between these explanations?  
+   c. What role might recombination rate variation play in generating heterogeneous $F_{ST}$ across the genome?
+
+4. **Sliding windows vs. spline‑based windows.**  
+   You are designing a genome‑wide scan for selection using pooled sequencing data from two populations and SNP‑wise $F_{ST}$ estimates.  
+   a. Compare fixed‑size sliding windows (e.g., 50 SNPs per window) with the spline‑based windowing implemented in GenWin. What are the main advantages and disadvantages of each approach?  
+   b. In a simulation study, you find that spline‑based windows with the $W$ statistic yield a higher true‑positive to false‑positive ratio than fixed windows, even though both approaches detect a similar number of true selected regions. Explain why this might be the case.  
+   c. Describe how you would use neutral simulations or permutation tests to determine an empirical significance threshold for $W$ in your dataset.
+
+5. **Missing data and summary statistics.**  
+   Consider a reduced‑representation dataset (e.g., RADseq) with substantial missing data and variable coverage across individuals and populations. You wish to estimate windowed $\pi$ and $F_{ST}$.  
+   a. Discuss at least two ways in which missing data can bias estimates of $\pi$ and $F_{ST}$, particularly when missingness differs systematically among populations.  
+   b. How might you modify your analysis to mitigate these biases (e.g., filtering strategies, using genotype likelihoods, or correcting estimators)?  
+   c. Reflect on how the missing data issues discussed here relate to earlier chapters on variant calling and GATK’s reference confidence mode. How do choices made at the variant‑calling stage propagate into population genomic analyses?
+
+6. **Ghost populations and demographic inference.**  
+   You are analyzing a species with a complex history, including suspected gene flow from an unsampled (“ghost”) population.  
+   a. Conceptually, explain how unmodeled gene flow from a ghost population can bias estimates of $\pi$, $F_{ST}$, and Tajima’s D in the sampled populations.  
+   b. Propose one or more strategies (conceptual or methodological) for detecting the influence of ghost populations using genomic data.  
+   c. How might sliding‑window or spline‑based analyses help you localize regions of the genome most affected by ghost admixture?
+
+## Reflection Questions
+
+1. **From loci to genomes.**  
+   Earlier genetic studies focused on a handful of loci, whereas population genomics embraces whole genomes. Reflect on how this shift changes the kinds of questions we can ask about evolution and how confident we can be in our answers. What new challenges arise when moving from a few markers to millions?
+
+2. **Linked selection and interpretation.**  
+   Linked selection (background selection and selective sweeps) complicates the relationship between diversity, recombination, and selection. How does this complexity affect our ability to identify specific targets of selection? Under what circumstances might you be cautious about interpreting low diversity and high $F_{ST}$ as evidence of local adaptation?
+
+3. **Model choice and null expectations.**  
+   Many population genomic statistics (Tajima’s D, $F_{ST}$, windowed $\pi$) are interpreted relative to simple null models (e.g., neutrality with constant population size). How should we update our “null expectations” in light of the rich demographic histories and pervasive linked selection revealed by genomic data? What does it mean to choose an appropriate null model in this context?
+
+4. **Data quality and inference.**  
+   Think back to earlier chapters on alignment, variant calling, and quality control. In what ways do choices made during these early steps constrain or enable the kinds of population genomic analyses we can perform? How might you design a sequencing and analysis pipeline differently if your primary goal from the outset is population genomics rather than variant discovery in a single genome?
+
+5. **Ethics and communication.**  
+   Population genomics of human populations can touch on sensitive issues of ancestry, identity, and history. How can scientists responsibly communicate findings about human genetic diversity and population structure to avoid reinforcing misconceptions or harmful ideologies? What roles do transparency, community engagement, and historical context play in this process?
+
+6. **Where to go deeper.**  
+   This chapter has provided a conceptual overview of population genomics. If you were to take a dedicated course in this field, what topics would you be most interested in exploring in more depth (e.g., coalescent theory, inference of selection, demographic modeling, ancient DNA, graph‑based models of population structure)? How might these topics intersect with your own research interests or future work?
+   
+## References

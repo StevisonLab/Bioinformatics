@@ -6,11 +6,11 @@ csl: nature.csl
 
 ## Lab 10: Population Genomics using the 1000 Genomes Dataset
 
-####Today you will be working with human population genomics data from the [1000 genomes project](https://www.internationalgenome.org/). The goal of this exercise is to provide real world experience using bioinformatics to examine genetic differences within and between populations. 
+Today you will be working with human population genomics data from the [1000 genomes project](https://www.internationalgenome.org/). The goal of this exercise is to provide real world experience using bioinformatics to examine genetic differences within and between populations. 
 
-#####First, you will be assigned one of five regions (~2-10 Mb each) that have been targeted due to known signatures of importance in human evolution. Then, in Part 1, you will explore between population divergence specific to your region. The examination of these plots and statistics will be important in selecting populations to examine further for within population diversity and selection as part of Part 2. Finally, in Part 3, you will explore your region on the UCSC genome browser to examine potential genes that may contribute to the population genetic signal you see in your plots.
+First, you will be assigned one of five regions (~2-10 Mb each) that have been targeted due to known signatures of importance in human evolution. Then, in Part 1, you will explore between population divergence specific to your region. The examination of these plots and statistics will be important in selecting populations to examine further for within population diversity and selection as part of Part 2. Finally, in Part 3, you will explore your region on the UCSC genome browser to examine potential genes that may contribute to the population genetic signal you see in your plots.
 
-##Part 1: Examine region and identify target populations 
+## Part 1: Examine region and identify target populations 
 
 1.	The 1000 genomes project sampled individuals from 26 human population, but today we will only be working with the four listed below. Each population has a unique three letter abbreviation:
 	- CEU:	Utah Residents (CEPH) w/ Northern & Western European Ancestry
@@ -43,7 +43,7 @@ csl: nature.csl
 
 7. Right click on the Fst plot for the selected pair of populations to include in your submitted assignment that you will turn in.
 
-##Part 2: Investigate selected populations further
+## Part 2: Investigate selected populations further
 
 1. For Part 2, select the tab labeled "Within Populations".
 
@@ -78,7 +78,7 @@ csl: nature.csl
  
 10. Right click on the image of Pi and Tajima's D for this population to include in your submitted assignment that you will turn in.
 
-##Part 3: Examine region in Genome Browser
+## Part 3: Examine region in Genome Browser
 
 1.	For Part 3, click the third tab in the app titled "Explore". Again, select your region from the drop down menu and click on the button "Load Region".
 
@@ -100,5 +100,6 @@ csl: nature.csl
 
 7.	When you are done, compare your results to others in the class and the other regions. When you are done, write up a short (<200 words) summary of what you did in this lab and what you learned from your region. Include the plots from Part 1 with your selected pair of populations, and the 2 plots from Part 2 for the population you hypothesize to be driving this signature. Finally, include the screen shot of your zoomed in region with the selected gene from the UCSC. 
 
+---
 
-#####This exercise should provide a sense of how sliding window approaches are used to identify regions of interest in population genetics studies. Typically, these scans are done genome-wide along with other statistics to identify regions of interest. Then, gene annotations are used to find overlapping functional regions that can explain the genetic patterns. This can be done programmatically by downloading annotations from UCSC and using `bedtools` to intersect with the regions of interest. Then, [custom tracks](https://genome.ucsc.edu/goldenPath/help/customTrack.html) can be used to upload FST, pi, and Tajima's D results to the genome browser. We will discuss sliding window analyses in more depth in two weeks.
+This exercise should provide a sense of how sliding window approaches are used to identify regions of interest in population genetics studies. Typically, these scans are done genome-wide along with other statistics to identify regions of interest. Then, gene annotations are used to find overlapping functional regions that can explain the genetic patterns. This can be done programmatically by downloading annotations from UCSC and using `bedtools` to intersect with the regions of interest. Then, [custom tracks](https://genome.ucsc.edu/goldenPath/help/customTrack.html) can be used to upload FST, pi, and Tajima's D results to the genome browser. We will discuss sliding window analyses in more depth in two weeks.
