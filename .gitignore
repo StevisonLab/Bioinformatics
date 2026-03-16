@@ -21,3 +21,9 @@ Lab08_updated.qmd
 Lab08_old.qmd
 .RData
 .Rhistory
+
+**/*.quarto_ipynb
+Lab09_updated.qmd
+Lab09_updated.html
+/Lab09_updated_files
+.Rhistory

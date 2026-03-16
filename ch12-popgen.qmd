@@ -350,7 +350,7 @@ ROH analysis is now standard in conservation and livestock genomics.
 ### Measures of genetic variability at the sequence level
 
 When we sequence DNA from multiple individuals, several complementary statistics
-summarize the genetic variation we observe.
+summarize the genetic variation we observe. I have recorded a [video explanation](https://auburn.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=bf9c8b7c-92e2-436d-8ddf-b40a0139e33b) of how to calculate several of the measures introduced below.
 
 **Nucleotide diversity ($\pi$):** The most widely used measure is **nucleotide diversity $\pi$**, defined as the average number of pairwise nucleotide differences per site between two randomly chosen sequences from the population [@coop_popgen_notes]. If at site $i$ the derived allele has estimated frequency $\hat{p}_i$ across $L$ sites, a convenient estimator is:
 
@@ -430,8 +430,7 @@ the same population-scaled mutation rate estimated by $\hat{\pi}$ and $\hat{\the
 
 **Tajima's D** exploits the fact that $\hat{\pi}$ and $\hat{\theta}_W$ estimate
 the same $\theta$ under the standard neutral model but are sensitive to different
-parts of the allele frequency distribution [@coop_popgen_notes]. A [great video explanation](https://www.youtube.com/watch?v=wiyay4YMq2A) of Tajima's D and its relation to the site frequency spectrum was recorded a while back by my own PhD Mentor Dr. Mohamed Noor. The statistic
-is calculated according to the following formula:
+parts of the allele frequency distribution [@coop_popgen_notes]. A [great video explanation](https://www.youtube.com/watch?v=wiyay4YMq2A) of Tajima's D and its relation to the site frequency spectrum was recorded a while back by my own PhD Mentor Dr. Mohamed Noor. The statistic is calculated according to the following formula:
 
 $$
 D = \frac{\hat{\pi} - \hat{\theta}_W}{\sqrt{\operatorname{Var}(\hat{\pi} -

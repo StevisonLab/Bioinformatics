@@ -1,5 +1,5 @@
 ---
-title: "Lab 8: Beyond GATK – Benchmarking Variant Calling Pipelines"
+title: "Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines"
 bibliography: references.bib
 csl: nature.csl
 ---
