@@ -57,7 +57,7 @@ Underlying all of these mechanisms is a simple but powerful empirical case: fede
 ## The Anatomy of a Grant Proposal
 
 ::: callout-note
-#### Figure 11.1 – Anatomy of a Grant Proposal
+#### Figure 11.1 – What are the major parts of a grant proposal?
 
 ![Anatomy of a Grant Proposal](images/Fig_11.1_Grant_Anatomy.png){#fig-grantanatomy width="70%" fig-alt="Stacked diagram illustrating the five sequential components of a grant proposal, each represented as a colored label box with bullet-point details inside a surrounding border: Idea (orange) with bullets for Central Question or Hypothesis and Focus on innovation not approach; Background (dark green) with bullets for Strategic information instead of review and Focus on significance and gaps in knowledge; Specific Aims (blue) with bullets for Use action verbs and Be precise on research objectives; Research Approach (purple) with bullets for Mini-background, Detailed step-by-step plan, and Anticipated Challenges; and Conclusion (bright green) with a bullet for Impact of potential results."}
 

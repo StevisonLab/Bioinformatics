@@ -9,7 +9,7 @@ lang: en-US
 
 As first introduced in Chapter 8, **population genomics** typically describes a DNA resequencing project of multiple individuals from the same population of a species. As a field, population genomics brings together evolutionary theory and genome‑scale data to ask how mutation, recombination, genetic drift, migration, and natural selection shape patterns of genetic variation across the genome [@ellegren_genome_2014; @coop_popgen_notes]. Rather than focusing on single loci, population genomics characterizes the “genomic landscape” of diversity and differentiation, providing a richer picture of how genomes evolve in natural populations [@ellegren_genome_2014]. This chapter introduces the historical roots of population genomics, the key summary statistics and evolutionary processes that govern genomic variation, and modern genome‑wide analysis strategies such as sliding‑window and spline‑based approaches.
 
-The goal is to provide a broad conceptual overview rather than a mathematically exhaustive treatment. Readers interested in formal derivations and deeper theory are encouraged to consult dedicated population genetics textbooks, such as Graham Coop’s _Population and Quantitative Genetics_ notes, which develop the underlying models and statistical machinery in detail [@coop_popgen_notes]. Here, I emphasize intuitive explanations, connections to earlier chapters (e.g., sequence analysis, variant calling, and alignment), and links to labs in which you will interpret population genomic statistics such as nucleotide diversity $\pi$, Tajima’s D, and $F_{ST}$.
+The goal of this companion chapter is to provide a broad conceptual overview rather than a mathematically exhaustive treatment. Students who are interested in formal derivations and deeper theory are encouraged to consult dedicated population genetics textbooks, such as Graham Coop’s _Population and Quantitative Genetics_ notes, which develop the underlying models and statistical machinery in detail [@coop_popgen_notes]. Here, I emphasize historical context, introductions to key terminology, connections to earlier chapters (e.g., sequence analysis, variant calling, and alignment), and links to labs in which you will interpret population genomic statistics such as nucleotide diversity $\pi$, Tajima’s D, and $F_{ST}$.
 
 ## From the Modern Synthesis to Population Genomics
 
@@ -188,6 +188,33 @@ This cytogenetic foundation identified conserved chromosome arms across
 would later anchor genome-wide sequence comparisons — one of the earliest
 examples of what we now call comparative genomics [@schaeffer_muller_2018].
 
+::: callout-note
+#### Figure 12.1 – *Drosophila* Polytene Chromosomes and the Origins of Comparative Genomics
+
+![Polytene chromosomes of *Drosophila melanogaster*](images/drosophila_polytene.jpg){#fig-polytene width="40%" fig-alt="Phase-contrast microscopy image of Drosophila melanogaster polytene chromosomes from larval salivary glands. The image shows several thick, banded chromosomal arms radiating outward from a central chromocentre, where the heterochromatic regions of all chromosomes fuse. The distinct dark and light transverse banding pattern along each arm is clearly visible and was used by early geneticists to map gene and inversion positions."}
+
+Polytene chromosomes arise in certain larval tissues of *Drosophila* — most
+famously the salivary glands — when chromosomes replicate repeatedly without
+cell division, producing up to 1,024 aligned sister chromatids that together
+form a single giant structure visible under light microscopy [@schaeffer_muller_2018].
+The resulting banding pattern is exquisitely reproducible and species-specific,
+allowing cytogeneticists to assign genes and chromosomal inversions to precise
+physical locations decades before DNA sequencing was possible. Comparison of
+banding patterns across *Drosophila* species revealed that large chromosome
+segments — now called **Muller's elements** — remain syntenic (gene-order
+conserved) over tens of millions of years of evolution, even as the chromosomes
+themselves have fused, split, and rearranged between lineages
+[@schaeffer_muller_2018]. This conservation of chromosomal arms provided the
+conceptual scaffold for comparative genomics: the insight that a gene's
+chromosomal neighborhood is itself an evolutionary character, and that comparing
+neighborhoods across species can reveal the history of genome rearrangement.
+The polytene banding system was also the tool that first allowed researchers to
+connect allozyme variation — identified biochemically — to specific genomic
+regions, bridging the molecular and cytogenetic traditions that converged in
+modern population genomics. Image: Wikimedia Commons, public domain.
+:::
+
+
 The *Adh* locus illustrates the vocabulary of molecular variation clearly. At
 some sites, individuals within *D. melanogaster* differ from each other — these
 are **polymorphisms** (segregating sites). At other sites, *D. melanogaster*
@@ -212,7 +239,7 @@ entire genomes [@charlesworth_hubby_2016; @leffler_revisiting_2012].
 ### The omics era and the rise of population genomics
 
 High-throughput sequencing technologies transformed population genetics into
-population genomics. This transition into the "omics era" is characterized by large-scale, quantitative, and integrative analyses [@ellegren_genome_2014]. Genome sequencing of non-model organisms is now routine, and whole-genome resequencing of many individuals per species enables true population genomics: simultaneous analysis of polymorphism and divergence across every part of the genome [@ellegren_genome_2014]. If you remember back to the [Welcome Page](index.qmd) for this course textbook, I mentioned my PhD work used 454 sequencing, now considered obsolete sequencing technology. This project is considered one of the first major population genomics studies [@kulathinal_genomics_2009]. 
+population genomics. This transition into the "omics era" is characterized by large-scale, quantitative, and integrative analyses [@ellegren_genome_2014]. Genome sequencing of non-model organisms is now routine, and whole-genome resequencing of many individuals per species enables true population genomics: simultaneous analysis of polymorphism and divergence across every part of the genome [@ellegren_genome_2014]. If you remember back to the [Welcome Page](index.qmd) for this course textbook, I mentioned my PhD work used 454 sequencing, now considered obsolete sequencing technology. This project is considered one of the first major population genomics studies [@kulathinal_genomics_2009] and is highlighted below in @fig-abbababa. 
 
 This genomic perspective enables researchers to ask questions that were impossible with single loci:
 
@@ -260,6 +287,29 @@ P(A_1A_1) = p^2, \quad P(A_1A_2) = 2pq, \quad P(A_2A_2) = q^2.
 $$
 
 A key subtlety is that we only need to assume **random mating at the focal locus** for these frequencies to hold among newly formed zygotes [@coop_popgen_notes]. Natural selection, genetic drift, and other evolutionary processes can be acting elsewhere in the genome without disrupting Hardy–Weinberg at any given locus, as long as individuals mate without regard to their genotype at that location. This is why HWE often holds remarkably well in natural populations: individuals do not mate globally at random, but they typically do mate at random with respect to the genotype at most individual loci [@coop_popgen_notes].
+
+::: callout-note
+#### Figure 12.2 – The Kermode's (Spirit) Bear: A Hardy–Weinberg Case Study
+
+![Kermode's spirit bear (*Ursus americanus kermodei*) in British Columbia](images/kermode_bear.jpg){#fig-kermode width="50%" fig-alt="A white-coated Kermode spirit bear standing in a lush green British Columbia forest. The bear's white fur contrasts sharply with the surrounding dark green vegetation, illustrating the visually striking phenotype produced by homozygosity for the recessive MC1R allele."}
+
+The Kermode's bear, also called the spirit bear, is a subspecies of American
+black bear (*Ursus americanus*) found along the central coast of British
+Columbia. Despite their white appearance, these bears are not albinos — they
+are fully pigmented animals that are homozygous for a recessive loss-of-function
+allele at the *MC1R* (melanocortin 1 receptor) gene [@coop_popgen_notes]. The
+*MC1R* locus is the same gene responsible for red hair in humans and coat color
+variation in many other mammals, making it a textbook example of a shared
+molecular pathway underlying pigmentation across vertebrates. In the island
+populations of British Columbia where spirit bears are most common, the
+recessive allele reaches appreciable frequency — high enough that the
+Hardy–Weinberg calculations above are drawn from real survey data. Estimating
+whether observed white:black ratios match HWE expectations is one of the most
+direct ways to ask whether the population is mating randomly with respect to
+coat color, or whether behavioral or selective forces are distorting genotype
+frequencies away from neutral predictions. Image: Wikimedia Commons, CC BY-SA.
+:::
+
 
 **Departures from HWE are informative:** An excess of homozygotes relative to
 HWE expectations (i.e., a deficit of heterozygotes) can arise from inbreeding,
@@ -334,7 +384,31 @@ $$
 where $H_0$ is the initial heterozygosity and $H_t$ is heterozygosity after $t$
 generations [@coop_popgen_notes]. For a population of $N_e = 1{,}000$, heterozygosity falls to about 37% of its original value after roughly 2,000 generations. For $N_e = 100$, the same decline takes only ~200 generations.
 
-The conservation implications are stark. The black-footed ferret (*Mustela nigripes*) crashed to just 18 individuals in 1985 (of which only 7 reproduced), causing a sharp drop in heterozygosity that is still visible today even after the population has recovered to over 300 individuals. [@coop_popgen_notes] Because all living black-footed ferrets are descended from those 7 founders, genetic diversity remains low and this reduced variation limits the population's long-term adaptive potential.
+::: callout-note
+#### Figure 12.3 – The Black-footed Ferret: Genetic Drift and Conservation
+
+![Black-footed ferret (*Mustela nigripes*)](images/black_footed_ferret.jpg){#fig-ferret width="70%" fig-alt="A black-footed ferret with its characteristic black mask and feet emerging alertly from a burrow entrance on open grassland. The ferret's tan and black coloration and slender mustelid body shape are visible against the dry grass background."}
+
+The black-footed ferret (*Mustela nigripes*) is one of the most endangered
+mammals in North America and one of the most powerful natural experiments in the
+genomic consequences of severe population bottlenecks. Prairie dog colonies,
+which make up the vast majority of the ferret's diet and habitat, were
+systematically eradicated across the Great Plains throughout the twentieth
+century, driving the ferret population to the brink of extinction. The last
+known wild population, rediscovered in Wyoming in 1981, crashed to just 18
+individuals by 1985 following a sylvatic plague outbreak; of these, only 7
+reproduced in captivity before the wild population disappeared entirely
+[@coop_popgen_notes]. Because every living black-footed ferret is descended
+from those 7 founders, the effective population size of the species has been
+extremely small for roughly 40 years — long enough for genetic drift to
+substantially erode heterozygosity across the genome, as the heterozygosity
+decay formula $H_t \approx H_0\, e^{-t/2N_e}$ predicts. Intensive captive
+breeding and reintroduction programs have re-established wild populations
+exceeding 300 individuals, but the genetic legacy of the bottleneck persists,
+motivating ongoing discussions about managed gene flow to restore diversity.
+Image: USFWS, public domain.
+:::
+
 
 **Effective population size ($N_e$):** Real populations rarely behave like an idealized constant-size population of $N$ individuals all contributing equally to reproduction. Variance in reproductive success, fluctuations in census size, unequal sex ratios, and geographic structure all cause genetic drift to proceed faster than the census size $N$ would suggest. The **effective population size** $N_e$ is defined as the size of an idealized Wright–Fisher population that would experience the same rate of random allele-frequency change as the real population [@coop_popgen_notes]. Almost always, $N_e < N$.
 
@@ -452,7 +526,18 @@ $$
 
 where $D = 0$ is expected under no gene flow and $|D| > 0$ indicates an excess of one pattern consistent with introgression [@kulathinal_genomics_2009; @coop_popgen_notes]. Block jackknife resampling across genomic windows is used to assess whether $D$ departs significantly from zero.
 
-This 4-taxon D-statistic was first developed in the context of *Drosophila pseudoobscura* and *D. persimilis*, two sibling species that diverged in geographic isolation but show evidence of gene flow at secondary contact [@kulathinal_genomics_2009]. This study from my PhD was among the first population genomic analyses to use low-coverage whole-genome sequencing to characterize patterns of diversity, divergence, and introgression simultaneously across an entire genome — an approach that would soon become the standard in the field. In a later publications during my postdoc, I applied the same four-taxon logic at a larger evolutionary scale to demonstrate that East Asians carry significantly more Neanderthal ancestry than Europeans, refining the prevailing model of human-Neanderthal hybridization [@wall_higher_2013]. Subsequent work also in my postdoc showed that some of these introgressed Neanderthal regions, already identified as targets of positive selection in modern humans, also harbor regulatory sequences associated with *AUTS2* — a gene implicated in autism spectrum disorder and human cognitive evolution — illustrating how detecting introgression can open unexpected windows into both evolutionary and biomedical questions [@oksenberg_function_2013].
+::: callout-note
+#### Figure 12.4 – The Logic of the ABBA-BABA (D-statistic) Test
+
+![The four-taxon ABBA-BABA test for introgression](images/ABBA_BABA.png){#fig-abbababa width="70%" fig-alt="Phylogenetic tree diagram illustrating the four-taxon ABBA-BABA test for introgression. The tree shows four taxa arranged as P1, P2, P3, and Outgroup from left to right, with a dashed horizontal arrow labeled with a question mark connecting P2 and P3 to indicate possible gene flow. Below the tree, three rows of nucleotides illustrate the three informative site patterns. The ABBA pattern is shown in red: P1 carries A, P2 carries C, P3 carries C, and Outgroup carries A, indicating that P2 and P3 share the derived allele. The uninformative pattern is shown in grey: P1 carries T, P2 carries T, P3 carries A, and Outgroup carries A, where no asymmetric sharing distinguishes the topologies. The BABA pattern is shown in blue: P1 carries G, P2 carries A, P3 carries G, and Outgroup carries A, indicating that P1 and P3 share the derived allele instead."}
+
+The ABBA-BABA test uses the four-taxon topology $((P_1, P_2), P_3, \text{Outgroup})$ to detect gene flow between $P_2$ (or $P_1$) and $P_3$ after the three ingroup lineages diverged. At each biallelic site, the outgroup allele is designated **A** (ancestral) and the alternative allele **B** (derived). Two site patterns are phylogenetically informative:
+
+- **ABBA sites** (shown in red): $P_1$ carries the ancestral allele while $P_2$ and $P_3$ both carry the derived allele, implying a shared history between $P_2$ and $P_3$ that is discordant with the species tree.
+- **BABA sites** (shown in blue): $P_1$ and $P_3$ carry the derived allele while $P_2$ carries the ancestral allele, implying discordant shared history between $P_1$ and $P_3$.
+
+Under a strictly bifurcating history with no gene flow, incomplete lineage sorting (ILS) produces ABBA and BABA sites at equal frequency, so $D \approx 0$. A significant excess of ABBA over BABA sites ($D > 0$) is evidence of gene flow between $P_3$ and $P_2$; a significant excess in the other direction ($D < 0$) suggests gene flow between $P_3$ and $P_1$. The test was first applied genome-wide to distinguish introgression from ILS in *Drosophila pseudoobscura* and *D. persimilis* [@kulathinal_genomics_2009], and the same framework was subsequently used to demonstrate and quantify Neanderthal admixture in modern human populations [@wall_higher_2013]. Figure modified from Kulathinal et al. (2009) [@kulathinal_genomics_2009].
+:::
 
 ### Recombination, linkage disequilibrium, and linked selection
 
@@ -485,11 +570,29 @@ LD-based maps also enable an important conceptual refinement to the sliding- win
 the actual recombination history experienced by that region. Because drift, selection, and coalescence times are all governed by the number of recombination events rather than the number of base pairs, genetic-distance windows are often more interpretable for evolutionary questions: they ensure that each window
 represents a comparable unit of evolutionary independence rather than an arbitrary physical length [@stevison_timescale_2016].
 
-**Recombination hotspots and PRDM9:** The extreme heterogeneity of recombination rates is not random — in mammals, the positions of hotspots are largely controlled by the zinc-finger protein **PRDM9**, which binds specific sequence motifs and deposits histone modifications that recruit the double-strand break
-machinery [@wall_detecting_2016]. LD-based hotspot detection compares the observed sharpness of local LD decay against a null distribution to identify narrow genomic intervals with recombination rates far exceeding the background [@wall_detecting_2016]. As part of my postdoc, I applied this LD-based framework to estimate fine-scale recombination rates in great ape genomes — including *Pan paniscus* (bonobo), *Pan troglodytes ellioti* (Nigeria-Cameroon chimpanzee), and *Gorilla gorilla gorilla* (western lowland gorilla). My work revealed that hotspot positions evolve rapidly between species even as overall
-recombination rates remain broadly conserved [@stevison_timescale_2016]. The rapid turnover of hotspot positions is consistent with a molecular drive model in
-which PRDM9 binding motifs erode over time through biased gene conversion at the very sites PRDM9 targets, forcing evolutionary change in hotspot locations [@stevison_timescale_2016]. Critically, this work demonstrated that PRDM9 — long known to control hotspot positioning in humans and mice — plays a conserved role in directing recombination broadly across great apes, a finding since extended to vertebrates more generally (see
-[Appendix B](appendixB.qmd)) [@wall_detecting_2016; @stevison_timescale_2016]. Understanding where recombination occurs matters beyond evolutionary biology: in humans, misalignment of homologs at hotspots contributes to chromosomal rearrangements associated with genomic disorders. Ongoing work in my lab in turtles extends this comparative framework to a lineage with distinct chromosome biology, asking whether PRDM9-like control of recombination is a shared vertebrate feature or arose independently in different lineages. 
+**Recombination hotspots and PRDM9:** The extreme heterogeneity of recombination rates is not random — in mammals, the positions of hotspots are largely controlled by the zinc-finger protein **PRDM9**, which binds specific sequence motifs and deposits histone modifications that recruit the double-strand break machinery [@wall_detecting_2016]. LD-based hotspot detection compares the observed sharpness of local LD decay against a null distribution to identify narrow genomic intervals with recombination rates far exceeding the background [@wall_detecting_2016]. As part of my postdoc, I applied this LD-based framework to estimate fine-scale recombination rates in great ape genomes — including *Pan paniscus* (bonobo), *Pan troglodytes ellioti* (Nigeria-Cameroon chimpanzee), and *Gorilla gorilla gorilla* (western lowland gorilla). My work revealed that hotspot positions evolve rapidly between species even as overall recombination rates remain broadly conserved [@stevison_timescale_2016]. The rapid turnover of hotspot positions is consistent with a molecular drive model in which PRDM9 binding motifs erode over time through biased gene conversion at the very sites PRDM9 targets, forcing evolutionary change in hotspot locations [@stevison_timescale_2016]. Critically, this work demonstrated that PRDM9 — long known to control hotspot positioning in humans and mice — plays a conserved role in directing recombination broadly across great apes, a finding since extended to vertebrates more generally (see [Appendix B](appendixB.qmd)) [@wall_detecting_2016; @stevison_timescale_2016]. Understanding where recombination occurs matters beyond evolutionary biology: in humans, misalignment of homologs at hotspots contributes to chromosomal rearrangements associated with genomic disorders. Ongoing work in my lab in turtles extends this comparative framework to a lineage with distinct chromosome biology, asking whether PRDM9-like control of recombination is a shared vertebrate feature or arose independently in different lineages. 
+
+::: callout-note
+#### Figure 12.5 – Bonobo (*Pan paniscus*): Recombination Rate Evolution in Great Apes
+
+![Bonobo (*Pan paniscus*) mother and infant](images/bonobo.jpg){#fig-bonobo width="40%" fig-alt="A bonobo mother and infant resting together in dense green tropical forest vegetation. The bonobos have the characteristic dark black faces, pink lips, and long black hair of Pan paniscus. The infant clings to the mother's torso while both animals face toward the camera."}
+
+The bonobo (*Pan paniscus*), sometimes called the pygmy chimpanzee, is one of
+humans' two closest living relatives — diverging from the common chimpanzee
+(*Pan troglodytes*) roughly 1–2 million years ago and sharing approximately 98.7%
+of its DNA sequence with humans. Together with common chimpanzees and gorillas,
+bonobos were among the great ape species I investigated during my postdoctoral work to estimate genome-wide recombination rate maps using linkage disequilibrium-based methods, enabling the first direct comparisons of fine-scale recombination landscapes across the great ape clade [@stevison_timescale_2016]. These analyses revealed a striking pattern: although the total recombination rate (measured in cM per genome) is
+broadly conserved across great apes, the specific positions of recombination
+hotspots differ extensively between species — a pattern consistent with rapid
+evolution of PRDM9 binding motifs driven by biased gene conversion at the very
+sites the protein targets [@stevison_timescale_2016; @wall_detecting_2016]. The
+bonobo's close relationship to humans also makes it a valuable comparative
+system for understanding what aspects of recombination biology are uniquely
+derived in the human lineage versus ancestrally conserved across great apes —
+a question with direct implications for understanding human genome instability
+and chromosomal disease. Image: Wikimedia Commons, CC BY-SA.
+:::
+
 
 **Linked selection:** Recombination also modulates how selection at one site affects neutral variation at nearby sites — a phenomenon called **linked selection**. Two major forms are [@ellegren_genome_2014; @coop_popgen_notes]:
 
@@ -599,6 +702,72 @@ Common responses to missing data include discarding sites or individuals with to
 For sliding‑window analyses, these considerations suggest several best practices. Filters on depth, genotype quality, and call rate should be applied consistently across populations, and sensitivity analyses should be used to check whether apparent peaks in $F_{ST}$ or dips in $\pi$ are robust to reasonable changes in filtering thresholds. [@haasl_payseur_2016] Where possible, neutral simulations or resampling approaches that reproduce the observed missing‑data pattern can be used to assess how often similar extrema would arise by chance [@haasl_payseur_2016; @sethuraman_missing_2026]. Interpreting outlier windows is most convincing when statistical signals align with regions of good data quality and with independent evidence from gene function, expression, or other genomic features.
 
 Overall, sliding‑window analyses, genome‑wide scans for selection, and careful attention to missing data together form a powerful framework for reading the evolutionary history of populations from their genomes. The same summary statistics introduced earlier in the chapter—$\pi$, Tajima’s D, $F_{ST}$, and related measures—play central roles in these analyses, but their interpretation always depends on the biological context, the demographic background, and the limitations of the data.
+
+### Case study: Sliding-window analysis of macaque speciation and reinforcement
+
+Sliding-window population genomic analyses are not just tools for detecting
+selection — they can also reveal the genomic architecture of speciation itself.
+Bailey et al. (2023) applied this framework to ask whether rhesus macaques
+(*Macaca mulatta*) and cynomolgus macaques (*Macaca fascicularis*) show genomic
+signatures consistent with **reinforcement**: the evolutionary process by which
+natural selection strengthens reproductive isolation between two partially
+diverged species when they come into secondary contact and hybridize
+[@bailey_genomic_2023]. This work was carried out as part of a PhD dissertation
+at Auburn University, making it a direct example of the kind of research
+conducted in the same department where you are taking this course.
+
+**Background.** Rhesus and cynomolgus macaques diverged roughly 1–3 million
+years ago and hybridize where their ranges overlap in Southeast Asia
+[@bailey_genomic_2023; @stevison_divergence_2009]. Despite this hybridization,
+the two species remain largely distinct — a pattern suggesting that selection
+may be acting to reduce gene flow at some loci even as hybridization proceeds at
+others. Reinforcement predicts that loci contributing to reproductive isolation
+should show elevated differentiation ($F_{ST}$) in the contact zone compared to
+allopatric populations, and that these loci should be distributed across many
+regions of the genome (i.e., the signature should be **polygenic**) rather than
+concentrated at one or two major-effect loci [@bailey_genomic_2023].
+
+**Approach.** The study computed sliding-window estimates of $F_{ST}$,
+nucleotide diversity $\pi$, and Tajima's D across the macaque genome, comparing
+populations in the contact zone to allopatric reference populations of each
+species [@bailey_genomic_2023]. Windows were defined in physical coordinates
+(bp), and outlier windows were identified by their departure from the genome-wide
+distribution of each statistic. Candidate windows were then intersected with
+gene annotations to identify biological functions enriched among high-$F_{ST}$
+outliers in contact-zone comparisons.
+
+**Key findings.** The analysis revealed that contact-zone populations show a
+genome-wide elevation in $F_{ST}$ relative to allopatric comparisons, consistent
+with reinforcement acting on many loci simultaneously rather than a small number
+of large-effect speciation genes [@bailey_genomic_2023]. Notably, several
+outlier windows were enriched for genes involved in sensory perception and
+mate-choice-related functions — biological categories consistent with selection
+on pre-mating isolation. Patterns of Tajima's D in contact-zone populations
+suggested recent shifts in allele frequency distributions at candidate loci,
+pointing toward ongoing rather than historical selection [@bailey_genomic_2023].
+
+**Why this matters methodologically.** This study illustrates several
+principles introduced earlier in this chapter:
+
+- **$F_{ST}$ outlier scans** identify genomic regions where differentiation
+  exceeds neutral expectations, but interpretation requires a clear null model
+  accounting for recombination rate variation and demographic history
+  [@stevison_sweeping_2020; @bailey_genomic_2023].
+- **Combining statistics** (here, $F_{ST}$ together with $\pi$ and Tajima's D)
+  provides stronger inference than any single metric alone — a dip in $\pi$
+  with a shift in Tajima's D in the same window strengthens the case for
+  selection relative to demographic confounding.
+- **The polygenic nature of the signal** — many windows with moderate outlier
+  values rather than a few extreme peaks — is itself biologically meaningful,
+  pointing toward a quantitative genetic architecture for reproductive isolation
+  consistent with reinforcement theory [@bailey_genomic_2023].
+
+This macaque system is also directly connected to the isolation-with-migration
+work discussed in the population structure section [@stevison_divergence_2009],
+illustrating how a research program can build across methodological generations:
+from multi-locus IM models, to early population genomic tests for gene flow
+[@kulathinal_genomics_2009], to full sliding-window genome scans that reveal the
+fine-scale architecture of divergence.
 
 ::: callout-note
 ## Placeholder: Case Study – Human Population Genomics
