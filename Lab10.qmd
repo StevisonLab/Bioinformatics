@@ -1,109 +1,276 @@
 ---
-title: "Lab10: Population Genomics using the 1000 Genomes Dataset"
+title: "Lab 10: Population Genomics using the 1000 Genomes Dataset"
 bibliography: references.bib
 csl: nature.csl
 ---
 
 ## Overview
 
-Today you will be working with human population genomics data from the [1000 genomes project](https://www.internationalgenome.org/). The goal of this exercise is to provide real world experience using bioinformatics to examine genetic differences within and between populations. 
+Today you will be working with human population genomics data from the
+[1000 Genomes Project](https://www.internationalgenome.org/), which sequenced
+over 2,500 individuals from 26 populations worldwide to catalogue human genetic
+variation at minor allele frequencies as low as 1% [@auton_global_2015]. The
+goal of this exercise is to give you hands-on experience examining genetic
+differences within and between human populations using the same statistics —
+$F_{ST}$, $\pi$, and Tajima's D — introduced in Chapter 12.
 
-First, you will be assigned one of five regions (~2-10 Mb each) that I have targeted due to known signatures of importance in human evolution. Then, in Part 1, you will explore between population divergence specific to your region. The examination of these plots and statistics will be important in selecting populations to examine further for within population diversity and selection as part of Part 2. Finally, in Part 3, you will explore your region on the UCSC genome browser to examine potential genes that may contribute to the population genetic signal you see in your plots.
+You will be assigned one of six genomic regions (~2–10 Mb each) that contain
+known signatures of importance in human evolution, though you will not be told
+which gene or phenotype is involved at the outset. Your job is to use the data
+as evidence to form and refine a hypothesis. In **Part 1** you will examine
+between-population divergence ($F_{ST}$) to identify which populations differ
+most across your region. In **Part 2** you will investigate within-population
+diversity ($\pi$) and the site frequency spectrum (Tajima's D) to ask whether
+selection may be acting. In **Part 3** you will use the UCSC Genome Browser
+to identify candidate genes that could explain the patterns you observed.
 
-## Part 1: Examine region and identify target populations 
+::: callout-tip
+## Before you begin
 
-1.	The 1000 genomes project sampled individuals from 26 human population, but today we will only be working with the four listed below. Each population has a unique three letter abbreviation:
-	- CEU:	Utah Residents (CEPH) w/ Northern & Western European Ancestry
-	- YRI:	Yoruba in Ibadan, Nigeria
-	- CHB:	Han Chinese in Bejing, China
-	- PEL:	Peruvians from Lima, Peru
+Review the **Population Structure and $F_{ST}$** and **Tajima's D** sections
+of Chapter 12, as well as the Human Genomics callout box. The patterns you will
+encounter in this lab are real data, and the signal of selection in humans is
+subtler than in many other species — as discussed in the chapter, classic hard
+selective sweeps are rare in our genome, so peaks may not be visually dramatic.
+:::
 
-2. For today's exercise, I have created an [R shiny app](https://lstevison.shinyapps.io/Lab10-PopGen/). Go to this link and in the "Between Populations" tab, select your assigned region from the drop down menu and click the button "Plot Fst". 
+## Learning Objectives
 
-2.	Examine the initial plot for your assigned region. What are the X and Y axes? These plots are based on a 100kb sliding window. How do you think different window sizes might influence the plot you are seeing?
+By the end of this lab, you should be able to:
 
-3.  Based on what you learned in class or find online, what is [Fst](https://en.wikipedia.org/wiki/Fixation_index)? What does the estimate in the plot tell you about this region? What are the typical upper and lower bounds for Fst and why? 
-
-4.	Next, use the second drop down menu "Select Population Comparison" to examine FST statistics for each comparison for the whole region. These values represent the weighted Weir FST estimate from a bioinformatics software [VCFtools](https://vcftools.github.io/man_latest.html). Write down the max and average values for each pairwise comparison in the table below:
-
-  | Metric|CEU vs. YRI|YRI vs. CHB|CEU vs. CHB|YRI vs. PEL|CEU vs. PEL|CHB vs. PEL|
-  |----|----|----|----|----|----|----|
-  |Average Fst|||||||
-  |Max Fst|||||||
-
-
-5. In examining the 6 different plots, which two populations are most different across your region (consider both peak height and width)? Based on the Fst and the known upper/lower bounds, how important is this difference likely to be? 
-
-  >If multiple populations have similar values, select the two comparisons that you want to investigate further for the next part of this assignment based on the overall peak height of the highest value in your plot. 
-
- - Max Fst difference: ______ v. ______	(list the 3-letter abbreviations of the two populations you have selected here)
-
-6. Where (roughly) in this region is the peak of differentiation?
-
- - Region of max Fst: __________ (write the megabase location here)
-
-7. Right click to save the Fst plot for the selected pair of populations to include in your submitted assignment that you will turn in.
-
-## Part 2: Investigate selected populations further
-
-1. For Part 2, select the tab labeled "Within Populations".
-
-2. Use the drop down menus to select your region and the two populations that you selected at the end of Part 1 to move forward with (listed in Step 5). 
-
-3. Click the button "Plot Pi and Tajima's D". 
-
-4. Scroll to the table at the bottom of the page. **How many individuals are in each of these two populations?** 
-
- - Pop 1 Size: __________
- - Pop 2 Size: __________
- 
-5.	This set of four plots were generated again using the output of VCFtools, which was used here to calculate within population diversity, known as [pi](https://en.wikipedia.org/wiki/Nucleotide_diversity) plotted in blue. What is pi? 
-
-6.	In addition to Pi, you should also see two sets of plots with [Tajima’s D](https://youtu.be/wiyay4YMq2A?si=LlrqVCvglyxwKDhq) in red across the region in both populations. [Vcftools](https://vcftools.github.io/man_latest.html#OUTPUT%20OPTIONS) was also used to generate the data used for these plots. What does Tajima's D tell you about the populations? What does a positive value mean? Negative value?
-
-7. Like Fst, these statistics are also estimated based on 100kb windows? Do you think the results would be different in the window size were bigger? Smaller?  
-
-8. Based on the number of individuals in your two selected populations, how reliable do you feel these estimates are in capturing the population genetic signatures? How does sample size influence estimates of pi and Tajima's D? Why?
-
-9. Examine the four plots considering also the plots you examined in Part 1. 
-
- a. What similarities do you see between these plots and the one you made earlier? 
-
-
- b. Does the sub-region you recorded at the end of Part 1 stand out in either of these plots? 
-
-
- c. Make a hypothesis as to which population may be driving this result? Hint: which population has the lowest value of Tajima's D in the table at the bottom? 
-
- d. Based on [this video](https://youtu.be/wiyay4YMq2A?si=LlrqVCvglyxwKDhq), interpret the results of the Tajima’s D statistic in this plot.
- 
-10. Right click on the images of Pi and Tajima's D for **this population** to include in your submitted assignment that you will turn in.
-
-## Part 3: Examine region in Genome Browser
-
-1.	For Part 3, click the third tab in the app titled "Explore". Again, select your region from the drop down menu and click on the button "Load Region".
-
-2. Record the chromosome and genomic coordinates of your region below and then click the link to [View in UCSC](https://genome.ucsc.edu/) which will take you to the UCSC Genome Browser. These data were mapped to the human genome reference hg19. 
-
-3. Zoom into the region from Part 1 of Max Fst (~500kb window is fine). Look at the genes present. Make a list of the genes present in the region:
-
-4. Take a screen shot to include with your submitted assignment that you will turn in.
-
-5. Is there anything special about any of the genes in your sub-region that can explain why they differ? Click on the genes and read about them, but also do some google investigative work to find out! You may also choose to turn on the OMIM track which includes disease and phenotype relevant traits in dark green.
-
-> Look at the primer for Human Genomics in Chapter 12 to see if any of the genes of major effect listed there are found in your window. If you are unclear, feel free to go back and make sure your choices of populations were correct. Remember that selective sweeps are rare in humans, so the peaks are not super obvious. 
-
-
-
- - Based on what you know about human evolution, does any particular gene support your hypothesis in Part 2 as to which of the two populations might be driving this pattern? What are some known differences about these two human populations?
-
-
-
-6.	Based on what you know about human evolution, what additional regions/genes in the human genome would you like to analyze like this in the future?
-
-
-7.	When you are done, compare your results to others in the class and the other regions. When you are done, write up a short (<200 words) summary of what you did in this lab and what you learned from your region. Include the plots from Part 1 with your selected pair of populations, and the 2 plots from Part 2 for the population you hypothesize to be driving this signature. Finally, include the screen shot of your zoomed in region with the selected gene from the UCSC. 
+- Interpret sliding-window $F_{ST}$, $\pi$, and Tajima's D plots from real
+  population genomic data.
+- Connect the direction and magnitude of these statistics to the evolutionary
+  processes (selection, drift, demographic history) discussed in Chapter 12.
+- Use genomic coordinates and a genome browser to connect statistical signals
+  to candidate genes and known biology.
+- Critically evaluate how window size, sample size, and data quality affect
+  population genomic inferences.
 
 ---
 
-This exercise should provide a sense of how sliding window approaches are used to identify regions of interest in population genetics studies. Typically, these scans are done genome-wide along with other statistics to identify regions of interest. Then, gene annotations are used to find overlapping functional regions that can explain the genetic patterns. This can be done programmatically by downloading annotations from UCSC and using `bedtools` to intersect with the regions of interest. Then, [custom tracks](https://genome.ucsc.edu/goldenPath/help/customTrack.html) can be used to upload FST, pi, and Tajima's D results to the genome browser. We will discuss sliding window analyses in more depth in two weeks.
+## Part 1: Between-population divergence ($F_{ST}$)
+
+Recall from Chapter 12 that $F_{ST}$ measures the proportion
+of total genetic variation explained by differences *between* populations, and
+ranges from 0 (no differentiation) to 1 (complete fixation of different alleles
+in each population). Genome-wide $F_{ST}$ between major continental human groups
+is approximately 0.043 — a useful benchmark as you interpret your plots.
+
+1. Today we will work with four of the 26 populations from the 1000 Genomes
+   Project, each identified by a three-letter code:
+   - **CEU**: Utah Residents (CEPH) with Northern & Western European Ancestry
+   - **YRI**: Yoruba in Ibadan, Nigeria
+   - **CHB**: Han Chinese in Beijing, China
+   - **PEL**: Peruvians from Lima, Peru
+
+2. Open the [R Shiny app](https://lstevison.shinyapps.io/Lab10-PopGen/) I built for today's lab. In
+   the **"Between Populations"** tab, select your assigned region from the
+   drop-down menu and click **"Plot Fst"**. These $F_{ST}$ values were computed
+   with **VCFtools** (`--weir-fst-pop`) using 100 kb sliding windows, as
+   described in Chapter 12 (@tbl-tools).
+
+3. Examine the initial plot. What are the X and Y axes? This plot uses 100 kb
+   sliding windows. Based on what you read in Chapter 12, how do you expect
+   different window sizes to affect what you see? Would a larger window make the
+   signal stronger or weaker, and why?
+
+4. Use the **"Select Population Comparison"** drop-down to examine $F_{ST}$
+   for each pairwise comparison across your region. Record the average and
+   maximum weighted Weir $F_{ST}$ for each pair:
+
+   | Metric | CEU vs. YRI | YRI vs. CHB | CEU vs. CHB | YRI vs. PEL | CEU vs. PEL | CHB vs. PEL |
+   |--------|-------------|-------------|-------------|-------------|-------------|-------------|
+   | Average $F_{ST}$ | | | | | | |
+   | Max $F_{ST}$ | | | | | | |
+
+5. Comparing your values to the genome-wide human average of ~0.043: are any
+   of your pairwise comparisons substantially above this background? Which two
+   populations show the greatest differentiation in your region, considering
+   both the height and breadth of the peak?
+
+   > If multiple comparisons have similar peak values, choose the two you will
+   > investigate further based on the highest single-window $F_{ST}$ value.
+
+   - **Populations selected for further analysis:** ______ vs. ______
+   
+   >In the line above, write the 3-letter population abbreviation from #1.
+
+6. Where is the peak of maximum $F_{ST}$ in your region?
+
+   - **Approximate genomic position (Mb):** __________
+
+7. Save the $F_{ST}$ plot for your selected population pair to include in your
+   write-up.
+
+---
+
+## Part 2: Within-population diversity ($\pi$ and Tajima's D)
+
+Recall from Chapter 12 that $\pi$ measures the average
+pairwise nucleotide difference per site within a population ($E[\pi] = 4N_e\mu$
+under the standard neutral model), while Tajima's D compares two estimators
+of $\theta$ that weight rare and common variants differently. The values of Tajima's D in a window can reflect evolutionary processes that have shaped genetic variation. Similarly, $\pi$ is a direct read out of genetic variation that can be used together to make inferences. Remember also that in humans, selective sweep signals are subtle; don't be surprised if the patterns are not dramatic.
+
+1. Select the **"Within Populations"** tab. Choose your region and the two
+   populations you identified in Part 1, Step 5.
+
+2. Click **"Plot Pi and Tajima's D"**. These statistics were also computed with
+   VCFtools (`--window-pi` and `--TajimaD`) using 100 kb windows.
+
+3. Scroll to the summary table at the bottom of the page. Record the number
+   of individuals in each population:
+
+   - Pop 1 size: __________
+   - Pop 2 size: __________
+
+4. Define $\pi$ in your own words. What does a higher or lower value of $\pi$
+   in a window tell you about the evolutionary history of that region? 
+   
+   >Watch [this video I recorded](https://auburn.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=bf9c8b7c-92e2-436d-8ddf-b40a0139e33b) if you would like a refresher.
+
+5. Define Tajima's D in your own words. What does a positive value indicate?
+   A negative value? 
+   
+   >Watch [this video by Dr. Mohamed Noor](https://youtu.be/wiyay4YMq2A?si=LlrqVCvglyxwKDhq) if you would like a refresher.
+
+6. The window size here is again 100 kb. How do you expect your estimates of
+   $\pi$ and Tajima's D to change if the window were 10 kb instead? 500 kb?
+   Think about the trade-off between resolution and noise discussed in Chapter 12.
+
+7. How does sample size affect the reliability of $\pi$ and Tajima's D
+   estimates? Based on the sample sizes you recorded above, how confident are
+   you in the patterns you observe?
+
+8. Now examine the four plots together with the $F_{ST}$ plot from Part 1:
+
+   a. Does the peak $F_{ST}$ sub-region you identified in Part 1 correspond to
+      any notable pattern in $\pi$ or Tajima's D? Describe what you see.
+
+   b. Which of your two populations shows the lower Tajima's D value in the
+      peak region? (Check the summary table at the bottom of the page.) Based on the interpretation of
+      Tajima's D from Chapter 12, what does this suggest about the recent
+      evolutionary history of that population at this locus?
+
+   c. Is the $\pi$ in the peak region higher or lower than the surrounding
+      genomic background in each population? How does this compare to what you
+      would expect under a recent selective sweep versus a demographic
+      bottleneck? (Hint: both can produce negative Tajima's D, but they have
+      different signatures in $\pi$.)
+
+   d. Make a hypothesis: which population do you think is driving the
+      differentiation signal, and what type of evolutionary event might explain
+      both the $F_{ST}$ peak and the within-population statistics?
+
+9. Save the $\pi$ and Tajima's D plots for the population you hypothesize is
+   driving the signal to include in your write-up.
+
+---
+
+## Part 3: Gene identification in the UCSC Genome Browser
+
+Identifying statistical outliers in a sliding-window scan is
+only the first step — the goal is ultimately to connect genomic signals to
+biological function. Here you will use the UCSC Genome Browser to ask which
+genes overlap your peak region and whether any known biology can explain the
+patterns you observed.
+
+1. Select the **"Explore"** tab. Choose your region and click **"Load Region"**.
+
+2. Record the chromosome and genomic coordinates displayed:
+
+   - **Chromosome:** ______  **Start:** __________  **End:** __________
+
+   Note that these data were mapped to the human genome reference **hg19**.
+
+3. Click **"View in UCSC"** to open the Genome Browser. Zoom into a ~500 kb
+   window centered on your peak $F_{ST}$ position from Part 1.
+
+4. List the genes present in this sub-region:
+
+5. Turn on the **OMIM** track (dark green) to display disease- and
+   phenotype-associated variants. Do any OMIM entries overlap your peak region?
+
+6. Take a screenshot of the zoomed-in browser view to include in your write-up.
+
+7. Investigate the genes in your window using the browser's gene pages and
+   external sources (Google Scholar, OMIM, UniProt):
+
+   a. Is there anything about any of the genes that could explain why these
+      populations differ? Note any functional information, expression patterns,
+      or known associations.
+
+   b. Review the **Human Genomics callout box in Chapter 12**. Do any of the
+      large-effect loci discussed there (pigmentation, diet adaptation,
+      pathogen resistance, high-altitude adaptation) appear in your window?
+      If so, does this support or challenge your hypothesis from Part 2?
+
+   c. Based on the populations showing the highest $F_{ST}$ and the biology of
+      your candidate gene(s), propose an evolutionary explanation for the
+      pattern. What selection pressure might have acted on this locus, and in
+      which population(s)?
+
+   d. Does the pleiotropic nature of any gene in your region (i.e., one gene
+      affecting multiple traits, as discussed for *EDAR* in Chapter 12) make it
+      harder or easier to identify the primary target of selection? Explain.
+
+8. What additional human genomic regions or populations would you want to
+   examine to further test your hypothesis?
+
+---
+
+## Part 4: Class Comparison and Write-Up
+
+1. When you have completed Parts 1–3, compare your results with at least two
+   classmates who were assigned different regions. For each region discussed:
+
+   - Which populations were most differentiated?
+   - What is the likely candidate gene and phenotype?
+   - Was the sweep signal obvious or subtle?
+
+   Record any patterns you notice across regions in the table below:
+
+   | Region | Populations most differentiated | Likely phenotype | Sweep obvious? (Y/N) |
+   |--------|--------------------------------|------------------|----------------------|
+   | Yours  | | | |
+   | Peer 1 | | | |
+   | Peer 2 | | | |
+
+2. Write a short summary (<250 words) that includes:
+   - What you did in each part of the lab (1–2 sentences each)
+   - Your region's likely candidate gene and phenotype, with evidence from all
+     three parts
+   - How the patterns you observed connect to concepts from Chapter 12
+     (specifically: $F_{ST}$, $\pi$, Tajima's D, selective sweeps in humans,
+     window size effects)
+   - One limitation of the approach used today and how it could be addressed
+
+3. Submit your write-up along with:
+   - The $F_{ST}$ plot for your selected population pair (Part 1, Step 7)
+   - The $\pi$ and Tajima's D plots for your hypothesized driving population
+     (Part 2, Step 9)
+   - The UCSC Genome Browser screenshot (Part 3, Step 6)
+
+---
+
+::: callout-note
+## Connecting to the Chapter
+
+This lab demonstrates several principles from Chapter 12 with real data:
+
+- **Sliding-window statistics** ($F_{ST}$, $\pi$, Tajima's D) are computed
+  with VCFtools in 100 kb windows — the same approach described in the chapter
+  and listed in @tbl-tools.
+- **Selective sweeps are rare in humans** [@hernandez_2011; @gao_2024] — which
+  is why your peaks may be subtle and why combining multiple statistics is more
+  convincing than any single measure alone.
+- **Recombination rate variation** can create false-positive outlier windows
+  even under neutrality [@stevison_sweeping_2020], which is one reason we
+  cross-check $F_{ST}$ patterns against $\pi$ and Tajima's D before concluding
+  that selection has acted.
+- **$F_{ST} \approx 0.043$** between major continental human groups
+  [@rosenberg_popgen_2011] — the values you record in your table should be
+  interpreted against this background.
+:::
+
+## References
