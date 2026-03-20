@@ -1,28 +1,301 @@
 ---
 title: "Sequence Motif Analysis"
+subtitle: "Finding the Signal in the Noise"
+bibliography: references.bib
+csl: nature.csl
+lang: en-US
 ---
 
-## Overview
+## Learning Objectives
 
-Short paragraph linking to previous chapter and framing why this topic matters in the course.
+After completing this chapter, you should be able to:
 
-## Learning objectives
+- Define a sequence motif and articulate how motifs differ from domains at both the conceptual and practical level
+- Distinguish between DNA regulatory motifs and protein structural motifs, providing biological examples of each
+- Explain the mathematical framework of a position-specific scoring matrix (PSSM) and interpret a sequence logo
+- Navigate and apply web-based tools including ExPASy, MotifScan, PRATT, InterProScan, and the MEME Suite to discover and scan for motifs in protein and DNA sequences
+- Construct a computational workflow using FIMO to identify predicted transcription factor binding sites genome-wide
+- Connect motif analysis to inference of regulatory function, extending earlier lessons in homology and functional inference introduced in Chapter 12
 
-- Bullet list of 3–5 concrete things students should be able to do.
+## Introduction
 
-## Narrative
+Every cell in your body is reading the same genome, yet a neuron behaves nothing like a hepatocyte, and a muscle cell nothing like an immune cell. This remarkable cell-type specificity emerges not from differences in DNA sequence but from differences in how that sequence is read — which genes are turned on, when, and by how much. Buried within the regulatory regions of genes are short stretches of DNA, typically five to twenty base pairs in length, that serve as landing pads for transcription factors and other regulatory proteins. These short conserved sequences are called *sequence motifs*, and they are among the most fundamental units of biological information.
 
-### Key concepts
-- 2–4 subsections that walk through your bullet points (e.g., “FASTQ and Phred scores”, “QC metrics”, “Design decisions based on QC”).
+The concept of a sequence motif extends beyond DNA regulation into the world of proteins. Proteins fold into functional shapes because of the chemical properties of their amino acid sequences, and within those sequences there are recurring short patterns that encode specific structural or biochemical functions — the active site of a kinase, the metal-coordinating residues of a zinc finger, the hydrophobic core of a signal peptide. Whether in DNA or protein, a motif is a short, conserved sequence pattern that carries functional meaning.
 
-### Figures and examples
-- Simple diagrams you sketch yourself (e.g., read‑quality plot, schematic of FASTQ fields, coverage cartoon).
-- One or two short, self‑contained R or shell code blocks where appropriate.
+This chapter introduces you to the biology and bioinformatics of sequence motifs. We begin by defining what motifs are and situating them in the broader conceptual landscape of domains, families, and homology that you encountered in the previous chapter. We then survey the practical computational tools used to discover and search for motifs in both protein and DNA sequences. Finally, we examine a case study from evolutionary genomics — the use of the FIMO tool from the MEME Suite to map predicted binding sites of the PRDM9 protein across great ape genomes — that will connect directly to your semester-long project on PRDM9 domain biology.
 
-## Activities and labs
+## What Is a Sequence Motif?
 
-- Describe how the corresponding lab (e.g., Galaxy vs command line QC) connects to the chapter, and give just enough detail that students can re‑orient later.
+### Patterns, Domains, and Motifs
 
-## Further reading
+In Chapter 12, you learned that proteins can be described from several perspectives: their family relationships, physical properties, subcellular localization, and functional roles. Central to the discussion of protein families was the concept of the *domain* — a region of a protein that can adopt a particular three-dimensional structure and that is shared by multiple proteins, often reflecting common evolutionary origin. Related to but distinct from the domain is the *motif*, and understanding the difference between these two concepts is critical for the analysis you will perform in this chapter.
 
-- List your resources with 1–2‑sentence annotations each, rather than reproducing any text.
+According to the InterPro Consortium, a domain is a distinct functional, structural, or sequence unit that may exist in a variety of biological contexts, and a match to an InterPro domain entry indicates the presence of a recognizable folding unit. A motif, by contrast, is a short conserved region of a protein or DNA sequence — typically five to twenty-five residues — that characterizes a functional site or a protein family. The important distinction is one of scale and implication: a domain implies a three-dimensional structural unit, while a motif implies a conserved short pattern. Crucially, as you will encounter repeatedly in this chapter, *sets of sequence motifs do not necessarily represent homologs*. Two proteins can share a phosphorylation motif, a zinc-binding motif, or a TATA box simply because convergent evolution or shared biochemistry favors that particular sequence arrangement — not because the proteins share a common ancestor.
+
+This distinction matters enormously for the inferences you can draw. In Chapter 12 you learned to infer shared function from shared homology — the logic being that if two proteins descend from a common ancestor and share sequence similarity, they likely share function. Motif analysis adds a complementary but different layer: it allows you to infer *specific biochemical activities* or *regulatory relationships* from the presence of a conserved short pattern, without necessarily implying homology. A kinase phosphorylation site motif tells you something about what might happen to a protein; a transcription factor binding site motif tells you something about how a gene might be regulated. These inferences are powerful but must be interpreted carefully.
+
+### DNA Regulatory Motifs
+
+When you first encountered gene regulation in introductory biology, you likely learned about the *TATA box* — the short sequence 5'-TATAAA-3' found approximately 25 base pairs upstream of the transcription start site (ATG) of many eukaryotic genes. This canonical example captures everything essential about a DNA regulatory motif. The TATA box is short (six base pairs), highly conserved across eukaryotes, positioned precisely relative to a functional landmark (the transcription start), and it works by binding a specific protein — the TATA-binding protein (TBP) — that recruits RNA Polymerase II to initiate transcription. When TBP binds the TATA box, it bends the DNA, creating a structural platform onto which the rest of the general transcription machinery assembles.
+
+The TATA box is a *core promoter element*, meaning it is part of the minimal machinery required to position the transcription apparatus at the right place. But gene regulation is considerably more complex than simply knowing where the polymerase starts. Genes are differentially regulated across cell types, developmental stages, and environmental conditions because of *cis-regulatory elements* — binding sites for sequence-specific transcription factors that lie upstream of, downstream of, or even within the genes they regulate. These elements include enhancers, which amplify transcription; repressors, which dampen it; silencers, which block it; and insulator elements, which demarcate regulatory domains. Each of these elements works because of short DNA motifs that are recognized by specific transcription factors.
+
+A second illustrative example comes from what are called *Initiator (Inr) elements* and *Downstream Promoter Elements (DPE)*, both of which contribute to transcription initiation in organisms like *Drosophila melanogaster*. The DPE in Drosophila, with the consensus sequence RGWYV, occurs near position +28 from the transcription start site and acts cooperatively with the Inr element to recruit transcription factors in genes lacking a TATA box. This example reinforces an important principle: not all promoters look the same, and the constellation of motifs in a promoter region encodes a specific regulatory program.
+
+Transcription factor binding sites are typically tiny — five to twenty-five base pairs — and highly variable depending on the type of transcription factor. In many regulatory contexts, having more binding sites generally means stronger or more precise regulation. The relationship between transcription factor concentration, binding site number, and transcriptional output is a major area of research in gene regulation, and motif identification is a crucial first step in understanding any particular regulatory circuit.
+
+### Protein Structural and Functional Motifs
+
+Protein motifs function differently from DNA motifs but share the same fundamental property: they are short, conserved patterns that carry biochemical meaning. Protein motifs typically encode specific structural configurations, enzymatic active sites, binding interfaces, or post-translational modification sites.
+
+Consider the *kinase motif*. Protein kinases phosphorylate target proteins by transferring a phosphate group from ATP to a serine, threonine, or tyrosine residue in their substrates. The substrate recognition sequence — the motif that a kinase "reads" in its target — is a short pattern of amino acids surrounding the phosphorylatable residue. For example, the consensus substrate motif for protein kinase A (PKA) is [R/K]-[R/K]-x-[S/T], where S or T is the phosphorylated residue and x is any amino acid. This short pattern appears in thousands of proteins across the proteome, but its presence does not imply that all those proteins are homologs; it implies only that they can be phosphorylated by PKA. Kinase motifs are a prime example of how short patterns can provide specific, testable functional hypotheses without requiring sequence homology.
+
+Another instructive example is the *zinc finger motif*, which you have already begun to explore through your PRDM9 project. Zinc fingers are small protein motifs that coordinate a zinc ion through conserved cysteine and histidine residues, typically in patterns such as C-x₂-C-x₄-H-x₄-C (the CCHC zinc knuckle of retroviruses) or C₂H₂ (the classical zinc finger of transcription factors). The zinc ion imparts structural rigidity to an otherwise flexible polypeptide loop, allowing the protein to make sequence-specific contacts with DNA. C₂H₂ zinc fingers are in fact the most common DNA-binding domain in the human genome, with over 800 proteins encoded by the genome containing this motif. As you will see in the PRDM9 case study, the zinc finger array of PRDM9 is the domain responsible for binding specific DNA sequences to localize meiotic recombination hotspots.
+
+A particularly rich example that bridges protein and DNA motif analysis is the retroviral *Gag-pol polyprotein*, encoded by HIV-1. This large precursor protein (1,435 amino acids in HIV-1 Gag-Pol, accession NP_057849) is cleaved into three proteins with distinct activities: the aspartyl protease, the reverse transcriptase, and the integrase. When analyzed at the PROSITE database, this polyprotein reveals multiple protein patterns and profiles — the zinc knuckle CCHC-type pattern, the reverse transcriptase domain (Pfam 00078), the RNase H domain (Pfam 00075), the Gag-p24 domain (Pfam 00607), and sites for N-myristoylation. The Gag-pol protein therefore illustrates how a single polypeptide can harbor multiple distinct motifs and domains, each contributing a different biochemical function. This multi-domain architecture, which you have seen in the PRDM9 protein (with its KRAB, SSXRD, PR/SET, and zinc finger array), is extremely common among regulatory and enzymatic proteins.
+
+::: {.callout-note}
+## Connection to PRDM9 and Your Semester Project
+
+PRDM9 is a striking example of a multi-domain protein in which each domain carries a distinct motif signature. The KRAB domain is a transcriptional repressor module found in many zinc finger proteins. The SSXRD domain contributes to protein-protein interactions. The PR/SET domain is a histone methyltransferase, catalyzing H3K4me3 modifications at hotspot loci. And the C-terminal C₂H₂ zinc finger array directly binds DNA in a sequence-specific manner. Each of these domains can be independently identified through motif and domain scanning tools discussed in this chapter. As you work through the practical exercises, you will apply these tools to the PRDM9 protein sequence and to the genomic regions it regulates.
+:::
+
+### Position-Specific Scoring Matrices and Sequence Logos
+
+Having established what motifs are biologically, we now need to understand how they are represented mathematically — because it is this mathematical representation that powers all the computational tools you will use.
+
+The simplest representation of a DNA or protein motif is a *consensus sequence*, a string of characters (with IUPAC ambiguity codes for DNA) that summarizes which residue is most common at each position. For example, the TATA box consensus is 5'-TATAAA-3', and the consensus sequence for the Drosophila DPE element is RGWYV (where R = purine, W = weak bond, Y = pyrimidine, V = not T). Consensus sequences are easy to read and communicate, but they discard a great deal of information — they say nothing about how variable each position is or how strongly each possible residue is preferred.
+
+A more powerful representation is the *Position-Specific Scoring Matrix* (PSSM), sometimes called a weight matrix or position weight matrix (PWM). A PSSM is a matrix of scores, one row per position in the motif and one column per possible residue (four columns for DNA, twenty for protein). Each entry in the matrix is a log-likelihood ratio comparing the probability of observing a particular residue at a particular position in true motif instances to the background probability of observing that residue at random. A high score at a position means that residue is strongly favored in the motif; a negative score means it is disfavored. To score a candidate sequence against a motif, you simply sum the scores at each position — higher total scores indicate stronger matches to the motif.
+
+The intuition behind PSSMs can be deepened by considering *information content*, which is derived from Shannon entropy. At any position in a motif, if one residue is nearly always observed, the entropy at that position is low and the information content is high — that position is highly conserved. If all residues are equally likely, the entropy is maximal and the information content is zero — that position contributes nothing to motif recognition. The information content at each position is represented visually as the height of a *sequence logo*, where taller characters represent more conserved positions and the relative heights of letters within a stack represent the relative frequencies of each residue. Sequence logos are the standard visual representation of motifs and you will encounter them in every tool described in this chapter.
+
+Building a PSSM requires a collection of aligned sequences that are known instances of the motif. Once you have aligned instances, you count the frequency of each residue at each position, add a small pseudocount to avoid zero entries, normalize to get a probability matrix, and compute log-likelihood ratios relative to background frequencies. The resulting PSSM can then be used to score any new sequence — this is fundamentally what scanning tools like FIMO do when they search genomes for transcription factor binding sites.
+
+::: {.callout-tip}
+## Thinking About Complexity
+
+Before searching for motifs in a sequence dataset, it is important to consider sequence complexity. Low-complexity regions — runs of the same nucleotide, simple repeats like ATATATATAT — will confound motif finding because they appear frequently by chance. Tools like `dust` can mask low-complexity sequence before motif analysis, and the MEME suite includes options to handle repeat masking. This preprocessing step is often overlooked but can be critical for obtaining biologically meaningful results.
+:::
+
+## Tools for Motif Analysis
+
+The computational tools for motif analysis fall into two broad categories: those designed for protein sequence motifs and those designed for DNA sequence motifs. In practice, the MEME Suite spans both, but the protein-focused tools of ExPASy, MotifScan, PRATT, and InterProScan remain essential for characterizing individual proteins and large-scale proteome annotation.
+
+### Protein Motif Analysis: The ExPASy Ecosystem
+
+The Expert Protein Analysis System (ExPASy) at the Swiss Institute of Bioinformatics (www.expasy.org) serves as a premier portal for protein sequence analysis. ExPASy integrates a remarkable diversity of tools — from two-dimensional gel databases and mass spectrometry resources to protein domain databases and motif scanning utilities. For motif analysis, the most directly relevant tools within the ExPASy umbrella are *ScanProsite* (for searching with PROSITE patterns and profiles), *ProtParam* (for computing physical properties), and links to the broader InterPro system.
+
+PROSITE, maintained at ExPASy, is a database of protein families, domains, functional sites, and associated patterns and profiles. PROSITE entries come in two types: *patterns*, which are short regular expressions describing conserved amino acid sequences (for example, the zinc knuckle CCHC-type pattern C-x(2)-C-x(4)-H-x(4)-C), and *profiles*, which are PSSMs that capture the statistical variation at each position across aligned motif instances. Profiles are generally more sensitive than patterns because they capture quantitative variation rather than binary matches. The *ScanProsite* tool at ExPASy (https://prosite.expasy.org/scanprosite) allows you to paste a protein sequence and identify all PROSITE patterns and profiles that match within it. When applied to HIV-1 Gag-pol, ScanProsite returns dozens of hits including eight distinct hits for the zinc finger CCHC-type profile across the zinc knuckle domains, as well as seventy hits for N-myristoylation patterns — illustrating both the genuine functional signals and the challenge of distinguishing biologically significant motif occurrences from false positives.
+
+*MotifScan* (https://myhits.sib.swiss/cgi-bin/motif_scan) is a closely related tool within the SIB/ExPASy ecosystem that scans a protein sequence against multiple motif databases simultaneously, returning hits ranked by statistical significance. It serves as a convenient one-stop shop for an initial survey of a protein's domain and motif content.
+
+*PRATT* (https://www.ebi.ac.uk/Tools/pfa/pratt/) takes a different approach: rather than scanning a single sequence against a fixed database, PRATT discovers *de novo* patterns shared by a collection of input protein sequences. You provide a set of unaligned protein sequences that you believe share a common feature, and PRATT finds the conserved pattern that best describes them. This is particularly useful when you have a set of proteins with a suspected shared function but no prior knowledge of what the conserved motif looks like.
+
+### InterProScan: An Integrated View of Protein Function
+
+InterPro (https://www.ebi.ac.uk/interpro/) represents perhaps the most comprehensive portal for protein domain and motif analysis. InterPro is not itself a database of motifs but rather an *integrated documentation resource* that unifies eleven member databases including PROSITE, Pfam, SMART, SUPERFAMILY, PRINTS, TIGRFAMs, and others. Each InterPro entry provides a description of a protein family, domain, or functional site and integrates evidence from multiple underlying databases — if a protein domain is recognized by Pfam and SMART independently, both lines of evidence appear in the InterPro entry, increasing confidence in the annotation.
+
+The *InterProScan* tool (https://www.ebi.ac.uk/interpro/search/sequence) is the web interface that allows you to paste a protein sequence and receive a comprehensive annotation covering all recognizable domains, motifs, and functional sites from across the integrated databases. The output is a graphical block diagram in which each domain is displayed as a colored bar at its position along the protein sequence, alongside GO term annotations linking the protein to biological processes, molecular functions, and cellular components. For a multi-domain protein like PRDM9, InterProScan returns distinct annotations for the KRAB domain, the SSXRD region, the SET/PR-SET methyltransferase domain, and each individual C₂H₂ zinc finger module — giving you a complete architectural overview of the protein in a single analysis.
+
+InterPro also offers a BioMart interface (https://www.ebi.ac.uk/interpro/biomart/martview) for large-scale queries — for instance, retrieving all human proteins with a given InterPro identifier or finding all proteins above a certain length with a particular domain combination. This programmatic access, which you have used for similar tasks with Ensembl BioMart in earlier chapters, scales beyond what is practical with the point-and-click interface.
+
+### The MEME Suite: Motif Discovery and Scanning for DNA (and Protein)
+
+The MEME Suite (http://meme-suite.org) is the dominant toolkit for DNA sequence motif analysis, though it is equally applicable to protein sequences. Originally built around the MEME algorithm itself, the suite has grown into an integrated set of thirteen web-based tools organized into four functional categories: motif discovery, motif enrichment analysis, motif scanning, and motif comparison. The MEME Suite has been used in over 9,800 published studies and serves nearly 20,000 unique web users per year, reflecting its central role in modern genomics and regulatory biology.
+
+**Motif Discovery** tools find patterns *de novo* in a set of unaligned input sequences. The flagship *MEME* algorithm (Multiple EM for Motif Elicitation) uses the Expectation-Maximization (EM) algorithm to find the set of motifs that best explains the input sequences under a probabilistic model. You provide a FASTA file of sequences — for example, the promoter regions of co-expressed genes, ChIP-seq peak regions, or upstream regulatory regions of genes induced by a specific signal — and MEME returns the motifs most enriched in those sequences, each represented as a PSSM and sequence logo. MEME is a general-purpose discovery algorithm for both nucleotide and peptide motifs. *DREME* (Discriminative Regular Expression Motif Elicitation) complements MEME by being more sensitive for short nucleotide motifs and by using a discriminative approach that finds motifs enriched in a foreground set relative to a background set. *MEME-ChIP* is adapted for very large datasets such as ChIP-seq peak sets, running MEME, DREME, and several enrichment analyses in a single integrated pipeline. *GLAM2* extends motif discovery to allow insertions and deletions within the motif, making it useful for cases where the motif instances are not precisely the same length.
+
+**Motif Enrichment Analysis** tools test *known* motifs for enrichment in a set of sequences, using databases like JASPAR (which contains experimentally validated transcription factor binding profiles for many organisms). *CentriMo* is the most sensitive of these tools; it tests whether a known motif is centrally enriched in a set of input sequences, leveraging the fact that ChIP-seq peak sequences typically have the binding motif near the center. *AME* (Analysis of Motif Enrichment) tests whether sequences in a foreground set have more occurrences of a motif than a background set. *SpaMo* looks for preferred spacings between pairs of motifs, revealing transcription factor co-binding preferences.
+
+**Motif Scanning** tools are used once a motif is known and you want to find all its occurrences in a genome or sequence database. *FIMO* (Find Individual Motif Occurrences) is the method of choice for genome-wide scanning — it identifies every position in a genome where a motif occurs with a score above a specified threshold, reporting log-likelihood ratio scores, p-values, and false discovery rate-corrected q-values for each predicted binding site. *MAST* assigns each sequence in a database a composite score based on how well it matches a set of input motifs, making it more suitable for scoring short sequences like proteins or candidate regulatory regions. *MCAST* scans genomes for clusters of motifs, designed to detect cis-regulatory modules containing binding sites for multiple cooperating transcription factors.
+
+**Motif Comparison** is handled by *Tomtom*, which compares user-supplied motifs against a database of known motifs to determine whether a newly discovered motif matches any previously characterized binding specificity. Tomtom aligns each input motif against each database motif and reports statistically significant matches — an indispensable tool for assigning biological identity to *de novo* discovered motifs.
+
+::: {.callout-important}
+## MEME Suite Statistical Reporting
+
+A key strength of the MEME Suite is its consistent reporting of statistical significance for all outputs, distinguishing it from many alternative tools. FIMO reports both p-values (computed from the position-specific scoring matrix using dynamic programming, assuming a zero-order background model) and q-values (false discovery rate estimates computed via a bootstrap method). Because genomes are large and motifs are short, scanning a genome for a motif will inevitably produce many matches, some of which are spurious. The q-value tells you the expected proportion of false positives among all hits scoring above a given threshold. A standard cutoff of q < 0.05 means that among all predicted binding sites, you expect fewer than 5% to be false positives — a meaningful statistical guarantee when you are scanning billions of base pairs.
+:::
+
+## Practical Workflows for Motif Analysis
+
+### Characterizing a Multi-Domain Protein with ExPASy and InterProScan
+
+The most direct application of protein motif analysis is the characterization of an unknown or poorly annotated protein sequence. The general workflow begins with obtaining your protein sequence in FASTA format from NCBI Protein or UniProt, then submitting it to multiple complementary tools. InterProScan provides the broadest domain and motif coverage by integrating multiple databases simultaneously. ScanProsite provides detailed PROSITE-specific information, particularly useful for identifying functional site patterns (phosphorylation sites, glycosylation sites, signal peptides) in addition to domains. ExPASy's ProtParam computes physical properties such as molecular weight, isoelectric point, amino acid composition, and instability index. Together, these tools provide a rich functional portrait of any protein.
+
+Consider the practical case of HIV-1 Gag-pol (accession NP_057849.4), a 1,435 amino acid polyprotein. Submitting this sequence to InterProScan returns a multi-domain architecture spanning the KRAB domain, the GAG p24 capsid core domain, multiple CCHC zinc knuckle motifs, the aspartyl protease domain, the reverse transcriptase domain, and the integrase domain. The same sequence submitted to ScanProsite reveals 8 zinc finger CCHC-type profile hits across the zinc knuckle domains, alongside numerous N-myristoylation pattern hits — a reminder that not all pattern matches are biologically meaningful; some motif patterns are common enough that they appear frequently by chance in long sequences, and biological relevance must always be considered in context.
+
+### Discovering Transcription Factor Binding Sites with MEME
+
+The canonical MEME workflow begins with a set of DNA sequences you believe to share a regulatory relationship. The most common starting point in the genomics era is a set of ChIP-seq peak sequences — the genomic regions where a specific transcription factor has been shown by chromatin immunoprecipitation followed by sequencing (ChIP-seq) to bind. After downloading peak coordinates and extracting the corresponding DNA sequences (typically 500 bp windows centered on each peak), you submit the FASTA file to MEME with the option "zero or one occurrence per sequence" (zoops model), which is appropriate when you expect at most one instance of the motif in each peak region.
+
+MEME returns the top enriched motifs as sequence logos alongside statistical information including the number of sequences containing the motif, its E-value, and the information content of each position. The most significant motif recovered from a transcription factor ChIP-seq experiment should, if the experiment was successful, correspond to the known binding specificity of the immunoprecipitated factor. You can verify this by submitting the discovered motif to Tomtom and comparing it against the JASPAR database — if the top Tomtom hit is the factor you studied, you have computational confirmation that the ChIP-seq experiment recovered the correct signal.
+
+After motif discovery, CentriMo analysis provides an important secondary validation: if the discovered motif is genuinely the binding motif of the assayed transcription factor, it should be centrally enriched in the ChIP-seq peak sequences, since the peak center is defined by the highest point of sequence read coverage — which corresponds to where the factor actually bound. A motif that shows strong central enrichment in CentriMo is far more likely to be the causal binding motif than one that appears uniformly distributed across the peak regions.
+
+### Genome-Wide Binding Site Prediction with FIMO
+
+Once a motif is established — whether from *de novo* discovery, literature, or a database — FIMO enables you to scan the entire genome to find every location where that motif occurs above a statistical threshold. The FIMO workflow is conceptually straightforward but computationally intensive: for each position in the input genome sequence, FIMO computes the log-likelihood ratio score of the motif at that position and converts it to a p-value. After scanning the entire genome, false discovery rate correction is applied, and FIMO outputs a ranked list of predicted binding sites with their genomic coordinates, scores, and q-values.
+
+The output of FIMO can be uploaded to the UCSC Genome Browser as a custom track, allowing you to visualize predicted binding sites in their genomic context alongside other annotations such as gene structures, conservation scores, ChIP-seq data, and regulatory element annotations. This integration is particularly powerful for validating predicted binding sites: if your FIMO-predicted binding sites overlap with DNaseI hypersensitive sites (markers of open chromatin accessible to transcription factors) or with histone modification marks like H3K27ac (a marker of active enhancers), this provides independent evidence that those sites are biologically active.
+
+In terms of performance, FIMO can scan DNA sequences at a rate of approximately 3.5 megabases per second on a single CPU, meaning that scanning the human genome (~3 gigabases) takes on the order of minutes to tens of minutes. FIMO's output is available in multiple formats including HTML, XML in CisML format, plain text, and GFF/WIG files suitable for genome browsers. For downstream analysis, the plain text or GFF output is most convenient, as it can be manipulated using standard Unix utilities (awk, sort, grep) or loaded into R for statistical analysis.
+
+## Case Study: PRDM9 Binding Site Prediction Across Great Ape Genomes
+
+### Background: PRDM9 and Meiotic Recombination
+
+Meiotic recombination is the process by which homologous chromosomes exchange genetic material during meiosis, generating genetic diversity and ensuring proper chromosome segregation. In mammals, recombination does not occur uniformly across the genome but is concentrated at discrete chromosomal locations called *recombination hotspots* — regions of 1–2 kilobases in which double-strand breaks (DSBs) are initiated and repaired through homologous recombination at vastly elevated rates compared to the genomic background.
+
+In humans and mice, the location of recombination hotspots is controlled primarily by *PRDM9* — a zinc finger protein that binds specific DNA sequences at hotspot locations, catalyzes histone H3K4 trimethylation at those sites, and thereby recruits the DSB machinery. PRDM9 acts in a hierarchical fashion: the zinc finger array determines *where* DSBs are initiated, the PR/SET domain determines *what histone modification* marks that location, and this chromatin modification signal is read by the SPO11 complex to initiate DSBs. The KRAB domain and SSXRD region of PRDM9 participate in protein-protein interactions that stabilize the complex at hotspot sites.
+
+What makes PRDM9 evolutionarily fascinating is that its zinc finger array is among the fastest-evolving protein regions in the primate genome, with some zinc finger positions showing dN/dS ratios (the ratio of nonsynonymous to synonymous substitutions) well above 1 — a signature of positive selection. This rapid evolution continuously generates new PRDM9 alleles with different binding specificities, which in turn reshuffles the hotspot landscape. The practical consequence is that humans and chimpanzees, despite sharing ~99% of their coding sequences, have almost entirely non-overlapping recombination hotspot maps because their PRDM9 proteins recognize different DNA sequences.
+
+Understanding PRDM9's binding specificity — and where in the genome it binds — requires precisely the kind of motif analysis you have learned in this chapter.
+
+### Defining Hotspot and Coldspot Regions
+
+The first step in the PRDM9 binding site analysis workflow is identifying the recombination hotspots themselves. Recombination rates can be estimated *indirectly* from population genetic data: in genomic regions where recombination has been historically frequent, linkage disequilibrium (LD) between neighboring genetic variants decays more rapidly, and this pattern can be used to estimate the rate parameter 4N_e r (where N_e is the effective population size and r is the recombination rate) from dense genome-wide SNP data. This indirect approach, which is sensitive to sampling biases and population structure, was used in the original HapMap analyses to produce genome-wide recombination maps for human populations.
+
+For the great ape analyses described by Stevison et al. (2016) in *Molecular Biology and Evolution*, whole-genome sequence data from the Great Ape Genome Project (Prado-Martinez et al., 2013) — including 24 common chimpanzees, 13 bonobos, 27 gorillas, and 10 orangutans — provided the raw material for recombination rate estimation. Using the program *mlehot*, an implementation of likelihood-based hotspot detection with improved power achieved by shrinking the neighborhood window from 200 kb to 20 kb, hotspots were identified as genomic regions where the estimated rate in a central 2 kb window was statistically elevated relative to the surrounding background. This analysis identified 8,037 hotspots in Nigerian chimpanzees, 10,704 in bonobos, and 22,012 in gorillas. For each hotspot, a matched *coldspot* was defined — a region with similar GC content and surrounding recombination rate but lacking elevated local recombination — to serve as a control in the subsequent binding site analysis.
+
+### Applying FIMO to Identify Predicted PRDM9 Binding Sites
+
+With hotspot and coldspot coordinates in hand, the next step was to determine whether the hotspot sequences were enriched for predicted PRDM9 binding sites relative to the coldspots. This is where FIMO becomes the central analytical tool. The input to FIMO is the known binding motif of PRDM9 — specifically, the position weight matrix (PWM) derived from the computationally predicted binding specificity of each PRDM9 allele under consideration — together with the DNA sequences of the hotspot and coldspot regions.
+
+The PRDM9 binding motif used in these analyses was not experimentally derived for each individual great ape but was instead predicted from the zinc finger sequence itself, using established models of C₂H₂ zinc finger-DNA recognition. Shorter submotifs of the form CCNCCNTNNCCNC and CCNCNNTNNNCNTNNC were identified by Brick et al. (2012) as recurring across many PRDM9 alleles. These submotifs, formatted as PWMs, were submitted to FIMO to scan the 2 kb windows of each hotspot and coldspot region.
+
+The analytical logic is simple but powerful: if PRDM9 binding is genuinely driving hotspot formation, then hotspot sequences should contain significantly more predicted PRDM9 binding sites than matched coldspot sequences. FIMO's output — the complete list of predicted binding sites with their genomic coordinates and q-values — allows two complementary analyses. First, for each region you can ask whether any predicted binding site (PBS) is present at all (proportion of regions with at least one PBS). Second, you can count the total number of predicted binding sites across all regions (total motif count). A binomial test compares the counts between hotspots and coldspots, with the null hypothesis that PRDM9 binding sites are equally frequent in both.
+
+### Results and Their Interpretation
+
+The results from this FIMO-based analysis were striking and biologically coherent. For human populations (HapMap CEU and YRI), 50% and 49% of hotspot regions contained at least one predicted PRDM9 binding site, compared to 45% and 44% of coldspot regions — differences that are highly statistically significant (p < 2.7 × 10⁻¹⁶ and p < 7.7 × 10⁻²², respectively). The enrichment was also clear in the total binding site counts: human hotspots harbored approximately 7% more total predicted binding sites than coldspots. Similar enrichments were observed in gorilla (p < 1.4 × 10⁻⁵) and bonobo (p < 0.05) hotspots, and in Nigerian chimpanzee hotspots (p < 2.6 × 10⁻⁴). Western chimpanzees showed a marginally significant enrichment using a previously published hotspot set but not when using the newly estimated hotspot set — a discrepancy that likely reflects differences in sample size (4,981 versus 9,993 hotspots) and the lower overall diversity at the PRDM9 locus in chimpanzees compared to humans.
+
+Beyond simply testing whether hotspots are enriched for binding sites, the analysis also examined the *spatial distribution* of predicted binding sites relative to hotspot centers. If PRDM9 binding is causally driving hotspot formation, predicted binding sites should be concentrated at the center of hotspots rather than distributed uniformly across the hotspot window. The expected spatial pattern — a peak of binding site density at the hotspot center that declines toward the flanks — was indeed observed in the data, providing a second independent line of evidence that PRDM9 binding is mechanistically linked to hotspot activity. Furthermore, hotspot *intensity* (the estimated rate at the hotspot center relative to background) was positively correlated with binding site count, consistent with a model in which more PRDM9 binding sites lead to more frequent DSBs.
+
+### Workflow Summary and Practical Considerations
+
+The PRDM9 case study illustrates a general workflow for testing whether a transcription factor's predicted binding sites are enriched at functionally relevant genomic loci:
+
+First, define your foreground and background sets: in this case, hotspot and coldspot regions matched for potential confounders (GC content, local recombination background). Second, obtain or construct the PWM for the transcription factor of interest, formatted appropriately for FIMO (MEME motif format). Third, extract the DNA sequences for your foreground and background regions in FASTA format, using tools like `fastaFromBed` from the BEDTools suite. Fourth, run FIMO on each set of sequences with appropriate background nucleotide frequencies. Fifth, compare the distribution of predicted binding sites between foreground and background using appropriate statistical tests (binomial test for proportions, permutation tests for robustness). Sixth, examine the spatial distribution of predicted binding sites within the foreground regions to test for positional enrichment consistent with causal binding.
+
+One important practical consideration is the choice of background nucleotide frequencies. FIMO assumes a zero-order background model by default (independent nucleotide frequencies), but GC content varies across the genome and can bias binding site predictions. In the PRDM9 analysis, the careful matching of hotspots and coldspots for GC content partially addresses this issue. For analyses where GC-matching is not feasible, FIMO accepts a custom background frequency file that can be estimated from the set of sequences being scanned.
+
+A second consideration is motif threshold selection. FIMO reports all predicted binding sites along with their p-values and q-values, and the user chooses a threshold for significance. A more permissive threshold (say, q < 0.1) will recover more predicted binding sites, including more false positives; a stricter threshold (q < 0.01) will be more conservative but may miss genuine low-affinity binding sites. For comparative analyses like the hotspot versus coldspot comparison, using a consistent threshold is more important than the specific value chosen, since any systematic bias will affect both groups equally.
+
+::: {.callout-note}
+## Connecting to Chapter 12
+
+In Chapter 12, you examined PRDM9 as a transcription factor whose zinc finger array drives recombination hotspot localization across primates. Here, you have seen how FIMO operationalizes the concept of transcription factor binding site prediction — converting a protein's binding specificity (encoded as a PWM) into a genome-wide map of predicted regulatory interactions. The enrichment of PRDM9 predicted binding sites at recombination hotspots across multiple great ape species provides computational evidence that PRDM9's DNA-binding activity is not merely associated with hotspots but is a causal driver of where recombination occurs. This represents a beautiful example of how bioinformatic analysis — specifically, motif scanning with FIMO — can provide mechanistic insight into an evolutionary phenomenon.
+:::
+
+## Perspective
+
+The field of motif analysis sits at the intersection of molecular biology, statistics, and computer science, and it continues to evolve rapidly. On the experimental side, high-throughput approaches such as ChIP-seq, SELEX (systematic evolution of ligands by exponential enrichment), and protein-binding microarrays are generating binding specificity data for hundreds of transcription factors across dozens of organisms, dramatically expanding the curated motif databases that tools like FIMO and Tomtom rely upon. The JASPAR database, for example, has grown from a handful of entries to thousands of profiles for transcription factors from vertebrates, insects, plants, and fungi. On the computational side, deep learning approaches are beginning to complement and in some cases outperform PSSM-based methods for predicting transcription factor binding, by learning complex sequence features from ChIP-seq data without the assumption that binding preference at each position is independent. These advances suggest that while the tools described in this chapter represent the current standard of practice, the next generation of binding site prediction methods will offer both greater accuracy and greater insight into the cooperative and context-dependent nature of transcription factor binding.
+
+## Pitfalls
+
+Several common mistakes arise in motif analysis that are worth highlighting explicitly. First, *confusing motif occurrence with functional activity*: FIMO can predict tens of thousands of binding sites for a transcription factor across the genome, but most of these sites are likely inactive in any given cell type because of chromatin accessibility and transcription factor concentration constraints. Predicted binding sites should be treated as hypotheses, not facts, until validated by experimental evidence such as ChIP-seq or DNaseI footprinting. Second, *ignoring strand orientation*: many DNA motifs are asymmetric, and FIMO by default searches both strands. If you are analyzing a directional signal (such as a core promoter element), you may want to restrict your search to the appropriate strand. Third, *using too short a motif as input*: very short motifs (fewer than six base pairs) will match the genome extremely frequently by chance, and the resulting flood of predicted binding sites will be difficult to interpret meaningfully. Fourth, *neglecting GC content*: as noted above, GC-rich regions of the genome will appear enriched for GC-rich motifs simply because of background composition — always use a background model that matches your input sequences.
+
+## Advice for Students
+
+Motif analysis is one of the most immediately applicable bioinformatics skills you will develop. Whether you are studying a transcription factor, characterizing a newly discovered protein, or trying to understand why a particular gene is regulated the way it is, motif analysis will be part of your toolkit. My advice is to begin every new protein with a comprehensive domain and motif scan using InterProScan — it takes minutes and frequently reveals functional features that would otherwise require weeks of literature review. For any regulatory question, familiarize yourself with the MEME Suite's full range of tools rather than relying solely on MEME itself; the enrichment, scanning, and comparison tools are at least as powerful as the discovery algorithm. Finally, always validate computational predictions with independent evidence — a predicted binding site is an interesting hypothesis, but an experimentally confirmed binding site is a biological fact.
+
+## End-of-Chapter Problem Sets
+
+**Problem 13-1: Characterizing HIV-1 Pol with ExPASy and InterProScan**
+
+Navigate to NCBI Protein and retrieve the sequence for HIV-1 Gag-pol (accession NP_057849.4) in FASTA format. 
+
+a. Submit this sequence to InterProScan (https://www.ebi.ac.uk/interpro/search/sequence). How many distinct domains are identified? Create a table listing each domain, its database of origin (Pfam, SMART, PROSITE, etc.), its position in the protein, and its inferred function.
+
+b. Submit the same sequence to ScanProsite at ExPASy (https://prosite.expasy.org/scanprosite). Compare the results to InterProScan — which tool identified more functional sites? Which types of annotations are unique to each tool?
+
+c. Which tool do you find more useful for understanding this protein, and why? Reflect on when you might prefer each approach.
+
+**Problem 13-2: Exploring PRDM9 Domains**
+
+Retrieve the human PRDM9 protein sequence (you may use the HGNC gene symbol "PRDM9" and BioMart, as described in Chapter 12, or search NCBI Protein directly).
+
+a. Submit the sequence to InterProScan and identify the four major domains: KRAB, SSXRD, PR/SET (methyltransferase), and C₂H₂ zinc fingers. Record the position of each domain in the protein.
+
+b. For each domain, write two to three sentences describing its known biological function based on InterPro GO term annotations and literature you can find through the domain's database entry.
+
+c. Based on the zinc finger array alone, what would you predict about PRDM9's molecular function if you had no prior knowledge of its role in meiosis? What does this exercise reveal about the power and limits of domain-based functional inference?
+
+**Problem 13-3: Discovering a Motif with MEME**
+
+Go to the MEME Suite web server (http://meme-suite.org) and access the MEME tool.
+
+a. Create a set of five to ten short DNA sequences (fifteen to thirty base pairs each) that all contain a shared "motif" of your own invention — an eight to twelve base pair sequence — embedded at random positions within longer flanking sequence. Submit these to MEME with the "zero or one occurrence per sequence" model and a maximum motif width matching your invented motif's length. Does MEME recover your motif? Examine the E-value and information content.
+
+b. Add two or three sequences to your set that do NOT contain your motif. How does this affect MEME's ability to find the motif?
+
+c. Submit your discovered motif to Tomtom and compare it against the JASPAR vertebrates database. Does your invented motif resemble any known transcription factor binding site? Reflect on what this result means biologically.
+
+**Problem 13-4: Scanning for Transcription Factor Binding Sites with FIMO**
+
+Retrieve the DNA sequence of the promoter region (2,000 bp upstream of the transcription start site) of a gene of your choice from the UCSC Genome Browser (use the "View DNA" option after navigating to your gene of interest).
+
+a. Select a transcription factor that is known to regulate your gene of interest (you can use a literature search or consult a database such as ENCODE or JASPAR). Obtain the PWM for this transcription factor from JASPAR (https://jaspar.genereg.net).
+
+b. Submit both the promoter sequence and the PWM to FIMO. How many predicted binding sites does FIMO identify with q < 0.05? What are their positions and scores?
+
+c. Load the FIMO output as a custom track in the UCSC Genome Browser. Do the predicted binding sites overlap with any annotated regulatory features (DNaseI hypersensitive sites, H3K27ac peaks, ENCODE TF ChIP-seq peaks)?
+
+**Problem 13-5: Comparing Hotspot and Coldspot Binding Site Enrichment**
+
+This problem recapitulates the key analysis of the PRDM9 case study using published data.
+
+a. Visit the JASPAR database and download the PWM for a human transcription factor of your choice in MEME format.
+
+b. From a published ChIP-seq dataset for your chosen factor (available through ENCODE at https://www.encodeproject.org), download the top 500 peak regions and 500 matched background regions (you may define background as regions with similar GC content but no ChIP-seq signal).
+
+c. Using FIMO, scan both sets of regions for predicted binding sites. Compare the proportion of foreground versus background regions containing at least one predicted binding site. Is the difference statistically significant (binomial test)?
+
+d. In one paragraph, interpret your result in the context of what we know about the relationship between PSSM-based binding site prediction and experimental evidence of transcription factor binding.
+
+## Reflection Questions
+
+The following questions are designed to prompt deeper engagement with the ideas in this chapter. There are no single correct answers — they invite you to integrate concepts across chapters, consider the limits of computational approaches, and reflect on the biological significance of what you have learned.
+
+**Reflection 13-1: Motifs Versus Homology**
+
+In Chapter 12, you learned to infer shared function from homology — the logic that two proteins sharing an ancestor likely share function. This chapter introduces a different mode of inference: finding a motif in a protein implies a specific biochemical activity regardless of the protein's evolutionary history. Construct a concrete biological scenario in which these two modes of inference would give you contradictory predictions about a protein's function. How would you resolve the contradiction? What does your answer reveal about the limits of inference from sequence alone?
+
+**Reflection 13-2: The Evolutionary Arms Race at PRDM9**
+
+PRDM9's zinc finger array evolves under strong positive selection — one of the fastest-evolving regions in the primate genome. The result is that different PRDM9 alleles bind different DNA sequences, and different great ape species have almost entirely non-overlapping hotspot landscapes. From an evolutionary perspective, why might positive selection favor continuous diversification of PRDM9 binding specificity? (Hint: consider what would happen over evolutionary time if PRDM9 always bound the same sites — what would accumulate at those sites, and how might that affect fitness?) Connect your answer to the concept of "hotspot erosion" or "selfish" genetic elements if you are familiar with these ideas.
+
+**Reflection 13-3: The Gap Between Prediction and Biology**
+
+FIMO predicted thousands of PRDM9 binding sites across each great ape genome, but only a small fraction of these sites are actual recombination hotspots. What factors could explain why many predicted binding sites do not function as hotspots in the cell? List at least three distinct biological mechanisms (not computational reasons) that could cause a predicted binding site to be inactive in vivo, and for each, describe an experimental approach that could test your hypothesis.
+
+**Reflection 13-4: From Motif Discovery to Regulatory Understanding**
+
+Imagine you have performed RNA-seq on two cell types — a stem cell and a differentiated neuron — and identified 200 genes that are highly expressed in neurons but not in stem cells. You extract the 2 kb promoter sequences of these 200 genes and run MEME. The top discovered motif closely resembles the binding site for a transcription factor called NeuroD1, a known regulator of neuronal differentiation. What additional experiments — computational and/or experimental — would you perform to build a compelling case that NeuroD1 directly activates these 200 genes in neurons? Consider the difference between a gene being *activated by* NeuroD1 directly versus being *co-expressed with* NeuroD1 target genes.
+
+**Reflection 13-5: Connecting All Four PRDM9 Domains**
+
+Throughout your semester project, you have been examining the four protein domains of PRDM9: KRAB, SSXRD, PR/SET, and the C₂H₂ zinc finger array. Based on what you have learned in this chapter and in previous chapters, write a paragraph describing how all four domains work together — mechanistically and spatially — to execute PRDM9's biological function at a recombination hotspot. Which domain is most amenable to motif-based analysis, and which requires structural data for a complete functional understanding?
+
+## Suggested Reading
+
+**Foundational methods:**
+
+- Bailey, T.L., Johnson, J., Grant, C.E., & Noble, W.S. (2015). The MEME Suite. *Nucleic Acids Research*, 43(W1), W39–W49. — The comprehensive description of the MEME Suite toolkit, including case studies demonstrating the integrated use of MEME, MAST, FIMO, and MEME-ChIP.
+
+- Grant, C.E., Bailey, T.L., & Noble, W.S. (2011). FIMO: Scanning for occurrences of a given motif. *Bioinformatics*, 27(7), 1017–1018. — The primary reference for FIMO, describing its statistical framework and demonstrating its application to genome-wide CTCF binding site prediction.
+
+**PRDM9 biology and hotspot evolution:**
+
+- Stevison, L.S., Woerner, A.E., Kidd, J.M., Kelley, J.L., Veeramah, K.R., McManus, K.F., ... & Wall, J.D. (2016). The time scale of recombination rate evolution in great apes. *Molecular Biology and Evolution*, 33(4), 928–945. — The primary paper from the case study, presenting FIMO-based PRDM9 binding site enrichment analyses across great ape recombination hotspot maps.
+
+- Baudat, F., Buard, J., Grey, C., Fledel-Alon, A., Ober, C., Przeworski, M., ... & de Massy, B. (2010). PRDM9 is a major determinant of meiotic recombination hotspots in humans and mice. *Science*, 327(5967), 836–840. — The landmark paper establishing PRDM9's role in hotspot specification.
+
+**Textbook references:**
+
+- Pevsner, J. (2015). *Bioinformatics and Functional Genomics*, 3rd edition. Chapter 12 (Protein Analysis and Proteomics). — Comprehensive treatment of protein domain and motif analysis, with extensive web-based exercises using ExPASy, InterPro, and PROSITE.
+
