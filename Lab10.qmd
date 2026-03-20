@@ -4,11 +4,11 @@ bibliography: references.bib
 csl: nature.csl
 ---
 
-## Lab 10: Population Genomics using the 1000 Genomes Dataset
+## Overview
 
 Today you will be working with human population genomics data from the [1000 genomes project](https://www.internationalgenome.org/). The goal of this exercise is to provide real world experience using bioinformatics to examine genetic differences within and between populations. 
 
-First, you will be assigned one of five regions (~2-10 Mb each) that have been targeted due to known signatures of importance in human evolution. Then, in Part 1, you will explore between population divergence specific to your region. The examination of these plots and statistics will be important in selecting populations to examine further for within population diversity and selection as part of Part 2. Finally, in Part 3, you will explore your region on the UCSC genome browser to examine potential genes that may contribute to the population genetic signal you see in your plots.
+First, you will be assigned one of five regions (~2-10 Mb each) that I have targeted due to known signatures of importance in human evolution. Then, in Part 1, you will explore between population divergence specific to your region. The examination of these plots and statistics will be important in selecting populations to examine further for within population diversity and selection as part of Part 2. Finally, in Part 3, you will explore your region on the UCSC genome browser to examine potential genes that may contribute to the population genetic signal you see in your plots.
 
 ## Part 1: Examine region and identify target populations 
 
@@ -33,21 +33,22 @@ First, you will be assigned one of five regions (~2-10 Mb each) that have been t
 
 
 5. In examining the 6 different plots, which two populations are most different across your region (consider both peak height and width)? Based on the Fst and the known upper/lower bounds, how important is this difference likely to be? 
->If multiple populations have similar values, select the two comparisons that you want to investigate further for the next part of this assignment based on the overall peak height of the highest value in your plot. 
 
- - Max Fst difference: ______ v. ______	
+  >If multiple populations have similar values, select the two comparisons that you want to investigate further for the next part of this assignment based on the overall peak height of the highest value in your plot. 
+
+ - Max Fst difference: ______ v. ______	(list the 3-letter abbreviations of the two populations you have selected here)
 
 6. Where (roughly) in this region is the peak of differentiation?
 
- - Region of max Fst: __________
+ - Region of max Fst: __________ (write the megabase location here)
 
-7. Right click on the Fst plot for the selected pair of populations to include in your submitted assignment that you will turn in.
+7. Right click to save the Fst plot for the selected pair of populations to include in your submitted assignment that you will turn in.
 
 ## Part 2: Investigate selected populations further
 
 1. For Part 2, select the tab labeled "Within Populations".
 
-2. Use the drop down menus to select your region and the two populations that you selected at the end of Part 1 to move forward with. 
+2. Use the drop down menus to select your region and the two populations that you selected at the end of Part 1 to move forward with (listed in Step 5). 
 
 3. Click the button "Plot Pi and Tajima's D". 
 
@@ -72,11 +73,11 @@ First, you will be assigned one of five regions (~2-10 Mb each) that have been t
  b. Does the sub-region you recorded at the end of Part 1 stand out in either of these plots? 
 
 
- c. Make a hypothesis as to which population may be driving this result? Hint: which population has the lowest value of Tajima's D? 
+ c. Make a hypothesis as to which population may be driving this result? Hint: which population has the lowest value of Tajima's D in the table at the bottom? 
 
  d. Based on [this video](https://youtu.be/wiyay4YMq2A?si=LlrqVCvglyxwKDhq), interpret the results of the Tajima’s D statistic in this plot.
  
-10. Right click on the image of Pi and Tajima's D for this population to include in your submitted assignment that you will turn in.
+10. Right click on the images of Pi and Tajima's D for **this population** to include in your submitted assignment that you will turn in.
 
 ## Part 3: Examine region in Genome Browser
 
@@ -88,7 +89,10 @@ First, you will be assigned one of five regions (~2-10 Mb each) that have been t
 
 4. Take a screen shot to include with your submitted assignment that you will turn in.
 
-5. Is there anything special about any of the genes in your sub-region that can explain why they differ? Click on the genes and read about them, but also do some google investigative work to find out!
+5. Is there anything special about any of the genes in your sub-region that can explain why they differ? Click on the genes and read about them, but also do some google investigative work to find out! You may also choose to turn on the OMIM track which includes disease and phenotype relevant traits in dark green.
+
+> Look at the primer for Human Genomics in Chapter 12 to see if any of the genes of major effect listed there are found in your window. If you are unclear, feel free to go back and make sure your choices of populations were correct. Remember that selective sweeps are rare in humans, so the peaks are not super obvious. 
+
 
 
  - Based on what you know about human evolution, does any particular gene support your hypothesis in Part 2 as to which of the two populations might be driving this pattern? What are some known differences about these two human populations?

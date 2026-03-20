@@ -29,7 +29,31 @@ The five major forces that shape allele frequencies are [@coop_popgen_notes; @ch
 
 ### The modern synthesis: reconciling Mendel and Darwin
 
-The conceptual foundations of population genomics lie in the early twentieth-century **modern synthesis**, which reconciled Mendelian genetics with Darwin's theory of natural selection [@coop_popgen_notes]. Fisher, Wright, and Haldane showed mathematically that Mendelian segregation at many loci, each with small effects, produces smooth continuous phenotypic distributions, and that changes in allele frequencies under selection follow well-defined rules [@coop_popgen_notes]. Fisher formalized the relationship between genetic variation and evolution in his **Fundamental Theorem of Natural Selection**, which links the rate of increase in mean fitness to the amount of additive genetic variance for fitness [@charlesworth_hubby_2016].
+The conceptual foundations of population genomics lie in the early
+twentieth-century **modern synthesis**, which reconciled Mendelian genetics with
+Darwin's theory of natural selection [@coop_popgen_notes]. Darwin's theory
+required heritable variation and differential reproductive success, but he had no mechanistic theory of inheritance. Mendel provided particulate, discrete
+heritable factors (what we now call alleles), but his 'factors' initially seemed
+incompatible with the continuous phenotypic variation — height, weight, skin
+tone — observed in nature. The breakthrough came from Fisher, Wright, and
+Haldane, who showed mathematically that Mendelian segregation at many loci, each
+with small effects, produces smooth continuous phenotypic distributions, and that changes in allele frequencies under selection follow well-defined rules
+[@coop_popgen_notes].
+
+It is worth appreciating how conceptually remarkable this is. Many of the core
+models of population genetics were developed in the 1920s–1940s, before anyone
+knew that DNA was the molecule of heredity [@coop_popgen_notes]. Yet these
+models have only grown in power and relevance as molecular data became
+available. This is because they are built on the logic of Mendelian transmission
+rules combined with probability theory — a foundation that holds regardless of
+the physical nature of heredity.
+
+Fisher formalized the relationship between genetic variation and evolution in his **Fundamental Theorem of Natural Selection**, which links the rate of increase in mean fitness to the amount of additive genetic variance for fitness
+[@charlesworth_hubby_2016]. This synthesis laid the groundwork for connecting
+patterns of genetic variation in populations to the action of selection, drift,
+mutation, and migration. Building on these ideas came the modern evolutionary
+synthesis more broadly, integrating insights from paleontology, systematics, and
+ecology into a unified picture of how both short-term evolutionary change and the long-term diversification of life can be explained by the gradual accumulation of genetic changes within and among populations [@coop_popgen_notes].
 
 ::: callout-note
 ## Eugenics, Population Genetics, and Scientific Racism
@@ -40,20 +64,24 @@ The history of genetics and evolutionary biology is intertwined with the history
 
 Many early geneticists engaged actively with eugenics, and major scientific institutions have roots in the movement. The Cold Spring Harbor Laboratory hosted a Eugenics Record Office from 1910 to 1940 [@allen_eugenics_1986], and the journal now known as *Annals of Human Genetics* was called *Annals of Eugenics* until 1954 [@coop_popgen_notes]. R.A. Fisher devoted substantial sections of his landmark 1930 book to eugenic arguments [@bodmer_outstanding_2021; @coop_popgen_notes], and H.J. Muller framed genetic diversity as a burden to be managed through his work on mutational load [@muller_our_1950].
 
-At the same time, geneticists including Thomas Hunt Morgan and Lancelot Hogben criticized eugenic claims, emphasizing the importance of environment and the complexity of inheritance [@coop_popgen_notes]. After World War II, explicit state-sponsored eugenics programs lost formal legitimacy, though coercive practices persisted for decades. Lewontin's landmark 1972 analysis showed that roughly 85% of human genetic variation occurs *within* populations rather than between them [@lewontin_apportionment_1972; @UNESCO_race; @coop_popgen_notes], reaffirmed many times since with larger genomic datasets. Communicating this accurately remains an ongoing responsibility for geneticists, educators, and clinicians — including genetic counselors — who encounter genomic information in professional practice [@coop_popgen_notes; @donovan_ending_2021]. A concise summary of human population genomics findings is included at the end of this chapter to help supplement any previous coverage of this topic you may have encountered in your coursework. 
+At the same time, geneticists including Thomas Hunt Morgan and Lancelot Hogben criticized eugenic claims, emphasizing the importance of environment and the complexity of inheritance [@coop_popgen_notes]. After World War II, explicit state-sponsored eugenics programs lost formal legitimacy, though coercive practices persisted for decades. Lewontin's landmark 1972 analysis showed that roughly 85% of human genetic variation occurs *within* populations rather than between them [@lewontin_apportionment_1972; @UNESCO_race; @coop_popgen_notes], reaffirmed many times since with larger genomic datasets. Communicating this accurately remains an ongoing responsibility for geneticists, educators, and clinicians — including genetic counselors — who encounter genomic information in professional practice [@coop_popgen_notes; @donovan_ending_2021]. For interested students, a primer on human population genomics is provided at the end of this chapter to supplement any previous coverage of this topic you may have encountered in your coursework. 
 :::
 
 ### The language of population genetics: loci, alleles, and frequencies
 
+Before going further, it helps to establish the basic vocabulary of population
+genetics precisely, because these terms are used more carefully here than in a
+typical introductory genetics course.
+
 A **locus** (plural: *loci*) is a specific position in the genome [@coop_popgen_notes]. The different genetic variants that can occupy a locus are called **alleles**. If every individual in the population carries the same allele at a locus, that locus is **monomorphic**. If two or more alleles exist in the population, the locus is **polymorphic** (also called a **segregating site**) [@coop_popgen_notes].
 
-We call the less common allele at a polymorphic site the **minor allele** and the more common one the **major allele**. We also distinguish the **derived allele** (the evolutionarily newer one, which arose by mutation) from the **ancestral allele** (the older one, typically inferred by comparison to an outgroup species) [@coop_popgen_notes]. Because we typically work with diploid organisms, every individual carries two alleles at each autosomal locus. The **allele frequency** is the proportion of all copies of the locus in the population that carry a given allele:
+We call the less common allele at a polymorphic site the **minor allele** and the more common one the **major allele**. We also distinguish the **derived allele** (the evolutionarily newer one, which arose by mutation) from the **ancestral allele** (the older one, typically inferred by comparison to an outgroup species) [@coop_popgen_notes]. Because we typically work with diploid organisms, every individual carries two alleles at each autosomal locus (indicated as numbered subscripts below). The **allele frequency** is the proportion of all copies of the locus in the population that carry a given allele:
 
 $$
 p = \frac{2N_{11} + N_{12}}{2N},
 $$
 
-and the frequency of the alternate allele is simply $q = 1 - p$ [@coop_popgen_notes].
+where N is simply the count of the total number of alleles based on homozygous or heterozygous genotype. From this calculation of $p$, the frequency of the alternate allele can be simply calculated as $q = 1 - p$ [@coop_popgen_notes].
 
 ### Allozymes and the discovery of abundant molecular variation
 
@@ -63,17 +91,17 @@ A striking pattern emerged: levels of allozyme variation were broadly similar ac
 
 ### From allozymes to DNA sequences and the omics era
 
-While allozymes provided a first glimpse of molecular variation, they detected only a subset of amino-acid changes and gave no information about synonymous or noncoding variation. DNA sequencing changed this. Kreitman's 1983 study of nucleotide polymorphism at the *Drosophila melanogaster* alcohol dehydrogenase (*Adh*) locus was among the first direct views of DNA-level polymorphism in a natural population [@charlesworth_hubby_2016]. *Drosophila* was well-positioned for these early studies in part because its giant polytene chromosomes — visible in larval salivary glands — had long allowed cytogeneticists to map genes and inversions directly onto physical chromosome structure, identifying conserved chromosome arms (Muller's elements) that would anchor genome-wide sequence comparisons [@schaeffer_muller_2018].
+While allozymes provided a first glimpse of molecular variation, they detected only a subset of amino-acid changes and gave no information about synonymous or noncoding variation. DNA sequencing changed this. Kreitman's 1983 study of nucleotide polymorphism at the *Drosophila melanogaster* alcohol dehydrogenase (*Adh*) locus was among the first direct views of DNA-level polymorphism in a natural population [@charlesworth_hubby_2016]. *Drosophila* was well-positioned for these early studies in part because its giant polytene chromosomes — visible in larval salivary glands @fig-polytene — had long allowed cytogeneticists to map genes and inversions directly onto physical chromosome structure, identifying conserved chromosome arms (Muller's elements) that would anchor genome-wide sequence comparisons [@schaeffer_muller_2018].
 
 ::: callout-note
 #### Figure 12.1 – *Drosophila* Polytene Chromosomes and the Origins of Comparative Genomics
 
-![Polytene chromosomes of *Drosophila melanogaster*](images/drosophila_polytene.jpg){#fig-polytene width="40%" fig-alt="Phase-contrast microscopy image of Drosophila melanogaster polytene chromosomes from larval salivary glands. The image shows several thick, banded chromosomal arms radiating outward from a central chromocentre, where the heterochromatic regions of all chromosomes fuse. The distinct dark and light transverse banding pattern along each arm is clearly visible and was used by early geneticists to map gene and inversion positions."}
+![Polytene chromosomes of *Drosophila melanogaster*](images/drosophila_polytene.jpg){#fig-polytene width="35%" fig-alt="Phase-contrast microscopy image of Drosophila melanogaster polytene chromosomes from larval salivary glands. The image shows several thick, banded chromosomal arms radiating outward from a central chromocentre, where the heterochromatic regions of all chromosomes fuse. The distinct dark and light transverse banding pattern along each arm is clearly visible and was used by early geneticists to map gene and inversion positions."}
 
-Polytene chromosomes arise in certain larval tissues of *Drosophila* — most famously the salivary glands — when chromosomes replicate repeatedly without cell division, producing a single giant structure visible under light microscopy [@schaeffer_muller_2018]. The resulting banding pattern allowed cytogeneticists to assign genes and inversions to precise physical locations decades before DNA sequencing was possible. Comparison of banding patterns across species revealed **Muller's elements** — large syntenic chromosome segments conserved over tens of millions of years — providing the conceptual scaffold for comparative genomics [@schaeffer_muller_2018]. Image: Wikimedia Commons, public domain.
+Polytene chromosomes arise in the salivary glands of larval *Drosophila* and most other insects, when chromosomes replicate repeatedly without cell division, producing a single giant structure visible under light microscopy [@schaeffer_muller_2018]. The resulting banding pattern allowed cytogeneticists to assign genes and inversions to precise physical locations decades before DNA sequencing was possible. Comparison of banding patterns across species revealed **Muller's elements** — large syntenic chromosome segments conserved over tens of millions of years — providing the conceptual scaffold for comparative genomics [@schaeffer_muller_2018]. Recall from Lab 3 that you examined the conservation of these Muller's elements across different species of *Drosophila*. Image: Wikimedia Commons, public domain.
 :::
 
-The *Adh* locus introduced key vocabulary. Within *D. melanogaster*, individuals differ at some sites — these are **polymorphisms**. At other sites, *D. melanogaster* carries one allele while related species carry another — these are **fixed differences** [@coop_popgen_notes]. Comparing the ratio of nonsynonymous to synonymous variants at polymorphic sites versus fixed differences forms the basis of the McDonald–Kreitman test for adaptive protein evolution [@charlesworth_hubby_2016].
+The *Adh* locus illustrates the vocabulary of molecular variation clearly. Within *D. melanogaster*, individuals differ at some sites — these are **polymorphisms**. At other sites, *D. melanogaster* carries one allele while related species carry another — these are **fixed differences** [@coop_popgen_notes]. Comparing the ratio of nonsynonymous to synonymous variants at polymorphic sites versus fixed differences forms the basis of the McDonald–Kreitman test for adaptive protein evolution [@charlesworth_hubby_2016].
 
 High-throughput sequencing then transformed population genetics into population genomics. My PhD work used 454 sequencing — now considered obsolete — in one of the first major population genomics studies [@kulathinal_genomics_2009], highlighted below in @fig-abbababa. Today, whole-genome resequencing of many individuals per species is routine, enabling simultaneous analysis of polymorphism and divergence across every part of the genome [@ellegren_genome_2014]. A survey of 167 species across 14 phyla by Leffler et al. (2012) showed that neutral diversity $\pi$ ranges only about 800-fold across species — far less than census population sizes would predict — suggesting that forces beyond census size constrain genetic diversity [@leffler_revisiting_2012].
 
@@ -87,7 +115,7 @@ Classical population genetics provides simple null models for how allele and gen
 | Watterson's $\hat\theta_W$ | Segregating site density | computed from `--freq` |
 | Tajima's D | SFS shape; drift/selection | `--TajimaD` |
 | $F_{ST}$ | Between-population differentiation | `--weir-fst-pop` |
-| $d_{XY}$ | Absolute divergence | external (e.g., pixy) |
+| $d_{XY}$ | Absolute divergence | external (e.g., pixy [@bailey_correcting_2025]) |
 | LD ($r^2$) | Haplotype association decay | `--geno-r2`, `--ld-window` |
 
 : Common population genomic statistics, what they measure, and tools for computing them from VCF files. {#tbl-tools}
@@ -100,14 +128,12 @@ $$
 P(A_1A_1) = p^2, \quad P(A_1A_2) = 2pq, \quad P(A_2A_2) = q^2.
 $$
 
-We only need to assume **random mating at the focal locus** for these frequencies to hold [@coop_popgen_notes]. In bioinformatics pipelines, HWE tests are also used as quality control: large-scale deviations at many loci can indicate genotyping errors or sample contamination.
-
-**Departures from HWE are informative.** An excess of homozygotes can arise from inbreeding, positive assortative mating, or population subdivision (the Wahlund effect). An excess of heterozygotes can arise from disassortative mating or balancing selection [@coop_popgen_notes].
+We only need to assume **random mating at the focal locus** for these frequencies to hold [@coop_popgen_notes]. In bioinformatics pipelines, HWE tests are also used as quality control: large-scale deviations at many loci can indicate genotyping errors or sample contamination. An excess of homozygotes can arise from inbreeding, positive assortative mating, or population subdivision (the Wahlund effect). An excess of heterozygotes can arise from disassortative mating or balancing selection [@coop_popgen_notes].
 
 ::: callout-note
 #### Figure 12.2 – The Kermode's (Spirit) Bear: A Hardy–Weinberg Case Study
 
-![Kermode's spirit bear (*Ursus americanus kermodei*) in British Columbia](images/kermode_bear.jpg){#fig-kermode width="50%" fig-alt="A white-coated Kermode spirit bear standing in a lush green British Columbia forest. The bear's white fur contrasts sharply with the surrounding dark green vegetation, illustrating the visually striking phenotype produced by homozygosity for the recessive MC1R allele."}
+![Kermode's spirit bear (*Ursus americanus kermodei*) in British Columbia](images/kermode_bear.jpg){#fig-kermode width="40%" fig-alt="A white-coated Kermode spirit bear standing in a lush green British Columbia forest. The bear's white fur contrasts sharply with the surrounding dark green vegetation, illustrating the visually striking phenotype produced by homozygosity for the recessive MC1R allele."}
 
 The Kermode's bear, also called the spirit bear, is a subspecies of American black bear (*Ursus americanus*) found along the central coast of British Columbia. White coloration results from homozygosity for a recessive loss-of-function allele at *MC1R* — the same gene responsible for red hair in humans — making it a textbook example of a shared pigmentation pathway across vertebrates [@coop_popgen_notes]. Estimating whether observed white:black ratios match HWE expectations is one of the most direct ways to ask whether the population is mating randomly with respect to coat color. Image: Wikimedia Commons, CC BY-SA.
 :::
@@ -153,7 +179,7 @@ $$
 ::: callout-note
 #### Figure 12.3 – The Black-footed Ferret: Genetic Drift and Conservation
 
-![Black-footed ferret (*Mustela nigripes*)](images/black_footed_ferret.jpg){#fig-ferret width="70%" fig-alt="A black-footed ferret with its characteristic black mask and feet emerging alertly from a burrow entrance on open grassland. The ferret's tan and black coloration and slender mustelid body shape are visible against the dry grass background."}
+![Black-footed ferret (*Mustela nigripes*)](images/black_footed_ferret.jpg){#fig-ferret width="50%" fig-alt="A black-footed ferret with its characteristic black mask and feet emerging alertly from a burrow entrance on open grassland. The ferret's tan and black coloration and slender mustelid body shape are visible against the dry grass background."}
 
 The black-footed ferret (*Mustela nigripes*) is one of North America's most endangered mammals. The last known wild population crashed to just 18 individuals in 1985, of which only 7 reproduced in captivity [@coop_popgen_notes]. Because every living ferret descends from those 7 founders, the effective population size has been extremely small for roughly 40 years — long enough for genetic drift to substantially erode heterozygosity, as the formula above predicts. Intensive captive breeding has re-established wild populations exceeding 300 individuals, but the genetic legacy of the bottleneck persists. Image: USFWS, public domain.
 :::
@@ -213,7 +239,7 @@ where $D = 0$ is expected under no gene flow and $|D| > 0$ indicates introgressi
 ::: callout-note
 #### Figure 12.4 – The Logic of the ABBA-BABA (D-statistic) Test
 
-![The four-taxon ABBA-BABA test for introgression](images/ABBA_BABA.png){#fig-abbababa width="70%" fig-alt="Phylogenetic tree diagram illustrating the four-taxon ABBA-BABA test for introgression. The tree shows four taxa arranged as P1, P2, P3, and Outgroup from left to right, with a dashed horizontal arrow labeled with a question mark connecting P2 and P3 to indicate possible gene flow. Below the tree, three rows of nucleotides illustrate the three informative site patterns. The ABBA pattern is shown in red: P1 carries A, P2 carries C, P3 carries C, and Outgroup carries A, indicating that P2 and P3 share the derived allele. The uninformative pattern is shown in grey: P1 carries T, P2 carries T, P3 carries A, and Outgroup carries A, where no asymmetric sharing distinguishes the topologies. The BABA pattern is shown in blue: P1 carries G, P2 carries A, P3 carries G, and Outgroup carries A, indicating that P1 and P3 share the derived allele instead."}
+![The four-taxon ABBA-BABA test for introgression](images/ABBA_BABA.png){#fig-abbababa width="60%" fig-alt="Phylogenetic tree diagram illustrating the four-taxon ABBA-BABA test for introgression. The tree shows four taxa arranged as P1, P2, P3, and Outgroup from left to right, with a dashed horizontal arrow labeled with a question mark connecting P2 and P3 to indicate possible gene flow. Below the tree, three rows of nucleotides illustrate the three informative site patterns. The ABBA pattern is shown in red: P1 carries A, P2 carries C, P3 carries C, and Outgroup carries A, indicating that P2 and P3 share the derived allele. The uninformative pattern is shown in grey: P1 carries T, P2 carries T, P3 carries A, and Outgroup carries A, where no asymmetric sharing distinguishes the topologies. The BABA pattern is shown in blue: P1 carries G, P2 carries A, P3 carries G, and Outgroup carries A, indicating that P1 and P3 share the derived allele instead."}
 
 The ABBA-BABA test uses the four-taxon topology $((P_1, P_2), P_3, \text{Outgroup})$ to detect gene flow between $P_2$ (or $P_1$) and $P_3$ after divergence. Under a strictly bifurcating history with no gene flow, incomplete lineage sorting (ILS) produces ABBA and BABA sites at equal frequency, so $D \approx 0$. The test was first applied genome-wide to *Drosophila pseudoobscura* and *D. persimilis* [@kulathinal_genomics_2009] and later used to quantify Neanderthal admixture in modern human populations [@wall_higher_2013]. Figure modified from Kulathinal et al. (2009) [@kulathinal_genomics_2009].
 :::
@@ -235,7 +261,7 @@ In practice, LD is summarized using $r^2$, the squared correlation of allele sta
 ::: callout-note
 #### Figure 12.5 – Bonobo (*Pan paniscus*): Recombination Rate Evolution in Great Apes
 
-![Bonobo (*Pan paniscus*) mother and infant](images/bonobo.jpg){#fig-bonobo width="40%" fig-alt="A bonobo mother and infant resting together in dense green tropical forest vegetation. The bonobos have the characteristic dark black faces, pink lips, and long black hair of Pan paniscus. The infant clings to the mother's torso while both animals face toward the camera."}
+![Bonobo (*Pan paniscus*) mother and infant](images/bonobo.jpg){#fig-bonobo width="35%" fig-alt="A bonobo mother and infant resting together in dense green tropical forest vegetation. The bonobos have the characteristic dark black faces, pink lips, and long black hair of Pan paniscus. The infant clings to the mother's torso while both animals face toward the camera."}
 
 The bonobo (*Pan paniscus*), sometimes called the pygmy chimpanzee, is one of humans' two closest living relatives, sharing approximately 98.7% of its DNA sequence with us. Together with common chimpanzees and gorillas, bonobos were among the great ape species for which I estimated genome-wide recombination rate maps using LD-based methods during my postdoctoral work, enabling the first direct comparisons of fine-scale recombination landscapes across the great ape clade [@stevison_timescale_2016; @wall_detecting_2016]. Image: Wikimedia Commons, CC BY-SA.
 :::
@@ -362,9 +388,9 @@ The red dashed line marks the empirical 95th-percentile threshold. Windows above
 
 ### Missing data, ascertainment, and robustness
 
-The reliability of sliding-window analyses depends strongly on data quality. Missing genotypes, uneven coverage, and ascertainment bias can all distort estimates of $F_{ST}$, $\pi$, Tajima's D, and related statistics [@haasl_payseur_2016; @sethuraman_missing_2026]. These issues are particularly important in reduced-representation datasets (RADseq, GBS, SNP chips), low-coverage sequencing, and ancient DNA.
+The reliability of sliding-window analyses depends strongly on data quality. Missing genotypes, uneven coverage, and ascertainment bias can all distort estimates of $F_{ST}$, $\pi$, Tajima's D, and related statistics [@haasl_payseur_2016; @sethuraman_missing_2026; @bailey_correcting_2025]. These issues are particularly important in reduced-representation datasets (RADseq, GBS, SNP chips), low-coverage sequencing, and ancient DNA.
 
-Systematic differences in coverage or missingness among populations can bias between-population statistics: if one population has lower average depth, variant callers may preferentially retain high-frequency alleles, making it appear less diverse and exaggerating $F_{ST}$ in some windows [@haasl_payseur_2016; @sethuraman_missing_2026]. Ascertainment bias — SNPs discovered in a subset of populations then genotyped elsewhere — can skew the SFS, reducing apparent rare variants and altering $\hat{\theta}_W$, $\hat{\pi}$, and Tajima's D [@haasl_payseur_2016].
+Systematic differences in coverage or missingness among populations can bias between-population statistics: if one population has lower average depth, variant callers may preferentially retain high-frequency alleles, making it appear less diverse and exaggerating $F_{ST}$ in some windows [@haasl_payseur_2016; @sethuraman_missing_2026]. Ascertainment bias — SNPs discovered in a subset of populations then genotyped elsewhere — can skew the SFS, reducing apparent rare variants and altering $\hat{\theta}_W$, $\hat{\pi}$, and Tajima's D [@haasl_payseur_2016; @bailey_correcting_2025].
 
 Best practices for sliding-window analyses include applying depth, genotype quality, and call-rate filters consistently across populations; running sensitivity analyses to check whether apparent $F_{ST}$ peaks are robust to filtering thresholds; and using neutral simulations or resampling approaches that reproduce the observed missing-data pattern to assess false-positive rates [@haasl_payseur_2016; @sethuraman_missing_2026]. Interpreting outlier windows is most convincing when statistical signals align with regions of good data quality and independent evidence from gene function or expression.
 
@@ -379,20 +405,78 @@ Sliding-window population genomic analyses are not just tools for detecting sele
 **Why this matters methodologically.** This study illustrates three principles from this chapter: (1) $F_{ST}$ outlier scans require a clear null model accounting for recombination rate variation and demographic history [@stevison_sweeping_2020; @bailey_genomic_2023]; (2) an integrative approach that combines multiple metrics such as $F_{ST}$ with $\pi$ and Tajima's D provides stronger inference than any single metric alone; and (3) a polygenic signal — many windows with moderate outlier values rather than a few extreme peaks — is itself biologically meaningful, pointing toward a quantitative genetic architecture for reproductive isolation [@bailey_genomic_2023]. 
 
 ::: callout-note
-## What Population Genomics Tells Us About Human Diversity
+## A Primer on Human Population Genomics
 
-As mentioned previously throughout the course, the 1000 Genomes Project provided a comprehensive catalog of human genetic variation with discovery of more than 95% of variants with minor allele frequencies as low as 1% [@auton_global_2015]. The central finding from this study and decades of population genomics research is both striking and worth sitting with: the vast majority of human genetic variation (~93–95%) exists *within* populations, not between them [@lewontin_apportionment_1972; @rosenberg_popgen_2011]. The $F_{ST}$ between major continental groups of humans is approximately 0.043 — a value worth contextualizing against the $F_{ST}$ scale introduced earlier in this chapter, where 0 indicates no differentiation and 1 indicates complete fixation of different alleles [@rosenberg_popgen_2011]. As you will see in Lab 9, even the strongest peaks of $F_{ST}$ in the human genome are moderate compared to what we observe in more diverged taxa, and the background genome-wide signal is remarkably flat. Lewontin's original conclusion — that geographic and racial categories account for only a small fraction of human genetic differentiation — has been confirmed and extended by every large-scale genomic study since [@lewontin_apportionment_1972; @rosenberg_popgen_2011].
+As introduced in Chapter 8, the 1000 Genomes Project catalogued human genetic
+variation across 2,500 individuals from 26 populations worldwide, discovering
+more than 95% of variants with minor allele frequencies as low as 1%
+[@auton_global_2015]. A consistent finding across decades of such research is
+that the vast majority of human genetic variation (~93–95%) exists *within*
+populations, not between them [@lewontin_apportionment_1972;
+@rosenberg_popgen_2011]. Genome-wide $F_{ST}$ between major continental groups
+is approximately 0.043 — a small value on the 0–1 scale introduced earlier in
+this chapter — confirming that geographic and continental categories account for
+only a small fraction of human genetic differentiation [@rosenberg_popgen_2011].
+As you will observe directly in Lab 9, the background $F_{ST}$ signal across the
+human genome is remarkably flat, and even the strongest differentiation peaks are
+moderate compared to those seen in more diverged taxa.
 
-**Ancestry is mixed and geographically continuous.** Another key take-home from human population genomics studies is that geographic distance — not discrete group membership — explains the bulk of genetic differentiation among human populations, consistent with an isolation-by-distance model of expansion out of Africa followed by range expansion and repeated admixture [@rosenberg_popgen_2011; @baker_human_2017]. Rather than falling into clean discrete clusters, most human genomic variation exists as gradients of allele frequency differences across the globe. Formally, analysis of a global dataset of over 2,500 individuals identified 21 ancestral components; of these, 97.3% of individuals showed mixed ancestry, with a median of four ancestries per individual (95% CI: 1–7), and mixed ancestry was detected in 96.8% of samples across *all* continents [@baker_human_2017]. Importantly, this mixing reflects true admixture at the individual level rather than population stratification — it means that the categories we might intuitively treat as discrete are not discrete in the genome. Because human genetic variation is a product of continuous geography, migration, and admixture rather than isolation into bounded groups, self-identified racial categories are poor proxies for genomic ancestry at the individual level and do not correspond to distinct genetic clusters [@baker_human_2017; @rosenberg_popgen_2011]. The genetic differences that do exist between populations reflect gradations in allele frequencies across many loci — not the presence of ancestry-specific alleles — which is precisely the pattern expected under geographic isolation by distance and the demographic history revealed by the 1000 Genomes data [@auton_global_2015; @rosenberg_popgen_2011].
+**Ancestry is mixed and geographically continuous.** Geographic distance, rather
+than discrete group membership, explains the bulk of differentiation among
+human populations, consistent with expansion out of Africa followed by range
+expansion and repeated admixture [@rosenberg_popgen_2011; @baker_human_2017].
+Formal analysis of over 2,500 individuals identified 21 ancestral components;
+97.3% of individuals showed mixed ancestry, with a median of four ancestries per
+person, and mixed ancestry was detected in 96.8% of samples across all
+continents [@baker_human_2017]. The genetic differences that exist between
+populations reflect gradations in allele frequencies across many loci — not the
+presence of ancestry-specific alleles — which is the pattern expected under
+isolation by distance and the demographic history revealed by the 1000 Genomes
+data [@auton_global_2015; @rosenberg_popgen_2011].
 
-**Ancestry matters for health.** The above point is sometimes misread as implying that ancestry is irrelevant to medicine — it is not. Allele frequencies for clinically relevant variants can and do differ across populations, producing genuine differences in disease incidence and pharmacogenomic response [@julian_moore_2019]. Well-documented examples include variants influencing responses to common medications, population-specific disease alleles, and loci associated with resistance to infectious disease such as the *Duffy* antigen and *Plasmodium vivax* malaria resistance in populations with West African ancestry [@tishkoff_2007; @hamblin_detection_2000]. Precisely because most of the variation that matters clinically is found at the allele-frequency level, sampling diverse populations — as the 1000 Genomes Project explicitly set out to do — is essential for equitable genomic medicine [@auton_global_2015]. The take-home message is not that population differences are absent, but that they are quantitative, continuous, and not captured by coarse racial or continental labels.
+**Ancestry matters for health.** Allele frequencies for clinically relevant
+variants do differ across populations, producing measurable differences in
+disease incidence and pharmacogenomic response [@julian_moore_2019]. Examples
+include population-specific disease alleles and loci associated with pathogen
+resistance, such as the *Duffy* antigen null allele, which confers resistance
+to *Plasmodium vivax* malaria in populations with West African ancestry
+[@hamblin_detection_2000; @bryk_2008; @chang_2009]. Sampling diverse populations
+— as the 1000 Genomes Project explicitly prioritized — is therefore essential
+for equitable genomic medicine [@auton_global_2015].
 
-**Selective sweeps in humans are surprisingly rare.** One of the more counterintuitive findings from human population genomics is that classic hard selective sweeps — where a single new mutation rises rapidly to fixation, eliminating linked variation — appear to be rare relative to what early models predicted [@hernandez_2011; @sattath_2011]. Analyzing resequencing data from 179 human genomes in the 1000 Genomes low-coverage pilot, Hernandez et al. found that diversity levels decrease near exons and conserved noncoding regions (consistent with background selection), but that the spatial extent and frequency-spectrum signatures expected from recent hard sweeps are largely absent across the genome [@hernandez_2011]. Similarly, Sattath et al. showed that the signature of positive selection in humans is more consistent with selection on standing variation or many small-effect adaptations than with frequent classic sweeps [@sattath_2011]. This matters for how you interpret the sliding-window scans in Lab 9: the peaks of reduced $\pi$ and elevated $F_{ST}$ that indicate strong selection are genuinely rare and sometimes subtle, making them easy to miss visually against the noisy genomic background. Human diversity is low enough (recall $N_e \approx 10{,}000$–$30{,}000$) that the signal-to-noise ratio for sweep detection is inherently limited, and many loci that appeared to be classic sweep candidates in early studies have been reinterpreted as reflecting demographic history or background selection [@hernandez_2011; @gao_2024].
+**Selective sweeps are surprisingly rare in humans.** Classic hard sweeps —
+where a single new mutation rises rapidly to fixation, eliminating linked
+variation — appear to be rare in recent human evolution relative to early model
+predictions [@hernandez_2011; @sattath_2011; @gao_2024]. Analysis of the 1000
+Genomes low-coverage pilot found that diversity decreases near exons (consistent
+with background selection), but that spatial signatures of recent hard sweeps are
+largely absent genome-wide [@hernandez_2011]. The signal of positive selection in
+humans is more consistent with selection on standing variation or many
+small-effect loci than with frequent classic sweeps [@sattath_2011]. This matters
+for Lab 9: peaks of reduced $\pi$ and elevated $F_{ST}$ indicative of strong
+selection are genuinely rare and sometimes subtle, and human's low $N_e$
+($\approx 10{,}000$–$30{,}000$) limits the signal-to-noise ratio for sweep
+detection [@hernandez_2011; @gao_2024].
 
-**Genes of large effect: pigmentation, diet, and environment.** The cases where strong selection *is* detectable in humans cluster around traits with clear ecological relevance and large-effect variants — a pattern that becomes visible only against the background of pervasive low-diversity and rare sweeps described above. Skin pigmentation is perhaps the most studied: variants in *SLC24A5* and *SLC45A2* show strong frequency differences between African and European populations and are associated with differences in melanin production [@sulem_2007], while *MC1R* variation underlies both red hair and lighter skin pigmentation and shows elevated diversity consistent with relaxed constraint in high-latitude populations [@eiberg_2008; @sulem_2007]. Hair morphology variation in East Asian populations is strongly associated with a derived allele at *EDAR* — a striking example of **pleiotropy**, because the same variant affects not only hair shaft thickness and straightness but also tooth morphology, breast tissue density, sweat gland number, and potentially several other traits simultaneously [@fujimoto_2008]. This pleiotropic architecture makes *EDAR* methodologically challenging: the selection target is ambiguous because a single sweep affects many phenotypes at once, illustrating exactly why combining functional annotation with genomic scans is essential for correct inference. Environmental adaptations show similar large-effect signatures: the lactase persistence allele (*LCT* region) is one of the clearest selective sweeps in the human genome and the one you will examine directly in Lab 9 [@tishkoff_2007]. The amylase copy number expansion (*AMY1*) is associated with starch-rich diets [@perry_2007; @yilmaz2024], and variants in *EGLN1* and *EPAS1* underlie high-altitude adaptation in Tibetan and Andean populations [@bigham_2009; @julian_moore_2019]. Finally, the *Duffy* antigen null allele, near fixation in West African populations, confers resistance to *P. vivax* malaria by eliminating the erythrocyte receptor the parasite requires for invasion — making it one of the best-documented examples of pathogen-driven selection in the human genome [@bryk_2008; @chang_2009; @hamblin_detection_2000].
+**Genes of large effect: pigmentation, diet, and environment.** The clearest
+selection signals in humans cluster around ecologically relevant large-effect
+loci. Skin pigmentation variants in *SLC24A5*, *SLC45A2*, and *MC1R* show strong
+frequency differences across populations [@sulem_2007; @eiberg_2008]. The
+derived *EDAR* allele, common in East Asian populations, is a notable example of
+**pleiotropy**: it affects hair shaft thickness, tooth morphology, sweat gland
+number, and breast tissue density simultaneously [@fujimoto_2008; @bryk_2008],
+making the primary selection target difficult to identify — a reminder that
+functional annotation is essential alongside genomic statistics. Dietary
+adaptations include the well-characterized lactase persistence sweep at *LCT*, [@tishkoff_2007], and amylase gene copy number variation at *AMY1* introduced in Ch8, which is associated with starch-rich diets [@perry_2007; @yilmaz2024]. High-altitude adaptation in Tibetan and Andean populations involves *EGLN1*,*EPAS1*, and *PRKAA1* [@bigham_2009; @julian_moore_2019], connecting non-human primate findings presented above to a broader comparative framework across vertebrates.
 
-Together, these findings paint a coherent picture: humans are a young, recently expanded, heavily admixed species with low effective population size relative to our census size. Most variation is shared, demographic history shapes nearly every genomic statistic we compute, and the clearest signatures of selection involve a small number of large-effect loci tied to diet, pathogen resistance, and environment. This is the backdrop against which all human population genomic analyses — including those in Lab 9 — should be interpreted.
+Together, these findings describe a species with small effective population size,
+a recent expansion from Africa, pervasive admixture, and rare but detectable
+large-effect sweeps. Most human variation is shared across populations, and
+the patterns we observe in population genomic data reflect continuous gradients
+of allele frequency shaped by geography, demography, and selection — not
+distinct biological groupings.
 :::
+
 
 ## Practice Problem-sets
 
