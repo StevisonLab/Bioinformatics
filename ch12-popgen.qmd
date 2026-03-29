@@ -58,13 +58,49 @@ ecology into a unified picture of how both short-term evolutionary change and th
 ::: callout-note
 ## Eugenics, Population Genetics, and Scientific Racism
 
-*Note: The goal of this section is to situate the field of population genetics in its historical context in a factual, objective way, without assigning blame or asking students to endorse any particular viewpoint.*
+*Note: The goal of this section is to situate the field of population genetics
+in its historical context in a factual, objective way, without assigning blame
+or asking students to endorse any particular viewpoint.*
 
-The history of genetics and evolutionary biology is intertwined with the history of eugenics and scientific racism. Francis Galton coined the term *eugenics* in 1883 to describe "human improvement" through controlled breeding [@coop_popgen_notes; @rutherford_cautionary_2021]. Eugenic thinking rested on the idea that certain groups were genetically "inferior" and that social inequalities could be justified as biological facts [@NIH_eugenics; @rutherford_cautionary_2021]. In the United States, compulsory sterilization laws disproportionately affected Black, Latino, Indigenous, poor, and disabled individuals [@stern_californias_2017; @coop_popgen_notes]; coerced sterilization of Native American women continued into the 1970s [@theobald_1970_2019], California prison inmates were sterilized without lawful consent as recently as 2010 [@johnson_female_2014], and a Tennessee judge was formally reprimanded in 2017 for offering reduced sentences in exchange for sterilization [@hawkins_tenn_2017].
+The history of genetics and evolutionary biology is intertwined with the history
+of eugenics and scientific racism. Francis Galton coined the term *eugenics* in
+1883 to describe "human improvement" through controlled breeding
+[@coop_popgen_notes; @rutherford_cautionary_2021]. Eugenic thinking rested on
+the idea that certain groups were genetically "inferior" and that social
+inequalities could be justified as biological facts [@NIH_eugenics;
+@rutherford_cautionary_2021]. In the late nineteenth and early twentieth
+centuries, eugenicists used emerging tools in statistics and heredity to support
+policies restricting immigration and discouraging or preventing reproduction by
+people labeled "unfit" [@coop_popgen_notes; @rutherford_cautionary_2021]. In the
+United States, compulsory sterilization laws disproportionately affected Black,
+Latino, Indigenous, poor, and disabled individuals [@stern_californias_2017;
+@coop_popgen_notes]; coerced sterilization of Native American women continued
+into the 1970s [@theobald_1970_2019], California prison inmates were sterilized
+without lawful consent as recently as 2010 [@johnson_female_2014], and a
+Tennessee judge was formally reprimanded in 2017 for offering reduced sentences
+in exchange for sterilization [@hawkins_tenn_2017].
 
-Many early geneticists engaged actively with eugenics, and major scientific institutions have roots in the movement. The Cold Spring Harbor Laboratory hosted a Eugenics Record Office from 1910 to 1940 [@allen_eugenics_1986], and the journal now known as *Annals of Human Genetics* was called *Annals of Eugenics* until 1954 [@coop_popgen_notes]. R.A. Fisher devoted substantial sections of his landmark 1930 book to eugenic arguments [@bodmer_outstanding_2021; @coop_popgen_notes], and H.J. Muller framed genetic diversity as a burden to be managed through his work on mutational load [@muller_our_1950].
+Many early geneticists engaged actively with eugenics, and major scientific
+institutions have roots in the movement. The Cold Spring Harbor Laboratory
+hosted a Eugenics Record Office from 1910 to 1940 [@allen_eugenics_1986], and
+the journal now known as *Annals of Human Genetics* was called *Annals of
+Eugenics* until 1954 [@coop_popgen_notes]. R.A. Fisher devoted substantial
+sections of his landmark 1930 book to eugenic arguments [@bodmer_outstanding_2021; @coop_popgen_notes], and H.J. Muller framed genetic diversity in some populations as a burden to be managed through his work on mutational load [@muller_our_1950].
+The Mendelian framework was itself selectively distorted to support eugenic claims before geneticists pushed back on its misuse [@mazumdar_reform_2002].
 
-At the same time, geneticists including Thomas Hunt Morgan and Lancelot Hogben criticized eugenic claims, emphasizing the importance of environment and the complexity of inheritance [@coop_popgen_notes]. After World War II, explicit state-sponsored eugenics programs lost formal legitimacy, though coercive practices persisted for decades. Lewontin's landmark 1972 analysis showed that roughly 85% of human genetic variation occurs *within* populations rather than between them [@lewontin_apportionment_1972; @UNESCO_race; @coop_popgen_notes], reaffirmed many times since with larger genomic datasets. Communicating this accurately remains an ongoing responsibility for geneticists, educators, and clinicians — including genetic counselors — who encounter genomic information in professional practice [@coop_popgen_notes; @donovan_ending_2021]. For interested students, a primer on human population genomics is provided at the end of this chapter to supplement any previous coverage of this topic you may have encountered in your coursework. 
+At the same time, geneticists including Thomas Hunt Morgan and Lancelot Hogben
+criticized eugenic claims, emphasizing the importance of environment and the
+complexity of inheritance [@coop_popgen_notes]. After World War II, explicit
+state-sponsored eugenics programs lost formal legitimacy, though coercive
+practices persisted for decades. Lewontin's landmark 1972 analysis showed that
+roughly 85% of human genetic variation occurs *within* populations rather than
+between them [@lewontin_apportionment_1972; @UNESCO_race; @coop_popgen_notes],
+reaffirmed many times since with larger genomic datasets. This work helped
+establish that human genetic differences, while real and scientifically
+interesting, do not map neatly onto rigid racial categories or justify treating
+any group as inherently superior or inferior. A concise primer on human population genomics is provided at the end of this chapter to supplement any previous coverage of this topic you may have encountered previously in your coursework.
+
+Communicating the science behind human population genetics accurately remains an ongoing responsibility for geneticists, educators, and clinicians — including genetic counselors — who encounter genomic information in professional practice. Some groups continue to selectively misuse population-genetic results, making clear and contextualized science communication essential [@coop_popgen_notes; @donovan_ending_2021]. The field of genetic counseling itself emerged, in part, as a deliberate effort to move clinical genetics away from eugenic paternalism and toward patient-centered, non-directive care — a foundational value documented in the profession's own history [@paul_eugenics_1997; @NIH_eugenics].  
 :::
 
 ### The language of population genetics: loci, alleles, and frequencies
@@ -434,15 +470,26 @@ presence of ancestry-specific alleles — which is the pattern expected under
 isolation by distance and the demographic history revealed by the 1000 Genomes
 data [@auton_global_2015; @rosenberg_popgen_2011].
 
-**Ancestry matters for health.** Allele frequencies for clinically relevant
-variants do differ across populations, producing measurable differences in
-disease incidence and pharmacogenomic response [@julian_moore_2019]. Examples
-include population-specific disease alleles and loci associated with pathogen
-resistance, such as the *Duffy* antigen null allele, which confers resistance
-to *Plasmodium vivax* malaria in populations with West African ancestry
-[@hamblin_detection_2000; @bryk_2008; @chang_2009]. Sampling diverse populations
-— as the 1000 Genomes Project explicitly prioritized — is therefore essential
-for equitable genomic medicine [@auton_global_2015].
+**Ancestry matters for health.** Evolutionary history has shaped patterns of
+genetic variation in ways that have direct biomedical relevance — allele
+frequencies for clinically important variants differ across populations,
+producing measurable differences in disease risk, incidence, and
+pharmacogenomic response [@benton_influence_2021; @julian_moore_2019]. These
+differences reflect the same demographic and selective forces discussed
+throughout this chapter: founder effects, genetic drift in small populations,
+and natural selection in response to local pathogens, diet, and environment —
+not inherent biological differences between races [@benton_influence_2021].
+Well-documented examples include population-specific disease alleles and loci
+under pathogen-driven selection, such as the *Duffy* antigen null allele, which
+confers resistance to *Plasmodium vivax* malaria in populations with West
+African ancestry [@hamblin_detection_2000; @bryk_2008]. Because these
+clinically relevant variants are distributed unevenly across populations as a
+direct consequence of evolutionary history, sampling diverse populations — as
+the 1000 Genomes Project explicitly prioritized — is essential for equitable
+genomic medicine; study designs that draw predominantly from European-ancestry
+populations risk missing variants of clinical significance in other groups
+[@benton_influence_2021; @auton_global_2015].
+
 
 **Selective sweeps are surprisingly rare in humans.** Classic hard sweeps —
 where a single new mutation rises rapidly to fixation, eliminating linked
@@ -461,7 +508,7 @@ detection [@hernandez_2011; @gao_2024].
 **Genes of large effect: pigmentation, diet, and environment.** The clearest
 selection signals in humans cluster around ecologically relevant large-effect
 loci. Skin pigmentation variants in *SLC24A5*, *SLC45A2*, and *MC1R* show strong
-frequency differences across populations [@sulem_2007; @eiberg_2008]. The
+frequency differences across populations [@sulem_2007; @eiberg_2008; @chang_2009]. The
 derived *EDAR* allele, common in East Asian populations, is a notable example of
 **pleiotropy**: it affects hair shaft thickness, tooth morphology, sweat gland
 number, and breast tissue density simultaneously [@fujimoto_2008; @bryk_2008],
