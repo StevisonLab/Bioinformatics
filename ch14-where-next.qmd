@@ -7,167 +7,141 @@ lang: en-US
 
 ## Overview {#sec-ch14-overview}
 
-You began this course by asking a deceptively simple question: *what does it mean to read a genome?* Thirteen chapters, ten labs, a semester-long research project, and a mock grant panel later, you have done exactly that---from raw FASTQ files and Phred scores, to alignments, annotations, variants, and population-scale patterns of diversity. This final chapter does not introduce new tools. Instead, it steps back to synthesize the arc of the course, introduce one major area we have only touched on (single-cell omics), and help you think about how to keep learning in a field that will look quite different by the time many of you are mid-career.
-
-::: {.callout-note}
-**Chapter connections:** This chapter closes the loop on every chapter in the book. Rather than reading it linearly, try reading the chapter outline summaries in @sec-ch14-synthesis, then returning to the sections most relevant to your project or future interests.
-:::
+You began this course by asking a deceptively simple question: *what does it mean to read a genome?* Fourteen chapters, ten labs, a semester-long research project, and a mock grant panel later, you have done exactly that. This final chapter steps back from the technical details to synthesize the arc of the course, survey the broader landscape of bioinformatics beyond what we were able to cover, and orient you toward a field that is changing faster than any single-semester course can fully capture.
 
 ## Learning Objectives {#sec-ch14-objectives}
 
 By the end of this chapter, you should be able to:
 
-- Synthesize the conceptual arc of the course across sequencing, QC, alignment, annotation, variant calling, and population genomics.
-- Explain the key motivation for single-cell omics and how it extends the workflows you have learned.
-- Evaluate a new bioinformatics tool or method by connecting it to the foundational concepts from this course.
-- Articulate strategies for staying current in a field where the specific tools change faster than the underlying biology.
+- Describe the unified conceptual arc of the course from raw data to biological interpretation.
+- Name and briefly characterize major areas of bioinformatics not covered in this course.
+- Identify several active frontiers in the field and explain how they connect to concepts already introduced.
+- Evaluate a new bioinformatics tool or method by connecting it to foundational concepts from this course.
+- Articulate what skills and habits of mind are most important for a career that involves genomics and bioinformatics.
 
 ---
 
-## The Arc of the Course: What We Have Actually Done {#sec-ch14-synthesis}
+## What We Have Covered: A Synthesis {#sec-ch14-synthesis}
 
-When bioinformatics is described from the outside, it often sounds like a sequence of software packages: *run FastQC, run BWA, run GATK, run VCFtools.* But look back at what you have actually done this semester, and a different story emerges.
+### The arc from raw data to biological insight
 
-### The bioinformatic bottleneck, revisited
+This course was organized around a workflow that mirrors how real genomics projects are conducted. We began in Chapter 1 with the observation that sequencing technology has outpaced our ability to analyze, store, and interpret the data it produces---the bioinformatic bottleneck [@pevsner2015]. We then moved in Chapter 2 through the landscape of sequencing technologies, from Sanger's chain-termination method through 454 pyrosequencing to modern short- and long-read platforms, each with distinct read lengths, error profiles, and appropriate use cases. Chapter 3 grounded that discussion in the practical reality of data quality, connecting Phred scores and FASTQ format to the real decisions a bioinformatician must make before a single meaningful analysis can begin. The lesson there is enduring: garbage in, garbage out, and understanding your data's quality is not optional.
 
-In Chapter 1 (@sec-ch1), we introduced the bioinformatic bottleneck: the gap between how fast sequencing data is generated and how difficult it is to analyze, interpret, and communicate the results. At that point, the bottleneck was an abstraction. Now you have felt it. You have waited for jobs to queue on the HPC, made decisions about trimming thresholds under uncertainty, and sat with an IGV window full of reads trying to decide whether a variant is real. The bottleneck is not primarily a computational problem---it is a *judgment* problem, and judgment comes from understanding the concepts behind the tools.
+From there, Chapter 4 introduced the databases and genome browsers that anchor modern genomics. NCBI, Ensembl, and UCSC are not just archives---they are the infrastructure on which reproducible science depends, which is why we emphasized stable identifiers, versioning, and provenance from the start. Chapter 5 then built the conceptual foundation for sequence comparison, from the mathematics of dynamic programming and the Needleman–Wunsch algorithm to multiple sequence alignment and what it means to say two sequences are homologous rather than merely similar. Chapter 6 scaled this up to the genome level, introduced the distinction between read mapping and *de novo* assembly, and discussed how reference bias and repetitive sequences constrain what short-read data alone can resolve.
 
-That is the real argument for this course. The tools will change. The judgment will not.
+Chapter 7 was deliberately different from the others. Rather than introducing a new analytical method, it turned attention inward to the practices that make science reproducible and extensible: directory organization, version control, workflow managers, and the craft of writing methods clearly enough that someone else---or your future self---could repeat your analysis without you in the room. This chapter was hidden curriculum in the best sense; the skills it covered rarely appear in textbooks but are among the most valued in practice. Chapter 8 then expanded the view beyond single-nucleotide variants to show that the same foundational steps---design, QC, alignment, feature summarization, inference, visualization---reappear across RNA-seq, ChIP-seq, ATAC-seq, metagenomics, and structural variant detection, even when the specific tools change entirely.
 
-### Chapter-by-chapter synthesis
+Chapter 9 went inside the black box of gene annotation, building intuition for hidden Markov models and showing how probabilistic models can encode biological knowledge---the statistics of coding sequences, splice sites, and intergenic regions---to make predictions about genome structure. Chapter 10 applied the full alignment-to-variant calling workflow using GATK, and Labs 7, 8, and 9 put that workflow in your hands on real data, culminating in IGV sessions where every variant became a hypothesis to evaluate against the read-level evidence. Chapter 11 took a detour that many students find unexpectedly valuable: it demystified how science is actually funded, how grant panels work, and what it means to communicate computational methods in a proposal that a diverse review panel can evaluate. Chapter 12 zoomed out to the population scale, connecting allele frequencies, nucleotide diversity, Tajima's D, and F~ST~ to the evolutionary forces---drift, selection, migration, mutation---that shape genomic landscapes. And Chapter 13 showed that regulatory syntax can itself be discovered from sequence, connecting motif finding to the gene regulatory principles introduced earlier in annotation and epigenomics.
 
-The following table maps each chapter to the core transferable concept it developed, independent of any specific software:
+### The unified workflow beneath the variation
 
-| Chapter | Topic | Transferable Concept |
-|---------|-------|----------------------|
-| 1 | Reading Genomes | Framing biological questions; hypothesis vs. discovery-driven genomics |
-| 2 | Sequencing Technologies | Platform choice shapes data structure and downstream feasibility |
-| 3 | File Formats, QC, Design | Every pipeline begins with knowing your data's quality and limits |
-| 4 | Genome Browsers & Databases | Data provenance, versioning, and the importance of stable identifiers |
-| 5 | Sequence Alignment | Similarity is not homology; scoring reflects biological assumptions |
-| 6 | Genome Alignment & Assembly | The distinction between mapping to a reference and building one |
-| 7 | Project Management | Reproducibility is not a formality---it is the scientific record |
-| 8 | Alternative Workflows | The same QC/alignment/annotation logic applies across all -omics |
-| 9 | Annotation & HMMs | Probabilistic models let us encode biological knowledge explicitly |
-| 10 | Variant Calling | Every variant is a hypothesis; filtering is controlled skepticism |
-| 11 | Grants & Funding | Science requires resources; communicating clearly is a core skill |
-| 12 | Population Genomics | Diversity statistics are population-level summaries of evolutionary forces |
-| 13 | Motifs | Regulatory syntax can be discovered from sequence alone |
+Running through all of these chapters is a skeleton that appears in every domain of genomics, regardless of data type or organism:
+
+1. **Experimental design** --- What question are we asking, and what data are sufficient to answer it?
+2. **Quality control** --- What does the raw data actually look like, and what has gone wrong?
+3. **Alignment or assembly** --- Where do the sequences come from in the genome?
+4. **Feature summarization** --- Variants, counts, peaks, bins: the specific step depends on the question.
+5. **Statistical inference** --- What is signal, and what is noise?
+6. **Visualization and interpretation** --- Genome browsers, R, IGV: making data legible.
+7. **Communication** --- Methods written to reproduce; results written to matter.
 
 ::: {.callout-note}
-**Lab Connections:** The yeast dataset in Appendix C threaded through Labs 4, 7, and 9, taking you from FASTQ → BAM → VCF → IGV. Your semester project in Appendix B asked you to do something similar on a question that was genuinely your own. Both were designed to make the abstraction of a "bioinformatics pipeline" concrete and personal. Return to your Lab 9 write-up and your project repository: those files are evidence of what you know how to do.
+**Lab Connections:** The yeast dataset threaded through Labs 4, 7, and 9, taking you from FASTQ through BAM and VCF to IGV. Your semester-long project asked you to execute a version of this same workflow on a question of your own. Return to your GitHub repository: those files are a record of what you now know how to do.
 :::
-
-### A unified workflow beneath the variation
-
-Across all of the alternative workflows in Chapter 8---RNA-seq, ChIP-seq, ATAC-seq, metagenomics, structural variant detection---the same skeleton reappears:
-
-1. **Experimental design** (what question, what depth, what replication?).
-2. **Quality control** (raw data first; do not skip this).
-3. **Alignment or assembly** (reference-based or *de novo* depending on the question).
-4. **Feature summarization** (counting, peak calling, variant calling, binning---the specific step depends on data type).
-5. **Statistical inference** (what is signal vs. noise?).
-6. **Visualization and interpretation** (genome browsers, IGV, R).
-7. **Communication** (methods written clearly enough to reproduce; results written clearly enough to matter).
-
-When you encounter a new data type you have never seen before---and you will---this skeleton is where to start.
 
 ---
 
-## Single-Cell Omics: The Frontier We Barely Touched {#sec-ch14-singlecell}
+## What We Did Not Cover: The Breadth of Bioinformatics {#sec-ch14-breadth}
 
-Throughout this course, most of our analyses have assumed that a sample is a population of cells: we extract DNA or RNA from thousands or millions of cells at once and measure the average signal. That average is enormously useful---it is the foundation of variant calling, differential expression, and population genomics. But it hides something important: **cells within a tissue are not all the same**, and the mixture matters.
+### What this course covered
 
-Single-cell sequencing technologies were developed to dissolve that average.
+This course was always intended as a survey---an introduction to the concepts, file formats, and analytical logic that underlie modern genomics. We chose to focus on what might be called the *core resequencing workflow*: from raw reads to quality-controlled alignments, to variant calls, to population-scale interpretation. That focus gave you depth and transferable skills, but it also meant that large and vibrant areas of bioinformatics received only brief attention or none at all.
 
-### What single-cell sequencing measures
+### What lies beyond
 
-Single-cell RNA sequencing (scRNA-seq) isolates individual cells, reverses-transcribes their RNA, and sequences each cell's transcriptome separately, producing a matrix of gene-by-cell counts [@shi2017sc]. Where bulk RNA-seq gives you average expression across a tissue, scRNA-seq gives you the expression profile of each cell individually, which allows:
+Phylogenomics is one of the most active frontiers in evolutionary biology and is one such area. Where population genomics asks how variation is distributed within and among closely related populations, phylogenomics asks how species diverged across evolutionary time, using genome-scale data to resolve relationships that could not be determined from single genes [@carter2023]. The tools connect directly to what you have learned---multiple sequence alignment, BLAST, and gene annotation are all inputs---but the statistical frameworks for constructing and evaluating species trees from thousands of loci introduce new challenges, including gene tree-species tree discordance, incomplete lineage sorting, and the computational cost of genome-scale phylogenetic inference.
 
-- **Cell-type identification**: Clustering cells by expression similarity to identify known and novel cell types.
-- **Developmental trajectories**: Ordering cells along pseudotime to reconstruct differentiation pathways.
-- **Cell-type-specific disease states**: Identifying which cell types are dysregulated in a tumor, an inflamed tissue, or a developing brain.
-
-The key conceptual shift is that the *unit of analysis* moves from the sample to the cell. This is analogous to the shift in population genomics from a single locus to the whole genome: more data, more resolution, but also more complexity, more noise, and entirely new statistical challenges.
-
-### Where single-cell omics connects to what you already know
-
-The tools are different, but the concepts are not:
-
-- **FASTQ files, QC, and alignment** look much the same: you still run FastQC, trim adapters, and align reads to a reference genome. Specialized tools like STARsolo or Cell Ranger handle the cell-barcode demultiplexing step that is unique to single-cell data, but the underlying logic is familiar [@kaminow2021].
-- **Sparse count matrices** are the single-cell equivalent of the variant call format: a structured representation of signal (here, UMI counts per gene per cell) with a great deal of missing or zero data.
-- **Clustering and dimensionality reduction** (UMAP, PCA) are statistical summaries of high-dimensional data---the single-cell equivalent of the FST windows and sliding-window diversity scans in Chapter 12.
-- **Doublet detection and ambient RNA filtering** are QC steps that are conceptually identical to what you did in Lab 7: identifying and removing artifacts before interpreting biological signal.
+Pangenomics represents another major frontier that we touched on but could not do justice to in a single semester. The idea is straightforward but transformative: rather than aligning reads to a single reference genome, a pangenome encodes the full sequence diversity of a species or population as a graph, so that no individual's variants are invisible by construction [@liao2023]. The implications for variant calling, population genetics, and clinical genomics are substantial---variants that are systematically missed because they differ from a reference genome are no longer missed. The 1000 Chinese Pangenome published this year illustrates the medical and population genetic power of this approach: by representing the genetic diversity of over 1,000 individuals from diverse Chinese ancestry in a graph-based reference, the study substantially improved imputation accuracy and variant discovery for populations that were underrepresented in earlier reference panels [@wang_1000_2026]. A striking local example is the recent haplotype-resolved, chromosome-scale genome assembly for the southern live oak, *Quercus virginiana*---the famous Toomer's Corner oak---published by researchers including several from Auburn University [@akozbek_haplotype-resolved_2026]. This assembly, featured on the cover of *G3: Genes|Genomes|Genetics*, used many of the long-read assembly and annotation concepts covered in Chapters 6 and 9 and represents exactly the kind of project a team coming out of a course like this one is now equipped to contribute to.
 
 ::: {.callout-note}
-**Lab Connection:** The `Seurat` and `Bioconductor/scran` packages in R implement many standard single-cell workflows. If you are comfortable with the R-based VCFtools and GenomicRanges work from Lab 10 and Chapter 12, single-cell R workflows will feel approachable. The Akalin *Computational Genomics with R* chapters on functional genomics (Chapters 8--11) provide a strong conceptual bridge.
+## Figure 14.1 
+Students roll Toomer's Corner Oak (*Quercus virginiana*) for the last time before the tree was removed, Auburn University, Auburn, Alabama. Photo credit: Auburn University. This tree is now the subject of a haplotype-resolved, chromosome-scale genome assembly published in *G3* in 2026 [@akozbek_haplotype-resolved_2026], illustrating how genomics connects to local history and the kinds of projects being done right here at Auburn.
 :::
 
-### Multi-modal single-cell methods
+```{r}
+#| label: fig-toomers
+#| fig-cap: "Students roll Toomer's Corner Oak (*Quercus virginiana*) for the last time before the tree was removed, Auburn University, Auburn, Alabama. Photo credit: Auburn University. See Aközbek et al. (2026), https://doi.org/10.1093/g3journal/jkag023."
+#| fig-alt: "A upward-looking photograph taken from the base of Toomer's Corner Oak, a southern live oak (Quercus virginiana) on the Auburn University campus, Auburn, Alabama. The massive trunk of the tree dominates the center of the frame, with its deeply furrowed bark visible up close. Hundreds of long white and silver streamers of toilet paper have been thrown into the canopy and hang down through the branches in dense, radiating curtains, a tradition known as rolling Toomer's Corner following Auburn athletic victories. The green leaves of the oak are partially visible through the paper, and the pale sky can be glimpsed in the background. The image captures one of the final rollings before the tree was removed, and the tree is now the subject of a chromosome-scale genome assembly published by Auburn University researchers."
+#| out-width: "80%"
+#| echo: false
+knitr::include_graphics("images/g3journal_16_4coverfig.jpeg")
+```
 
-Single-cell methods have extended beyond transcriptomics. Single-cell ATAC-seq (scATAC-seq) profiles chromatin accessibility per cell [@gran2022], and multi-modal technologies like 10x Multiome simultaneously measure gene expression and chromatin accessibility in the *same* cell. These methods connect directly to the ChIP-seq and ATAC-seq concepts from Chapter 8, now applied at cellular resolution.
+Single-cell omics is another area that has grown rapidly since the core workflows covered in this course were first developed. Where bulk RNA-seq measures average gene expression across thousands of cells in a tissue, single-cell RNA sequencing (scRNA-seq) profiles each cell individually, enabling identification of cell types, developmental trajectories, and disease-specific states that are invisible in the aggregate [@woo_applications_2025; @moro_practical_2026]. The conceptual underpinning is familiar---read alignment, count matrices, QC, statistical inference---but the scale (millions of cells, sparse count matrices), the preprocessing (cell barcode demultiplexing, doublet filtering), and the downstream analysis (dimensionality reduction, clustering, pseudotime) introduce new computational demands. Targeted single-cell technologies and multi-modal approaches that simultaneously measure gene expression, chromatin accessibility, and other molecular phenotypes in the same cell are now routine enough that practical guides have been published to help researchers choose among them [@moro_practical_2026]. These methods connect directly to the epigenomics workflows in Chapter 8, now at cellular rather than tissue resolution.
 
-The joint analysis of scRNA-seq and scATAC-seq can reconstruct how regulatory landscapes (chromatin) drive transcriptional programs (RNA) across cell types and developmental stages---a multi-omic integration problem (Chapter 8) that now has single-cell resolution.
-
-Spatial transcriptomics adds one more dimension: *location*. Methods like Visium and MERFISH preserve the spatial coordinates of each cell within a tissue section, enabling questions about how cell-to-cell communication, tissue microenvironment, and spatial gradients shape gene expression. This connects genome sequence (Chapter 1), expression (Chapter 8), and now *geography*---genomics across the full range of scales from molecules to tissues.
-
-### An honest summary of where things stand
-
-Single-cell and spatial methods are maturing rapidly but are not yet as standardized as the bulk genomics workflows you have learned. Computational tools are changing faster in this space than in almost any other area of bioinformatics, making it a perfect case study in the adaptability theme of this course. The underlying biology is stable; the tools are in flux. Your job is to recognize which is which.
+Other areas that fell outside the scope of this semester include proteomics and metabolomics (connecting the genome to the protein and metabolite layers discussed conceptually in Chapter 1), ancient DNA and paleogenomics (requiring specialized damage correction and authentication methods introduced briefly in Chapter 8), GWAS and quantitative genetics (using variant calls like those in Chapter 10 to map complex traits to genomic loci), and long-read-native applications such as methylation calling and haplotype phasing that exploit the single-molecule character of PacBio and Oxford Nanopore reads. Each of these builds directly on concepts you have already encountered; the tools and statistical frameworks are new, but the underlying workflow logic is not.
 
 ---
 
-## Adaptability as a Core Skill {#sec-ch14-adaptability}
+## The Pace of Change: An Outlook on the Field {#sec-ch14-outlook}
 
-Your instructor learned 454 sequencing in graduate school. By the time this textbook was written, 454 was obsolete. The same will be true of some tools you used this semester, within ten years, maybe sooner.
+### New technologies and the competitive landscape
 
-This is not a problem to be solved---it is a feature of working at the frontier of biology. Here is how to navigate it.
+One of the clearest themes of this course has been that the technology changes faster than the concepts do. The history of genomics is a history of instruments becoming obsolete while the underlying questions persist. When the first edition of the Pevsner textbook was published, Illumina's HiSeq dominated the market, 454 pyrosequencing was still in use, and PacBio was a promising newcomer [@pevsner2015]. By the time this companion was written, 454 is long gone, PacBio HiFi has become the standard for high-quality long-read assembly, and Oxford Nanopore's MinION has made portable sequencing a reality. The pace continues: Element Biosciences, currently in active litigation with Illumina over patent claims, introduced their VITARI instrument in early 2026, offering a competing short-read platform that the company claims will substantially expand the scale of what high-throughput sequencing makes possible [@element_2026; @philippidis_illumina_2025]. Competition in the sequencing market tends to drive down costs and improve data quality for researchers, though it also means that the "standard" platform can change within the span of a graduate degree.
 
-### Evaluating a new tool
+Equally striking is the democratization of genomic data at the consumer level. Gencove has introduced a $49 whole-genome sequencing service that uses low-pass sequencing combined with imputation to deliver population-level variant information at a fraction of the cost of standard whole-genome sequencing [@gencove_2026]. This approach---sequencing at very low coverage and then statistically inferring unobserved genotypes using a reference panel---connects directly to the variant calling concepts in Chapter 10 and the population-level imputation methods introduced in Chapter 12. Low-pass plus imputation performs comparably to traditional genotyping arrays for many trait-mapping applications [@wasik_comparing_2021], and as imputation panels become more diverse and comprehensive, this workflow will likely become an increasingly standard entry point for population-scale genetic studies.
 
-When you encounter an unfamiliar bioinformatics package---whether from a preprint, a methods section, or a labmate's recommendation---ask these questions:
+::: {.callout-note}
+## The future of human genomics
+Return for a moment to the genomics timeline in Chapter 1 (@fig-genomics-timeline). When the Human Genome Project was completed in 2001, it cost approximately \$3 billion and took over a decade. By 2022, the T2T Consortium published the first truly gapless human genome assembly, resolving centromeres and satellite repeats that had been missing for twenty years [@Nurk2022T2T]. Today, a whole-genome sequence costs less than a routine clinical laboratory test, and population-scale biobanks containing hundreds of thousands of sequenced individuals are actively informing drug development, disease prediction, and precision medicine. The 1000 Chinese Pangenome [@wang_1000_2026] and the Human Pangenome Reference Consortium [@liao2023] represent the next step: moving from a single reference genome to a population-level graph that encodes the diversity of all humans. The ethical questions this raises---about consent, data sovereignty, equitable access to genetic medicine, and the potential for misuse---are not separate from the technical work, but inseparable from it. As you move forward in any career that touches genomics, you will be part of shaping how these tools are used and who benefits from them.
+:::
 
-1. **What biological problem does it solve?** Can you map it to a step in the unified workflow (@sec-ch14-synthesis)?
-2. **What are the inputs and outputs?** Are the input formats familiar (FASTQ? BAM? VCF? count matrix)? Is the output interpretable?
-3. **How is it benchmarked?** Does the paper compare it against existing tools on a dataset with a known answer (a "gold standard")? Compare the benchmarks in the Lab 8 variant calling discussion to how you would evaluate a new tool in any other domain.
-4. **Is it maintained?** Check the GitHub repository: When was the last commit? Are issues being answered? Is there a Bioconductor or Conda package with a version history?
-5. **Can you reproduce a simple example?** Most good tools have a tutorial dataset. Running it yourself is the fastest way to learn what the tool actually does, as distinct from what the paper says it does.
+### New data types and computational challenges
 
-This five-question framework is not specific to any single tool or data type. It is the evaluative practice that keeps you from being stranded when the landscape shifts.
+The rise of single-cell and multi-modal genomics is generating data types and analytical challenges that did not exist a decade ago. A recent paper on the 4D nucleome---the three-dimensional and temporal organization of the human genome across cell types and developmental stages---illustrates how far the field has moved beyond simple read alignment and variant calling [@dekker_integrated_2026]. That study integrated Hi-C contact maps, ATAC-seq accessibility data, ChIP-seq histone modification profiles, and gene expression measurements to build a comprehensive model of how genome organization shapes gene regulation across human cell types. The computational infrastructure required to integrate, store, and analyze these multi-modal datasets at scale is itself an active research area. A related study combined multi-omic single-cell profiling with deep learning to dissect regulatory syntax during human development, using the patterns in chromatin accessibility and gene expression to learn the rules by which transcription factors interpret genomic sequence [@liu_multiomics_2026]. Another demonstrated how single-cell perturbation screens can identify lncRNA regulators of cellular senescence that would be invisible in bulk experiments [@zhu_multiomic_2026]. These studies connect directly to the ATAC-seq and ChIP-seq workflows in Chapter 8 and to the motif and regulatory concepts in Chapter 13, now extended to single-cell resolution and combined with machine learning inference.
+
+The sheer volume of genomic data being generated has made data storage and management a genuine scientific challenge, not just a logistical one [@wild_drowning_2026]. The decisions you make about how to store, version, compress, and document your data---discussed in Chapter 7---are not administrative details but choices that determine whether your science is reproducible, whether your datasets can be reused by others, and whether your storage costs remain manageable over the lifetime of a project. The field is actively developing solutions: tiered cloud storage, compression algorithms tailored to genomic data, and federated analysis frameworks that allow computation to come to the data rather than moving sensitive data to the computation. These are areas where computer scientists and biologists need to work together, and where understanding both sides of the problem is an asset.
+
+Gene annotation, which you worked through hands-on in Labs 5 and 6 using BLAST and HMMs, is also undergoing rapid change. A 2026 review in *Nature Reviews Genetics* describes how annotation is being transformed by long-read transcriptomics, single-cell data, and deep learning models that can predict functional elements from sequence with unprecedented accuracy [@ji_annotating_2026]. The manual annotation project you completed this semester gives you an appreciation for just how difficult this problem is and why automated methods still require careful human evaluation. The computational population genomics you conducted in Lab 10, scanning for signatures of selection using sliding-window statistics, has now been extended to new systems: a recent study applied these same conceptual tools to gut microbiome metagenomes, identifying pervasive gene-specific selective sweeps across human gut microbial populations---showing that natural selection acts at the level of individual genes within microbial species in ways that mirror what population geneticists have long observed in eukaryotes [@wolff_gene-specific_2026].
+
+### AI and large language models in genomics
+
+The application of large language models and deep learning to genomics is accelerating. Models trained on protein sequences (AlphaFold, ESMFold) have transformed structural biology; analogous models trained on DNA sequences are being used to predict the functional consequences of non-coding variants, identify regulatory elements, and interpret the output of massively parallel reporter assays [@olawade_bioinformatics_2025; @ruan_large_2026]. In the context of this course, these models are most relevant as new tools to evaluate critically: they are powerful, but they are black boxes by design, and their performance is tightly linked to the quality and diversity of the training data. The same reproducibility principles from Chapter 7 apply: what was the model trained on? Can you access the training data? Has it been benchmarked on held-out examples that resemble your use case? Using AI tools responsibly in genomics requires the same judgment that using any other tool requires---judgment you have been building all semester.
+
+A cautionary note is worth including here. A 2023 study documented major data analysis errors in a high-profile series of papers claiming to identify tumor-specific microbiome signatures in cancer patients; the errors arose from inadequate handling of contamination and reference database choices in metagenomic classification [@gihawi_major_2023]. The scientific community eventually identified and published corrections, but the episode illustrates that high-profile genomics results are not immune to the kinds of systematic errors that careful QC, version control, and reproducible workflows are designed to prevent. As genomics becomes more prominent in medicine, agriculture, and policy, the cost of analytical errors rises---and the responsibility of people trained in bioinformatics to catch them rises with it. The ethical obligations of genomic data analysis extend beyond consent and privacy to the basic scientific responsibility of getting the analysis right.
+
+---
+
+## What It Means to Be a Bioinformatician {#sec-ch14-identity}
+
+### A field defined by questions, not tools
+
+Recall from Chapter 1 the discussion of what a bioinformatician actually is. The honest answer is that there is no single answer. Some bioinformaticians are biologists who have learned to code well enough to conduct large-scale analyses on their own data; others are software engineers or statisticians who specialize in developing the algorithms and pipelines that biologists use. Some work in academic labs or core facilities, others in biotechnology companies, hospitals, or government agencies [@gocke_what_2024]. What unites them is not a particular programming language or pipeline but a commitment to using computation to address biological questions rigorously and transparently.
+
+This course has been designed for a diverse audience: pre-med students and future genetic counselors who need to understand and critically evaluate genomic data without necessarily running pipelines themselves; graduate students who are building toward active computational research; and everyone in between. The skills emphasized throughout---understanding file formats, reading and evaluating methods sections, interpreting QC outputs, thinking critically about experimental design, writing clearly about what you did and why---are relevant across all of these careers. The ability to communicate across the biologist-statistician-computer scientist divide is genuinely rare and genuinely valuable.
+
+### Skills that transfer and skills to build
+
+The specific tools you learned this semester will not all still be in active use in ten years. Some will have been superseded by faster, more accurate alternatives; some will be unmaintained; some will have been absorbed into broader platforms. What will still matter is the ability to read documentation, reason about how a new tool fits into the workflow skeleton introduced in @sec-ch14-synthesis, evaluate whether its assumptions match your data, and decide whether to adopt it. That evaluative capacity is what you have been building. When you read and discussed benchmarking papers in Lab 8---comparing variant callers across different datasets, sequencing depths, and filtering strategies---you were practicing exactly this skill: not accepting a method because it is popular, but asking what evidence supports its performance and under what conditions it fails.
+
+Programming skills matter, and the languages that matter are shifting. R remains the standard for statistical analysis and visualization in genomics, and Bioconductor provides a mature ecosystem for everything from QC to single-cell analysis to population genomics [@akalin2020]. Python is dominant in machine learning and workflow management (Snakemake uses it natively). But a 2020 *Nature* article on the Rust programming language pointed to its growing adoption in bioinformatics tools where performance and memory safety are critical---tools like minimap2 (long-read alignment), ripgrep (fast text search), and several assemblers now have Rust components or Rust-based alternatives [@perkel_why_2020]. For students heading toward software-intensive careers in bioinformatics, understanding what Rust offers and why it is increasingly attractive in performance-critical code is worth knowing, even if you never write a Rust program yourself.
+
+Adaptability, then, is the meta-skill. Knowing how to learn a new tool---reading the documentation, running the tutorial dataset, checking the GitHub for maintenance status and open issues, looking for benchmark comparisons in the literature---is more durable than any specific proficiency. This course has given you practice with that process across many different tools and data types. The research project asked you to find and apply tools that were not taught in class. The grant panel asked you to evaluate whether an analysis plan was sensible before seeing the results. These experiences are preparation for a career in which the specific tools will keep changing and your ability to evaluate and adapt will determine how well you keep pace.
 
 ### Where to keep learning
 
-The following resources were introduced at various points in the course and are worth returning to as your interests develop:
-
-- **Akalin, *Computational Genomics with R*** [@akalin2020]: Chapters 4--6 (genomic intervals, R data structures), 8--11 (multi-omics, functional genomics). The entire book is freely available at [compgenomr.github.io/book](https://compgenomr.github.io/book).
-- **Graham Coop's Population Genetics Notes** [@cooppopgennotes]: The rigorous mathematical foundation beneath Chapter 12. Ideal if you pursue population genetics further.
-- **Bioconductor** ([bioconductor.org](https://bioconductor.org)): The primary R ecosystem for genomics workflows, including single-cell, ChIP-seq, RNA-seq, and more. Each package includes a vignette---a worked example---that you can run immediately.
-- **Galaxy Training Network** ([training.galaxyproject.org](https://training.galaxyproject.org)): Community-maintained tutorials covering most of the workflows in this course and many beyond it. Particularly strong for metagenomics and single-cell.
-- **EMBL-EBI Training** ([ebi.ac.uk/training](https://www.ebi.ac.uk/training)): Free online courses in genomics, bioinformatics, and structural biology, regularly updated as the field evolves.
-- **CSHL Courses** ([meetings.cshl.edu/courses](https://meetings.cshl.edu/courses.aspx)): Intensive summer workshops (Advanced Sequencing Technologies, Statistical Methods in Functional Genomics, etc.) that are the professional development equivalent of this course at a graduate level.
-- **Pevsner, *Bioinformatics and Functional Genomics**** [@pevsner2015]: Despite its 2015 publication date, the foundational chapters on sequence analysis, alignment, and annotation remain among the clearest treatments of these topics available.
+The resources that have supported this course will continue to serve you beyond it. The Akalin *Computational Genomics with R* textbook [@akalin2020] is freely available online and covers R-based workflows in genomic intervals, functional genomics, single-cell analysis, and multi-omics integration in depth. Graham Coop's population genetics notes [@coop_popgen_notes] provide the rigorous mathematical treatment of the population genomic statistics introduced in Chapter 12. The Galaxy Training Network ([training.galaxyproject.org](https://training.galaxyproject.org)) and EMBL-EBI training portal ([ebi.ac.uk/training](https://www.ebi.ac.uk/training)) offer regularly updated tutorials across virtually every workflow in this book and many beyond it. The [Cold Spring Harbor Laboratory courses](https://meetings.cshl.edu/omics-courses) in Advanced Sequencing Technologies, Statistical Methods in Functional Genomics, and related areas represent some of the most intensive professional development opportunities available in the field. The Summer Institute in Statistical Genetics, held annually at Georgia Tech in Atlanta ([sisg.biosciences.gatech.edu](https://sisg.biosciences.gatech.edu)), offers modular short courses in quantitative and statistical genomics that are particularly well suited to students from this course who want to go deeper in population genetics, GWAS, or statistical modeling. For students at Auburn, the Graduate Certificate in Computational Biology ([auburn.edu/cosam/departments/biology/certificate](https://www.auburn.edu/cosam/departments/biology/certificate/graduate_computational_biology.htm)) provides a structured pathway to formalizing the skills introduced here within a degree program.
 
 ---
 
-## Where Bioinformatics Is Going {#sec-ch14-future}
+## A Final Note {#sec-ch14-final}
 
-The following areas represent genuine frontiers---places where the biology is interesting, the computational methods are still being developed, and there is real room for people coming out of courses like this one to contribute.
+Bioinformatics feels like magic until you see the patterns: every pipeline starts with QC, every analysis needs reproducibility, every grant needs a clear workflow. By this point in the semester, you have not only run these analyses but built the confidence to explain them to collaborators, reviewers, and future employers. You have sat with messy real data and made defensible decisions about what to keep and what to discard. You have written methods sections, evaluated benchmarking papers, participated in a grant review panel, and contributed to a research project that belongs entirely to you and your group.
 
-### Pangenomics and reference-free analyses
+The bioinformatics field needs people who bring all of that---biological intuition, computational skill, statistical literacy, and scientific integrity---to the same table. The tools will keep changing. The questions will not. Go read some more genomes.
 
-All semester, we aligned reads to a single *reference* genome. But a reference genome is, by definition, the genome of one individual---and that individual may not represent your study population. For human genomics, reference bias is a well-documented problem: variants common in non-European populations are underrepresented in the GRCh38 reference, leading to systematic differences in alignment rates and genotyping accuracy [@benton2021]. The Human Pangenome Reference Consortium has recently released a draft human pangenome representing 47 individuals from diverse ancestry, a graph-based structure that encodes millions of bases of sequence absent from GRCh38 [@liao2023]. Pangenome-aware aligners and variant callers are in active development, and the field is moving from single-reference to population-level reference structures across species.
-
-### AI and machine learning in genomics
-
-Large language models trained on protein sequences (AlphaFold, ESM2) have transformed protein structure prediction. Analogous approaches for DNA sequences---DNABERT, Enformer, and related models trained on regulatory genomics data---are increasingly used for tasks like predicting the effect of non-coding variants, identifying transcription factor binding sites, and interpreting the functional consequences of structural variants. These models are powerful, but they are black boxes by design, which raises interpretability concerns that connect directly to the reproducibility and methods-writing principles in Chapter 7. Using them responsibly requires understanding what they were trained on and where they are likely to fail.
-
-### Long-read sequencing and complete genomes
-
-The T2T (Telomere-to-Telomere) Consortium published the first truly gapless human genome assembly in 2022, resolving centromeres, satellite repeats, and segmentally duplicated regions that had been missing or misassembled for twenty years [@nurk2022]. Long-read sequencing from PacBio HiFi and Oxford Nanopore, combined with Hi-C and optical mapping (introduced in Chapter 2), made this possible. The same approach is being applied to produce reference-quality genomes for thousands of species as part of the Earth Biogenome Project and related initiatives. The assembly concepts from Chapter 6---contigs, scaffolds, N50, completeness---are directly relevant to evaluating these assemblies.
-
-### Clinical and translational genomics
-
-The clinical interpretation of genomic variants (Chapter 10) is still one of the most challenging problems in applied genomics. Standards for variant classification (ACMG guidelines), databases of pathogenic and benign variants (ClinVar, gnomAD), and functional evidence from knock-in models and multiplexed assays of variant effect (MAVEs) are all evolving rapidly. For students heading into medicine, genetic counseling, or clinical research, this is the area where bioinformatics has the most direct impact on individual patient outcomes---and where the skills from this course (variant filtering, IGV interpretation, reading VCF structure, understanding allele frequencies) translate most directly.
+*Dr. Laurie Stevison*
+*Spring 2026*
 
 ---
 
@@ -175,9 +149,9 @@ The clinical interpretation of genomic variants (Chapter 10) is still one of the
 
 These problems are intentionally open-ended. There is no answer key.
 
-1. **A new topic, connected back.** Choose a bioinformatics topic you have not encountered in this course---some possibilities: Hi-C and chromosome conformation capture, long-read methylation calling, pangenome graphs, single-cell ATAC-seq, ancient eDNA, or spatial transcriptomics. Find one primary research paper and one tutorial or review. Then answer: *What step in the unified workflow (design → QC → alignment/assembly → feature summarization → inference → visualization → communication) does this method most directly affect? What concepts from this course apply directly?*
+1. **A new topic, connected back.** Choose a bioinformatics topic you have not encountered in this course---possibilities include phylogenomics, Hi-C and chromosome conformation capture, long-read methylation calling, pangenome graphs, single-cell ATAC-seq, ancient eDNA, or spatial transcriptomics. Find one primary research paper and one tutorial or review. Then answer: *What step in the unified workflow does this method most directly affect? What concepts from this course apply directly, and what is genuinely new?*
 
-2. **Tool evaluation.** Pick any bioinformatics tool released in the last two years (bioRxiv, GitHub, or a recent methods paper are good sources). Apply the five-question evaluation framework from @sec-ch14-adaptability. Write two paragraphs: one describing the tool and its place in the bioinformatics landscape, and one assessing whether you would trust it for a real project and why.
+2. **Tool evaluation.** Pick any bioinformatics tool released in the last two years. Apply the five-question framework: What biological problem does it solve? What are the inputs and outputs? How is it benchmarked? Is it maintained? Can you reproduce a simple example? Write two paragraphs assessing whether you would trust it for a real project.
 
 3. **The course as a whole.** Return to the genome analysis paper you described in Lab 1. Re-read the methods section. How many of the steps described there can you now name, explain, and critically evaluate? What would you ask the authors if you were a reviewer?
 
@@ -185,35 +159,14 @@ These problems are intentionally open-ended. There is no answer key.
 
 ## Reflection Questions {#sec-ch14-reflection}
 
-1. **Obsolescence and adaptation.** Your instructor learned 454 sequencing and applied it to real research---then it became obsolete. Has anything you learned in a previous course already become outdated? How does knowing that this will keep happening change how you approach learning new tools?
+1. **Obsolescence and adaptation.** As I have now mentioned several times, I used 454 sequencing in my PhD and it has since became obsolete. Has anything you learned in a previous course already become outdated? How does knowing that this will keep happening change how you approach learning new tools?
 
-2. **The hidden curriculum, revisited.** Chapters 7 and 11 covered project management, reproducibility, and grant funding---things most bioinformatics courses do not teach explicitly. Which of these felt most unfamiliar at the start of the semester? Which will you use first after this course ends?
+2. **The hidden curriculum, revisited.** Chapters 7 and 11 covered project management, reproducibility, and grant funding. Which of these felt most unfamiliar at the start of the semester? Which will you use first after this course ends? What are other hidden curriculum topics that were not covered that you wish had been?
 
-3. **Your project as evidence.** Your GitHub repository from the semester-long project is a tangible artifact of what you know how to do. If a graduate program, employer, or collaborator asked you to describe your computational skills, how would you use it? What would you add or improve?
+3. **Your project as evidence.** Your GitHub repository is a tangible artifact of what you know how to do. If a graduate program, employer, or collaborator asked you to describe your computational skills, how would you use it? What would you add or improve?
 
-4. **Single-cell and the limits of averages.** We spent most of the semester working with bulk data---averages across many cells. Now that you understand the alternative (single-cell resolution), can you think of a biological question from any chapter in this course that bulk data *cannot* fully answer? What would a single-cell experiment add?
+4. **Breadth and depth.** After reading @sec-ch14-breadth, which area of bioinformatics not covered in this course interests you most, and why? What is the first concrete step you would take to learn more about it?
 
-5. **Where you want to go.** Of the frontier areas described in @sec-ch14-future---pangenomics, AI/ML in genomics, long-read complete genomes, clinical interpretation---which is most relevant to your career goals? What is the first concrete step you would take to learn more about it?
+5. **Ethics and responsibility.** The cautionary example of the cancer microbiome study [@gihawi_major_2023] shows that analytical errors in genomics can have real consequences. What practices from this course---specific habits, documentation steps, or QC checks---would have been most likely to catch or prevent such errors? And what ethical responsibilities do you see for yourself as someone who can now evaluate and run genomics analyses?
 
----
-
-## A Final Note
-
-This course has covered sequencing technologies, file formats, quality control, genome browsers, sequence alignment, genome assembly, project management, gene annotation, hidden Markov models, variant calling, alternative workflows, grant writing, population genomics, and motif discovery. That is a lot.
-
-But notice what ties all of it together: **biological questions asked of sequence data, with judgment about what is signal and what is noise.** Every tool you learned is an attempt to answer some version of that question. The tools will keep changing. The question will not.
-
-The bioinformatics field needs people who can read a methods section critically, evaluate a new tool honestly, write a clear workflow, and explain what they found to someone who was not in the room. You have practiced all of those things this semester. The labs gave you technical fluency. The project gave you independence. The grant panel gave you a view of how science actually moves forward---not just through analysis, but through communication, funding, and peer scrutiny.
-
-Go read some more genomes.
-
----
-
-## Further Reading {#sec-ch14-reading}
-
-- **Akalin et al., *Computational Genomics with R*** [@akalin2020] (Chapters 4--6, 8--11): R-based genomics workflows across multiple data types; freely available online.
-- **Coop, *Population and Quantitative Genetics Notes*** [@cooppopgennotes]: Rigorous mathematical treatment of the population genetics introduced in Chapter 12.
-- **Nurk et al. (2022), "The complete sequence of a human genome."** *Science* 376:44--53 [@nurk2022]: The T2T-CHM13 assembly; a landmark paper for Chapter 6 concepts applied to completion.
-- **Shi et al. (2017), "A survey of single-cell RNA sequencing."** *Molecular Aspects of Medicine* 59:1--9 [@shi2017sc]: A conceptual introduction to scRNA-seq for readers familiar with bulk RNA-seq.
-- **Liao et al. (2023), "A draft human pangenome reference."** *Nature* 617:312--324 [@liao2023]: Foundational paper for pangenomics; connects directly to Chapters 6 and 12.
-- **Pevsner, *Bioinformatics and Functional Genomics*, 3rd ed.*** [@pevsner2015] (advanced sections of prior chapters): Still the clearest reference for alignment, annotation, and functional genomics foundations covered throughout this course.
+## References

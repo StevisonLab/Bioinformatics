@@ -91,7 +91,7 @@ Kanban boards provide a visual system for tracking these tasks through their lif
 
 ### Figure 7.2 – Example KanBan Board
 
-![Example KanBan board for the life cycle of a research project](images/Figure_7-2_Kanban.png){#fig-kanban width="50%"}
+![Example KanBan board for the life cycle of a research project](images/Figure_7-2_Kanban.png){#fig-kanban width="50%" fig-alt="A blank Kanban-style research progress tracker table with eight columns labeled (left to right): Project Ideas, Experimental design and piloting, Experimenting and data collection, Data analysis and Interpretation, Writing for publication, Submitted for publication or in review, In revision, and Accepted for publication or in press. The column headers are displayed in bold text on a gray background. The single data row beneath the headers is empty, providing space to track a research project's progression through each stage of the research and publication workflow."}
 
 Here is an example of how you can extend the simple three‑column model into stages that better match a research project lifecycle, illustrating how flexible these tools can be. This research project Kanban board has customized swim lanes for stages of a research project, from when they start out as simple ideas to when they are accepted for publication. 
 :::
