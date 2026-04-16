@@ -163,3 +163,5 @@ Your Lab 8 grade is based on **attendance and active participation**. To receive
 :::
 
 ## References
+
+\printbibliography[heading=none]

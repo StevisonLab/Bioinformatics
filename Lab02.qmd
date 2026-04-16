@@ -43,3 +43,8 @@ For your design narrative:
 - Briefly note any major ethical issues if humans or other sensitive species are involved.
 
 The focus of your design narrative should be on **motivation and approach**. You may refer to assigned readings (e.g., @hotaling2021; @marks2021; @bogan2025) in your narrative, but you do not need a formal reference list.
+
+## References
+
+\printbibliography[heading=none]
+

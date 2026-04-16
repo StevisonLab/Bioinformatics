@@ -339,3 +339,4 @@ The evolution of scientific publishing continues to create new opportunities for
 
 ## References
 
+\printbibliography[heading=none]

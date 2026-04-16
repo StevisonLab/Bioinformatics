@@ -42,3 +42,8 @@ Please refer to the syllabus for late policies. Detailed step‑by‑step instru
 ## Resources and Refreshers:
 
 If you do not have much experience finding and reading primary literature, complete Appendix @sec-papers (“How to Read Scientific Literature”) before or alongside this lab. That appendix walks through hypothesis identification, concept mapping, and designing follow‑up experiments using a concrete example.
+
+## References
+
+\printbibliography[heading=none]
+

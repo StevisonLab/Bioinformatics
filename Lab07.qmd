@@ -224,3 +224,7 @@ For most research applications, **hard filtering combined with visual inspection
 ### Looking Ahead to Lab 9
 
 In the next lab, you will load the filtered VCFs you generated here into **IGV (Integrative Genomics Viewer)** along with the aligned BAM files and the yeast reference genome. You will navigate to specific SNPs, zoom in to see individual read alignments, and evaluate the evidence for each variant.
+
+## References
+
+\printbibliography[heading=none]

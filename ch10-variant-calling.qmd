@@ -337,3 +337,5 @@ Structural variant (SV) calling—detecting large deletions, insertions, inversi
    c. Propose a filtering strategy for the multisample VCF that accounts for both site-level quality (QD, MQ, FS) and sample-level missingness (the fraction of individuals with no-call genotypes at each site). What threshold for missingness would you apply, and how would you justify it?
 
 ## References
+
+\printbibliography[heading=none]

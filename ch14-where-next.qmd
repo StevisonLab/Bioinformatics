@@ -170,3 +170,5 @@ These problems are intentionally open-ended. There is no answer key.
 5. **Ethics and responsibility.** The cautionary example of the cancer microbiome study [@gihawi_major_2023] shows that analytical errors in genomics can have real consequences. What practices from this course---specific habits, documentation steps, or QC checks---would have been most likely to catch or prevent such errors? And what ethical responsibilities do you see for yourself as someone who can now evaluate and run genomics analyses?
 
 ## References
+
+\printbibliography[heading=none]

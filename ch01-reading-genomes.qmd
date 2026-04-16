@@ -193,3 +193,5 @@ You can use the following questions to reflect on the concepts and papers introd
 6. **Future directions:** Imagine you are designing a new genomics project. How would you balance hypothesis‑driven goals (specific questions you want to test) with discovery‑driven goals (opening space for unexpected findings)? Which of the three perspectives (cell, organism, tree of life) would your project emphasize first, and how might you connect to the others as your work develops?
 
 ## References
+
+\printbibliography[heading=none]

@@ -156,3 +156,8 @@ As you move into Lab01 and later assignments, you can reuse the same skills:
 -   Propose follow‑up experiments or analyses that build on published genomics work.
 
 This is exactly the kind of reading and reasoning you will need for the semester‑long PRDM9 project (Appendix: Semester Research Project) and for your own future research [@burke_standing_2014; @hotaling2021; @marks2021].
+
+## References
+
+\printbibliography[heading=none]
+

@@ -291,3 +291,5 @@ For bioinformatics, this trend is double‑edged. On one hand, user‑friendly w
 ------------------------------------------------------------------------
 
 ## References
+
+\printbibliography[heading=none]

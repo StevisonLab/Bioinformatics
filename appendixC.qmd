@@ -54,3 +54,8 @@ The genome dataset SRR1693691 is the thread that ties together multiple labs int
     -   Use coordinate-based searches in both IGV and the filtered VCF to decide whether certain variants are likely real biological changes, consider whether they fall in protein-coding regions, and reason about possible amino acid changes and functional impacts.
 
 Throughout these labs, most of the heavy lifting is handled by template shell scripts that you will lightly edit and submit to the HPC queue, so you can concentrate on understanding the logic of each step and interpreting the outputs rather than on writing a full pipeline from scratch. By repeatedly touching the same dataset at different stages—raw reads, alignments, unfiltered and filtered variants, and visual inspection in IGV—you will gain practical experience with how real genomic data look and behave and how bioinformatics decisions shape the final set of variants that biologists use to draw conclusions about evolution and disease.
+
+## References
+
+\printbibliography[heading=none]
+

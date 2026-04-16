@@ -77,3 +77,5 @@ Dogs are the most recent reported loss in the literature dated at around 14 mill
 For this project, students will zoom out to the entire vertebrate tree and examine various databases to characterize various phenotypic and life history traits across species with and without PRDM9. This will then be used in a statistical framework to identify potential explanatory variables to this gene. Potential tools to analyze this should be explored, including [R Package RER Converge](https://academic.oup.com/bioinformatics/article/35/22/4815/5514536). See [Figure 2A in this additional paper](https://www.science.org/doi/10.1126/sciadv.ads8488) as an example of this type of analysis in fishes.
 
 ## References
+
+\printbibliography[heading=none]

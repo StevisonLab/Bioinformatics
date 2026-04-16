@@ -578,3 +578,5 @@ As we transition to Chapter 4 on Genome Browsers, understanding BED format provi
 5.  **Coordinate Systems and Biological Meaning**: BED format uses 0-based start positions but 1-based end positions (0-based, half-open intervals), while VCF uses 1-based positions for both start and end. Discuss why these different conventions exist and how they affect biological interpretation. What errors might occur if you incorrectly convert between these systems? Provide a specific example with coordinates.
 
 ## References
+
+\printbibliography[heading=none]

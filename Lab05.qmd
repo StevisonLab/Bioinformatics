@@ -336,3 +336,5 @@ This lab assignment has been adapted from an activity initially composed by Dr. 
 - **BLAST+ Documentation**: Comprehensive guide to all BLAST+ tools and parameters: [NCBI BLAST+ Command Line Applications User Manual](https://www.ncbi.nlm.nih.gov/books/NBK279690/)
 
 ## References
+
+\printbibliography[heading=none]

@@ -104,3 +104,7 @@ For this lab, you will work with the data and scripts in the "Sample\_NGS\_Workf
 5. From the `flagstat` output, locate the section that reports the percentage of reads that mapped to the reference genome. Include this in your summary. 
 
 Congratulations! You have now successfully indexed a reference genome and mapped reads to it! You have also collected various QC metrics of this process. Based on how you have seen these types of methods written in papers we have read, *write a short methods summary of what you did, including the quality metrics from the raw reads and the resulting coverage and % mapped calculations you made. (no more than 250 words!)* 
+
+## References
+
+\printbibliography[heading=none]

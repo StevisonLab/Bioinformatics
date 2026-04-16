@@ -214,3 +214,5 @@ Grant funding is, at its core, a conversation between scientists about what ques
 5. This chapter presents both the NIH and NSF review frameworks because scientists in biology and bioinformatics encounter both during their careers. After participating in the class mock panel using NSF criteria, reflect on the differences you notice between evaluating proposals through the lens of Intellectual Merit alone versus the five-criteria NIH framework. Which system felt more natural to you as a reviewer, and which would you find more useful as feedback on your own proposals? What does your preference reveal about your scientific values or communication strengths?
 
 ## References
+
+\printbibliography[heading=none]

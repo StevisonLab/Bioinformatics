@@ -285,3 +285,5 @@ For students and trainees, an important lesson is that “open” in genomics is
 
 
 ## References
+
+\printbibliography[heading=none]

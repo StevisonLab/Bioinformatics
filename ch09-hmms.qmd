@@ -194,3 +194,5 @@ Monte Carlo EM algorithms represent a hybrid approach that uses sampling to appr
 6. **The Limits of HMMs**: We mentioned that HMMs struggle with long-range correlations because each emission depends only on the current state. Yet we have seen various workarounds—context-sensitive states for RNA, triplet-emitting states for codons. Reflect on whether these extensions maintain the conceptual elegance of HMMs or whether they indicate that fundamentally different approaches (like deep learning models) might be needed for some problems. What would we lose by abandoning the HMM framework, and what might we gain?
 
 ## References
+
+\printbibliography[heading=none]

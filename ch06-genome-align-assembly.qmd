@@ -257,3 +257,5 @@ Tools such as minigraph build reference graphs from multiple high‑quality asse
    c. Discuss how mapping reads to this graph might change the variant calls you would obtain compared with mapping to GRCh38 alone.
 
 ## References
+
+\printbibliography[heading=none]

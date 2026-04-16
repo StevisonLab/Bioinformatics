@@ -202,3 +202,5 @@ Answer the following:
 7. Were you surprised by the number of orthologs and paralogs across different vertebrate groups for PRDM9? Do you think the accuracy of these counts differs across clades?
 
 ## References
+
+\printbibliography[heading=none]

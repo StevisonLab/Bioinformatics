@@ -572,3 +572,5 @@ distinct biological groupings.
 6. **Where to go deeper:** This chapter has provided a conceptual overview of population genomics. If you were to take a dedicated course in this field, what topics would you most like to explore in depth? How might these intersect with your own research interests or future work?
 
 ## References
+
+\printbibliography[heading=none]

@@ -137,3 +137,7 @@ Upload the following to Canvas for a final grade:
 ---
 
 IGV is a powerful way to visually validate specific variants and develop intuition for what real biological signal looks like versus noise. As you complete this lab, you are closing the loop on the entire variant-calling workflow you have built across this course: from raw FASTQ reads in Lab 4, through alignment and GATK processing in Lab 7, to biological interpretation here. The ability to move fluidly between a filtered VCF, the raw read alignments behind it, and the gene annotation context is a core skill in modern genomics.
+
+## References
+
+\printbibliography[heading=none]

@@ -137,7 +137,7 @@ At the molecular level, chromatin structure exists along a continuum from open, 
 ::: callout-note
 #### Figure 8.2 – Epigenetic regulation of chromatin state
 
-![Epigenetic modifications and chromatin state](images/Figure_8.2_Epigenetics.png){#fig-epigenetics-overview width="80%" fig-alt="A cartoon of chromatin showing an open, extended fiber on the left and a condensed, tightly packed fiber on the right. Insets depict acetylation of histone tails associated with open chromatin and active transcription, and methylation of histone tails by PRC2 associated with compacted chromatin and transcriptional repression."}
+![Epigenetic modifications and chromatin state](images/Figure_8_2_Epigenetics.png){#fig-epigenetics-overview width="80%" fig-alt="A cartoon of chromatin showing an open, extended fiber on the left and a condensed, tightly packed fiber on the right. Insets depict acetylation of histone tails associated with open chromatin and active transcription, and methylation of histone tails by PRC2 associated with compacted chromatin and transcriptional repression."}
 
 This figure provides an overview of how covalent histone modifications reshape chromatin structure and influence transcriptional activity. On the left, an open chromatin fiber is associated with histone acetylation: histone acetyltransferases (HATs) transfer acetyl groups from acetyl‑CoA to lysine residues on histone tails, neutralizing their positive charge and loosening interactions with DNA. The resulting relaxed nucleosome array permits recruitment of RNA polymerase II and transcriptional machinery, favoring active gene expression. On the right, a condensed chromatin fiber is linked to histone methylation: the PRC2 complex uses S‑adenosylmethionine (SAM) as a methyl donor to deposit trimethyl marks on specific lysines, promoting the formation of compact nucleosome structures that exclude RNA polymerase II and maintain transcriptional repression. By juxtaposing these two states, the figure emphasizes that epigenetic modifications do not change the underlying DNA sequence but provide a dynamic, reversible layer of regulation that helps cells interpret genomic information in a context‑dependent manner. Created in [https://BioRender.com](https://BioRender.com).
 :::
@@ -281,7 +281,7 @@ The computational workflows for these alternative applications share common foun
 
 Looking forward, emerging sequencing technologies and analytical methods continue to expand the frontiers of what is possible. Long-read sequencing is enabling complete, gapless genome assemblies and revealing structural variation previously hidden by repetitive sequences. Single-cell methods are dissecting cellular heterogeneity at unprecedented resolution. Spatial transcriptomics is adding location information to molecular measurements. Each advance opens new questions and applications, ensuring that genome sequencing will remain a dynamic and evolving field for decades to come.
 
-## Practice Problem Sets {#sec-problems}
+## Practice Problem Sets {#sec-problems-ch8}
 
 1. **Structural variant calling**: The human amylase locus exhibits complex copy number variation. Compare and contrast three complementary signals used to detect structural variants from short-read sequencing data: read depth, discordant paired-end mapping, and split reads. What are the strengths and limitations of each approach? Why are long reads advantageous for resolving complex structural variation?
 
@@ -305,7 +305,7 @@ Looking forward, emerging sequencing technologies and analytical methods continu
 
 11. **Single-cell multi-omics**: New technologies enable simultaneous measurement of chromatin accessibility and gene expression in the same single cells (SHARE-seq, 10X Multiome). What biological questions become tractable with paired measurements that could not be addressed by single-cell RNA-seq alone? What computational challenges arise from the increased dimensionality and sparsity of single-cell multi-omic data?
 
-## Reflection Questions {#sec-reflection}
+## Reflection Questions {#sec-reflection-ch8}
 
 1. **Technology and biological questions**: The sequencing applications in this chapter all use variations of the same underlying sequencing technologies but address vastly different biological questions. Reflect on how the experimental design, sample preparation, and computational analysis must be tailored to each application. Are there fundamental limits to what can be learned from sequencing data alone, or do clever experimental designs always enable answering new questions?
 
@@ -322,3 +322,5 @@ Looking forward, emerging sequencing technologies and analytical methods continu
 7. **From correlation to causation**: Much of genomics research identifies correlations between molecular features and phenotypes. Reflect on what additional information or experiments are needed to establish causation. How do emerging technologies like CRISPR genome editing change our ability to test causal hypotheses suggested by genomic data?
 
 ## References {#sec-references}
+
+\printbibliography[heading=none]

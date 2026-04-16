@@ -329,3 +329,5 @@ The Ensembl browser implements a related but distinct pipeline based on Enredo, 
 5. **Cross-chapter connections**: How do the conservation tracks you explored in UCSC and Ensembl (Chapter 4) relate to the MSA algorithms and benchmarking datasets discussed in this chapter? What are the advantages and limitations of using whole-genome MSAs displayed in browsers compared to protein-level MSAs you generate yourself with tools like MAFFT or COBALT?
 
 ## References
+
+\printbibliography[heading=none]

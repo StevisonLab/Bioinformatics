@@ -270,3 +270,5 @@ Congratulations! The goal of this lab is to give you real-world experience with 
 This lab exercise was adapted from one written by Dr. Anton Weisstein from Truman State University and Zane Goodwin from Washington University in St. Louis in 2013 [@weisstein_hands-introduction_2021]. 
 
 ## References
+
+\printbibliography[heading=none]

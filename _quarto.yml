@@ -45,6 +45,7 @@ book:
 
 format:
   html:
+    colorlinks: true
     theme: default
     highlight-style: a11y
     toc: true
@@ -56,4 +57,11 @@ format:
     anchor-sections: true
     smooth-scroll: true
     css: accessibility.css
-
+  pdf:    
+    toc: true
+    number-sections: true
+    cite-method: biblatex
+    include-in-header:
+      text: |
+        \usepackage[style=apa, backend=biber, refsection=chapter]{biblatex}
+        \usepackage{hyperref}
