@@ -57,5 +57,7 @@ Throughout these labs, most of the heavy lifting is handled by template shell sc
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```
 

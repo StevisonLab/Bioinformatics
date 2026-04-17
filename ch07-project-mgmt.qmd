@@ -339,4 +339,6 @@ The evolution of scientific publishing continues to create new opportunities for
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

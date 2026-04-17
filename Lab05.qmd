@@ -337,4 +337,6 @@ This lab assignment has been adapted from an activity initially composed by Dr. 
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

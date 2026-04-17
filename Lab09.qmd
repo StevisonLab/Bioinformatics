@@ -140,4 +140,6 @@ IGV is a powerful way to visually validate specific variants and develop intuiti
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

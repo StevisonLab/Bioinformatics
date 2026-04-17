@@ -147,12 +147,43 @@ PHRED scores were introduced in 1988 by Phil Green and colleagues to describe ba
 
 Quality scores use Phred scale: $Q = -10\log_{10}(P_e)$ where $P_e$ is error probability [@pevsner2015]. ASCII encoding adds +33 offset for printable characters:
 
-::: callout-note
-#### Figure 3.2 – Phred-to-ASCII conversion
+::: { #tbl-one .smaller style="overflow-x: auto;"}
+| Dec | Char | Phred+33 | Dec | Char | Phred+33 | Dec | Char | Phred+33 | Dec | Char | Phred+33 |
+|---:|:---:|---:|---:|:---:|---:|---:|:---:|---:|---:|:---:|---:|
+| 0 | [Non-printing]{style="color: #777777;"} |  | 32 | [Space]{style="color: #777777;"} |  | 64 | [@]{style="color: #c00000;"} | 31 | 96 | [`]{style="color: #c00000;"} | 63 |
+| 1 | [Non-printing]{style="color: #777777;"} |  | 33 | [!]{style="color: #c00000;"} | 0 | 65 | [A]{style="color: #c00000;"} | 32 | 97 | [a]{style="color: #c00000;"} | 64 |
+| 2 | [Non-printing]{style="color: #777777;"} |  | 34 | [&quot;]{style="color: #c00000;"} | 1 | 66 | [B]{style="color: #c00000;"} | 33 | 98 | [b]{style="color: #c00000;"} | 65 |
+| 3 | [Non-printing]{style="color: #777777;"} |  | 35 | [#]{style="color: #c00000;"} | 2 | 67 | [C]{style="color: #c00000;"} | 34 | 99 | [c]{style="color: #c00000;"} | 66 |
+| 4 | [Non-printing]{style="color: #777777;"} |  | 36 | [$]{style="color: #c00000;"} | 3 | 68 | [D]{style="color: #c00000;"} | 35 | 100 | [d]{style="color: #c00000;"} | 67 |
+| 5 | [Non-printing]{style="color: #777777;"} |  | 37 | [%]{style="color: #c00000;"} | 4 | 69 | [E]{style="color: #c00000;"} | 36 | 101 | [e]{style="color: #c00000;"} | 68 |
+| 6 | [Non-printing]{style="color: #777777;"} |  | 38 | [&amp;]{style="color: #c00000;"} | 5 | 70 | [F]{style="color: #c00000;"} | 37 | 102 | [f]{style="color: #c00000;"} | 69 |
+| 7 | [Non-printing]{style="color: #777777;"} |  | 39 | [']{style="color: #c00000;"} | 6 | 71 | [G]{style="color: #c00000;"} | 38 | 103 | [g]{style="color: #c00000;"} | 70 |
+| 8 | [Non-printing]{style="color: #777777;"} |  | 40 | [(]{style="color: #c00000;"} | 7 | 72 | [H]{style="color: #c00000;"} | 39 | 104 | [h]{style="color: #c00000;"} | 71 |
+| 9 | [Non-printing]{style="color: #777777;"} |  | 41 | [)]{style="color: #c00000;"} | 8 | 73 | [I]{style="color: #c00000;"} | 40 | 105 | [i]{style="color: #c00000;"} | 72 |
+| 10 | [Non-printing]{style="color: #777777;"} |  | 42 | [*]{style="color: #c00000;"} | 9 | 74 | [J]{style="color: #c00000;"} | 41 | 106 | [j]{style="color: #c00000;"} | 73 |
+| 11 | [Non-printing]{style="color: #777777;"} |  | 43 | [+]{style="color: #c00000;"} | 10 | 75 | [K]{style="color: #c00000;"} | 42 | 107 | [k]{style="color: #c00000;"} | 74 |
+| 12 | [Non-printing]{style="color: #777777;"} |  | 44 | [,]{style="color: #c00000;"} | 11 | 76 | [L]{style="color: #c00000;"} | 43 | 108 | [l]{style="color: #c00000;"} | 75 |
+| 13 | [Non-printing]{style="color: #777777;"} |  | 45 | [-]{style="color: #c00000;"} | 12 | 77 | [M]{style="color: #c00000;"} | 44 | 109 | [m]{style="color: #c00000;"} | 76 |
+| 14 | [Non-printing]{style="color: #777777;"} |  | 46 | [.]{style="color: #c00000;"} | 13 | 78 | [N]{style="color: #c00000;"} | 45 | 110 | [n]{style="color: #c00000;"} | 77 |
+| 15 | [Non-printing]{style="color: #777777;"} |  | 47 | [/]{style="color: #c00000;"} | 14 | 79 | [O]{style="color: #c00000;"} | 46 | 111 | [o]{style="color: #c00000;"} | 78 |
+| 16 | [Non-printing]{style="color: #777777;"} |  | 48 | [0]{style="color: #c00000;"} | 15 | 80 | [P]{style="color: #c00000;"} | 47 | 112 | [p]{style="color: #c00000;"} | 79 |
+| 17 | [Non-printing]{style="color: #777777;"} |  | 49 | [1]{style="color: #c00000;"} | 16 | 81 | [Q]{style="color: #c00000;"} | 48 | 113 | [q]{style="color: #c00000;"} | 80 |
+| 18 | [Non-printing]{style="color: #777777;"} |  | 50 | [2]{style="color: #c00000;"} | 17 | 82 | [R]{style="color: #c00000;"} | 49 | 114 | [r]{style="color: #c00000;"} | 81 |
+| 19 | [Non-printing]{style="color: #777777;"} |  | 51 | [3]{style="color: #c00000;"} | 18 | 83 | [S]{style="color: #c00000;"} | 50 | 115 | [s]{style="color: #c00000;"} | 82 |
+| 20 | [Non-printing]{style="color: #777777;"} |  | 52 | [4]{style="color: #c00000;"} | 19 | 84 | [T]{style="color: #c00000;"} | 51 | 116 | [t]{style="color: #c00000;"} | 83 |
+| 21 | [Non-printing]{style="color: #777777;"} |  | 53 | [5]{style="color: #c00000;"} | 20 | 85 | [U]{style="color: #c00000;"} | 52 | 117 | [u]{style="color: #c00000;"} | 84 |
+| 22 | [Non-printing]{style="color: #777777;"} |  | 54 | [6]{style="color: #c00000;"} | 21 | 86 | [V]{style="color: #c00000;"} | 53 | 118 | [v]{style="color: #c00000;"} | 85 |
+| 23 | [Non-printing]{style="color: #777777;"} |  | 55 | [7]{style="color: #c00000;"} | 22 | 87 | [W]{style="color: #c00000;"} | 54 | 119 | [w]{style="color: #c00000;"} | 86 |
+| 24 | [Non-printing]{style="color: #777777;"} |  | 56 | [8]{style="color: #c00000;"} | 23 | 88 | [X]{style="color: #c00000;"} | 55 | 120 | [x]{style="color: #c00000;"} | 87 |
+| 25 | [Non-printing]{style="color: #777777;"} |  | 57 | [9]{style="color: #c00000;"} | 24 | 89 | [Y]{style="color: #c00000;"} | 56 | 121 | [y]{style="color: #c00000;"} | 88 |
+| 26 | [Non-printing]{style="color: #777777;"} |  | 58 | [:]{style="color: #c00000;"} | 25 | 90 | [Z]{style="color: #c00000;"} | 57 | 122 | [z]{style="color: #c00000;"} | 89 |
+| 27 | [Non-printing]{style="color: #777777;"} |  | 59 | [;]{style="color: #c00000;"} | 26 | 91 | [left bracket]{style="color: #c00000;"} | 58 | 123 | [\{]{style="color: #c00000;"} | 90 |
+| 28 | [Non-printing]{style="color: #777777;"} |  | 60 | [&lt;]{style="color: #c00000;"} | 27 | 92 | [\\]{style="color: #c00000;"} | 59 | 124 | [\|]{style="color: #c00000;"} | 91 |
+| 29 | [Non-printing]{style="color: #777777;"} |  | 61 | [=]{style="color: #c00000;"} | 28 | 93 | [right bracket]{style="color: #c00000;"} | 60 | 125 | [\}]{style="color: #c00000;"} | 92 |
+| 30 | [Non-printing]{style="color: #777777;"} |  | 62 | [&gt;]{style="color: #c00000;"} | 29 | 94 | [^]{style="color: #c00000;"} | 61 | 126 | [~]{style="color: #c00000;"} | 93 |
+| 31 | [Non-printing]{style="color: #777777;"} |  | 63 | [?]{style="color: #c00000;"} | 30 | 95 | [_]{style="color: #c00000;"} | 62 | 127 | [DEL]{style="color: #777777;"} |  |
 
-![Phred-to-ASCII conversion (from Pevsner 9.8)](images/Figure_9_8_Pevsner.jpg){#fig-phred-ascii width="75%"}
-
-FASTQ quality scores use ASCII coding symbols. The chart shows ASCII symbols (Char columns indicate characters) corresponding to decimal notation 1–127. The characters for 0–31 (which are not used for printing) are not shown. Decimal 31 is a space, and subsequent characters (decimal 33–126) are used to represent base quality scores in the Sanger FASTQ format. For example, if base calls GATC have quality scores of 28, 30, 25, and 31 then the symbols for their quality scores are =?:@. Adapted from http://www.lookuptables.com. Source @pevsner2015.
+**Table 3.1 Phred-to-ASCII Conversion**. FASTQ quality scores use ASCII coding symbols. The table belows shows ASCII symbols (Char columns indicate characters) corresponding to decimal notation 1–127. The characters for 0–31 (which are not used for printing) are shown in grey. Decimal 32 is a space, and subsequent characters (decimal 33–126) are used to represent base quality scores in the Sanger FASTQ format. Because FASTQ files in standard Sanger format use **Phred+33** encoding: you can simply subtract 33 from the ASCII code to recover the Phred quality score, or add 33 to a Phred score to get the printable FASTQ character. For example, if base calls GATC have quality scores of 28, 30, 25, and 31 then the symbols for their quality scores are =?:@. Printable quality values run from ASCII 33 (`!`) through 126 (`~`), which corresponds to Phred scores 0 through 93. Adapted from http://www.lookuptables.com. *Gray entries are non-printing or separator characters; red entries are printable ASCII symbols used in FASTQ quality encoding.* 
 :::
 
 Because genome sequencing has so much data, the cutoffs for Phred scores require added stringency. As is shown in the table below, a typical quality score of 20, which is recommended in most pipelines, ensures a 99% accuracy. Still, this equates to \~100 million sequencing errors in a standard dataset of 10 billion base pairs of DNA. Later, in Chapter 10, we will discuss variant filtering in more detail where additional parameters are used to filter data beyond simply Phred Quality scores of individual base calls.
@@ -189,7 +220,7 @@ FastQC software (@fastqc) provides quality control statistics. Data are imported
 -   *k-mer content*: this shows data for a series of 5-mers (strings of 5 nucleotides) plotted by relative enrichment (y axis) versus position in read (in base pairs; x axis). The expected 5-mer frequency (determined from the base composition of the entire sequence) can be compared to the observed frequency. k-mer counts may be reduced (e.g., when poor quality reads reduce the counts for duplicated sequences) or enriched (e.g., when 5-mers are overrepresented at particular locations along a read, such as in the vicinity of a tag added to the 5′ end of sequencing reads).
 
 ::: callout-note
-#### Figure 3.3 – FastQC Sample Output
+#### Figure 3.2 – FastQC Sample Output
 
 ![FastQC Sample Output](images/Fig_3_3_fastqc.png){#fig-fastqc-plots width="75%"}
 
@@ -273,7 +304,7 @@ reads. This viewer is useful to quickly assess the quality at genomic loci of in
 While it is not typical to view BAM files natively, it is helpful to review the anatomay of a sam file and the various ways to view this file format using the bioinformatics software `samtools`.
 
 ::: callout-note
-#### Figure 3.4 – Anatomy of a SAM File
+#### Figure 3.3 – Anatomy of a SAM File
 
 ![SAM alignment anatomy (Pevsner 9.13)](images/Figure_9_13_Pevsner.jpg){#fig-sam-anatomy width="75%"}
 
@@ -425,11 +456,11 @@ The outline of a genome analysis workflow presented in Figure 9.6 is relatively 
 The basic GATK workflow is used for variant discovery with the goal output being a VCF. But in addition to SNPs, GATK can be used to call other types of genomic variants. Specifically, GATK can be used to identify indels and other structural variants [@pevsner2015]:
 
 ::: callout-note
-#### Figure 3.5 – GATK Workflow
+#### Figure 3.4 – GATK Workflow
 
 ![GATK pipeline: raw reads → analysis-ready BAM → VCF.)](images/Fig_3_4_gatk.jpg){#fig-gatk-workflow width="75%"}
 
-**GATK Best Practices** (Figure \@ref(fig:gatk-workflow)) is the best genome workflow for model organisms, and for modern human genomics. However, it may not be suitable for calling variants in non-model systems, which will be covered later in the course [@mckenna_genome_2010; @depristo_framework_2011]. Each step in the GATK pipeline reduces the amount of data in a genome analysis, the goal is to improve the overall quality of the results that are filtered along the way. For example, we may expect to see up to 50% of the data is removed during a standard workflow from raw FastQ file to a VCF. This does not mean that your data are of poor quality of that your experimental design was flawed, but only that your resulting variants have been stringently filtered to be of the highest confidence.
+**GATK Best Practices** (Figure \@ref(fig:gatk-workflow)) is the best genome workflow for model organisms, and for modern human genomics. However, it may not be suitable for calling variants in non-model systems, which will be covered later in the course [@mckenna_genome_2010; @depristo_framework_2011]. Each step in the GATK pipeline reduces the amount of data in a genome analysis, the goal is to improve the overall quality of the results that are filtered along the way. For example, we may expect to see up to 50% of the data is removed during a standard workflow from raw FastQ file to a VCF. This does not mean that your data are of poor quality of that your experimental design was flawed, but only that your resulting variants have been stringently filtered to be of the highest confidence. Adapted from Broad Institute GATK tutorial figures; reproduced for educational use.
 :::
 
 ### Variant Types in VCF Files
@@ -579,4 +610,6 @@ As we transition to Chapter 4 on Genome Browsers, understanding BED format provi
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

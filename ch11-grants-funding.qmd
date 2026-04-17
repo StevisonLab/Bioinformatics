@@ -173,10 +173,6 @@ For graduate students and postdoctoral researchers in the biomedical sciences, t
 
 Unlike the GRFP, which is evaluated primarily on the strength of the applicant's ideas and potential, NIH fellowship applications involve a more elaborate review process that takes into account the proposed research project, the applicant's background and qualifications, the mentor's qualifications and track record, the training plan, and the environment in which the training will occur [@nih_funding_nih_2023]. This means that the quality of the mentorship relationship—and the mentor's willingness to invest time in co-developing the fellowship application—matters enormously. Students planning to apply for an F31 should initiate conversations with their mentor about the application well in advance of any deadline, ideally at least a year before the intended submission, because developing a strong individual development plan and a coherent research proposal requires sustained collaboration between the trainee and their sponsor.
 
-### NNF Graduate and Postgraduate Fellowship 
-
-For students whose research sits at the intersection of biology and agricultural or food systems, the USDA-NIFA National Needs Graduate and Postgraduate Fellowship (NNF) program represents a directly relevant and often overlooked federal opportunity. Unlike the GRFP or NIH F-series awards, NNF fellowships are administered through individual colleges and universities rather than applied for directly by students—meaning that the entry point is a conversation with your department or graduate program about whether your institution holds an active NNF grant in your area. Awards provide stipends and travel support for master's and doctoral students in national-need subject areas identified by NIFA, which have historically included genomics, bioinformatics applied to agriculture, food safety, environmental science, and natural resources. For students at a land-grant institution like Auburn, where the USDA relationship is institutionally deep and research programs in agricultural genomics and computational biology are well established, it is worth asking whether an NNF training grant is available in your college before looking exclusively to NIH or NSF for fellowship support.
-
 ### Professional Society Grants and Other Opportunities
 
 Beyond the major federal fellowships, a rich ecosystem of professional society grants and foundation-sponsored awards provides additional funding opportunities for graduate students and early-career researchers. Sigma Xi, the scientific research honor society, offers Grants in Aid of Research (GIAR) that provide modest awards—typically up to one thousand dollars—for travel to field sites or the purchase of equipment necessary to complete a specific research project [@smith_overview_2022]. These awards are small enough that they fall within reach of students early in their training, but competitive enough that earning one represents a genuine credential. The Society for Study of Evolution, the Genetics Society of America, the Society for Integrative and Comparative Biology, and many other discipline-specific societies offer analogous small grants, travel awards, and presentation fellowships.
@@ -215,4 +211,6 @@ Grant funding is, at its core, a conversation between scientists about what ques
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

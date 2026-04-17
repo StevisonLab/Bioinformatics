@@ -56,7 +56,7 @@ synthesis more broadly, integrating insights from paleontology, systematics, and
 ecology into a unified picture of how both short-term evolutionary change and the long-term diversification of life can be explained by the gradual accumulation of genetic changes within and among populations [@coop_popgen_notes].
 
 ::: callout-note
-## Eugenics, Population Genetics, and Scientific Racism
+### Box 12.1 - Eugenics, Population Genetics, and Scientific Racism
 
 *Note: The goal of this section is to situate the field of population genetics
 in its historical context in a factual, objective way, without assigning blame
@@ -130,7 +130,7 @@ A striking pattern emerged: levels of allozyme variation were broadly similar ac
 While allozymes provided a first glimpse of molecular variation, they detected only a subset of amino-acid changes and gave no information about synonymous or noncoding variation. DNA sequencing changed this. Kreitman's 1983 study of nucleotide polymorphism at the *Drosophila melanogaster* alcohol dehydrogenase (*Adh*) locus was among the first direct views of DNA-level polymorphism in a natural population [@charlesworth_hubby_2016]. *Drosophila* was well-positioned for these early studies in part because its giant polytene chromosomes — visible in larval salivary glands @fig-polytene — had long allowed cytogeneticists to map genes and inversions directly onto physical chromosome structure, identifying conserved chromosome arms (Muller's elements) that would anchor genome-wide sequence comparisons [@schaeffer_muller_2018].
 
 ::: callout-note
-#### Figure 12.1 – *Drosophila* Polytene Chromosomes and the Origins of Comparative Genomics
+### Figure 12.1 – *Drosophila* Polytene Chromosomes and the Origins of Comparative Genomics
 
 ![Polytene chromosomes of *Drosophila melanogaster*](images/drosophila_polytene.jpg){#fig-polytene width="35%" fig-alt="Phase-contrast microscopy image of Drosophila melanogaster polytene chromosomes from larval salivary glands. The image shows several thick, banded chromosomal arms radiating outward from a central chromocentre, where the heterochromatic regions of all chromosomes fuse. The distinct dark and light transverse banding pattern along each arm is clearly visible and was used by early geneticists to map gene and inversion positions."}
 
@@ -167,7 +167,7 @@ $$
 We only need to assume **random mating at the focal locus** for these frequencies to hold [@coop_popgen_notes]. In bioinformatics pipelines, HWE tests are also used as quality control: large-scale deviations at many loci can indicate genotyping errors or sample contamination. An excess of homozygotes can arise from inbreeding, positive assortative mating, or population subdivision (the Wahlund effect). An excess of heterozygotes can arise from disassortative mating or balancing selection [@coop_popgen_notes].
 
 ::: callout-note
-#### Figure 12.2 – The Kermode's (Spirit) Bear: A Hardy–Weinberg Case Study
+### Figure 12.2 – The Kermode's (Spirit) Bear: A Hardy–Weinberg Case Study
 
 ![Kermode's spirit bear (*Ursus americanus kermodei*) in British Columbia](images/kermode_bear.jpg){#fig-kermode width="40%" fig-alt="A white-coated Kermode spirit bear standing in a lush green British Columbia forest. The bear's white fur contrasts sharply with the surrounding dark green vegetation, illustrating the visually striking phenotype produced by homozygosity for the recessive MC1R allele."}
 
@@ -213,7 +213,7 @@ H_t \approx H_0\, e^{-t/2N_e}.
 $$
 
 ::: callout-note
-#### Figure 12.3 – The Black-footed Ferret: Genetic Drift and Conservation
+### Figure 12.3 – The Black-footed Ferret: Genetic Drift and Conservation
 
 ![Black-footed ferret (*Mustela nigripes*)](images/black_footed_ferret.jpg){#fig-ferret width="50%" fig-alt="A black-footed ferret with its characteristic black mask and feet emerging alertly from a burrow entrance on open grassland. The ferret's tan and black coloration and slender mustelid body shape are visible against the dry grass background."}
 
@@ -273,7 +273,7 @@ $$
 where $D = 0$ is expected under no gene flow and $|D| > 0$ indicates introgression [@kulathinal_genomics_2009; @coop_popgen_notes].
 
 ::: callout-note
-#### Figure 12.4 – The Logic of the ABBA-BABA (D-statistic) Test
+### Figure 12.4 – The Logic of the ABBA-BABA (D-statistic) Test
 
 ![The four-taxon ABBA-BABA test for introgression](images/ABBA_BABA.png){#fig-abbababa width="60%" fig-alt="Phylogenetic tree diagram illustrating the four-taxon ABBA-BABA test for introgression. The tree shows four taxa arranged as P1, P2, P3, and Outgroup from left to right, with a dashed horizontal arrow labeled with a question mark connecting P2 and P3 to indicate possible gene flow. Below the tree, three rows of nucleotides illustrate the three informative site patterns. The ABBA pattern is shown in red: P1 carries A, P2 carries C, P3 carries C, and Outgroup carries A, indicating that P2 and P3 share the derived allele. The uninformative pattern is shown in grey: P1 carries T, P2 carries T, P3 carries A, and Outgroup carries A, where no asymmetric sharing distinguishes the topologies. The BABA pattern is shown in blue: P1 carries G, P2 carries A, P3 carries G, and Outgroup carries A, indicating that P1 and P3 share the derived allele instead."}
 
@@ -295,7 +295,7 @@ In practice, LD is summarized using $r^2$, the squared correlation of allele sta
 **Recombination hotspots and PRDM9.** Recombination rate heterogeneity is not random — in mammals, hotspot positions are largely controlled by the zinc-finger protein **PRDM9**, which binds specific sequence motifs and recruits the double-strand break machinery [@wall_detecting_2016]. I applied LD-based hotspot detection to great ape genomes — including *Pan paniscus* (bonobo), *Pan troglodytes ellioti* (Nigeria-Cameroon chimpanzee), and *Gorilla gorilla gorilla* (western lowland gorilla) — revealing that hotspot positions evolve rapidly between species even as overall recombination rates remain broadly conserved [@stevison_timescale_2016]. This rapid turnover is consistent with biased gene conversion eroding PRDM9 binding motifs at the very sites the protein targets [@stevison_timescale_2016]. This work demonstrated that PRDM9 — long known to control hotspot positioning in humans and mice — plays a conserved role broadly across great apes, a finding since extended to vertebrates generally (see [Appendix B](appendixB.qmd)) [@wall_detecting_2016; @stevison_timescale_2016]. Ongoing work in my lab in turtles extends this comparative framework to ask whether PRDM9-like control is a shared vertebrate feature or arose independently.
 
 ::: callout-note
-#### Figure 12.5 – Bonobo (*Pan paniscus*): Recombination Rate Evolution in Great Apes
+### Figure 12.5 – Bonobo (*Pan paniscus*): Recombination Rate Evolution in Great Apes
 
 ![Bonobo (*Pan paniscus*) mother and infant](images/bonobo.jpg){#fig-bonobo width="35%" fig-alt="A bonobo mother and infant resting together in dense green tropical forest vegetation. The bonobos have the characteristic dark black faces, pink lips, and long black hair of Pan paniscus. The infant clings to the mother's torso while both animals face toward the camera."}
 
@@ -440,8 +440,8 @@ Sliding-window population genomic analyses are not just tools for detecting sele
 
 **Why this matters methodologically.** This study illustrates three principles from this chapter: (1) $F_{ST}$ outlier scans require a clear null model accounting for recombination rate variation and demographic history [@stevison_sweeping_2020; @bailey_genomic_2023]; (2) an integrative approach that combines multiple metrics such as $F_{ST}$ with $\pi$ and Tajima's D provides stronger inference than any single metric alone; and (3) a polygenic signal — many windows with moderate outlier values rather than a few extreme peaks — is itself biologically meaningful, pointing toward a quantitative genetic architecture for reproductive isolation [@bailey_genomic_2023]. 
 
-::: callout-note
-## A Primer on Human Population Genomics
+::: {.callout-note}
+## Box 12.2 - A Primer on Human Population Genomics
 
 As introduced in Chapter 8, the 1000 Genomes Project catalogued human genetic
 variation across 2,500 individuals from 26 populations worldwide, discovering
@@ -573,4 +573,6 @@ distinct biological groupings.
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

@@ -45,5 +45,7 @@ If you do not have much experience finding and reading primary literature, compl
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```
 

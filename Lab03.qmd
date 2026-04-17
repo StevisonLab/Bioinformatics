@@ -203,4 +203,6 @@ Answer the following:
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

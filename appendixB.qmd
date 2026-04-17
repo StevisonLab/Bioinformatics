@@ -78,4 +78,6 @@ For this project, students will zoom out to the entire vertebrate tree and exami
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

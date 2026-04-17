@@ -46,5 +46,7 @@ The focus of your design narrative should be on **motivation and approach**. You
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```
 

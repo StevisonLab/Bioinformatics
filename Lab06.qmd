@@ -271,4 +271,6 @@ This lab exercise was adapted from one written by Dr. Anton Weisstein from Truma
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

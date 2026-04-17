@@ -212,4 +212,6 @@ This lab demonstrates several principles from Chapter 12 with real data:
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

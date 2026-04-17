@@ -227,4 +227,6 @@ In the next lab, you will load the filtered VCFs you generated here into **IGV (
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

@@ -171,4 +171,6 @@ These problems are intentionally open-ended. There is no answer key.
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

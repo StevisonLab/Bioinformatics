@@ -338,4 +338,6 @@ Structural variant (SV) calling—detecting large deletions, insertions, inversi
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

@@ -41,7 +41,7 @@ Having taken a course in Computational Biology, it can often be confusing of the
 
 This figure shows how bioinformatics lies at the interface of statistics, computer science, and biology, integrating methods from all three disciplines to analyze and interpret biological data. This Figure highlights how related subfields overlap: biostatistics emerges from the intersection of statistics and biology, computational biology from the overlap of computer science and biology, and data science from the overlap of statistics and computer science. At the center, bioinformatics combines these quantitative, computational, and biological approaches under one umbrella.
 
-Importantly, how we define biology in this course is broadly emcompassing all fields of empirical research. This would include biology, biomedical research, such as pharamcology, kinesiology, and veterinary sciences.
+Importantly, how we define biology in this course is broadly emcompassing all fields of empirical research. This would include biology, biomedical research, such as pharamcology, kinesiology, and veterinary sciences. [Image Source](https://amnairfan.github.io/cs501/img/bioinfomatics_venn_diagram.png)
 :::
 
 ## Student Learning Objectives
@@ -155,4 +155,6 @@ Portions of this book were drafted and revised with the assistance of an AI‑ba
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

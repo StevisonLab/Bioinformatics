@@ -159,5 +159,7 @@ This is exactly the kind of reading and reasoning you will need for the semester
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```
 

@@ -107,4 +107,6 @@ Congratulations! You have now successfully indexed a reference genome and mapped
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

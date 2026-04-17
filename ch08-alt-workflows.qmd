@@ -323,4 +323,6 @@ Looking forward, emerging sequencing technologies and analytical methods continu
 
 ## References {#sec-references}
 
+```{=latex}
 \printbibliography[heading=none]
+```

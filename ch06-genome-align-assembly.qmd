@@ -36,9 +36,9 @@ Two key error models dominate short‑read mapping: the **Hamming distance**, a 
 ::: {.callout-note}
 ## Figure 6.2 - Algorithm Strategies of Short Read Alignment Tools
 
-![Alignment Algorithms](images/Fig_5_18_Pevsner.jpg){#fig-alignment width="75%"}
+![Alignment Algorithms](images/Trapnell_Salzberg_2009.jpg){#fig-alignment width="75%"}
 
-Two strategies by which short read aligners take a large number of short reads (e.g., 500 million reads, each of length 150 base pairs) and align them to a reference genome (e.g., the haploid human genome reference sequence of ∼3 billion base pairs). (a) Spaced seed indexing algorithms use hash tables. The reference genome and the short reads are cut into equal-sized segments called seeds. Seeds from the short reads are paired and stored in a lookup table (hash table) and used to scan the reference. Matches to the seed index have an assigned genomic location. (b) The Burrows–Wheeler transform is used to efficiently represent the reference genome in software such as BWA2 and Bowtie. The reference genome is concatenated into a string, transformed using the Burrows–Wheeler transform (see @fig-bwt), and indexed. Reads are aligned beginning with the base at the 3′ end and continuing towards the 5′ end. This approach is very fast relative to spaced seed approaches. This figure also serves as your first comparison of two major families of short‑read aligners: hash‑table–based “seed and scan” tools versus BWT/FM‑index–based tools like BWA and Bowtie[@Li2010ReviewNGSAlignment].
+Two strategies by which short read aligners take a large number of short reads (e.g., 500 million reads, each of length 150 base pairs) and align them to a reference genome (e.g., the haploid human genome reference sequence of ∼3 billion base pairs). (a) Spaced seed indexing algorithms use hash tables. The reference genome and the short reads are cut into equal-sized segments called seeds. Seeds from the short reads are paired and stored in a lookup table (hash table) and used to scan the reference. Matches to the seed index have an assigned genomic location. (b) The Burrows–Wheeler transform is used to efficiently represent the reference genome in software such as BWA2 and Bowtie. The reference genome is concatenated into a string, transformed using the Burrows–Wheeler transform (see @fig-bwt), and indexed. Reads are aligned beginning with the base at the 3′ end and continuing towards the 5′ end. This approach is very fast relative to spaced seed approaches. This figure also serves as your first comparison of two major families of short‑read aligners: hash‑table–based “seed and scan” tools versus BWT/FM‑index–based tools like BWA and Bowtie[@Li2010ReviewNGSAlignment]. Figure reproduced from Trapnell & Salzberg [@trapnell_how_2009], with permission of the authors. This content is excluded from the Creative Commons license of this project as a whole.
 :::
 
 ### Burrows–Wheeler transform and FM‑index
@@ -258,4 +258,6 @@ Tools such as minigraph build reference graphs from multiple high‑quality asse
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

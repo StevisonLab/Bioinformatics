@@ -194,4 +194,6 @@ You can use the following questions to reflect on the concepts and papers introd
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

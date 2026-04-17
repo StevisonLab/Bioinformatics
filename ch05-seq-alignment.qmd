@@ -330,4 +330,6 @@ The Ensembl browser implements a related but distinct pipeline based on Enredo, 
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

@@ -210,4 +210,6 @@ This case study illustrates a general and reusable analytical strategy: define f
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```

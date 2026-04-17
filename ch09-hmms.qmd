@@ -195,4 +195,6 @@ Monte Carlo EM algorithms represent a hybrid approach that uses sampling to appr
 
 ## References
 
+```{=latex}
 \printbibliography[heading=none]
+```
