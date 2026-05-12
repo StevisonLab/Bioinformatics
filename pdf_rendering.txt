@@ -1,0 +1,11 @@
+  pdf:    
+    toc: true
+    number-sections: true
+    cite-method: biblatex
+    biblatexoptions:
+      - style=apa
+      - backend=biber
+      - refsection=chapter
+    include-in-header:
+      text: |
+        \usepackage{hyperref}
