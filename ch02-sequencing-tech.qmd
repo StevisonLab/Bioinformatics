@@ -45,6 +45,13 @@ To scale Sanger sequencing to large genomes, the Human Genome Project and simila
 
 Each BAC in this tiling path was then sequenced by **shotgun Sanger sequencing**: the BAC insert was sheared into smaller fragments, cloned again, and hundreds to thousands of individual Sanger reads were generated and assembled into contigs using overlap‑layout‑consensus algorithms @pevsner2015. Finishing a BAC required closing gaps and resolving repeats by designing new primers, resequencing troublesome regions, and manually inspecting assemblies, often iterating many times to obtain a contiguous, high‑quality sequence @pevsner2015. Finally, finished BAC sequences were stitched together along the tiling path, using the BAC map to determine their order and orientation and filling any remaining gaps as resources allowed [@pevsner2015; @vandijk2018].
 
+::: {.callout-note}
+## Figure 2.1 - 
+
+![Diagram illustrating the terminology of genome sequence organization, from short reads to contigs, scaffolds, and chromosomes.](images/De_novo_assembly.png){#fig-contigs width=100% fig-alt="Conceptual overview of genome organization, showing how short sequencing reads can be represented as contigs, which can be linked into scaffolds and ultimately correspond to chromosome-scale sequences."}
+Genome sequence terminology. Sequencing reads are short DNA fragments, contigs are continuous sequences formed from overlapping reads, scaffolds connect contigs into larger units, and chromosomes represent the largest scale of genome organization. Adapted from Wikimedia Commons; [Source](https://commons.wikimedia.org/wiki/File:De_novo_assembly.png).
+:::
+
 This pipeline produced extremely accurate reference sequences, but it illustrates why Sanger‑era genomics was **inefficient and costly** for whole genomes. Every step—constructing BAC libraries, mapping clones, performing thousands of Sanger reactions per BAC, and manually finishing assemblies—was labor‑intensive and required large teams and dedicated sequencing centers [@pevsner2015; @vandijk2018]. The Human Genome Project consumed over a decade and billions of dollars partly because Sanger chemistry and BAC‑by‑BAC strategies, while reliable, simply could not deliver base‑pair–level coverage at the scale and speed that later high‑throughput technologies made routine @pevsner2015.
 
 From a modern perspective, Sanger’s legacy is conceptual. It established the idea that sequencing is a combination of **chemistry** (how nucleotides are incorporated and terminated) and **signal processing** (how fragment sizes and dye colors are turned into digital base calls with quality scores) @pevsner2015. Those same ideas—polymerase‑based synthesis, chain termination or detection events, and computational basecalling—reappear in second‑ and third‑generation platforms even as the physics of detection and the scale of data generation change @vandijk2018.
@@ -72,7 +79,7 @@ After amplification, one strand in each cluster is selectively cleaved and washe
 Paired‑end libraries exploit the fact that both ends of each fragment have adapters. After Read 1 is complete and index reads have been acquired, the extension product is melted away, the intact template folds over to the opposite surface oligo, and a new primer initiates Read 2 from the other end of the fragment. Index 1 and index 2 reads are interleaved into the run capture with the sample barcodes, allowing hundreds of libraries to be pooled on a single lane of sequencing.
 
 ::: callout-note
-#### Figure 2.1 – Illumina sequencing workflow
+#### Figure 2.2 – Illumina sequencing workflow
 
 ![Overview of Illumina library preparation, bridge amplification, sequencing‑by‑synthesis, and imaging.](images/Fig 2-1 Illumina Sequencing.png){#fig-illumina-workflow width="75%"}
 
@@ -114,7 +121,7 @@ Early SMRT runs produced continuous long reads (CLRs) tens of kilobases long but
 Improvements in polymerase engineering, fluorescent chemistry, and consensus algorithms have steadily moved PacBio from a noisy long‑read platform toward one that can rival or exceed Illumina for small‑variant calling in many contexts, while still providing long‑range information for assembly, phasing, and structural‑variant discovery [@vandijk2018; @vandijk2023; @scarano2024].
 
 ::: callout-note
-#### Figure 2.2 – PacBio SMRT sequencing
+#### Figure 2.3 – PacBio SMRT sequencing
 
 ![Overview of PacBio Sequencing](images/Figure_2_2_PacBio.png){#fig-pacbio width="75%" fig-alt="Schematic of PacBio single-molecule real-time sequencing. Panel A shows a DNA polymerase complex immobilized in a zero-mode waveguide (ZMW) observing fluorescently labeled nucleotide incorporation during circular consensus sequencing. Panel B illustrates the ZMW structure, in which excitation is confined to a very small detection volume near the bottom of the well. Panel C depicts the sequence of nucleotide-binding and incorporation events that generate pulses of fluorescence during polymerase synthesis. Panel D shows an example fluorescence trace in which colored pulses correspond to incorporation of different nucleotides during real-time sequencing."}
 
@@ -130,7 +137,7 @@ In principle, nanopore read length is limited only by input molecule length and 
 ONT’s product line ranges from pocket‑sized MinION devices powered by a laptop to large PromethION instruments with many flow cells running in parallel, making it possible to deploy sequencing in field settings as well as high‑throughput labs [@vandijk2018; @vandijk2023].
 
 ::: callout-note
-#### Figure 2.3 – Oxford nanopore sequencing
+#### Figure 2.4 – Oxford nanopore sequencing
 
 ![Overview of ONT Sequencing](images/Oxford Nanopore Sequencing.png){#fig-ont width="50%" fig-alt="Schematic of Oxford Nanopore sequencing. A DNA sample is loaded into a MinION sequencer and enters active nanopores in the flow cell. A motor protein unwinds and feeds a single DNA strand through the pore, where changes in ionic current are measured as characteristic signals for each base. These current traces are converted into base calls by software, and the figure also shows the relationship between sample loading, active pores, nanopore translocation, and base-calling output."}
 

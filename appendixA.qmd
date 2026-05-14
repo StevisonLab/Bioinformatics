@@ -7,7 +7,7 @@ lang: en-US
 
 ## Reading Primary Scientific Literature {#sec-papers}
 
-This appendix is a refresher on how to read and interpret original research articles. It is especially relevant for Lab01 (finding and describing a genome analysis paper) and for later labs and projects where you will evaluate genomics studies in the context of the three perspectives from Chapter 1 and the ethical themes introduced there [@pevsner2015; @hotaling2021; @marks2021].
+This appendix is a refresher on how to read and interpret original research articles. It is especially relevant for Lab01 (finding and describing a genome analysis paper) and for later labs and projects where you will evaluate genomics studies in the context of the three perspectives from Chapter 1 and the ethical themes introduced there [@pevsner2015; @hotaling2021; @marks2021]. It largely follows the CREATE approach for introducing primary literature to undergraduates [@hoskins_crete_2011].
 
 Sharing the results of scientific experiments is one of the most important aspects of science. Early scientists shared their observations and results in open letters to their colleagues that were hand copied and passed from person to person. Pretty soon, scientists developed better ways of sharing their results with each other, and our current knowledge of science and the world around us is dependent upon current scientists sharing their results.
 

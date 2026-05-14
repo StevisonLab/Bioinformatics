@@ -303,15 +303,24 @@ reads. This viewer is useful to quickly assess the quality at genomic loci of in
 
 While it is not typical to view BAM files natively, it is helpful to review the anatomay of a sam file and the various ways to view this file format using the bioinformatics software `samtools`.
 
-::: callout-note
-#### Figure 3.3 – Anatomy of a SAM File
+::: {.callout-note}
+#### Table 3.1 – Mandatory Fields in a SAM/BAM Alignment Record {#tbl-sam-fields}
 
-![SAM alignment anatomy (Pevsner 9.13)](images/Figure_9_13_Pevsner.jpg){#fig-sam-anatomy width="75%"}
+| Col | Field | Type | Description |
+|:---:|:------|:----:|:------------|
+| 1 | QNAME | String | Query template name — the read identifier from the sequencer |
+| 2 | FLAG | Int | Bitwise flag encoding alignment properties (paired, reverse strand, unmapped, etc.) |
+| 3 | RNAME | String | Reference sequence name (chromosome or contig) where the read aligned |
+| 4 | POS | Int | 1-based leftmost mapping position on the reference |
+| 5 | MAPQ | Int | Mapping quality — phred-scaled probability that the alignment position is wrong |
+| 6 | CIGAR | String | CIGAR string encoding match, insertion, deletion, and soft-clip operations |
+| 7 | RNEXT | String | Reference name of the mate/next read in a paired-end pair (`=` if same chromosome) |
+| 8 | PNEXT | Int | Position of the mate/next read |
+| 9 | TLEN | Int | Observed template length (insert size); negative for the reverse-strand read of a pair |
+| 10 | SEQ | String | Segment sequence of the read (forward strand as aligned) |
+| 11 | QUAL | String | ASCII-encoded Phred base quality scores (Phred+33 offset) |
 
-Anatomy of a SAM file. The `samtools view` command was used in Linux to
-view a BAM file, and the `| less` command sends the output to a single screen of data at a time. (A typical SAM/BAM file has millions of rows.) A single record of the output is shown, with 12 features as indicated.
-
-The drop down menu above shows a sample output of `samtools tview` on the yeast genome sample.
+: The 11 mandatory fields present in every alignment record of a SAM or BAM file, in column order. A SAM file consists of an optional header section (lines beginning with `@`) followed by one tab-delimited alignment record per read. The binary BAM format stores identical information in compressed form. A typical alignment file for a whole-genome sequencing experiment contains tens to hundreds of millions of records. The command `samtools view` can be used to view a Sam/Bam file. The drop down menu above shows a sample output of `samtools tview` on the yeast genome sample. Source: SAM Format Specification [@Li2009SAMtools].
 :::
 
 The bioinformatics tool [SAMtools](https://www.htslib.org/) is a suite of programs for interacting with high-throughput sequencing data @danecek_twelve_2021. It consists of three separate repositories:

@@ -111,9 +111,9 @@ Now you'll compare your unknown transcripts `test.fasta` against each of the thr
 ::: callout-note
 ## Programs within BLAST
 
-![Overview of BLAST five main Algorithms](images/Figure4_2.png){#fig-blast width="65%" fig-alt="Overview of the five main BLAST Algorithms"}
+![Overview of BLAST five main Algorithms](images/BLAST.png){#fig-blast width="65%" fig-alt="Overview of the five main BLAST Algorithms"}
 
-There are five major algorithms within BLAST. In making your database, you already know your input sequences are nucelotides. Example the input file `test.fasta` to determine which of the five programs you will use when running your BLAST search.
+There are five major algorithms within BLAST. The suffixes in the names are: P = protein, N = nucleotide, X = dynamically translated DNA, and T = translating database sequences. In making your database, you already know your input sequences are nucleotides. Example the input file `test.fasta` to determine which of the five programs you will use when running your BLAST search.
 :::
 
 1. Since both your query and database sequences are nucleotides, you'll use the `blastn` program. Review the available options:

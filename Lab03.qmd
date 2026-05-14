@@ -112,9 +112,9 @@ Answer the following:
 
 1. What are the major changes at the chromosome level across these *Drosophila* species? Specifically, do any species have pieces of multiple Muller elements spanning a single chromosome?
 
-2. Compare the below (Figure 3 from @bhutkar_chromosomal_2008) to the synteny table and mark where Muller elements have shuffled to form a combined element. 
+2. Compare the below (Adapted and updated based on Figure 3 in @bhutkar_chromosomal_2008) to the synteny table and mark where Muller elements have shuffled to form a combined element. 
 
-![](images/Lab3_synteny.jpeg){fig-align="center" fig-alt="An image Muller Elements from each species."}
+![](images/synteny_plot Dgri to Dmel.jpg){fig-align="center" fig-alt="An image Muller Elements from each species."}
 
 3. What other kinds of changes can you find?
 

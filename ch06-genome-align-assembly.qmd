@@ -58,14 +58,22 @@ In **[Lab 4](Lab04.qmd)**, you will use BWA to build an FM‑index of the *Sacch
 Concretely, to search for a pattern like “GAT” in a BWT‑indexed genome, we start from the last character “T” and use the cumulative counts and ranks to find all rows whose first character is T, giving us an interval in the matrix that corresponds to all occurrences of “T” in the genome[@Reinert2015AlignmentNGS]. We then prepend “A”, updating the interval so that it now corresponds to “AT”, and then prepend “G”, updating again so that the final interval corresponds exactly to all rows that begin with “GAT”; the size of this interval tells us how many matches exist and its boundaries can be mapped back to coordinates in the original genome using LF‑mapping[@Reinert2015AlignmentNGS; @Li2009BWA]. From an algorithm perspective, this is powerful because every extension step is $O(1)$, so the total time is proportional to the pattern length and not the genome size, and because the index is compressed, we can keep the entire structure in memory even for large genomes[@Reinert2015AlignmentNGS; @ben_langmead_burrows-wheeler_2014; @Li2010ReviewNGSAlignment].
 
 ::: {.callout-note}
-## Figure 6.3 - BWT and backward search
+## Figure 6.3 - Burrows–Wheeler transform for sequence indexing
 
-![Alignment Algorithms](images/Fig_5_19_Pevsner.jpg){#fig-bwt width="75%"}
+![Alignment Algorithms](images/Figure_6_3.png){#fig-bwt width="75%" fig-alt="Diagram showing how a string is converted into a matrix of cyclic rotations, sorted lexicographically, and transformed into the Burrows–Wheeler matrix. The figure highlights the first and last columns, the last-to-first relationship, and the reconstruction of the original string from the transformed representation."}
 
-The Burrows–Wheeler Transform (BWT) shown for a short input string $S$ of length $N = 6$. Panel A lists all cyclic rotations of $S$ and their sorted order; Panel B highlights the first (F) and last (L) columns that define the BWT string; Panel C indicates how this representation can be compressed and later decompressed to recover the original $S$[@pevsner2015]. Use this figure when you work through the BANANA$ exercise in class to map each step in your pencil‑and‑paper calculation onto rows, columns, and LF‑mapping arrows in the diagram. 
+The Burrows–Wheeler transform rearranges a DNA string into a form that is easier to compress and index for sequence alignment. In this example, the Burrows–Wheeler Transform (BWT) for a short input string $S$ of length $N = 5$ is shown. The original string is expanded into all cyclic rotations, the rows are sorted lexicographically, and the first and last columns of the sorted matrix are used to recover the original sequence through the LF relationship. This transformation underlies efficient read mapping methods that search a compressed reference rather than scanning the full genome directly. 
 :::
 
 LF‑mapping (last‑to‑first mapping) is the concrete mechanism that makes the BWT a reversible permutation of the genome: it uses the fact that the first column of the sorted matrix is just the characters of the genome in sorted order, and that each occurrence of a character in the last column corresponds to the same relative occurrence in the first column[@Reinert2015AlignmentNGS]. In practice, this means that once we know which rows correspond to our pattern, we can follow LF‑mapping steps to walk backwards along each row and reconstruct the original genomic coordinates, which is how BWA turns a range in the FM‑index into a concrete alignment position[@Li2009BWA]. When mismatches or small gaps are allowed, BWA explores nearby paths in this index by controlled backtracking—trying alternative characters at a limited number of positions—rather than by rescanning the entire reference, which explains its efficiency compared with naive dynamic programming over the whole genome[@Li2009BWA; @Reinert2015AlignmentNGS].
+
+::: {.callout-note}
+## Figure 6.4 - LF mapping and reverse reconstruction
+
+![LF mapping and reverse reconstruction](images/Figure_6_4.png){#fig-bwt width="75%" fig-alt="Diagram illustrating LF mapping through the Burrows–Wheeler matrix. The first and last columns are matched to trace character positions, showing how the original string can be reconstructed from the transformed representation using the last-to-first mapping."}
+
+LF mapping links positions in the last (L) columns of the Burrows–Wheeler matrix to corresponding positions in the first column (F), allowing the original string to be recovered step by step. In genome alignment, this same principle is used to move backward through a compressed index while extending matches against a reference sequence. The figure shows how the original string can be reconstructed from the BWT by following the mapped character order from the last column to the first.Use this figure when you work through the BANANA$ exercise in class to map each step in your pencil‑and‑paper calculation onto rows, columns, and LF‑mapping arrows in the diagram. 
+:::
 
 ---
 tbl-cap-location: bottom
@@ -153,11 +161,11 @@ In an **overlap graph** (and its compressed form, the string graph), each read i
 In a **de Bruijn graph (DBG)**, the basic unit is not a whole read but a $(k)$‑mer. Vertices represent all $(k)$‑mers observed in the reads, and a directed edge connects two vertices when their $(k)$‑mers occur consecutively in a read and therefore share $(k-1)$ bases[@pevsner2015; @Li2024GenomeAssemblyT2T]. A path through the DBG corresponds to a sequence of $(k)$‑mers whose overlaps reconstruct an assembled sequence, and contigs arise from maximal non‑branching paths in this graph. Repeats appear as cycles or branching structures, and the choice of $(k)$ determines how easily the graph distinguishes true genomic branches from noise: small $(k)$ tends to tangle the graph in repeats but maintains connectivity in low‑coverage regions, whereas large $(k)$ resolves many repeats at the cost of fragmenting low‑coverage areas[@pevsner2015; @Li2024GenomeAssemblyT2T].
 
 ::: {.callout-note}
-### Figure 6.4 – Genome assembly and repeats
+### Figure 6.5 – Overlap-Layout-Concensus
 
-![Genome Assembly](images/Figure_9.10_Pevsner.jpg){#fig-assembly-repeats width="50%"}
+![Genome Assembly](images/OLC.png){#fig-assembly width="50%" fig-alt="Conceptual diagram of overlap-layout-consensus (OLC) genome assembly. Reads are compared to identify sequence overlaps, overlapping reads are arranged into a layout, and the aligned reads are combined into a consensus sequence representing the assembled contig. The figure illustrates the progression from pairwise read overlap to read ordering and final consensus generation."}
 
-Efficient assembly of repetitive DNA using a de Bruijn graph. Adapted from Pevzner et al. as reproduced in Pevsner (Figure 9.10). Panels illustrate (A) a genomic region with multiple copies of a repeat, (B) an overlap/layout graph with many possible paths through the repeat, (C) the conceptual “gluing” of repeated segments, and (D) the resulting de Bruijn graph, in which each repeat is represented as an edge rather than a large tangle of nodes. This figure reinforces how graph design influences our ability to resolve repeats in assembly[@pevsner2015].
+Overlap-layout-consensus (OLC) assembly. Reads with shared sequence are identified by pairwise overlap, arranged into a layout that preserves their order and orientation, and combined into a consensus sequence to produce the assembled contig. OLC assembly is a classic strategy for reconstructing genomes from long sequencing reads and is particularly helpful for traversing repeats. Adapted from Wikimedia Commons. [Source](https://commons.wikimedia.org/wiki/File:OLC,Overlap-Layout-consensus.png) 
 :::
 
 Early Sanger‑based whole‑genome assemblies and many modern long‑read assemblers operate directly on overlap or string graphs, because read lengths are long enough that explicit read–read overlaps are highly informative[@Reinert2015AlignmentNGS; @Li2024GenomeAssemblyT2T]. Short‑read assemblers typically favor de Bruijn graphs, which avoid an all‑against‑all overlap search by working in $(k)$‑mer space and are therefore more computationally efficient for billions of short reads[@pevsner2015]. Conceptually, both paradigms encode the same idea—local sequence adjacency—but they distribute the computational work differently and respond differently to repeats and sequencing errors[@Reinert2015AlignmentNGS; @Li2024GenomeAssemblyT2T].
@@ -187,14 +195,6 @@ tbl-cap-location: bottom
 ## Assembly in the telomere‑to‑telomere era
 
 The advent of single‑molecule long‑read sequencing around 2010, and especially the arrival of accurate PacBio HiFi and ONT duplex reads around 2019, transformed assembly from fragmented drafts into near telomere‑to‑telomere reconstructions for many species[@Li2024GenomeAssemblyT2T]. A standard “T2T recipe” has emerged with four main steps: error correction of accurate long reads, construction of an initial assembly graph (overlap or de Bruijn), simplification of that graph using ultra‑long ONT reads, and final scaffolding and phasing with long‑range data such as Hi‑C, Strand‑seq, or trio information[@Li2024GenomeAssemblyT2T]. Accurate long reads provide the backbone, ultra‑long reads thread through remaining tangles, and long‑range contacts connect phased blocks into chromosome‑scale scaffolds[@Li2024GenomeAssemblyT2T].
-
-::: {.callout-note}
-### Figure 6.5 – Telomere‑to‑telomere assembly strategy
-
-![T2T Genome Assembly](images/Fig_6.5_LiDurbin_Assembly.jpg){#fig-t2t-assembly width="80%"}
-
-Strategy for near telomere‑to‑telomere assembly of large eukaryotic genomes. Adapted from Li and Durbin (2024). Accurate long reads are first error‑corrected and assembled into an initial graph; ultra‑long ONT reads are then threaded through the graph to resolve tangles and patch small gaps; finally, long‑range data such as Hi‑C, Strand‑seq, or trio information scaffold and phase the assembly into chromosome‑scale haplotypes[@Li2024GenomeAssemblyT2T].
-:::
 
 Modern assemblers such as HiCanu, hifiasm, Verkko, and LJA embody this strategy using different graph and error‑correction choices[@Li2024GenomeAssemblyT2T]. HiCanu and hifiasm operate in overlap or string‑graph space and exploit exact overlaps between HiFi reads to distinguish repeat copies and phase haplotypes[@Li2024GenomeAssemblyT2T]. Verkko and LJA instead build multiplex de Bruijn graphs that combine information from multiple $(k)$ values and use minimizer‑based sparsification to keep the graph tractable while still separating long, similar repeats[@Li2024GenomeAssemblyT2T]. In all cases, familiar ideas from the alignment section—$(k)$‑mers, minimizers, and efficient indices—reappear, but now applied to read–read relationships and graph traversal rather than read–reference matching[@Li2024GenomeAssemblyT2T].
 

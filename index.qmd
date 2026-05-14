@@ -6,9 +6,7 @@ lang: en-US
 
 # Preface {.unnumbered}
 
-This is a Quarto book. This companion textbook is a draft teaching resource created specifically for students enrolled in BIOL 5860/6860: Bioinformatics and Genome Analysis at Auburn University during the Spring 2026 term. _It is not intended for general public use, redistribution, or citation as a finalized scholarly work._
-
-The content integrates instructor-written material, published references, and AI-assisted drafting that has been reviewed and edited for use in this course, with sources and AI assistance acknowledged. Access to this site may be temporarily open while technical settings are configured, but it is intended to be password-protected and restricted to enrolled students as soon as feasible.
+This is a Quarto book. This companion textbook is a draft teaching resource created specifically for students enrolled in BIOL 5860/6860: Bioinformatics and Genome Analysis at Auburn University during the Spring 2026 term. The content integrates instructor-written material, published references, and AI-assisted drafting that has been reviewed and edited for use in this course, with sources and AI assistance acknowledged. 
 
 To learn more about Quarto books visit <https://quarto.org/docs/books>.
 
