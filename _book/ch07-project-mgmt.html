@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Project Management and Writing Methods – Reading Genomes: A Companion to Bioinformatics and Genome Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch08-alt-workflows.html" rel="next">
+<link href="./ch06-genome-align-assembly.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-975e726794ce811e14261b5ab5acfd7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-axe/axe-check.js" type="module"></script>
+<script id="quarto-axe-checker-options" type="text/plain">dHJ1ZQ==</script>
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-24950670649d35549c6a1355d7402e2b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="accessibility.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Companion Chapters</a></li><li class="breadcrumb-item"><a href="./ch07-project-mgmt.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reading Genomes: A Companion to Bioinformatics and Genome Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Companion Chapters</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-reading-genomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Reading Genomes: What Bioinformatics Is For</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-sequencing-tech.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sequencing Technologies and Data Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch03-formats-qc-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">File Formats and Quality Control in Genome Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04-browsers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-seq-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-genome-align-assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Genome Alignment and Genome Assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-project-mgmt.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-alt-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Alternative Post‑Alignment Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch09-hmms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hidden Markov Models in Biology</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Variant Calling and Filtering with GATK</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-grants-funding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Grant Funding and the Scientific Enterprise</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch12-popgen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Population Genomics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-motifs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Sequence Motif Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-where-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Where to Go Next: Synthesis, Emerging Frontiers, and Lifelong Learning in Genomics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lab Manual</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Lab01: Find and describe a Genome Analysis Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lab02: Design a Genome Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Lab03: Genome Browsers and Databases</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Lab04: Genome Sequence Indexing and Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Lab05: BLAST on the Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Lab06: HMMs in Predicting Gene Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Lab07: Variant Calling via GATK Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lab 10: Population Genomics using the 1000 Genomes Dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix: How to Read Scientific Literature</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Appendix: Semester Research Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Appendix: Yeast Experimental Evolution Dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Appendix: Resources for Future Learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#section-1-project-management-for-bioinformatics-research" id="toc-section-1-project-management-for-bioinformatics-research" class="nav-link active" data-scroll-target="#section-1-project-management-for-bioinformatics-research"><span class="header-section-number">7.1</span> Section 1: Project Management for Bioinformatics Research</a>
+  <ul class="collapse">
+  <li><a href="#foundational-principles" id="toc-foundational-principles" class="nav-link" data-scroll-target="#foundational-principles"><span class="header-section-number">7.1.1</span> Foundational Principles</a></li>
+  <li><a href="#project-directory-structure" id="toc-project-directory-structure" class="nav-link" data-scroll-target="#project-directory-structure"><span class="header-section-number">7.1.2</span> Project Directory Structure</a></li>
+  <li><a href="#file-naming-conventions" id="toc-file-naming-conventions" class="nav-link" data-scroll-target="#file-naming-conventions"><span class="header-section-number">7.1.3</span> File Naming Conventions</a></li>
+  <li><a href="#documentation-and-metadata" id="toc-documentation-and-metadata" class="nav-link" data-scroll-target="#documentation-and-metadata"><span class="header-section-number">7.1.4</span> Documentation and Metadata</a></li>
+  <li><a href="#version-control-integration" id="toc-version-control-integration" class="nav-link" data-scroll-target="#version-control-integration"><span class="header-section-number">7.1.5</span> Version Control Integration</a></li>
+  <li><a href="#agile-project-management-and-kanban-boards" id="toc-agile-project-management-and-kanban-boards" class="nav-link" data-scroll-target="#agile-project-management-and-kanban-boards"><span class="header-section-number">7.1.6</span> Agile Project Management and Kanban Boards</a></li>
+  <li><a href="#practical-workflow-integration" id="toc-practical-workflow-integration" class="nav-link" data-scroll-target="#practical-workflow-integration"><span class="header-section-number">7.1.7</span> Practical Workflow Integration</a></li>
+  <li><a href="#common-pitfalls-and-solutions" id="toc-common-pitfalls-and-solutions" class="nav-link" data-scroll-target="#common-pitfalls-and-solutions"><span class="header-section-number">7.1.8</span> Common Pitfalls and Solutions</a></li>
+  </ul></li>
+  <li><a href="#conclusion-part-1" id="toc-conclusion-part-1" class="nav-link" data-scroll-target="#conclusion-part-1"><span class="header-section-number">7.2</span> Conclusion Part 1</a></li>
+  <li><a href="#section-2-writing-methods-sections-for-bioinformatics-research" id="toc-section-2-writing-methods-sections-for-bioinformatics-research" class="nav-link" data-scroll-target="#section-2-writing-methods-sections-for-bioinformatics-research"><span class="header-section-number">7.3</span> Section 2: Writing Methods Sections for Bioinformatics Research</a>
+  <ul class="collapse">
+  <li><a href="#from-workflow-diagram-to-written-methods" id="toc-from-workflow-diagram-to-written-methods" class="nav-link" data-scroll-target="#from-workflow-diagram-to-written-methods"><span class="header-section-number">7.3.1</span> From Workflow Diagram to Written Methods</a></li>
+  <li><a href="#citing-published-workflows-and-software" id="toc-citing-published-workflows-and-software" class="nav-link" data-scroll-target="#citing-published-workflows-and-software"><span class="header-section-number">7.3.2</span> Citing Published Workflows and Software</a></li>
+  <li><a href="#documenting-parameter-changes-and-deviations" id="toc-documenting-parameter-changes-and-deviations" class="nav-link" data-scroll-target="#documenting-parameter-changes-and-deviations"><span class="header-section-number">7.3.3</span> Documenting Parameter Changes and Deviations</a></li>
+  <li><a href="#citing-public-data-and-databases" id="toc-citing-public-data-and-databases" class="nav-link" data-scroll-target="#citing-public-data-and-databases"><span class="header-section-number">7.3.4</span> Citing Public Data and Databases</a></li>
+  <li><a href="#balancing-main-text-and-supplementary-methods" id="toc-balancing-main-text-and-supplementary-methods" class="nav-link" data-scroll-target="#balancing-main-text-and-supplementary-methods"><span class="header-section-number">7.3.5</span> Balancing Main Text and Supplementary Methods</a></li>
+  <li><a href="#comparing-your-methods-to-published-studies" id="toc-comparing-your-methods-to-published-studies" class="nav-link" data-scroll-target="#comparing-your-methods-to-published-studies"><span class="header-section-number">7.3.6</span> Comparing Your Methods to Published Studies</a></li>
+  <li><a href="#detailed-components-of-bioinformatics-methods" id="toc-detailed-components-of-bioinformatics-methods" class="nav-link" data-scroll-target="#detailed-components-of-bioinformatics-methods"><span class="header-section-number">7.3.7</span> Detailed Components of Bioinformatics Methods</a></li>
+  <li><a href="#detail-level-and-supplementary-materials" id="toc-detail-level-and-supplementary-materials" class="nav-link" data-scroll-target="#detail-level-and-supplementary-materials"><span class="header-section-number">7.3.8</span> Detail Level and Supplementary Materials</a></li>
+  </ul></li>
+  <li><a href="#conclusion-part-2" id="toc-conclusion-part-2" class="nav-link" data-scroll-target="#conclusion-part-2"><span class="header-section-number">7.4</span> Conclusion Part 2</a></li>
+  <li><a href="#practice-problem-sets" id="toc-practice-problem-sets" class="nav-link" data-scroll-target="#practice-problem-sets"><span class="header-section-number">7.5</span> Practice Problem Sets</a></li>
+  <li><a href="#reflection-questions" id="toc-reflection-questions" class="nav-link" data-scroll-target="#reflection-questions"><span class="header-section-number">7.6</span> Reflection Questions</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7.7</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<a href="#quarto-content" class="skip-nav">Skip to main content</a>
+<style>
+.skip-nav {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-nav:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  z-index: 9999;
+}
+</style>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Companion Chapters</a></li><li class="breadcrumb-item"><a href="./ch07-project-mgmt.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></h1>
+<p class="subtitle lead">A Guide to Reproducible Computational Research</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This chapter delves into some topics that are not covered in typical bioinformatics course, but are essential to <em>doing</em> bioinformatics. Specifically, we dive deep into two major components of reproducible bioinformatics research - project management and methods sections. As such, this chapter is split into these two major sections to cover these critical best practices and reveal these aspects of hidden curriculum in this field.</p>
+<section id="section-1-project-management-for-bioinformatics-research" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="section-1-project-management-for-bioinformatics-research"><span class="header-section-number">7.1</span> Section 1: Project Management for Bioinformatics Research</h2>
+<p>Bioinformatics projects are inherently complex: they involve large datasets, many computational steps, diverse software tools, and often distributed teams. Digital work is fragile—files are easy to overwrite, analysis steps are easy to forget, and key decisions are rarely obvious months later. Systematic project organization and documentation are therefore not optional extras but the <em>foundation of reproducible research</em> and your own future productivity<span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>. A small investment in organization at the start of a project pays off every time you need to rerun, extend, or defend an analysis.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 7.1 – Importance of Digital Organization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-organization" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three photographs of clean and messy lab environments.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-organization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Figure_7-1_Organization.png" class="img-fluid figure-img" style="width:50.0%" alt="Three photographs of clean and messy lab environments.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-organization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1: Contrasting cluttered and organized lab benches; how does organization make you feel?
+</figcaption>
+</figure>
+</div>
+<p>Just as a cluttered bench slows down wet‑lab work, a chaotic directory structure makes simple computational tasks stressful and error‑prone. Your goal is to make your digital lab bench feel like the image on the right and now those on the left.</p>
+</div>
+</div>
+<section id="foundational-principles" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="foundational-principles"><span class="header-section-number">7.1.1</span> Foundational Principles</h3>
+<p>At the heart of effective project management in bioinformatics lie several core principles that guide all subsequent practices. First among these is the principle that everything you do, <strong>you will probably have to do over again</strong><span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>. This may sound pessimistic, but it reflects the iterative nature of computational research. Reviewer requests for new analyses or access to additional samples are much easier to address when your earlier work is well documented.</p>
+<p>The second principle recognizes that project organization exists not just for human readers, but to facilitate automation. Bioinformatics routinely involves processing hundreds or thousands of files, and the ability to <strong>programmatically</strong> access and manipulate these files is essential. This automation depends on predictable directory structures and consistent file naming schemes. When your sequencing files follow a systematic naming pattern like <code>sample-A_replicate-1_read-R1.fastq.gz</code>, writing a script to process all samples becomes straightforward. When files are inconsistently named like <code>sampleA-1.fastq</code> and <code>sample_A_rep2_R1.fq.gz</code>, the same task becomes frustrating and time intensive<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>The third principle emphasizes that documentation should be comprehensive yet lightweight. Every analytical step that produces results used in your work needs to be documented somewhere, including the full command lines, all parameter values (even defaults), software versions, and the provenance of all input data. However, this documentation need not be burdensome. Plain text formats like <strong>Markdown</strong> allow you to quickly record information in a format that is readable, searchable, and future-proof.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Workflow Thinking in Bioinformatics
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Modern genomic analyses involve complex chains of computational steps—downloading data, quality control, alignment, variant calling, and downstream analysis. Rather than writing monolithic shell scripts that hardcode file paths and parameters, workflow thinking means viewing your analysis as a <strong>directed acyclic graph (DAG)</strong> where each computational step is a node and dependencies are edges. This approach naturally leads to modular, reproducible, and parallelizable analyses. Workflow managers like Snakemake, Nextflow, and Common Workflow Language (CWL) implement these principles by letting you separate configuration from code, explicitly declare inputs and outputs for each step, and automatically parallelize independent tasks. For example, the <strong>snpArcher pipeline</strong> demonstrates how this thinking enables consistent reanalysis of diverse datasets<span class="citation" data-cites="mirchandani_fast_2024"><sup><a href="#ref-mirchandani_fast_2024" role="doc-biblioref">3</a></sup></span>. By defining samples in structured tables and parameters in configuration files, the authors processed datasets ranging from 6 to 306 individuals using identical variant calling logic—what would take weeks of manual script-wrangling became a single command per dataset.</p>
+<p>The key insight is to design for reproducibility from the start: each workflow step should be <strong>idempotent</strong>, or an operation or function that produces the same result regardless of how many times it is executed. Configuration should live in YAML or CSV files rather than scattered through code, and the DAG structure should make parallelization opportunities obvious. When snpArcher splits genome intervals at assembly gaps rather than processing chromosomes sequentially, the workflow manager automatically distributes hundreds of small tasks across available compute resources, reducing runtime from days to hours. This same workflow runs unchanged on laptops, HPC clusters, or cloud platforms by simply switching resource profiles. Students new to workflow thinking should start by converting a single analysis pipeline to a workflow manager, focusing first on getting the basic DAG working before optimizing for parallelization. The investment pays immediate dividends: analyses become faster, more reliable, and truly reproducible—collaborators can recreate exact results years later because both code and configuration are versioned together.</p>
+</div>
+</div>
+</section>
+<section id="project-directory-structure" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="project-directory-structure"><span class="header-section-number">7.1.2</span> Project Directory Structure</h3>
+<p>The foundation of any well-organized bioinformatics project is a clear <strong>directory structure</strong> that logically separates different types of content while maintaining everything related to a single project under a common root directory. This seemingly simple practice has profound implications for project management. When all files live within a single directory hierarchy, the project becomes portable between systems, collaborators can easily obtain all necessary materials, and version control systems can track the entire project as a cohesive unit<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>A practical directory structure balances logical organization at the top level with chronological organization for experimental work. Consider a project investigating SNP calling in maize. At the root level, you might have directories for <code>data/</code> to store raw and intermediate datasets, <code>scripts/</code> for analysis code, <code>results/</code> for computational experiments, and <code>docs/</code> for manuscripts and documentation. This top-level logical organization makes it immediately clear where different types of content belong. Within the <code>data/</code> and results/ directories, however, chronological organization often works better than purely logical schemes. Creating subdirectories named by date (using the <code>YYYY-MM-DD</code> format for proper sorting) provides an automatic record of when work was performed and allows you to easily track the evolution of your analyses<span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>.</p>
+<p>This chronological approach prevents a common pitfall where researchers create elaborate logical directory structures that quickly become outdated as projects evolve. What seems like a well-planned set of analysis categories at the project’s start may bear little resemblance to the final structure of completed work. Chronologically organized directories adapt naturally to this evolution, and when combined with descriptive README files in each directory, provide both structure and flexibility. For example, a directory named <code>2024-01-15-quality-control/</code> clearly indicates when this work occurred, while its README file explains what quality control steps were performed and why.</p>
+<p>Within individual analysis directories, you can reintroduce logical organization as needed. If a single experiment generates many output files, creating <strong>subdirectories</strong> for different file types maintains clarity. The key is to let the organization emerge from the actual structure of your work rather than trying to impose a rigid scheme in advance. This organic approach, guided by consistent documentation, creates project structures that remain understandable months or years later<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+<p>One critical detail in project organization concerns the use of <strong>relative versus absolute paths</strong>. When scripts or configuration files reference other files in your project, always use relative paths like <code>../data/reference.fasta</code> rather than absolute paths like <code>/home/username/projects/maize-snps/data/reference.fasta</code>. Relative paths ensure that your project remains functional regardless of where it is located on the filesystem, making it truly portable between collaborators and systems. Absolute paths, by contrast, embed assumptions about directory structures that break as soon as the project is moved<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+</section>
+<section id="file-naming-conventions" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="file-naming-conventions"><span class="header-section-number">7.1.3</span> File Naming Conventions</h3>
+<p>File naming in bioinformatics is more than a matter of personal preference; it directly impacts your ability to work efficiently with your data. The Unix command line and most programming languages provide powerful tools for programmatically accessing files, but these tools become useless when filenames are inconsistent or contain problematic characters. The transition from graphical user interfaces, where <strong>spaces in filenames</strong> pose no problems, to command-line environments, where spaces must be carefully escaped, catches many researchers off guard. A filename like <code>raw sequences.fastq</code> appears innocuous but creates constant headaches in Unix environments where spaces separate command arguments<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>Best practice dictates using only letters, numbers, underscores, and dashes in filenames, while avoiding spaces, special characters, and symbols. This restriction may seem limiting, but it ensures your filenames work seamlessly across different operating systems and command-line environments. Additionally, including <strong>file extensions</strong> that clearly indicate content type greatly aids interpretation. A file named <code>zmays-genes.fasta</code> immediately signals that it contains sequence data in FASTA format, while a file named simply <code>zmays-genes</code> provides no such clarity.</p>
+<p>Consistency in naming schemes becomes particularly important when working with multiple related files. Consider a project with paired-end sequencing data for three maize samples. Filenames like <code>zmaysA_R1.fastq</code>, <code>zmaysA_R2.fastq</code>, <code>zmaysB_R1.fastq</code>, <code>zmaysB_R2.fastq</code>, <code>zmaysC_R1.fastq</code>, and <code>zmaysC_R2.fastq</code> follow a predictable pattern where sample names and read pairs occupy fixed positions in the filename. This consistency enables powerful pattern matching using shell wildcards. The expression <code>zmaysB*</code> matches all files for sample B regardless of read pair, while <code>zmays*_R1.fastq</code> matches all forward reads across all samples. These seemingly simple pattern matching capabilities become invaluable when processing hundreds of samples. For numbered files, use leading zeros (gene-001.txt) so alphabetical sorting matches numeric order<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>The consequences of poor file naming extend beyond inconvenience. In collaborative projects, confusion over which file represents the current version of an analysis can cascade into wasted effort or, worse, serious errors that make it into publications. The small investment in establishing and maintaining consistent naming conventions provides insurance against these costly mistakes<span class="citation" data-cites="dudley_quick_2009"><sup><a href="#ref-dudley_quick_2009" role="doc-biblioref">5</a></sup></span>.</p>
+</section>
+<section id="documentation-and-metadata" class="level3" data-number="7.1.4">
+<h3 data-number="7.1.4" class="anchored" data-anchor-id="documentation-and-metadata"><span class="header-section-number">7.1.4</span> Documentation and Metadata</h3>
+<p>Without adequate documentation, a project directory becomes an archaeological site where future researchers (often your future self) must attempt to reconstruct what happened and why, with only the artifacts of computation as evidence. Therefore, you should <strong>document everything</strong> about how you obtained and processed your data, because the details that seem obvious today will be mysterious later<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>. At the most fundamental level, you must document the origin of all data in your project. This includes not just experimental data you generated, but also reference genomes, annotation files, sequence databases, and any other external resources. For each dataset, record where you obtained it, when you downloaded it, how you downloaded it, and any version information available. A simple <strong>README</strong> file in your data directory might note that the mouse reference genome version GRCm38 was downloaded from Ensembl on a specific date using a specific <strong>wget</strong> command. This level of detail may seem excessive, but external databases change over time, file versions are updated, and resources sometimes disappear entirely, making this documentation invaluable years later<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>Version information deserves special attention because even minor software updates can produce different results. Good documentation records not just the name of each program used, but its version number, the parameters specified (including default values), and ideally the exact command line used. Many modern bioinformatics tools provide a flag to display version information (often <code>--version</code> or <code>-v</code>), and this version string should be captured in your documentation. For software managed through version control systems like Git, the specific commit hash provides an unambiguous identifier of the exact code version used<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>.</p>
+<p>The chronological aspects of data acquisition and analysis also matter for reproducibility. When you download a dataset from a database that is regularly updated, the current version of that database may differ from what was available when you performed your original analysis. Recording the <strong>download date</strong> provides context for understanding potential discrepancies. Similarly, documenting when each analysis was performed helps track the evolution of your understanding and can be critical for debugging when results change unexpectedly<span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>.</p>
+<p>Beyond raw provenance information, documentation should capture the <strong>reasoning behind your choices</strong>. Why did you choose one assembly tool over another? What led you to select particular quality filtering thresholds? Which preliminary analyses informed your final approach? This narrative documentation need not be lengthy, but it should provide enough context that someone reading your notes can understand your thought process. Such documentation often proves most valuable when it records what did not work, as this prevents future repetition of failed approaches and provides crucial negative results that rarely appear in publications but are essential for scientific progress<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>. These habits will save you time when you later write up your methods and data availability statements (see Section 2 below).</p>
+</section>
+<section id="version-control-integration" class="level3" data-number="7.1.5">
+<h3 data-number="7.1.5" class="anchored" data-anchor-id="version-control-integration"><span class="header-section-number">7.1.5</span> Version Control Integration</h3>
+<p>Version control systems, particularly <strong>Git</strong>, have become indispensable tools for managing bioinformatics projects. At its core, version control maintains a complete history of your project, allowing you to track changes over time, recover from mistakes, and maintain multiple versions of your work simultaneously<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+<p>The discipline of <strong>regular commits</strong> to version control serves multiple purposes in project management. Each commit represents a snapshot of your project at a specific point in time, creating a detailed historical record of how your analysis evolved. This becomes invaluable when you need to reproduce exactly what was done three months ago, or when you need to determine when a particular change was made that affected your results. The commit messages themselves form a chronological log of your project’s development, supplementing your README documentation with a more granular record of changes<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>.</p>
+<p>However, not all files in your project directory should be placed under version control; only the scripts and documentation needed to regenerate your workflow need to be tracked<span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>. Large files and computational results that can be regenerated from documented workflows do not need version tracking, and can be ignored by adding these files and directories to your <code>.gitignore</code> file.</p>
+<p>The <strong>collaborative features</strong> of Git and GitHub extend the value of version control beyond individual project management<span class="citation" data-cites="ferenc_improving_2024"><sup><a href="#ref-ferenc_improving_2024" role="doc-biblioref">7</a></sup></span>. When working with collaborators, a shared Git repository becomes the single source of truth for project code and documentation. Team members can work on different features simultaneously through branching, merge their changes systematically, and track who made which modifications and why. This collaborative workflow dramatically reduces the email attachments, confused file versions, and communication overhead that plague unstructured collaborative projects<span class="citation" data-cites="dudley_quick_2009"><sup><a href="#ref-dudley_quick_2009" role="doc-biblioref">5</a></sup></span>. Clear commit histories and tagged releases also make it possible to cite the exact version of your code in the methods section (see Section 2).</p>
+</section>
+<section id="agile-project-management-and-kanban-boards" class="level3" data-number="7.1.6">
+<h3 data-number="7.1.6" class="anchored" data-anchor-id="agile-project-management-and-kanban-boards"><span class="header-section-number">7.1.6</span> Agile Project Management and Kanban Boards</h3>
+<p>While the bioinformatics literature has primarily focused on technical aspects of project organization, project management methodologies from software engineering offer valuable frameworks for organizing computational research. Agile methodologies, particularly when implemented through visual tools like <strong>Kanban boards</strong>, provide structure for managing the iterative, exploratory nature of bioinformatics projects while maintaining the flexibility that research demands.</p>
+<p>The core insight of Agile approaches is that complex projects are better managed through iterative development cycles rather than rigid upfront planning. In a bioinformatics context, this aligns naturally with how research actually proceeds. You might begin with a broad research question, but the specific analyses required only become clear as you explore the data and obtain preliminary results. Rather than attempting to plan every analysis step months in advance, Agile methodologies embrace this uncertainty by breaking work into <strong>small, manageable tasks</strong> that can be completed in short iterations<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+<p>Kanban boards provide a visual system for tracking these tasks through their lifecycle. At its simplest, a Kanban board has three columns: “To Do,” “In Progress,” and “Done.” Each task is represented by a card that moves through these columns as work progresses. This visualization serves several purposes. It provides an immediate overview of project status, makes work-in-progress explicit (preventing the common problem of starting too many tasks and finishing none), and creates a satisfying sense of progress as cards move to the “Done” column. The physical act of moving a card provides positive reinforcement that sustains motivation through long projects.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 7.2 – Example KanBan Board
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-kanban" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A blank Kanban-style research progress tracker table with eight columns labeled (left to right): Project Ideas, Experimental design and piloting, Experimenting and data collection, Data analysis and Interpretation, Writing for publication, Submitted for publication or in review, In revision, and Accepted for publication or in press. The column headers are displayed in bold text on a gray background. The single data row beneath the headers is empty, providing space to track a research project's progression through each stage of the research and publication workflow.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kanban-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Figure_7-2_Kanban.png" class="img-fluid figure-img" style="width:50.0%" alt="A blank Kanban-style research progress tracker table with eight columns labeled (left to right): Project Ideas, Experimental design and piloting, Experimenting and data collection, Data analysis and Interpretation, Writing for publication, Submitted for publication or in review, In revision, and Accepted for publication or in press. The column headers are displayed in bold text on a gray background. The single data row beneath the headers is empty, providing space to track a research project's progression through each stage of the research and publication workflow.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kanban-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2: Example KanBan board for the life cycle of a research project
+</figcaption>
+</figure>
+</div>
+<p>Here is an example of how you can extend the simple three‑column model into stages that better match a research project lifecycle, illustrating how flexible these tools can be. This research project Kanban board has customized swim lanes for stages of a research project, from when they start out as simple ideas to when they are accepted for publication.</p>
+</div>
+</div>
+<p>GitHub Projects integrates Kanban functionality directly into the platform where many bioinformatics projects already live. This integration is particularly powerful because it connects tasks directly to code, documentation, and issues. A card on your Kanban board might represent implementing a new quality control step, and that card can link to the specific GitHub issue discussing the approach, the pull request containing the implementation, and the commit that ultimately merged the code. This creates a rich web of connections between project planning and project execution that greatly aids both doing the work and documenting what was done<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+<p>The level of granularity for tasks on a Kanban board requires some judgment. Tasks should be small enough to complete in a reasonable timeframe (hours to a few days rather than weeks), but not so small that the overhead of managing tasks exceeds their value. In practice, tasks like “download reference genome and verify checksums,” “run quality control on batch 1 samples,” or “implement GC content calculation function” represent appropriate granularity. Larger objectives like “complete genome assembly” should be broken down into their constituent steps, each becoming a separate card.</p>
+<p>One valuable practice is to include cards for documentation and quality assurance alongside cards for analysis tasks. A card might represent “document quality control parameters in README” or “review and test assembly script.” This ensures that documentation and quality control remain integral to your workflow rather than afterthoughts. The visibility of these tasks on your board reinforces their importance and helps prevent the common pattern where documentation is perpetually postponed until some mythical future time when the “real work” is finished<span class="citation" data-cites="dudley_quick_2009"><sup><a href="#ref-dudley_quick_2009" role="doc-biblioref">5</a></sup></span>.</p>
+</section>
+<section id="practical-workflow-integration" class="level3" data-number="7.1.7">
+<h3 data-number="7.1.7" class="anchored" data-anchor-id="practical-workflow-integration"><span class="header-section-number">7.1.7</span> Practical Workflow Integration</h3>
+<p>Understanding principles and tools is valuable, but seeing how they integrate into an actual workflow brings these concepts to life. Consider a realistic bioinformatics project investigating genetic variants associated with drought resistance in a crop plant. The project begins with planning and setup, proceeds through data generation and analysis, and concludes with interpretation and communication of results. Throughout this lifecycle, the project management practices we have discussed work together to maintain organization and reproducibility.</p>
+<p>Project initialization establishes the foundation. You create a project directory with a descriptive name like <code>prdm9-protein-evolution</code>, initialize it as a Git repository, and establish the basic directory structure:</p>
+<pre><code>project-root/
+├── data/           # Project datasets
+│   ├── README.md
+│   ├── fastq/
+│   │   ├── sample1_R1.fastq.gz
+│   │   ├── sample1_R2.fastq.gz
+│   │   └── ...
+│   └── fasta/
+│       └── GRCh38.fa
+├── analysis/        # Computational experiments
+├── docs/           # Documentation and manuscripts
+├── scripts/        # Scripts and code
+│   ├── 01_fetch_sra.sh
+│   ├── 02_index_genome.sh
+│   └── 03_trimming.sh
+└── README.md       # Project overview</code></pre>
+<p>A root-level <strong>README</strong> file documents the project’s objectives, your collaborators, and high-level organization. You create a GitHub repository and push your initial structure, then set up a GitHub Project with a Kanban board. Initial cards capture the major milestones: obtaining sequences, quality control, variant calling, association analysis, and manuscript writing. Each of these will later be broken down into smaller tasks<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Lab Connections
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In <a href="./Lab04.html">Lab 4</a> you will get access to a Sample Genome Analysis working directory that is organized using the same directory struture described above. As you work through the yeast genomics dataset this semester, you will continue to build this sample working directory which can serve as an example moving forward from this course.</p>
+</div>
+</div>
+<p>Data acquisition requires careful documentation. When you download the reference genome from a public database, you record the exact URL, download date, genome version, and calculate <strong>checksums</strong> to verify integrity. This information goes into <code>data/README.md</code> along with the specific wget command used. The reference genome file itself remains outside version control due to its size, but your documentation ensures anyone can obtain the identical file. The same applies to your experimental sequencing data; detailed <strong>metadata</strong> about samples, sequencing runs, and quality metrics are documented even though the large FASTQ files themselves are not versioned<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>.</p>
+<p>As analysis proceeds, your workflow becomes a rhythm of task management, execution, and documentation. Each morning, you review your Kanban board to select the next task. Perhaps today’s card is “implement read quality filtering.” You create a new script in the <code>scripts/</code> directory with a descriptive name like <code>filter_reads.py</code>, following your established naming conventions. As you write the script, you document your approach with inline comments and ensure all parameters are configurable rather than hard-coded. When the script works correctly, you commit it to Git with a clear commit message explaining what the script does and why certain filtering thresholds were chosen. You move the card to “Done” on your Kanban board and add a new card for “apply quality filtering to all samples”<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+<p>Running analyses at scale demonstrates the value of consistent file organization. Because your FASTQ files follow the naming pattern <code>sample-ID_replicate_read.fastq.gz</code>, you can write a simple loop that processes all samples without manually specifying each filename. The output goes into a dated subdirectory within <code>results/</code>, like <code>results/2026-01-28-fastqc-report/</code>. Each results directory contains its own README documenting exactly what was run, which version of each script was used, what parameters were specified, and which input files were processed. The full command line is recorded, often by redirecting the script’s verbose output to a log file that becomes part of the permanent record<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>When you encounter problems, version control and documentation prove their worth. A script that worked last week now produces errors. You use Git to compare the current version against the last working version, quickly identifying the problematic change. Or perhaps a collaborator questions an analysis result. You can point them to the specific commit containing the analysis script, the README documenting parameters, and the log files showing exactly what was executed. This <strong>transparency builds trust</strong> and facilitates the kind of critical examination that strengthens science<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>. These logs often become the raw material you will transform into formal methods text later in the manuscript.</p>
+<p>Collaboration scenarios showcase GitHub’s strengths. A colleague wants to contribute a new analysis approach. They fork your repository, create a branch for their work, and submit a pull request when ready. You review their code, discuss approaches through GitHub’s comment system, and merge their contribution once satisfied. The entire discussion and decision process becomes part of the project’s permanent record. Meanwhile, your Kanban board reflects everyone’s contributions, with cards assigned to different team members and status visible to all<span class="citation" data-cites="dudley_quick_2009"><sup><a href="#ref-dudley_quick_2009" role="doc-biblioref">5</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>License agreements
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you first set up a new GitHub repository, you can choose to add a license. Many people skip this in the haste of getting started, especially if it is a private repository. But if the goal is to eventually make the code public, it is a good idea to add a license agreement. A standard licence is the MIT license, which GitHub offers as one of their templates. It is as easy as checking a box.</p>
+<p>If you already have a repository and you want to add a license, simply add a file and name it License.md and GitHub will automatically ask you if you want to use one of their templates. You can learn more on the <a href="https://libguides.auburn.edu/scholcomm">open access page</a> of the AU Library.</p>
+</div>
+</div>
+</section>
+<section id="common-pitfalls-and-solutions" class="level3" data-number="7.1.8">
+<h3 data-number="7.1.8" class="anchored" data-anchor-id="common-pitfalls-and-solutions"><span class="header-section-number">7.1.8</span> Common Pitfalls and Solutions</h3>
+<p>Even with good intentions and solid practices, certain challenges recur in bioinformatics project management. Recognizing these common pitfalls and knowing how to address them can save considerable frustration. One frequent problem is the proliferation of slightly different versions of analysis scripts or data files, often with names like <code>analysis_v2.py</code>, <code>analysis_v2_final.py</code>, <code>analysis_v2_final_revised.py</code>, and so on. This typically occurs when researchers are hesitant to overwrite files for fear of losing previous work. The solution is version control; when all changes are tracked through Git, you can confidently update files knowing that previous versions remain accessible through the repository history<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+<p>Another common issue is the accumulation of poorly documented <strong>intermediate files</strong> whose purpose becomes mysterious over time. A <code>results/</code> directory fills with files like <code>output_temp.txt</code>, <code>test_results_2.csv</code>, and <code>filtered_data_new.tsv</code>, and six months later no one remembers what they contain or whether they are still needed. This problem stems from inadequate documentation during exploratory analysis. The solution is discipline around naming (even temporary files should have descriptive names) and documentation (README files should explain even exploratory analyses). Some researchers also adopt a practice of regular cleanup sessions where they review intermediate files, document any that are valuable, and delete those that are not<span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>.</p>
+<p>The challenge of <strong>parameter proliferation</strong> also trips up many projects. A typical bioinformatics pipeline might involve dozens of parameters across multiple tools, and tracking which parameter values were used for which analysis becomes a nightmare. Some researchers try to solve this by embedding parameters in filenames (<code>results_minscore30_minlen50.txt</code>), but this quickly becomes unwieldy. A better approach is to write scripts that log all parameters to output files, or to use configuration files that are versioned alongside scripts. Many researchers now adopt workflow management systems specifically to handle parameter tracking systematically<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>.</p>
+<p>Data organization can break down when projects grow beyond their initial scope. The temptation to reorganize should be resisted, as <strong>reorganization breaks the connections</strong> between old documentation and current file locations. If reorganization is essential, it should be done systematically with careful documentation of the changes and updating of all relevant README files and analysis scripts<span class="citation" data-cites="buffalo_bioinformatics"><sup><a href="#ref-buffalo_bioinformatics" role="doc-biblioref">2</a></sup></span>.</p>
+<p>The integration of automated testing, a standard practice in software development, remains underutilized in bioinformatics despite its value. When you write a script to process sequencing data, how do you know it works correctly? Manual testing with a few examples is better than nothing, but automated tests that run every time you modify the script provide much stronger assurance. Even simple checks, like verifying that output files contain the expected number of records or that numerical results fall within sensible ranges, can catch many errors before they propagate through an analysis pipeline<span class="citation" data-cites="rother_toolbox_2012"><sup><a href="#ref-rother_toolbox_2012" role="doc-biblioref">4</a></sup></span>.</p>
+</section>
+</section>
+<section id="conclusion-part-1" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="conclusion-part-1"><span class="header-section-number">7.2</span> Conclusion Part 1</h2>
+<p>Effective project management in bioinformatics is ultimately about making life easier for <strong>your future self</strong> and your collaborators while advancing the broader goal of reproducible science. The practices described in this chapter—systematic directory organization, consistent file naming, comprehensive documentation, version control, and structured task management—may seem like overhead when you are eager to dive into analysis. However, this investment pays dividends throughout a project’s lifetime and beyond. The time spent documenting a data download is trivial compared to the time lost trying to remember months later where data came from. The discipline of following naming conventions seems tedious until you need to programmatically process hundreds of files. The ritual of regular Git commits feels unnecessary until you need to recover from a mistake or track down when a change was introduced<span class="citation" data-cites="noble_quick_2009"><sup><a href="#ref-noble_quick_2009" role="doc-biblioref">1</a></sup></span>.</p>
+<p>Moreover, these practices scale naturally from individual work to collaborative projects. When you maintain clear documentation and organization for your own benefit, bringing a collaborator up to speed becomes straightforward. When your scripts are version controlled and well documented, sharing them with the broader community requires minimal additional effort. When your data provenance is meticulously recorded, responding to questions from reviewers or readers becomes a matter of consulting your notes rather than reconstructing history from fragments<span class="citation" data-cites="sandve_ten_2013"><sup><a href="#ref-sandve_ten_2013" role="doc-biblioref">6</a></sup></span>.</p>
+<p>The specific tools and approaches will continue to evolve. New version control systems will emerge, project management platforms will add features, and workflow management systems will grow more sophisticated. However, the <strong>fundamental principles remain constant</strong>: organize systematically, document comprehensively, track changes explicitly, and automate where possible. These principles transcend any particular tool or technology and will serve you well regardless of how the technical landscape changes.</p>
+<p>Perhaps most importantly, good project management <strong>makes science better</strong>. When analyses are reproducible, reviewers can verify results and readers can build on your work. When methods are thoroughly documented, other researchers can apply your approaches to new datasets or extend them in novel directions. When negative results are documented alongside positive findings, the scientific community avoids redundant dead ends. In an era where reproducibility concerns have shaken confidence in published findings, the practices of rigorous project management represent not just personal virtue but <strong>professional responsibility</strong><span class="citation" data-cites="dudley_quick_2009"><sup><a href="#ref-dudley_quick_2009" role="doc-biblioref">5</a></sup></span>.</p>
+<p>The path to mastery of these practices is <strong>incremental</strong>. You need not implement everything at once, nor achieve perfection on your first project. Start with the basics: create a clear directory structure, maintain README files, use version control for your scripts, and name files consistently. As these habits become second nature, layer on additional practices like Kanban boards for task management or more sophisticated documentation approaches. Over time, good project management stops feeling like an external discipline imposed on your work and becomes simply how you work. This transformation, from viewing organization as a chore to experiencing it as an enabling foundation, marks the transition from novice to experienced bioinformatician.</p>
+</section>
+<section id="section-2-writing-methods-sections-for-bioinformatics-research" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="section-2-writing-methods-sections-for-bioinformatics-research"><span class="header-section-number">7.3</span> Section 2: Writing Methods Sections for Bioinformatics Research</h2>
+<p>Though it may feel daunting right now to think of writing a thesis, dissertation, or research paper, at some point you will need to communicate your findings in written form—and the project management practices from Section 1 are what make that possible. The methods section is the cornerstone of scientific reproducibility<span class="citation" data-cites="kallet_how_2004"><sup><a href="#ref-kallet_how_2004" role="doc-biblioref">8</a></sup></span>. In bioinformatics and computational biology, where complex analytical workflows involving multiple software packages, databases, and statistical procedures are routine, clear methods documentation becomes even more critical.</p>
+<p>This section addresses the unique challenges of documenting computational research, including how to cite software and databases, manage supplementary materials, and ensure that your analytical workflows can be understood and reproduced by other researchers. Whether you’re analyzing genomic data, building phylogenetic trees, or developing machine learning models for biological applications, the principles outlined here will help you communicate your methods effectively.</p>
+<p>The core principle underlying effective methods writing is simple: <em>provide sufficient detail for others to reproduce your work</em> while organizing content logically and clearly. This requires balancing completeness with readability, justifying your methodological choices with citations, documenting all software versions and parameter settings, and making data and code accessible through appropriate repositories.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Lab Connections
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The deliverable from Lab 4 will be for you to use what you learn in this section to write a methods paragraph documenting the bioinformatics steps you take in the upcoming lab assignment. Specifically, you will need to parse the scripts provided to figure out what they do, and then describe them as if you were writing the methods section of a paper.</p>
+</div>
+</div>
+<section id="from-workflow-diagram-to-written-methods" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="from-workflow-diagram-to-written-methods"><span class="header-section-number">7.3.1</span> From Workflow Diagram to Written Methods</h3>
+<p>Bioinformatics research typically involves transforming raw biological data through complex computational pipelines to generate biological insights. The challenge in writing methods sections is converting these complex workflows—often represented as flowcharts with dozens of steps—into clear, <strong>readable prose</strong> that allows others to replicate your work. Consider the transformation from a typical bioinformatics workflow diagram (raw reads → quality control → alignment → variant calling → annotation → statistical analysis) to a published methods section. The key is to present this information chronologically while providing sufficient technical detail at each step. If you have maintained organized directories, clear file names, and README files as described in Section 1, reconstructing this chronological narrative becomes much simpler.</p>
+<p>At each step of your workflow, you must include the <strong>software name and version number</strong>, a citation to the software’s primary publication, key parameters (especially if different from defaults), rationale for software choice when multiple options exist, and relevant input and output file formats. For instance, rather than simply stating <code>"reads were aligned to the reference genome"</code>, you should specify which aligner was used, what version, which genome build, and any non-default parameters employed.</p>
+</section>
+<section id="citing-published-workflows-and-software" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="citing-published-workflows-and-software"><span class="header-section-number">7.3.2</span> Citing Published Workflows and Software</h3>
+<p>When you follow an established protocol or workflow, <strong>proper citation</strong> is essential. However, vague references are insufficient and hinder reproducibility. A poor practice example would be: <code>"Samples were processed similar to methods described previously in Smith et al. (2002)."</code> This statement is problematic because it provides no specific details about which parts were followed, and may require accessing paywalled content to understand the methods. A better approach provides specific detail: <code>"RNA-seq libraries were prepared following the protocol of Smith et al. (2002), with modifications to the adapter ligation step. Specifically, we used Y-shaped adapters (Illumina TruSeq) instead of the original T-tailed adapters to improve library yield for degraded RNA samples."</code> This clearly states what was followed, what was changed, and why the modification was made.</p>
+<p>Proper software citation requires three elements: the software name, the specific version used, and a citation to the primary publication. Version numbers are critical because software behavior can change substantially between versions. For example, in the antifreeze protein study<span class="citation" data-cites="bogan2025"><sup><a href="#ref-bogan2025" role="doc-biblioref">9</a></sup></span>, the authors clearly state: <code>"Haplotype-phased genomes of all species except for O. amberensis were assembled from long-read libraries using hifiasm v0.19.5-r592 (Cheng et al. 2021) set to default parameters."</code> This complete citation includes the tool name (hifiasm), the exact version number (v0.19.5-r592), the primary publication citation (Cheng et al.&nbsp;2021), and the parameters used (defaults). This level of detail enables others to replicate the assembly process exactly.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reference management
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Reference management software like <strong>Zotero</strong> and <strong>EndNote</strong> allow you to collect, managing and cite references and software. These and other tools have browser plug-ins that can allow you to build your library of citations throughout your dissertation. Then, once you are ready to write your thesis, dissertation or scientific papers, these tools integrate seamlessly with Microsoft Word and Google Docs via free plugins or add-ons, enabling “Cite While You Write”. This allows you to insert citations directly into your documents, change the format to match journal styles, and create formatted bibliography sections.</p>
+<p>Once inserted, citations and bibliographies update dynamically, supporting collaboration with co-authors who are able to cite from shared/group libraries or changing styles if you need to reformat for a new journal. You can learn more about different citation managers <a href="https://libguides.auburn.edu/citationmanagers">here</a>. <a href="https://libguides.auburn.edu/zotero">Auburn Libraries</a> also offers regular workshops to learn how to use these softwares.</p>
+</div>
+</div>
+</section>
+<section id="documenting-parameter-changes-and-deviations" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="documenting-parameter-changes-and-deviations"><span class="header-section-number">7.3.3</span> Documenting Parameter Changes and Deviations</h3>
+<p>When you deviate from default parameters, you must document what changed and why. This justification demonstrates methodological rigor and helps readers understand your analytical decisions. Consider this example of parameter documentation: <code>"Variant calling was performed using GATK HaplotypeCaller v4.2.0 (McKenna et al. 2010). We reduced the minimum base quality score from 10 (default) to 5 to increase sensitivity for low-coverage regions, accepting a modest increase in false positives that would be filtered in downstream analyses."</code></p>
+<p>Deviations from established protocols are common and often necessary. The key is to document these changes transparently and <strong>explain the rationale</strong>, demonstrating careful experimental design rather than ad hoc modification. Parameter logs, configuration files, and version‑controlled scripts created during project management become your primary sources for this level of detail. You should also justify deviations when you change published protocols or standard workflows, use non-default software parameters, apply methods to non-standard organisms or data types, omit standard quality control or filtering steps, or use alternative software from what is commonly employed.</p>
+</section>
+<section id="citing-public-data-and-databases" class="level3" data-number="7.3.4">
+<h3 data-number="7.3.4" class="anchored" data-anchor-id="citing-public-data-and-databases"><span class="header-section-number">7.3.4</span> Citing Public Data and Databases</h3>
+<p>Bioinformatics research frequently incorporates publicly available data, including reference genomes, variant databases, and previously published datasets. Proper citation of these resources is essential for reproducibility and gives credit to data generators. For any public dataset or database, you should include the resource name and version or build number, accession numbers or identifiers, URL or DOI for access, date accessed for databases that update frequently, and citation to the primary publication if available. For example, there is a great <a href="https://support.nlm.nih.gov/knowledgebase/article/KA-03391/en-us">knowledge base article</a> on citing NCBI Sequence Read Archive data. Specifically, be sure to provide the BioProject, BioSample, and SRA accession numbers. For databases and software without formal publications, cite the URL and include the access date. When DOIs are available, use them as they provide permanent, citable links. For example: <code>"Protein domain architecture was analyzed using the SMART database (http://smart.embl.de/, accessed March 2024)."</code></p>
+<p>Modern scientific practice requires that data and code be made available to enable reproducibility. The <strong>Data availability</strong> section provides multiple layers of access: the raw data in appropriate domain repositories (NCBI), as well as the code and intermediate files on GitHub for active development. It is worth noting the limitations of GitHub (which can change or disappear, and the importance of archiving a snapshot or release on Zenodo, which will generate a permanent DOI for long-term citation.</p>
+<p>Different types of data should be deposited in appropriate domain-specific repositories. NCBI SRA and GEO are appropriate for high-throughput sequencing data and microarray data. GenBank handles individual sequences and annotations. Dryad and Zenodo serve as general research data repositories across disciplines. Figshare hosts datasets, figures, and supplementary materials. GitHub and GitLab are suitable for code, scripts, and small datasets under 100 MB. Institutional repositories like Auburn’s <a href="http://aurora.auburn.edu/repo/">AUrora</a> can handle large datasets that exceed GitHub’s limitations.</p>
+<p>For GitHub repositories, best practices include providing a comprehensive README with installation instructions, documenting software dependencies and version requirements, including example data and expected outputs, and using meaningful commit messages and version tags.</p>
+</section>
+<section id="balancing-main-text-and-supplementary-methods" class="level3" data-number="7.3.5">
+<h3 data-number="7.3.5" class="anchored" data-anchor-id="balancing-main-text-and-supplementary-methods"><span class="header-section-number">7.3.5</span> Balancing Main Text and Supplementary Methods</h3>
+<p>Deciding what goes in the main methods section versus supplementary materials requires balancing readability with completeness. The goal is to provide sufficient detail in the main text for readers to understand your approach while reserving extensive <strong>technical details for supplements</strong>. The main text methods should include an overview of the experimental and analytical workflow, key software and versions for major analytical steps, sample sizes and experimental design, statistical approaches and significance thresholds, novel or modified protocols, and justifications for methodological choices.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 7.3 - Main text → Supplement → GitHub
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-detail" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Grey box indicating reproducibility of a study based on methods section in main text and the supplement with an additional blue box outside for external documentation such as GitHub.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-detail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Figure_7-3_Detail_Strategies.jpg" class="img-fluid figure-img" style="width:75.0%" alt="Grey box indicating reproducibility of a study based on methods section in main text and the supplement with an additional blue box outside for external documentation such as GitHub.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-detail-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.3: Continuum of methods detail from brief main-text description, to more detailed supplement, to most detailed external documentation (e.g., GitHub).
+</figcaption>
+</figure>
+</div>
+<p>This chapter assumes a tiered approach to documentation where the main text provides a readable overview, the supplement adds enough detail for reproduction, and external resources such as GitHub hold the most granular, evolving record.</p>
+</div>
+</div>
+</section>
+<section id="comparing-your-methods-to-published-studies" class="level3" data-number="7.3.6">
+<h3 data-number="7.3.6" class="anchored" data-anchor-id="comparing-your-methods-to-published-studies"><span class="header-section-number">7.3.6</span> Comparing Your Methods to Published Studies</h3>
+<p>When reanalyzing published data or using established methods, comparing your results to previous studies provides validation and helps identify potential issues. Choose comparison metrics that make sense for your analysis. The Bogan et al.&nbsp;(2025) study provides an excellent example when they validated their AFP identification approach: <code>"To determine if multiple AFP translocations within a species arose from misassembly, translocated AFP III copies outside of the ancestral syntenic AFP III region were manually reviewed for evidence of misassembly. This was achieved by aligning translocated AFP III regions to (i) a known, characterized AFP translocation in A. lupus (Desjardins et al. 2012) and (ii) additional regions of translocation within single species if they possessed multiple translocation events to identify artificial duplications."</code></p>
+<p>When differences exist between your results and previous studies, provide potential explanations. For example, you might note: <code>"Re-analysis of the Smith et al. (2020) dataset using our updated pipeline identified 1,247,892 SNPs, compared to 1,238,456 reported in the original study (0.8% difference). This minor discrepancy likely reflects differences in variant caller versions (GATK 4.2 vs. 3.8) and updated reference genome annotation (GRCh38.p13 vs. GRCh38.p7)."</code></p>
+</section>
+<section id="detailed-components-of-bioinformatics-methods" class="level3" data-number="7.3.7">
+<h3 data-number="7.3.7" class="anchored" data-anchor-id="detailed-components-of-bioinformatics-methods"><span class="header-section-number">7.3.7</span> Detailed Components of Bioinformatics Methods</h3>
+<section id="ethics-statements-and-institutional-approvals" class="level4" data-number="7.3.7.1">
+<h4 data-number="7.3.7.1" class="anchored" data-anchor-id="ethics-statements-and-institutional-approvals"><span class="header-section-number">7.3.7.1</span> Ethics Statements and Institutional Approvals</h4>
+<p>Research involving human subjects or vertebrate animals requires institutional review and approval before any data collection begins. This is not merely a formality—it is a legal and ethical requirement for publication in reputable journals. Approval must be obtained <strong>before starting</strong> any research activities. You must include the specific protocol number from your institution, describe measures taken to ensure welfare or confidentiality, state which institutional review board granted approval, and confirm compliance with relevant regulations such as HIPAA or IACUC guidelines.</p>
+<p>For human subjects research, an appropriate statement might read: <code>"This study was approved by the Auburn University Institutional Review Board (Protocol #21-123 EP 2104). All participants provided written informed consent. Patient data were de-identified prior to analysis to ensure confidentiality in accordance with HIPAA regulations."</code> For animal research: <code>"All animal procedures were approved by the Auburn University Institutional Animal Care and Use Committee (IACUC Protocol #2021-3456) and conducted in accordance with the Guide for the Care and Use of Laboratory Animals."</code></p>
+</section>
+<section id="data-sources-and-collection" class="level4" data-number="7.3.7.2">
+<h4 data-number="7.3.7.2" class="anchored" data-anchor-id="data-sources-and-collection"><span class="header-section-number">7.3.7.2</span> Data Sources and Collection</h4>
+<p>Clearly documenting where your data came from and how it was generated is fundamental to reproducibility. This applies whether you generated the data yourself or obtained it from public repositories. For newly generated data, you should document the source of biological material including species, strain, and tissue type; explain why this source was selected with supporting literature citations; describe collection methods and protocols; detail husbandry or growth conditions; specify sample size and biological replicates; and note age, developmental stage, or other relevant characteristics.</p>
+<p>When using previously published or public data, provide the repository name and URL, accession numbers for each dataset, version number or access date, citation to the original publication, and a brief description of how data were originally generated. The authors describe their use of existing genomic resources: <code>"Publicly-available long-read genomes used in this study included Cebidichthys violaceus (GCA_023349555.1), Gasterosteus aculeatus (GCA_016920845.1), Leptoclinus maculatus (GCA_032191485.1)..."</code> providing both the species names and their NCBI accession numbers.</p>
+<p>For environmental or oceanographic data, similar principles apply. For example, in Bogan et al 2025, they describe their environmental data sources: <code>"Depth-informed temperatures were mined from the Copernicus Global Ocean Reanalysis (GLORYS) database (Jean-Michel et al. 2021) within ±1° latitude/longitude of species' coordinate of maximum likelihood of occurrence and the expected depth range of each species spanning a 10-year period between June 1, 2011 and June 1, 2021."</code><span class="citation" data-cites="bogan2025"><sup><a href="#ref-bogan2025" role="doc-biblioref">9</a></sup></span></p>
+<p>For wet-lab procedures, provide enough detail for replication while avoiding excessive minutiae. Reference established protocols when possible, but document any modifications. For nucleic acid extraction, specify the extraction method or kit with manufacturer and catalog number, any modifications to the manufacturer’s protocol, quality control measures such as NanoDrop or Bioanalyzer assessments, and quality thresholds for sample inclusion. When describing library preparation or other molecular procedures, include manufacturer information, catalog numbers, and specific protocol modifications. Cite supporting literature that justifies your choice of tissue, protocol, or approach for your specific research goals.</p>
+<p>Document the sequencing technology, instrument, and parameters used, as this information affects data quality and interpretation. You should specify the platform or technology (Illumina, PacBio, Oxford Nanopore), the specific instrument model, the sequencing center or facility, read type (single-end versus paired-end), read length, and target coverage depth or number of reads per sample.</p>
+</section>
+<section id="bioinformatics-analysis-workflow" class="level4" data-number="7.3.7.3">
+<h4 data-number="7.3.7.3" class="anchored" data-anchor-id="bioinformatics-analysis-workflow"><span class="header-section-number">7.3.7.3</span> Bioinformatics Analysis Workflow</h4>
+<p>This section is often the most detailed for bioinformatics papers. Organize chronologically and use subsections to improve readability. Statistical analyses must be described with sufficient detail for replication, including specific tests used, multiple testing corrections, and significance thresholds.</p>
+<p>When methods are complex, use subsections organized by topic<span class="citation" data-cites="kallet_how_2004"><sup><a href="#ref-kallet_how_2004" role="doc-biblioref">8</a></sup></span>. Material within each subsection should be ordered from most to least important while maintaining chronological flow. For example, the Bogan et al.&nbsp;(2025) study uses clear subsections including Genome Assembly, AFP III and sasa/b Annotation, Environmental Data, Species Tree Construction and Phylogenetic Modeling, Analyses of AFP III Gene Family Evolution and Synteny, and Models of Selection on AFP III Copy Number and Sequence.</p>
+<p>Within each subsection, they maintain a logical flow. For example, in the genome assembly section, they proceed from specimen collection to DNA extraction to library preparation to sequencing to assembly to quality assessment. This chronological organization helps readers follow the workflow naturally.</p>
+</section>
+</section>
+<section id="detail-level-and-supplementary-materials" class="level3" data-number="7.3.8">
+<h3 data-number="7.3.8" class="anchored" data-anchor-id="detail-level-and-supplementary-materials"><span class="header-section-number">7.3.8</span> Detail Level and Supplementary Materials</h3>
+<p>Determining how much detail to provide and where to place it represents one of the most challenging aspects of methods writing. The goal is to ensure <strong>reproducibility while maintaining readability</strong>. Journal page limits often necessitate supplementary materials, but their use must be strategic. Excessive supplementary material can undermine the scientific process by making comprehensive review difficult or impossible<span class="citation" data-cites="pop_use_2015"><sup><a href="#ref-pop_use_2015" role="doc-biblioref">10</a></sup></span>.</p>
+<p>The main text should include the experimental design and rationale, sample sizes with justification, key software and databases with versions for all major steps, novel or modified protocols in sufficient detail, statistical methods and significance thresholds, justifications for methodological choices, and clear references to supplementary methods when appropriate.</p>
+<p>Supplementary methods should extend and detail the main text, not replace it. They are appropriate for technical details that would interrupt the flow of the main narrative, such as complete command-line parameters for all software, detailed protocols for standard procedures, extended descriptions of quality control procedures, alternative analyses or sensitivity tests, custom scripts or detailed algorithm descriptions, comprehensive lists like all sample accession numbers, and detailed mathematical derivations or model specifications.</p>
+<p>There are several critical problems with how supplementary materials are currently used in scientific publishing<span class="citation" data-cites="pop_use_2015"><sup><a href="#ref-pop_use_2015" role="doc-biblioref">10</a></sup></span>. One of the most serious issues is that references cited only in supplementary materials are not tracked by major citation indices. This means software developers and methodologists whose work is cited only in supplements do not receive proper credit for their contributions.</p>
+<p>To address this citation problem, include all <strong>critical software citations in the main text</strong> reference list. If supplements cite many tools, summarize key citations in the main text. Some journals now offer supplementary methods sections that appear in the main PDF. Follow journal policies on supplementary citations when they exist, though many journals lack clear guidance. As researchers, we should also advocate for better citation tracking of supplementary materials.</p>
+<p>Extensive supplementary materials are often reviewed superficially or not at all with some supplements missing critical element, suggesting inadequate review<span class="citation" data-cites="pop_use_2015"><sup><a href="#ref-pop_use_2015" role="doc-biblioref">10</a></sup></span>. This gap threatens scientific validity when critical methodological details are relegated to unreviewed supplements. To ensure supplements are reviewable, keep them focused and well-organized, use clear headings and cross-references from main text, limit supplement length to what can reasonably be reviewed, highlight critical methodological details in cover letters to editors, and consider whether extremely long supplements indicate problems with study design.</p>
+<p>Supplementary materials are often poorly integrated with main text, making it difficult for readers to find specific information. Pop and Salzberg (2015) describe “grab-bag” supplements where vague references like <code>"see Supplementary Material"</code> point to hundreds of pages of unorganized content<span class="citation" data-cites="pop_use_2015"><sup><a href="#ref-pop_use_2015" role="doc-biblioref">10</a></sup></span>. Improve integration by using specific cross-references such as <code>"Supplementary Methods Section 2.3,"</code> creating a supplementary table of contents, using hyperlinks in digital versions, organizing supplements with clear section headings, and ensuring supplement numbering aligns with main text references.</p>
+<p>Many journals provide supplementary tables only as PDFs, making data extraction difficult. Large image files may be compressed, reducing quality. These format restrictions undermine the utility of supplementary materials. Follow format best practices by providing tabular data in machine-readable formats like CSV, TSV, or Excel; including PDF versions for readability alongside data files; using appropriate image resolution (300+ DPI for publication quality); compressing images intelligently (PNG for line art, JPEG for photos); and including README files explaining file formats and contents.</p>
+<section id="solutions-and-best-practices" class="level4" data-number="7.3.8.1">
+<h4 data-number="7.3.8.1" class="anchored" data-anchor-id="solutions-and-best-practices"><span class="header-section-number">7.3.8.1</span> Solutions and Best Practices</h4>
+<p>While systemic problems with supplementary materials require journal policy changes, individual researchers can adopt practices that improve reproducibility and accessibility. Some journals have addressed supplementary material issues better than others. When choosing journals, consider those with no arbitrary page limits for online versions, online methods sections, integrated supplementary materials in main PDF, support for interactive figures and data, clear policies on supplementary citations, and required data and code deposition. Electronic publishing enables features that improve methods accessibility. Some journals like PNAS provide interactive online articles with hover-over citations, hyperlinked figures, and integrated supplements.</p>
+<p>GitHub provides an excellent platform for detailed methods documentation. GitHub’s version control and collaborative features make it “like a laboratory notebook for scientific computing”<span class="citation" data-cites="perkel_democratic_2016"><sup><a href="#ref-perkel_democratic_2016" role="doc-biblioref">11</a></sup></span>. A GitHub repository can contain complete analysis workflows with documentation that exceeds what journals allow. For comprehensive methods documentation on GitHub, host complete executable analysis pipelines, provide detailed README files with step-by-step instructions, include example data and expected outputs, document software dependencies and versions, enable community feedback and error reporting via Issues, and version-control methods updates and corrections.</p>
+</section>
+</section>
+</section>
+<section id="conclusion-part-2" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="conclusion-part-2"><span class="header-section-number">7.4</span> Conclusion Part 2</h2>
+<p>Writing effective methods sections for bioinformatics research requires attention to detail, awareness of reproducibility standards, and strategic use of available publishing tools. As computational approaches become increasingly central to biological research, clear methods documentation becomes ever more critical. Remember that the methods section serves multiple audiences: reviewers judging your work’s validity, researchers attempting to reproduce your results, and future scientists building upon your findings. Each of these audiences requires complete, accessible information.</p>
+<p>By following the principles outlined in this guide—providing sufficient detail, documenting software versions, justifying methodological choices, and making data and code accessible—you contribute to a more transparent and reproducible scientific enterprise. The extra effort invested in comprehensive methods documentation pays dividends in the impact and longevity of your research contributions. As demonstrated by the antifreeze protein study discussed throughout this guide, high-quality methods documentation not only enables others to validate and build upon your work but also showcases the rigor and thoughtfulness of your research approach.</p>
+<p>The evolution of scientific publishing continues to create new opportunities for methods transparency. Long-read sequencing technologies, version-controlled code repositories, and interactive online publications are transforming how we document and share computational methods. By embracing these tools and maintaining rigorous documentation standards, bioinformatics researchers can ensure their work contributes to a cumulative, reproducible body of scientific knowledge.</p>
+</section>
+<section id="practice-problem-sets" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="practice-problem-sets"><span class="header-section-number">7.5</span> Practice Problem Sets</h2>
+<ol type="1">
+<li><strong>Repository Analysis</strong>: Examine the following two GitHub repos from my lab for data organization principles (e.g., directory structure, READMEs, file naming). Note 2-3 strengths (e.g., chronological folders) and 2 improvements (e.g., consistent naming for automation). How would you adapt their structures for your semester project’s SNP analysis, including relative paths and a root README?</li>
+</ol>
+<ul>
+<li><a href="https://github.com/StevisonLab/Arctoides-Hybridization">Primate Genital Evolution Project</a></li>
+<li><a href="https://github.com/StevisonLab/Diet-and-recombination-in-Dmel">Recombination Manipulation in Flies</a></li>
+</ul>
+<ol start="2" type="1">
+<li><p><strong>Data Availability Review</strong>: Review the Bogan et al.&nbsp;(2025) Data Availability statement and their GitHub repo Long_AFP (https://github.com/snbogan/Long_AFP). Identify how it exemplifies methods reproducibility (e.g., code versioning, intermediate files). Critique one strength and one gap per the standards introduced here.</p></li>
+<li><p><strong>Project Setup Exercise</strong>: In advance of Step 3 of your group project, practice: Create a personal GitHub repo (e.g., username/snp-mock-analysis). Add directories (data/, scripts/, results/, docs/), populate data/README.md with mock FASTQ provenance (URLs, checksums, dates), scripts/01-fetch-data.sh with relative paths, and root README.md outlining objectives. Commit descriptively, push, and share the link. Explain one automation win (e.g., for f in data/*.fastq.gz; do …).</p></li>
+<li><p><strong>Methods Writing Practice</strong>: Read Bogan et al.&nbsp;(2025) methods section (focus on haplotype phasing, assembly). Reflect on a prior script (class/research): (a) How often is it called by other code? (b) If wrong, how does it impact results? (c) How noticeable are errors? Rewrite its usage as a 150-word methods paragraph, citing tool/version/parameters (e.g., “BWA-MEM v0.7.17 Li 2009, -T 30”), justifying choices, and noting deviations from defaults. Add to docs/methods.md in your mock repo from #3.</p></li>
+<li><p><strong>Kanban and Version Control Workflow</strong>: In your mock repo (#3), create a GitHub Project Kanban board with columns (To Do, In Progress, Done). Add cards: “Download ref genome + checksums”, “Write QC script”, “Document params”. Branch for “feature-qc”, implement a simple FastQC wrapper script (log version/params), PR it with review comments, merge. Move cards accordingly. Document in results/YYYY-MM-DD-kanban/README.md how this prevents “v2final.py” chaos and aids collaboration.</p></li>
+</ol>
+</section>
+<section id="reflection-questions" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="reflection-questions"><span class="header-section-number">7.6</span> Reflection Questions</h2>
+<ol type="1">
+<li><p><strong>AntiFreeze Paper Methods</strong>: Reread the methods section and any methods‑related supplementary material for the Bogan et al.&nbsp;study<span class="citation" data-cites="bogan2025"><sup><a href="#ref-bogan2025" role="doc-biblioref">9</a></sup></span>. As you read, sketch the implicit workflow using the categories introduced in this chapter: data acquisition, reference genome preparation, read alignment, variant calling, variant filtering, functional annotation, and downstream statistical analyses. For each category, note any missing information. Does the paper specify the reference genome accession and version? Are the alignment and variant calling tools named, and are versions indicated? Are there places where it is unclear whether default parameters were used, or where non‑default settings are mentioned without justification?</p></li>
+<li><p><strong>Software Justifcation</strong>: The tool <code>Exonerate</code> used in the<span class="citation" data-cites="bogan2025"><sup><a href="#ref-bogan2025" role="doc-biblioref">9</a></sup></span> paper is similar to GeneWise, which you are using for your manual annotation of PRDM9. The primary difference is that Exonerate can be run on the command line and GeneWise is restricted to the web.</p></li>
+</ol>
+<ul>
+<li>Why do you think the authors of the antifreeze paper chose to use Exonerate over GeneWise?</li>
+<li>Why do you think we are using GeneWise in your manual annotation project instead of Exonerate?</li>
+</ul>
+<ol start="3" type="1">
+<li><p>How does adopting chronological directory structures (e.g., YYYY-MM-DD subfolders) change your approach to debugging failed analyses months later, compared to purely logical organization?</p></li>
+<li><p>Why is documenting software versions and exact command lines in README files more critical for bioinformatics than traditional wet-lab methods, and how does this tie into reproducibility crises in computational biology?</p></li>
+<li><p>When balancing main text vs.&nbsp;supplementary methods, how might vague citations like “processed as in Smith et al.” undermine peer review, and what specific elements from this chapter would you prioritize in your own papers?</p></li>
+</ol>
+</section>
+<section id="references" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="references"><span class="header-section-number">7.7</span> References</h2>
+
+
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-noble_quick_2009" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Noble, W. S. <a href="https://doi.org/10.1371/journal.pcbi.1000424">A <span>Quick</span> <span>Guide</span> to <span>Organizing</span> <span>Computational</span> <span>Biology</span> <span>Projects</span></a>. <em>PLOS Computational Biology</em> <strong>5</strong>, e1000424 (2009).</div>
+</div>
+<div id="ref-buffalo_bioinformatics" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Buffalo, V. <em><a href="https://www.oreilly.com/library/view/bioinformatics-data-skills/9781449367480/">Bioinformatics <span>Data</span> <span>Skills</span></a></em>.</div>
+</div>
+<div id="ref-mirchandani_fast_2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Mirchandani, C. D. <em>et al.</em> <a href="https://doi.org/10.1093/molbev/msad270">A <span>Fast</span>, <span>Reproducible</span>, <span>High</span>-throughput <span>Variant</span> <span>Calling</span> <span>Workflow</span> for <span>Population</span> <span>Genomics</span></a>. <em>Molecular Biology and Evolution</em> <strong>41</strong>, msad270 (2024).</div>
+</div>
+<div id="ref-rother_toolbox_2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Rother, K. <em>et al.</em> <a href="https://doi.org/10.1093/bib/bbr035">A toolbox for developing bioinformatics software</a>. <em>Briefings in Bioinformatics</em> <strong>13</strong>, 244–257 (2012).</div>
+</div>
+<div id="ref-dudley_quick_2009" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Dudley, J. T. &amp; Butte, A. J. <a href="https://doi.org/10.1371/journal.pcbi.1000589">A <span>Quick</span> <span>Guide</span> for <span>Developing</span> <span>Effective</span> <span>Bioinformatics</span> <span>Programming</span> <span>Skills</span></a>. <em>PLOS Computational Biology</em> <strong>5</strong>, e1000589 (2009).</div>
+</div>
+<div id="ref-sandve_ten_2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Sandve, G. K., Nekrutenko, A., Taylor, J. &amp; Hovig, E. <a href="https://doi.org/10.1371/journal.pcbi.1003285">Ten <span>Simple</span> <span>Rules</span> for <span>Reproducible</span> <span>Computational</span> <span>Research</span></a>. <em>PLOS Computational Biology</em> <strong>9</strong>, e1003285 (2013).</div>
+</div>
+<div id="ref-ferenc_improving_2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Ferenc, K. <em>et al.</em> <a href="https://doi.org/10.1093/bioinformatics/btae632">Improving bioinformatics software quality through teamwork</a>. <em>Bioinformatics</em> <strong>40</strong>, btae632 (2024).</div>
+</div>
+<div id="ref-kallet_how_2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Kallet, R. H. How to write the methods section of a research paper. <em>Respiratory Care</em> <strong>49</strong>, 1229–1232 (2004).</div>
+</div>
+<div id="ref-bogan2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline">Bogan, S. N. <em>et al.</em> <a href="https://doi.org/10.1093/molbev/msaf219">Temperature and pressure shaped the evolution of antifreeze proteins in polar and deep sea zoarcoid fishes</a>. <em>Molecular Biology and Evolution</em> <strong>42</strong>, msaf219 (2025).</div>
+</div>
+<div id="ref-pop_use_2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">10. </div><div class="csl-right-inline">Pop, M. &amp; Salzberg, S. L. <a href="https://doi.org/10.1186/s12859-015-0668-z">Use and mis-use of supplementary material in science publications</a>. <em>BMC Bioinformatics</em> <strong>16</strong>, 237 (2015).</div>
+</div>
+<div id="ref-perkel_democratic_2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">11. </div><div class="csl-right-inline">Perkel, J. <a href="https://doi.org/10.1038/538127a">Democratic databases: Science on <span>GitHub</span></a>. <em>Nature</em> <strong>538</strong>, 127–128 (2016).</div>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch06-genome-align-assembly.html" class="pagination-link" aria-label="Genome Alignment and Genome Assembly">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Genome Alignment and Genome Assembly</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch08-alt-workflows.html" class="pagination-link" aria-label="Alternative Post‑Alignment Workflows">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Alternative Post‑Alignment Workflows</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Sequence Alignment – Reading Genomes: A Companion to Bioinformatics and Genome Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch06-genome-align-assembly.html" rel="next">
+<link href="./ch04-browsers-databases.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-975e726794ce811e14261b5ab5acfd7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-axe/axe-check.js" type="module"></script>
+<script id="quarto-axe-checker-options" type="text/plain">dHJ1ZQ==</script>
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-24950670649d35549c6a1355d7402e2b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="accessibility.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Companion Chapters</a></li><li class="breadcrumb-item"><a href="./ch05-seq-alignment.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reading Genomes: A Companion to Bioinformatics and Genome Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Companion Chapters</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-reading-genomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Reading Genomes: What Bioinformatics Is For</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-sequencing-tech.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sequencing Technologies and Data Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch03-formats-qc-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">File Formats and Quality Control in Genome Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04-browsers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-seq-alignment.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-genome-align-assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Genome Alignment and Genome Assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-project-mgmt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-alt-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Alternative Post‑Alignment Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch09-hmms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hidden Markov Models in Biology</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Variant Calling and Filtering with GATK</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-grants-funding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Grant Funding and the Scientific Enterprise</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch12-popgen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Population Genomics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-motifs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Sequence Motif Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-where-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Where to Go Next: Synthesis, Emerging Frontiers, and Lifelong Learning in Genomics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lab Manual</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Lab01: Find and describe a Genome Analysis Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lab02: Design a Genome Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Lab03: Genome Browsers and Databases</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Lab04: Genome Sequence Indexing and Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Lab05: BLAST on the Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Lab06: HMMs in Predicting Gene Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Lab07: Variant Calling via GATK Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lab 10: Population Genomics using the 1000 Genomes Dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix: How to Read Scientific Literature</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Appendix: Semester Research Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Appendix: Yeast Experimental Evolution Dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Appendix: Resources for Future Learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link active" data-scroll-target="#learning-goals"><span class="header-section-number">5.1</span> Learning goals</a></li>
+  <li><a href="#why-align-sequences" id="toc-why-align-sequences" class="nav-link" data-scroll-target="#why-align-sequences"><span class="header-section-number">5.2</span> Why align sequences?</a>
+  <ul class="collapse">
+  <li><a href="#similarity-homology-orthologs-paralogs" id="toc-similarity-homology-orthologs-paralogs" class="nav-link" data-scroll-target="#similarity-homology-orthologs-paralogs"><span class="header-section-number">5.2.1</span> Similarity, homology, orthologs, paralogs</a></li>
+  <li><a href="#amino-acids-versus-nucleotides" id="toc-amino-acids-versus-nucleotides" class="nav-link" data-scroll-target="#amino-acids-versus-nucleotides"><span class="header-section-number">5.2.2</span> Amino acids versus nucleotides</a></li>
+  <li><a href="#types-of-sequence-changes" id="toc-types-of-sequence-changes" class="nav-link" data-scroll-target="#types-of-sequence-changes"><span class="header-section-number">5.2.3</span> Types of sequence changes</a></li>
+  </ul></li>
+  <li><a href="#pairwise-sequence-alignment" id="toc-pairwise-sequence-alignment" class="nav-link" data-scroll-target="#pairwise-sequence-alignment"><span class="header-section-number">5.3</span> Pairwise Sequence Alignment</a>
+  <ul class="collapse">
+  <li><a href="#scoring-alignments" id="toc-scoring-alignments" class="nav-link" data-scroll-target="#scoring-alignments"><span class="header-section-number">5.3.1</span> Scoring Alignments</a></li>
+  <li><a href="#gap-penalties" id="toc-gap-penalties" class="nav-link" data-scroll-target="#gap-penalties"><span class="header-section-number">5.3.2</span> Gap penalties</a></li>
+  <li><a href="#needlemanwunsch-global-alignment" id="toc-needlemanwunsch-global-alignment" class="nav-link" data-scroll-target="#needlemanwunsch-global-alignment"><span class="header-section-number">5.3.3</span> Needleman–Wunsch: Global Alignment</a></li>
+  <li><a href="#smithwaterman-local-alignment" id="toc-smithwaterman-local-alignment" class="nav-link" data-scroll-target="#smithwaterman-local-alignment"><span class="header-section-number">5.3.4</span> Smith–Waterman: Local Alignment</a></li>
+  <li><a href="#basic-local-alignment-search-tool-blast" id="toc-basic-local-alignment-search-tool-blast" class="nav-link" data-scroll-target="#basic-local-alignment-search-tool-blast"><span class="header-section-number">5.3.5</span> Basic Local Alignment Search Tool (BLAST)</a></li>
+  </ul></li>
+  <li><a href="#from-pairwise-to-multiple-sequence-alignment" id="toc-from-pairwise-to-multiple-sequence-alignment" class="nav-link" data-scroll-target="#from-pairwise-to-multiple-sequence-alignment"><span class="header-section-number">5.4</span> From pairwise to multiple sequence alignment</a>
+  <ul class="collapse">
+  <li><a href="#criteria-and-uses-of-msas" id="toc-criteria-and-uses-of-msas" class="nav-link" data-scroll-target="#criteria-and-uses-of-msas"><span class="header-section-number">5.4.1</span> Criteria and Uses of MSAs</a></li>
+  <li><a href="#conserved-residues-motifs-and-databases-of-msas" id="toc-conserved-residues-motifs-and-databases-of-msas" class="nav-link" data-scroll-target="#conserved-residues-motifs-and-databases-of-msas"><span class="header-section-number">5.4.2</span> Conserved Residues, Motifs, and Databases of MSAs</a></li>
+  <li><a href="#algorithms-for-multiple-sequence-alignment" id="toc-algorithms-for-multiple-sequence-alignment" class="nav-link" data-scroll-target="#algorithms-for-multiple-sequence-alignment"><span class="header-section-number">5.4.3</span> Algorithms for Multiple Sequence Alignment</a></li>
+  <li><a href="#benchmarking-and-databases-of-msas" id="toc-benchmarking-and-databases-of-msas" class="nav-link" data-scroll-target="#benchmarking-and-databases-of-msas"><span class="header-section-number">5.4.4</span> Benchmarking and Databases of MSAs</a></li>
+  <li><a href="#whole-genome-msas-and-genome-browsers" id="toc-whole-genome-msas-and-genome-browsers" class="nav-link" data-scroll-target="#whole-genome-msas-and-genome-browsers"><span class="header-section-number">5.4.5</span> Whole-Genome MSAs and Genome Browsers</a></li>
+  </ul></li>
+  <li><a href="#problem-sets" id="toc-problem-sets" class="nav-link" data-scroll-target="#problem-sets"><span class="header-section-number">5.5</span> Problem Sets</a></li>
+  <li><a href="#reflection-questions" id="toc-reflection-questions" class="nav-link" data-scroll-target="#reflection-questions"><span class="header-section-number">5.6</span> Reflection Questions</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">5.7</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<a href="#quarto-content" class="skip-nav">Skip to main content</a>
+<style>
+.skip-nav {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-nav:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  z-index: 9999;
+}
+</style>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Companion Chapters</a></li><li class="breadcrumb-item"><a href="./ch05-seq-alignment.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></h1>
+<p class="subtitle lead">Pairwise and Multiple Sequence Alignment Algorithms</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-goals" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">5.1</span> Learning goals</h2>
+<p>By the end of this chapter you should be able to:</p>
+<ul>
+<li>Explain why biologists align sequences and distinguish <strong>similarity</strong> from homology, orthologs, and paralogs.</li>
+<li>Describe how pairwise alignment scores are computed from substitution matrices and gap penalties.</li>
+<li>Outline and interpret the Needleman–Wunsch global alignment algorithm and contrast it with Smith–Waterman local alignment.</li>
+<li>Explain the difference between a dynamic versus heuristic programming.</li>
+<li>Explain what a multiple sequence alignment (MSA) is, why it is more informative than pairwise alignment, and summarize major MSA algorithm families.</li>
+<li>Read alignment output critically, recognizing poor alignments and the influence of parameter choices.</li>
+</ul>
+</section>
+<section id="why-align-sequences" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="why-align-sequences"><span class="header-section-number">5.2</span> Why align sequences?</h2>
+<p>Sequence alignment is a core operation in genomics, used whenever you want to compare DNA or protein sequences to ask biological questions<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Typical motivations include inferring gene or protein function for a new sequence by comparing it to known sequences, identifying orthologous genes across species for phylogeny reconstruction, and detecting conserved motifs and domains that may underlie shared structure or regulation<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. This chapter covers pairwise sequence alignment (both local and global) before extending these concepts to multiple sequence alignment, where information from many sequences is integrated to reveal patterns invisible in pairwise comparisons<span class="citation" data-cites="park1998 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-park1998" role="doc-biblioref">2</a></sup></span>.</p>
+<p>An algorithm is a step-by-step set of instructions used to solve a problem—a computational protocol. Understanding the algorithms commonly used in sequence analysis helps you recognize their key assumptions and limitations, unveiling the black box mentioned in earlier chapters<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<section id="similarity-homology-orthologs-paralogs" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="similarity-homology-orthologs-paralogs"><span class="header-section-number">5.2.1</span> Similarity, homology, orthologs, paralogs</h3>
+<p>Alignment provides a <em>similarity</em> score, but what biologists usually care about is <strong>homology</strong>, meaning shared ancestry rather than just high percent identity<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Two sequences are either homologous or not; there is no partial homology, only stronger or weaker evidence for it<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. <strong>Orthologs</strong> are homologous genes in different species that diverged via a speciation event and usually retain similar function, whereas <strong>paralogs</strong> are homologous genes within a genome that arose by duplication and often diverge in function over time<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. When you use alignment to infer orthology or paralogy, remember that homology is about evolutionary history, not just alignment score, and typically requires integrating tree information as well.</p>
+</section>
+<section id="amino-acids-versus-nucleotides" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="amino-acids-versus-nucleotides"><span class="header-section-number">5.2.2</span> Amino acids versus nucleotides</h3>
+<p>With nucleotides offering only four different bases, the information content for homology is low, and codon sequences can be degenerate in how they code for amino acids<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. In contrast, protein sequences offer up to 20 different amino acid types, vastly increasing the information content<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. For identifying homologs, protein sequence comparison is therefore considered superior, providing a deeper look back in time and enabling identification of homologs across the tree of life<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Exceptions include noncoding DNA regions such as introns and intergenic sequences, as well as studies of DNA polymorphisms that distinguish different populations<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+</section>
+<section id="types-of-sequence-changes" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="types-of-sequence-changes"><span class="header-section-number">5.2.3</span> Types of sequence changes</h3>
+<p>Single nucleotide substitutions are often referred to as either SNPs, as you saw earlier in this course. Another term you might encounter is <strong>single nucleotide variants</strong> (SNVs), a term used more recently to indicate a low frequency variant, often used more in clinical settings. Additionally, you might encounter the term multi-nucleotide polymorphisms (MNPs). In addition to substitutions, there are short insertion/deletion variants, or <strong>indels</strong>. Large scale rearrangements are much harder to study given that they violate a lot of the assumptions of most sequencing alignment algorithms. Therefore, we will focus on small changes. It is also worth noting that more algorithms only allow 2 possible variants at any one position. It is important to understand the limitations of the algorithms you use when working with datasets that are complex.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Lab Connections
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Later in <a href="./Lab09.html">Lab 9</a>, we will visualize sequence variants relative to a reference genome in IGV and describe these sequence changes using Human Genome Variation Society (HGVS) standardized nomenclature<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Specifically, a sequence change in the DNA may or may not impact the protein sequence. Substitutions are designated by a “&gt;” character with the original base before and the substitution after, prefixed by “g.” for genomic sequence (e.g., <code>g.69A&gt;T</code> for A to T substitution at position 69) and “p.” for protein sequence (e.g., <code>p.K23Y</code> for lysine to tyrosine substitution at position 23).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="pairwise-sequence-alignment" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="pairwise-sequence-alignment"><span class="header-section-number">5.3</span> Pairwise Sequence Alignment</h2>
+<p>Pairwise sequence alignment arranges two DNA or protein sequences to assess similarity and infer common evolutionary origin<span class="citation" data-cites="needleman1970 smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. Given a pair of sequences, an alignment algorithm inserts gaps as needed to maximize a numerical score defined by a scoring scheme, allowing different alignments to be compared quantitatively<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. <strong>Global alignment</strong> attempts to align sequences from end to end, most appropriate when sequences are expected to be collinear and of similar length<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>. <strong>Local alignment</strong> searches for the highest-scoring subsequences without requiring full alignment, ideal when proteins share only conserved domains or when short motifs are embedded in otherwise unrelated context<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 5.1 – Interpreting Sequence Alignments
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-exSeq" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Pairwise alignment of two PRDM9 protein sequences between human and Lacerata agilis.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exSeq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Fig_5.1_Pairwise_PRDM9.png" class="img-fluid figure-img" style="width:75.0%" alt="Pairwise alignment of two PRDM9 protein sequences between human and Lacerata agilis.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exSeq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.1: Sequence Alignment of PRDM9
+</figcaption>
+</figure>
+</div>
+<p>In the example pairwise sequence above, we see the results of a global sequence alignment between the PRDM9 protein from humans and that of <em>Lacerata agilis</em> which was manually annotated by Chipper Johnson, course LA. Here, vertical lines <code>|</code> indicate identical resides. Substitutions are indicated by one or two dots, indicating the degree of dissimilarity. Gaps can relfect either an insertion in one of the sequences or a deletion in the other one. These are indicated by the <code>-</code> symbol. This output is from the <a href="https://www.ebi.ac.uk/jdispatcher/psa/emboss_needle">EMBOSS Needle tool</a> that you will be using for your manual annotation projects this semester.</p>
+</div>
+</div>
+<p>In genome alignment (more on this in the next chapter), it is common to describe a “sample sequence” being compared to a “reference genome sequence,” but in more general alignment problems the two inputs are called the <strong>query</strong> sequence and the <strong>target</strong> (or subject) sequence<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<section id="scoring-alignments" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="scoring-alignments"><span class="header-section-number">5.3.1</span> Scoring Alignments</h3>
+<p>Alignment scores combine a substitution matrix assigning scores to aligned residue pairs and a gap penalty scheme for insertions and deletions<span class="citation" data-cites="dayhoff1978 henikoff1992 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a>,<a href="#ref-henikoff1992" role="doc-biblioref">6</a></sup></span>. For proteins, substitution matrices encode evolutionary and biochemical information: conservative substitutions between similar residues receive positive scores, while rare or structurally disruptive substitutions receive negative scores<span class="citation" data-cites="dayhoff1978 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a></sup></span>. Not all identities are scored equally; matching two tryptophans is more informative than matching two alanines because tryptophan is rare and strongly conserved<span class="citation" data-cites="henikoff1992 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-henikoff1992" role="doc-biblioref">6</a></sup></span>.</p>
+<p>PAM (Point Accepted Mutation) matrices, introduced by Margaret Dayhoff, are derived from curated alignments of closely related protein families and model substitution probabilities as proteins diverge over evolutionary time<span class="citation" data-cites="dayhoff1978 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a></sup></span>. PAM1 reflects frequencies after one accepted mutation per 100 residues, while higher PAM matrices (e.g., PAM250) approximate more divergent sequences<span class="citation" data-cites="dayhoff1978 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a></sup></span>. BLOSUM (Blocks Substitution Matrix) series from Steven and Jorja Henikoff focuses on conserved blocks of distantly related families, with BLOSUM62 widely used as a default in database searches<span class="citation" data-cites="henikoff1992 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-henikoff1992" role="doc-biblioref">6</a></sup></span>. Low PAM numbers and high BLOSUM numbers emphasize close relationships, while high PAM numbers and low BLOSUM numbers better detect distant homology<span class="citation" data-cites="dayhoff1978 henikoff1992 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a>,<a href="#ref-henikoff1992" role="doc-biblioref">6</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Margaret Dayhoff and the Foundations of Scoring Matrices
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Margaret Oakley Dayhoff (1925–1983) was a physical chemist and computational biologist whose work laid the groundwork for modern sequence alignment scoring<span class="citation" data-cites="dayhoff1978 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a></sup></span>. From carefully curated multiple sequence alignments of closely related proteins, she defined accepted point mutations and quantified amino-acid substitution frequencies, leading to the PAM model and the first empirically grounded mutation probability matrices<span class="citation" data-cites="dayhoff1978 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a></sup></span>. By converting these probabilities into log-odds scores, Dayhoff introduced a rigorous framework that rewards substitutions observed more often than expected by chance and penalizes unlikely changes<span class="citation" data-cites="dayhoff1978 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-dayhoff1978" role="doc-biblioref">5</a></sup></span>. This logic underlies essentially all modern substitution matrices and directly informs algorithms such as Needleman–Wunsch, Smith–Waterman, and BLAST<span class="citation" data-cites="needleman1970 smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>.</p>
+<div id="fig-dayhoff" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Black and white photograph of a woman.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dayhoff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/dayhoff.jpg" class="img-fluid figure-img" style="width:25.0%" alt="Black and white photograph of a woman.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dayhoff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.2: Margaret Dayhoff)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Nucleotide substitution matrices are usually simpler, because there are only four bases and fewer distinct biochemical classes than for amino acids<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. In many applications, DNA alignments are scored with uniform match/mismatch schemes (for example, +1 for a match and -1 for a mismatch) or with slightly more refined scoring where transitions (A↔︎G, C↔︎T) receive different penalties from transversions (purine↔︎pyrimidine), reflecting the higher frequency of transitions in real genomic data<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. More elaborate nucleotide scoring systems, such as matrices derived from observed substitution patterns in genomic regions, exist but are less commonly used than protein substitution matrices<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Because protein sequences carry higher information content and can leverage sophisticated amino-acid substitution matrices, it is often preferable to translate coding DNA sequences and perform alignments at the protein level when the goal is to detect homology across moderate or large evolutionary distances<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+</section>
+<section id="gap-penalties" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="gap-penalties"><span class="header-section-number">5.3.2</span> Gap penalties</h3>
+<p>Insertions and deletions (indels) in evolutionary history appear as gaps in sequence alignments and must be penalized so that algorithms do not introduce them without strong justification<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Without gap penalties, an alignment algorithm could trivially achieve perfect matches by inserting arbitrarily many gaps, so a realistic scoring system must balance the benefits of aligning additional residues against the cost of adding gaps<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Biologically, single long indels are often more plausible than many short indels, and gap penalty schemes are designed to reflect that intuition<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>In the simplest scheme, a constant (or linear) gap penalty subtracts the same score for each gap position, so a gap of length <span class="math inline">\((k)\)</span> incurs a cost proportional to <span class="math inline">\((k)\)</span><span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. In this case, the cost of opening a gap and the cost of extending it are identical, so a gap of length 5 is exactly five times more costly than a gap of length 1<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. More realistic alignments, especially for proteins, generally use an <strong>affine gap penalty</strong>, which separates the penalty for initiating a gap from the penalty for extending it<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Under an affine model, the cost of a gap of length <span class="math inline">\((k)\)</span> is given by <span class="math display">\[gap cost = a + b k,\]</span></p>
+<p>where <span class="math inline">\((a)\)</span> is a gap opening penalty and <span class="math inline">\((b)\)</span> is a gap extension penalty per residue, with <span class="math inline">\((|a|)\)</span> typically larger than <span class="math inline">\((|b|)\)</span><span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. This favors fewer, longer gaps over many short ones, mirroring the expectation that a single deletion of several residues is more likely than multiple independent single-residue events<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>When you run alignment tools on the web or command line, default gap opening and extension penalties are often optimized for particular scoring matrices and use cases<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Understanding how these parameters influence alignments helps explain phenomena such as long conserved blocks separated by large single gaps or the tendency of some parameter combinations to fragment alignments into many short local matches<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. In many practical workflows, end gaps (leading and trailing gaps in global alignment) are either not penalized or penalized differently from internal gaps, especially when one sequence is known to be truncated relative to the other<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+</section>
+<section id="needlemanwunsch-global-alignment" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="needlemanwunsch-global-alignment"><span class="header-section-number">5.3.3</span> Needleman–Wunsch: Global Alignment</h3>
+<p>The Needleman–Wunsch algorithm, introduced in 1970, is a <strong>dynamic programming</strong> method that guarantees an optimal global alignment for two sequences given a specified substitution matrix and gap penalty scheme<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>. The core idea is to systematically evaluate all possible ways of aligning prefixes of the two sequences by filling a matrix of scores and then to recover the best full-length alignment by tracing back through that matrix<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>. This approach avoids exhaustive enumeration of all possible alignments, which would grow combinatorially with sequence length, while still ensuring that the final alignment is optimal under the chosen scoring system<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>. Below is a description of this algorithm, but if you are more of a visual learner, there is a great 15 minute <a href="https://www.youtube.com/watch?v=LhpGz5--isw">YouTube video</a> on the topic<span class="citation" data-cites="deborah_thurtle-schmidt_global_2018"><sup><a href="#ref-deborah_thurtle-schmidt_global_2018" role="doc-biblioref">7</a></sup></span>.</p>
+<p>Given sequences of lengths (m) and (n), Needleman–Wunsch constructs a matrix of dimensions ((m+1) (n+1)), where the cell (F_{i,j}) represents the best possible global alignment score for the first (i) residues of sequence 1 and the first (j) residues of sequence 2<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>. The first row and first column are initialized with cumulative gap penalties, allowing either sequence to begin with a terminal gap if that yields a higher overall score<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. The matrix is then filled row by row or column by column using a recurrence relation that considers the three possible ways to reach each cell: aligning the current pair of residues (diagonal move), inserting a gap in one sequence (vertical move), or inserting a gap in the other (horizontal move)<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>.</p>
+<p>In its simplest form with linear gap penalties, the recurrence for <span class="math inline">\((F_{i,j})\)</span> can be written as</p>
+<p><span class="math display">\[F_{i,j} = \max \begin{cases}
+F_{i-1,j-1} + s(x_i, y_j) \\
+F_{i-1,j} + g \\
+F_{i,j-1} + g
+\end{cases}
+\]</span></p>
+<p>where <span class="math inline">\((s(x_i, y_j))\)</span> is the substitution score for aligning residues <span class="math inline">\((x_i)\)</span> and <span class="math inline">\((y_j)\)</span>, and <span class="math inline">\((g)\)</span> is the (negative) gap penalty<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>. More elaborate formulations using affine gap penalties introduce additional matrices or states to distinguish gap opening from gap extension, but the underlying dynamic programming principle is the same<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Once the matrix is filled, the optimal global alignment score is found in the bottom-right cell <span class="math inline">\((F_{m,n})\)</span>, and a traceback procedure follows the path of choices that led to this score, reconstructing the explicit alignment with matches, mismatches, and gaps<span class="citation" data-cites="needleman1970 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-needleman1970" role="doc-biblioref">3</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 5.2 – Pairwise Sequence Alignment
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-pairwise" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Needleman-Wunsch pairwise alignment matrix for two DNA sequences, showing the scoring grid, traceback path, and the placement of gaps to produce a global alignment.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pairwise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Needleman-Wunsch_pairwise_sequence_alignment.png" class="img-fluid figure-img" style="width:75.0%" alt="Needleman-Wunsch pairwise alignment matrix for two DNA sequences, showing the scoring grid, traceback path, and the placement of gaps to produce a global alignment.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pairwise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.3: Needleman-Wunsch pairwise alignment matrix for two DNA sequences, showing the scoring grid, traceback path, and the placement of gaps to produce a global alignment.
+</figcaption>
+</figure>
+</div>
+<p>Pairwise alignment of two nucleotide sequences using the Needleman–Wunsch dynamic programming algorithm for global alignment. The figure shows the scoring matrix used to compare two sequences, with diagonal moves representing matches or mismatches and horizontal or vertical moves representing gaps. The traceback path identifies the optimal global alignment under the chosen scoring scheme. The example illustrates the alignment matrix, scoring scheme, and the role of gaps in producing the final global alignment. Source: <a href="https://commons.wikimedia.org/wiki/File:Needleman-Wunsch_pairwise_sequence_alignment.png">Needleman-Wunsch_pairwise_sequence_alignment.png</a></p>
+</div>
+</div>
+</section>
+<section id="smithwaterman-local-alignment" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="smithwaterman-local-alignment"><span class="header-section-number">5.3.4</span> Smith–Waterman: Local Alignment</h3>
+<p>The Smith–Waterman algorithm, introduced in 1981, adapts the <strong>dynamic programming</strong> framework to local rather than global alignment, focusing on the highest-scoring subsequences of the two inputs<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. Instead of forcing an alignment from the beginning to the end of both sequences, Smith–Waterman identifies the best local region of similarity, which is especially useful for detecting conserved domains, motifs, or exons embedded in longer, less related sequence contexts<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. This local strategy is also central to database search tools such as BLAST and FASTA, which conceptually perform many local alignments between a query and entries in a database<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. As with global alignment, below is a description of this algorithm, but if you are more of a visual learner, there is a short 2 minute <a href="https://www.youtube.com/watch?v=F1YId_z4pc8">YouTube video</a> on the topic<span class="citation" data-cites="tel-aviv_tutorials_how_2019"><sup><a href="#ref-tel-aviv_tutorials_how_2019" role="doc-biblioref">8</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 5.3 – Local versus global alignment
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><img src="images/SmithWaterman.svg.png" id="fig-smith-waterman" class="img-fluid" style="width:48.0%" alt="Two-panel figure illustrating the Smith–Waterman algorithm for local sequence alignment. One panel explains the scoring rule that sets negative values to zero and thereby limits alignment to a high-scoring local region; the other panel shows an example matrix and traceback path for recovering the best local alignment."> <img src="images/Smith-Waterman.jpg" id="fig-smith-waterman-matrix" class="img-fluid" style="width:48.0%" alt="Smith–Waterman example matrix showing the highest-scoring local alignment region within two sequences."></p>
+<p>Unlike global alignment algorithms such as Needleman–Wunsch, Smith–Waterman identifies the best-matching subsequences within longer sequences. It uses a dynamic programming algorithm, meaning it finds the highest-scoring matching region between two sequences rather than aligning them end-to-end. Negative scores are reset to zero, and traceback begins at the highest-scoring cell and continues until a zero is reached, which marks the boundary of the local alignment. This makes it especially useful when only a shared region, domain, or motif is expected between the sequences. Together, these panels show both the scoring logic and an example of the matrix used to recover the best local match. Sources: <a href="https://commons.wikimedia.org/wiki/File:SmithWaterman.svg">SmithWaterman.svg</a> and <a href="https://commons.wikimedia.org/wiki/File:Smith-Waterman.jpg">Smith-Waterman.jpg</a>.</p>
+</div>
+</div>
+<p>Smith–Waterman uses a similar ((m+1) (n+1)) dynamic programming matrix as Needleman–Wunsch, but modifies the recurrence relation in two key ways<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. First, the first row and first column are initialized to zero rather than cumulative gap penalties, reflecting the fact that local alignments may begin anywhere in the sequences without penalty<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. Second, at each cell the algorithm introduces a fourth option in addition to the three used for global alignment: the score zero. The recurrence becomes</p>
+<p><span class="math display">\[F_{i,j} = \max \begin{cases}
+0 \\
+F_{i-1,j-1} + s(x_i, y_j) \\
+F_{i-1,j} + g \\
+F_{i,j-1} + g
+\end{cases}\]</span></p>
+<p>ensuring that scores never become negative<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. Any path that would yield a negative score is instead truncated at zero, effectively “resetting” the alignment and allowing new local alignments to begin internally<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>.</p>
+<p>Once the matrix is filled, the starting point for traceback in Smith–Waterman is not the bottom-right cell but the cell with the highest score anywhere in the matrix, which represents the end of the best local alignment<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. Traceback then proceeds diagonally, vertically, or horizontally following the choices that produced that score, terminating when a cell with score zero is reached<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>. The resulting alignment spans only the high-scoring segment pair (or pairs) and ignores lower-scoring flanking regions, often producing a shorter alignment with higher percent identity and similarity than the corresponding global alignment of the same sequences<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>.</p>
+<p>In protein database searching, local alignments are essential because many protein families share only one or a few conserved domains while differing elsewhere, and because databases contain partial sequences, fragments, and alternative isoforms that would not align well under a strict global scheme<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Heuristic methods such as FASTA and BLAST approximate Smith–Waterman’s local alignment behavior while greatly reducing runtime by focusing computation on promising regions of the search space, enabling rapid comparison of a query sequence to millions of database entries<span class="citation" data-cites="smith1981 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-smith1981" role="doc-biblioref">4</a></sup></span>.</p>
+</section>
+<section id="basic-local-alignment-search-tool-blast" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="basic-local-alignment-search-tool-blast"><span class="header-section-number">5.3.5</span> Basic Local Alignment Search Tool (BLAST)</h3>
+<p>Introduced on the first day of class, BLAST is the most used bioinformatics tool. No doubt ALL of you have used this tool at some point prior to taking this class at least once if not multiple times. The basic local alignment search tool was first published in 1990 with nearly 80,000 citations to date (last updated 1/19/2026).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Getting citation metrics from Web of Science
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>One of the best ways to assess the importance of a bioinformatics tool is to check the citation metrics. The best to to use here is not google but instead <a href="https://www.webofscience.com/wos/">Web of Science</a>.</p>
+<p>Here, you can search a paper (e.g.&nbsp;“Altschul 1990 basic local alignment search tool”). Once you have the paper, you can check the box next to the result that you want to analyze. Then, in the top right, click “Citation Report”. In addition to the total number of citations (e.g.&nbsp;79,208), you can also analyze the citations in depth by clicking the word “Analyze” next to the number of citing articles. This new page offers a drop down menu with several ways to analyze the citations, either by time (e.g.&nbsp;Publication Years), journal (e.g.&nbsp;Publication Titles), by Web of Science Categories, Funding Agencies, etc.</p>
+<p>I find the analysis over time to be particularly useful. For example, you might find a particular tool has a LOT of citations, but that the number have dwindled in recent years. A deeper dive might find that a newer tool has largely replaced this tool. This information together would suggest that you should try to use the newer tool.</p>
+<p>In the bioinformatics approach for your group project, I expect you to use these types of metrics to justify your selected bioinformatics tools, including ones you might have considered and decided against.</p>
+</div>
+</div>
+</div>
+<p>BLAST, first published in 1990, takes a query sequence and searches a database for entries sharing significant local similarity, outputting a ranked list of hits annotated with scores and statistics such as bit score and expect value (E value)<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Connection to Lab 5
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In <a href="./Lab05.html">Lab 5</a>, we will use BLAST on the command line using the Alabama Super Computer<span class="citation" data-cites="camacho2009"><sup><a href="#ref-camacho2009" role="doc-biblioref">10</a></sup></span>. The command-line version (BLAST+) allows custom database searches, bulk queries, and complex search strategies essential for large-scale genomic data<span class="citation" data-cites="camacho2009"><sup><a href="#ref-camacho2009" role="doc-biblioref">10</a></sup></span>.</p>
+</div>
+</div>
+<p>BLAST builds on Smith–Waterman’s local alignment framework but uses <strong>heuristic programming</strong> rather than exhaustive dynamic programming, trading small losses in theoretical optimality for massive gains in speed<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>. The algorithm proceeds in three main phases<span class="citation" data-cites="altschul1990 camacho2009 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a>,<a href="#ref-camacho2009" role="doc-biblioref">10</a></sup></span>:</p>
+<p><strong>Phase 1 (List)</strong>: BLAST analyzes the query and compiles short words of fixed length <span class="math inline">\((w)\)</span> (typically 3 for proteins)<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>. Each possible word pair is scored using the substitution matrix, and only words scoring at or above threshold <span class="math inline">\((T)\)</span> are retained<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>. This filters for exact or conservative substitutions characteristic of conserved motifs<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p><strong>Phase 2 (Scan and Extend)</strong>: BLAST scans the database for retained words, using a “two-hit” strategy requiring two non-overlapping hits within window <span class="math inline">\((A)\)</span> to initiate extension<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Extensions create high-scoring segment pairs (HSPs), first ungapped then optionally gapped<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. HSPs exceeding reporting cutoff <span class="math inline">\((S)\)</span> are retained<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p><strong>Phase 3 (Traceback)</strong>: BLAST reconstructs explicit local alignments for retained HSPs, assigning matches, mismatches, and gaps according to scoring parameters<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>Word size <span class="math inline">\((w)\)</span> and threshold <span class="math inline">\((T)\)</span> control sensitivity–speed trade-offs<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>. For proteins, default <span class="math inline">\((w=3)\)</span> balances sensitivity and computational cost; lowering <span class="math inline">\((T)\)</span> increases hits and extensions but requires more time<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. For nucleotides, BLASTN requires exact word matches with larger default word size (e.g., 11), with smaller words increasing sensitivity and larger words speeding searches<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>BLAST employs rigorous statistical evaluation based on extreme value distribution (EVD) theory<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>. The E value represents the expected number of distinct alignments with scores at least as high as <span class="math inline">\((S)\)</span> occurring by chance in a database search<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>:</p>
+<p><span class="math display">\[E = K m n e^{-\lambda S}\]</span></p>
+<p>where <span class="math inline">\((m)\)</span> is query length, <span class="math inline">\((n)\)</span> is effective database length, and <span class="math inline">\((K)\)</span> and <span class="math inline">\(\lambda\)</span> are Karlin–Altschul statistics<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Smaller E values indicate more significant matches, and E values depend on search space size<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. The related p value is <span class="math inline">\((p = 1 - e^{-E})\)</span>; for very small E values, <span class="math inline">\((E)\)</span> and <span class="math inline">\((p)\)</span> are nearly identical<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>In practice, BLAST users adopt thresholds such as <span class="math inline">\((E \le 0.05)\)</span> as minimal significance standards, with more stringent criteria (e.g., <span class="math inline">\((10^{-3})\)</span>, <span class="math inline">\((10^{-5})\)</span>) used in large-scale genome analyses<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Biological interpretation always requires combining E values with domain knowledge: similar sequence lengths, conserved motifs, compatible domain structures, and congruent genomic context strengthen homology inferences<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<div id="tbl-evalues" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-evalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.1: Relationship of E to p values in BLAST. Small E values (0.05 or less) correspond closely to p values.
+</figcaption>
+<div aria-describedby="tbl-evalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>E value</th>
+<th>p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>0.99995460</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>0.99326205</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.86466472</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.63212056</td>
+</tr>
+<tr class="odd">
+<td>0.1</td>
+<td>0.09516258</td>
+</tr>
+<tr class="even">
+<td>0.05</td>
+<td>0.04877058</td>
+</tr>
+<tr class="odd">
+<td>0.001</td>
+<td>0.00099950</td>
+</tr>
+<tr class="even">
+<td>0.0001</td>
+<td>0.00010000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<section id="interpreting-blast-in-biological-context" class="level4" data-number="5.3.5.1">
+<h4 data-number="5.3.5.1" class="anchored" data-anchor-id="interpreting-blast-in-biological-context"><span class="header-section-number">5.3.5.1</span> Interpreting BLAST in Biological Context</h4>
+<p>Although BLAST’s statistical framework is powerful, biological interpretation of BLAST results always requires combining E values and scores with domain knowledge about the sequences involved<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. A “true positive” hit—one that is homologous to the query and descended from a common ancestor—should have a convincingly low E value, but additional criteria often matter: similar sequence lengths, the presence of conserved motifs or signatures, compatible domain structures, and congruent genomic context all strengthen the inference of homology<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Conversely, BLAST results can include false positives with modest sequence identity and acceptable E values that actually belong to unrelated protein families, particularly when alignments are short or concentrated in low-complexity segments<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>For these reasons, it is common to follow up marginal BLAST matches with reciprocal searches (using the putative hit as a new query), multiple sequence alignment and phylogenetic analysis, structural comparisons, or domain-based methods such as profile HMMs and position-specific scoring matrices<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. In practice, BLAST serves as the first, essential step: it rapidly maps a query into the landscape of known sequences, providing a statistically grounded set of candidate relationships that subsequent analyses can refine<span class="citation" data-cites="altschul1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-altschul1990" role="doc-biblioref">9</a></sup></span>.</p>
+</section>
+</section>
+</section>
+<section id="from-pairwise-to-multiple-sequence-alignment" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="from-pairwise-to-multiple-sequence-alignment"><span class="header-section-number">5.4</span> From pairwise to multiple sequence alignment</h2>
+<p>Multiple sequence alignment (MSA) extends pairwise alignment to three or more sequences, allowing homologous residues to be aligned in columns across a protein family or related DNA sequences<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. A carefully constructed MSA encodes shared evolutionary history, conserved structure, and functional motifs, enabling prediction of uncharacterized protein functions, identification of catalytic residues, and phylogenetic tree reconstruction<span class="citation" data-cites="chothia1986 park1998 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-park1998" role="doc-biblioref">2</a>,<a href="#ref-chothia1986" role="doc-biblioref">11</a></sup></span>. Compared to pairwise alignment, MSA is more sensitive for detecting distant homologs because information from many sequences is integrated rather than relying on a single query–target comparison<span class="citation" data-cites="park1998 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-park1998" role="doc-biblioref">2</a></sup></span>.</p>
+<p>Conceptually, an MSA arranges homologous sequences so residues in the same column are presumed homologous in both evolutionary and structural senses<span class="citation" data-cites="chothia1986 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-chothia1986" role="doc-biblioref">11</a></sup></span>. Residues aligned in a given column descended from a shared ancestral residue and, in proteins, occupy comparable positions in the three-dimensional fold<span class="citation" data-cites="chothia1986 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-chothia1986" role="doc-biblioref">11</a></sup></span>. In practice, achieving a uniquely “correct” alignment for divergent families is rarely possible because sequence divergence often outpaces structural or functional data availability; algorithms aim to approximate optimal alignments under explicit criteria such as maximizing total alignment score or sum-of-pairs objective functions<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<section id="criteria-and-uses-of-msas" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="criteria-and-uses-of-msas"><span class="header-section-number">5.4.1</span> Criteria and Uses of MSAs</h3>
+<p>MSAs are built using different implicit criteria reflecting how residues ought to align<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. <strong>Structural similarity</strong>: residues occupying comparable three-dimensional positions (e.g., within the same helix or beta strand) should align<span class="citation" data-cites="chothia1986 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-chothia1986" role="doc-biblioref">11</a></sup></span>. <strong>Evolutionary similarity</strong>: aligned residues should be phylogenetically homologous, tracing back to a single ancestral residue<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. <strong>Functional similarity</strong>: residues with the same biochemical role (e.g., catalytic residues, ligand-coordinating residues) should align even when surrounding regions have diverged<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. <strong>Sequence similarity</strong>: maximizing identical or conservatively substituted residues in each column—the criterion directly optimized by most algorithms because it is easily formalized and computed<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>MSA algorithms largely implement the sequence-similarity criterion, but success is judged by how well alignments respect structural and functional constraints when that information is available<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. For example, in the globin family, MSAs reveal highly conserved histidine residues coordinating the heme group, even though overall pairwise identities between some globins fall near 20–30% identity<span class="citation" data-cites="chothia1986 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-chothia1986" role="doc-biblioref">11</a></sup></span>.</p>
+<p>MSAs inform protein structure and function prediction<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Profiles and hidden Markov models (e.g., DELTA-BLAST, HMMER) are derived from MSAs and exploit conservation patterns to detect remote homologs<span class="citation" data-cites="park1998 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-park1998" role="doc-biblioref">2</a></sup></span>. Conservation patterns inform variant interpretation: amino-acid changes at highly conserved positions across species are more likely deleterious, and many variant effect predictors incorporate cross-species MSAs to quantify evolutionary constraint<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. MSAs form the raw data for phylogenetic inference methods; tree-building algorithms assume each column corresponds to characters evolved from a common ancestral state, so alignment inaccuracies propagate directly into tree errors<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 5.4 – Multiple Sequence Alignment of ZNF226 Orthologs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-msa" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Multiple sequence alignment of ZNF226 orthologs showing conserved amino acid positions across several mammalian species, with variable regions highlighted by differences in residue color and shading. The alignment displays sequence conservation and divergence across homologous protein regions.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-msa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/ZNF226_Combined.png" class="img-fluid figure-img" alt="Multiple sequence alignment of ZNF226 orthologs showing conserved amino acid positions across several mammalian species, with variable regions highlighted by differences in residue color and shading. The alignment displays sequence conservation and divergence across homologous protein regions.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-msa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.4: Multiple sequence alignment of ZNF226 orthologs showing conserved amino acid positions across several mammalian species, with variable regions highlighted by differences in residue color and shading. The alignment displays sequence conservation and divergence across homologous protein regions.
+</figcaption>
+</figure>
+</div>
+<p>Multiple sequence alignment of human ZNF226 and orthologous sequences from rhesus macaque, Pacific walrus, southern elephant seal, and wild bactrian camel. The alignment was generated with EMBOSS-EMBL, Clustal Omega, and SAPS, and it illustrates how multiple sequence alignment can be used to compare conserved and variable regions across orthologs. Exon boundaries are highlighted in blue, non-conserved regions in orange, KRAB domains in green, and repeat regions in red, with cysteine and histidine residues in the repeat motifs marked as important structural features. This type of pattern is especially informative for zinc finger genes, where conserved domains support protein function while variation in repeat arrays may alter DNA-binding specificity. It also provides a useful connection to PRDM9, whose rapidly evolving zinc finger domain plays a key role in DNA recognition and recombination hotspot targeting in vertebrates. Source: <a href="https://commons.wikimedia.org/wiki/File:ZNF226_Ortholog_Multiple_Sequence_Alignment_5.png">Wikimedia Commons</a>.</p>
+</div>
+</div>
+</section>
+<section id="conserved-residues-motifs-and-databases-of-msas" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="conserved-residues-motifs-and-databases-of-msas"><span class="header-section-number">5.4.2</span> Conserved Residues, Motifs, and Databases of MSAs</h3>
+<p>Highly conserved residues often mark structurally or functionally critical positions such as catalytic residues, metal-binding residues, or disulfide-forming cysteines<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. In the insulin family, an MSA across mammals shows strongly conserved A and B chains, particularly cysteines forming disulfide bonds, whereas the intervening C peptide is far more variable with numerous indels<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. This pattern reflects different functional constraints: the mature hormone requires precise disulfide-bond geometry, whereas the C peptide primarily functions as a processing intermediate and tolerates more substitutions<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>Databases such as Pfam and SMART curate large collections of MSAs representing protein families and domains, each associated with profile hidden Markov models for searching domain instances in new sequences<span class="citation" data-cites="finn2014 letunic2012 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-finn2014" role="doc-biblioref">12</a>,<a href="#ref-letunic2012" role="doc-biblioref">13</a></sup></span>. In Pfam, each family has a manually curated seed alignment capturing representative sequences and a larger full alignment extending coverage to additional homologs<span class="citation" data-cites="finn2014 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-finn2014" role="doc-biblioref">12</a></sup></span>. Integrated resources such as InterPro and NCBI Conserved Domain Database (CDD) combine multiple alignment-based resources, allowing single query proteins to be annotated against Pfam, PROSITE, SMART, TIGRFAMs, and other domain collections<span class="citation" data-cites="hunter2012 marchler2015 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-hunter2012" role="doc-biblioref">14</a>,<a href="#ref-marchler2015" role="doc-biblioref">15</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Connection to Chapter 4 and Lab 3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In Chapter 4, you explored genome browsers including UCSC and Ensembl, which display whole-genome MSAs through conservation tracks such as PhastCons, phyloP, and GERP<span class="citation" data-cites="siepel2005 pollard2010 davydov2010"><sup><a href="#ref-siepel2005" role="doc-biblioref">16</a>–<a href="#ref-davydov2010" role="doc-biblioref">18</a></sup></span>. These tracks derive from multi-species alignments (e.g., Multiz) spanning entire chromosomes and highlight conserved exons and regulatory elements<span class="citation" data-cites="blanchette2004 paten2008"><sup><a href="#ref-blanchette2004" role="doc-biblioref">19</a>,<a href="#ref-paten2008" role="doc-biblioref">20</a></sup></span>. In <a href="./Lab03.html">Lab 3</a>, you will explore these conservation tracks directly to identify functional elements within specific genomic loci, connecting protein-level MSAs covered in this chapter to genome-scale comparative genomics.</p>
+</div>
+</div>
+</section>
+<section id="algorithms-for-multiple-sequence-alignment" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="algorithms-for-multiple-sequence-alignment"><span class="header-section-number">5.4.3</span> Algorithms for Multiple Sequence Alignment</h3>
+<p>Constructing accurate MSAs is algorithmically challenging because the search space grows combinatorially with sequence number, and exact optimization by dynamic programming becomes infeasible beyond a small number of sequences<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Practical MSA methods use heuristic strategies trading exact optimality for computational tractability while maintaining high accuracy<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Five main approaches exist: exact methods, progressive alignment, iterative refinement, consistency-based approaches, and structure-based methods (<a href="#tbl-msa-algorithms" class="quarto-xref">Table&nbsp;<span>5.2</span></a>)<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p><strong>Exact methods</strong> generalize Needleman–Wunsch to multiple dimensions, maximizing sum-of-pairs or related objective functions<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Time and space requirements scale roughly as (O(2^N L^N)) for (N) sequences of average length (L), making them impractical for more than four or five sequences<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Exact approaches play mainly conceptual or benchmarking roles<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p><strong>Progressive alignment</strong> builds MSAs stepwise by computing all pairwise alignments, constructing a guide tree based on pairwise distances, and aligning sequences in tree-specified order<span class="citation" data-cites="feng1987 feng1990 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-feng1987" role="doc-biblioref">21</a>,<a href="#ref-feng1990" role="doc-biblioref">22</a></sup></span>. CLUSTALW exemplifies this approach: it uses global pairwise alignments (via Needleman–Wunsch) to compute percent identities, converts similarities to distances, uses clustering (UPGMA or neighbor-joining) to build a guide tree, and aligns the most closely related pair first, progressively adding more sequences until all are included<span class="citation" data-cites="thompson1994 larkin2007 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1994" role="doc-biblioref">23</a>,<a href="#ref-larkin2007" role="doc-biblioref">24</a></sup></span>. A key heuristic is “once a gap, always a gap,” giving highest weight to initial closest-sequence alignments when placing gaps<span class="citation" data-cites="thompson1994 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1994" role="doc-biblioref">23</a></sup></span>. CLUSTALW down-weights very similar sequence clusters so they do not dominate scoring and uses position-specific gap penalties to encourage block-like gap patterns<span class="citation" data-cites="thompson1994 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1994" role="doc-biblioref">23</a></sup></span>. While historically the most popular web-based progressive alignment program, experts now recommend newer programs such as MAFFT, ProbCons, and MUSCLE for improved performance<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. CLUSTALW remains valuable pedagogically for illustrating progressive alignment and is implemented directly in AliView, introduced in Chapter 4<span class="citation" data-cites="feng1987 feng1990 thompson1994 larkin2007 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-feng1987" role="doc-biblioref">21</a>–<a href="#ref-larkin2007" role="doc-biblioref">24</a></sup></span>.</p>
+<p><strong>Iterative methods</strong> refine an initial MSA by repeatedly modifying and re-aligning sequence subsets or profiles to improve an objective score<span class="citation" data-cites="edgar2004a katoh2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-edgar2004a" role="doc-biblioref">25</a>,<a href="#ref-katoh2005" role="doc-biblioref">26</a></sup></span>. MAFFT and MUSCLE illustrate this strategy<span class="citation" data-cites="edgar2004a katoh2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-edgar2004a" role="doc-biblioref">25</a>,<a href="#ref-katoh2005" role="doc-biblioref">26</a></sup></span>. MAFFT begins with fast progressive alignment using k-mer counting (e.g., 6-tuples) to estimate pairwise distances without full alignments, then refines by recalculating distances from the current MSA and performing additional progressive passes and iterative profile–profile realignments to maximize sum-of-pairs scores<span class="citation" data-cites="katoh2005 katoh2009 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-katoh2005" role="doc-biblioref">26</a>,<a href="#ref-katoh2009" role="doc-biblioref">27</a></sup></span>. MAFFT’s command-line interface allows integration into reproducible pipelines and high-performance computing environments, complementing web-based tools for exploratory work<span class="citation" data-cites="katoh2005 katoh2009 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-katoh2005" role="doc-biblioref">26</a>,<a href="#ref-katoh2009" role="doc-biblioref">27</a></sup></span>. MUSCLE follows a three-stage protocol: building a draft progressive alignment, constructing an improved guide tree using corrected distance estimates (e.g., Kimura distances), and performing iterative refinement by partitioning the tree into subprofiles, realigning them, and accepting changes increasing sum-of-pairs scores<span class="citation" data-cites="edgar2004a edgar2004b pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-edgar2004a" role="doc-biblioref">25</a>,<a href="#ref-edgar2004b" role="doc-biblioref">28</a></sup></span>. In both cases, iterative refinement can correct early errors from the first progressive pass, overcoming the main limitation of strictly progressive methods<span class="citation" data-cites="edgar2004a katoh2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-edgar2004a" role="doc-biblioref">25</a>,<a href="#ref-katoh2005" role="doc-biblioref">26</a></sup></span>.</p>
+<p><strong>Consistency-based approaches</strong> introduce additional information by using the emerging MSA to guide pairwise alignments respecting transitive relationships among residues<span class="citation" data-cites="notredame2000 do2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-notredame2000" role="doc-biblioref">29</a>,<a href="#ref-do2005" role="doc-biblioref">30</a></sup></span>. If residue <span class="math inline">\((x_i)\)</span> in sequence <span class="math inline">\((x)\)</span> aligns with residue <span class="math inline">\((z_k)\)</span> in sequence <span class="math inline">\((z)\)</span>, and <span class="math inline">\((z_k)\)</span> aligns with <span class="math inline">\((y_j)\)</span> in sequence <span class="math inline">\((y)\)</span>, this supports aligning <span class="math inline">\((x_i)\)</span> with <span class="math inline">\((y_j)\)</span><span class="citation" data-cites="notredame2000 do2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-notredame2000" role="doc-biblioref">29</a>,<a href="#ref-do2005" role="doc-biblioref">30</a></sup></span>. ProbCons implements this via a pair-HMM framework: computing posterior probability matrices for each sequence pair, transforming these using consistency across all sequences, building a guide tree based on expected alignment accuracy, and performing progressive alignment with optional iterative refinement<span class="citation" data-cites="do2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-do2005" role="doc-biblioref">30</a></sup></span>. T-COFFEE builds an extended library of alignments combining global and local pairwise alignments, reweights residue pairs using consistency, and applies progressive alignment with custom substitution matrices derived from the library<span class="citation" data-cites="notredame2000 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-notredame2000" role="doc-biblioref">29</a></sup></span>. Benchmarks show consistency-based methods often yield more accurate alignments than purely progressive methods, especially for moderately or highly divergent protein families<span class="citation" data-cites="do2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-do2005" role="doc-biblioref">30</a></sup></span>.</p>
+<p><strong>Structure-based methods</strong> incorporate three-dimensional structural information, recognizing that tertiary structures are better conserved than primary sequences<span class="citation" data-cites="armougom2006 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-armougom2006" role="doc-biblioref">31</a></sup></span>. The Expresso mode in T-COFFEE begins by identifying structural templates for input sequences via BLAST searches against the Protein Data Bank, then uses pairwise structural alignments to guide multiple alignment, improving alignment of secondary structure elements and functionally important residues<span class="citation" data-cites="armougom2006 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-armougom2006" role="doc-biblioref">31</a></sup></span>. PRALINE can integrate profiles from PSI-BLAST searches and predicted secondary structure, using this additional information to refine MSAs beyond what sequence alone dictates<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. Structural information is also crucial in benchmarking: curated reference alignments based on superposed protein structures serve as gold standards for evaluating algorithmic accuracy using metrics such as sum-of-pairs and column scores<span class="citation" data-cites="thompson1999 lassmann2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1999" role="doc-biblioref">32</a>,<a href="#ref-lassmann2005" role="doc-biblioref">33</a></sup></span>.</p>
+<div class="smaller" style="overflow-x: auto;">
+<div id="tbl-msa-algorithms" class="striped hover quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-msa-algorithms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.2: Algorithm families with representative examples you will encounter in lab exercises.
+</figcaption>
+<div aria-describedby="tbl-msa-algorithms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 32%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method type</th>
+<th>Core idea</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Exact</td>
+<td>Multi-dimensional dynamic programming; guaranteed optimal but feasible only for very few short sequences.</td>
+<td>Used mainly in benchmarking studies.</td>
+</tr>
+<tr class="even">
+<td>Progressive</td>
+<td>Compute all pairwise global alignments (often with Needleman–Wunsch), build a guide tree from pairwise distances, then align the most similar sequences first and add others stepwise; “once a gap, always a gap.”</td>
+<td>CLUSTALW (in AliView).</td>
+</tr>
+<tr class="odd">
+<td>Iterative</td>
+<td>Start with an initial MSA, then repeatedly modify and re-score it, keeping changes that improve an objective until convergence.</td>
+<td>MAFFT, MUSCLE.</td>
+</tr>
+<tr class="even">
+<td>Consistency-based</td>
+<td>Combine information from many pairwise local alignments or profiles so that if A aligns to B and B to C, the algorithm encourages A to align consistently with C.</td>
+<td>T-COFFEE, ProbCons.</td>
+</tr>
+<tr class="odd">
+<td>Structure-based</td>
+<td>Incorporate 3D structural information (when available) alongside sequence when aligning, giving special weight to structurally conserved cores.</td>
+<td>Expresso (T-COFFEE module).</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>NCBI COBALT Tool
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>NCBI’s COBALT (Constraint-Based Alignment Tool) provides a web-based MSA tool integrating pairwise sequence similarity with additional constraints such as conserved motifs and domain information<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. COBALT uses RPS-BLAST searches against the Conserved Domain Database to identify shared domains and motifs, then incorporates this domain-level information into the alignment process so residues within the same domain are preferentially aligned<span class="citation" data-cites="marchler2015 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-marchler2015" role="doc-biblioref">15</a></sup></span>. For classroom use, COBALT offers an accessible way to perform MSA in a browser, visualize conserved regions, and connect sequence-level conservation to domain annotations without requiring local software installation<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+</div>
+</div>
+</section>
+<section id="benchmarking-and-databases-of-msas" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="benchmarking-and-databases-of-msas"><span class="header-section-number">5.4.4</span> Benchmarking and Databases of MSAs</h3>
+<p>Because different MSA algorithms produce noticeably different alignments, especially for divergent protein families, benchmarking is essential for assessing accuracy and guiding tool choice<span class="citation" data-cites="thompson1999 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1999" role="doc-biblioref">32</a></sup></span>. Benchmarking datasets such as BAliBASE, PREFAB, and SABmark consist of curated reference alignments, many derived from three-dimensional structural superpositions rather than sequence alone<span class="citation" data-cites="thompson1999 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1999" role="doc-biblioref">32</a></sup></span>. Alignment accuracy is typically quantified using sum-of-pairs scores (measuring how many residue pairs aligned in the reference are also aligned in the test) and column scores (measuring the fraction of correctly recovered alignment columns)<span class="citation" data-cites="thompson1999 lassmann2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-thompson1999" role="doc-biblioref">32</a>,<a href="#ref-lassmann2005" role="doc-biblioref">33</a></sup></span>. These metrics have limitations—column scores are very stringent, and sum-of-pairs scores do not constitute true distance metrics—but provide standardized ways to compare methods across test cases<span class="citation" data-cites="lassmann2005 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-lassmann2005" role="doc-biblioref">33</a></sup></span>.</p>
+<p>Benchmarking studies consistently show no single algorithm is best in all situations: progressive methods such as CLUSTALW perform well on closely related sequences and are easy to interpret, whereas iterative and consistency-based methods such as MAFFT, MUSCLE, ProbCons, and T-COFFEE generally achieve higher accuracy on more divergent families at greater computational cost<span class="citation" data-cites="do2005 katoh2005 edgar2004a notredame2000 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-edgar2004a" role="doc-biblioref">25</a>,<a href="#ref-katoh2005" role="doc-biblioref">26</a>,<a href="#ref-notredame2000" role="doc-biblioref">29</a>,<a href="#ref-do2005" role="doc-biblioref">30</a></sup></span>. Structure-based methods like Expresso provide further gains when reliable templates are available, particularly for alignments used in homology modeling and structure prediction<span class="citation" data-cites="armougom2006 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-armougom2006" role="doc-biblioref">31</a></sup></span>. For practical work, a good strategy is often to generate alignments with at least two different high-performing tools and compare them in regions of biological interest, possibly making manual adjustments where structural or functional information suggests better gap placement<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>.</p>
+<p>Specialized MSA databases such as Pfam, SMART, and InterPro, together with tools like CDD and DELTA-BLAST, provide a curated layer on top of raw alignment algorithms by maintaining expert-reviewed MSAs and associated models for thousands of protein families<span class="citation" data-cites="finn2014 letunic2012 hunter2012 marchler2015 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-finn2014" role="doc-biblioref">12</a>–<a href="#ref-marchler2015" role="doc-biblioref">15</a></sup></span>. These resources are evaluated and refined over time using benchmarking and structural data, so the MSAs they expose can be trusted as high-quality starting points for functional annotation and comparative analysis<span class="citation" data-cites="finn2014 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-finn2014" role="doc-biblioref">12</a></sup></span>.</p>
+</section>
+<section id="whole-genome-msas-and-genome-browsers" class="level3" data-number="5.4.5">
+<h3 data-number="5.4.5" class="anchored" data-anchor-id="whole-genome-msas-and-genome-browsers"><span class="header-section-number">5.4.5</span> Whole-Genome MSAs and Genome Browsers</h3>
+<p>MSA concepts extend beyond individual proteins to entire genomic regions, where the goal is to align orthologous loci across multiple species to identify conserved exons, regulatory elements, and regions under selection<span class="citation" data-cites="blanchette2004 siepel2005 paten2008 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-siepel2005" role="doc-biblioref">16</a>,<a href="#ref-blanchette2004" role="doc-biblioref">19</a>,<a href="#ref-paten2008" role="doc-biblioref">20</a></sup></span>. Tools such as Multiz, PhastCons, phyloP, and GERP are central to this domain, and their results are visualized in genome browsers such as UCSC and Ensembl, which you explored in Chapter 4<span class="citation" data-cites="blanchette2004 siepel2005 pollard2010 davydov2010 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-siepel2005" role="doc-biblioref">16</a>–<a href="#ref-blanchette2004" role="doc-biblioref">19</a></sup></span>.</p>
+<p>In the UCSC Genome Browser, the Vertebrate Multiz Alignment and Conservation track for the human beta-globin (HBB) locus shows alignments of dozens of vertebrate genomes across exons and introns, with PhastCons and phyloP scores highlighting regions of high conservation or accelerated evolution<span class="citation" data-cites="siepel2005 pollard2010 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-siepel2005" role="doc-biblioref">16</a>,<a href="#ref-pollard2010" role="doc-biblioref">17</a></sup></span>. Exons appear as highly conserved blocks with strong conservation scores, whereas surrounding noncoding regions show a mixture of poorly conserved segments and discrete peaks corresponding to putative regulatory elements<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. GERP scores provide complementary information by estimating rejected substitutions at each alignment column, identifying constrained elements evolving more slowly than expected under neutrality<span class="citation" data-cites="davydov2010 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-davydov2010" role="doc-biblioref">18</a></sup></span>. Through the UCSC Table Browser and tools such as Galaxy, these whole-genome MSAs can be exported in MAF format, converted to FASTA, and further analyzed or re-aligned with conventional MSA tools<span class="citation" data-cites="blankenberg2011 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-blankenberg2011" role="doc-biblioref">34</a></sup></span>.</p>
+<p>The Ensembl browser implements a related but distinct pipeline based on Enredo, Pecan, and Ortheus (EPO) to generate phylogeny-aware MSAs and reconstruct ancestral sequences at internal nodes of the species tree<span class="citation" data-cites="paten2008 flicek2014 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-paten2008" role="doc-biblioref">20</a>,<a href="#ref-flicek2014" role="doc-biblioref">35</a></sup></span>. Enredo partitions genomes into colinear segments accounting for rearrangements and duplications, Pecan uses a consistency-based algorithm to align these segments across species, and Ortheus infers ancestral sequences and insertion–deletion histories using a phylogenetic model<span class="citation" data-cites="paten2008 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-paten2008" role="doc-biblioref">20</a></sup></span>. For the HBB locus, EPO alignments in Ensembl provide not only multi-species alignment of extant sequences but also reconstructed ancestral sequences clarifying whether particular gaps represent insertions or deletions and what ancestral nucleotides likely occupied a given position<span class="citation" data-cites="paten2008 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-paten2008" role="doc-biblioref">20</a></sup></span>. These whole-genome MSAs complement protein-level MSAs by revealing conservation patterns in exons, splice sites, untranslated regions, and distant regulatory elements, connecting naturally back to earlier chapters on genome browsers<span class="citation" data-cites="paten2008 pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a>,<a href="#ref-paten2008" role="doc-biblioref">20</a></sup></span>.</p>
+</section>
+</section>
+<section id="problem-sets" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="problem-sets"><span class="header-section-number">5.5</span> Problem Sets</h2>
+<ol type="1">
+<li><p><strong>Global Protein Alignment</strong>: Implement the Needleman-Wunsch algorithm on this toy example. Below is the PAM matrix already set up based on a gap penalty of -6. First, select the optimal alignment between the pair of sequences. On a blank sheet of paper, work through the matrix to align the two sequences, remembering that vertical and horizontal moves insert gaps and reduce your overall score as in <a href="#fig-pairwise" class="quarto-xref">Figure&nbsp;<span>5.3</span></a>. Then use the scoring matrix to compute the overall score of your resulting optimal alignment. When done, write out the resulting pairwise sequence alignment of the two sequences as in <a href="#fig-exSeq" class="quarto-xref">Figure&nbsp;<span>5.1</span></a>.</p>
+<table class="table-sm table-hover small caption-top table">
+<caption>Scoring Matrix</caption>
+<thead>
+<tr class="header">
+<th>-</th>
+<th>S</th>
+<th>P</th>
+<th>E</th>
+<th>A</th>
+<th>R</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>S</strong></td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td><strong>H</strong></td>
+<td>-1</td>
+<td>0</td>
+<td>1</td>
+<td>-1</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>-2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td><strong>K</strong></td>
+<td>0</td>
+<td>-1</td>
+<td>0</td>
+<td>-1</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td><strong>E</strong></td>
+<td>0</td>
+<td>-1</td>
+<td>4</td>
+<td>0</td>
+<td>-1</td>
+<td>4</td>
+</tr>
+</tbody>
+</table></li>
+<li><p><strong>Multiple Sequence Alignment with COBALT</strong>: Download the FASTA file <a href="datasets/N.fa">N.fa</a>. Go to the <a href="https://www.ncbi.nlm.nih.gov/tools/cobalt/re_cobalt.cgi">COBALT tool</a> at NCBI, upload the FASTA file, and click “Align”.</p>
+<ul>
+<li>How <strong>similar</strong> are these sequences? Would you say they are highly similar (likely from the same species) or dissimilar (likely from different species as in <a href="#fig-msa" class="quarto-xref">Figure&nbsp;<span>5.4</span></a>)? These sequences are actually from the nucleocapsid phosphoprotein of the SARS-CoV-2 genome.</li>
+<li><strong>Configure the view</strong> by changing the color scheme to “BLOSUM62”. How does this help? Configure the view again by changing to “Frequency-based difference”. How does this change your interpretation? What do some of the other settings do?</li>
+<li>How <strong>long</strong> is this protein?</li>
+<li>Click the button at the top to generate a <strong>phylogenetic tree</strong>. Examine the tree topology and branch lengths.</li>
+</ul></li>
+<li><p><strong>Comparative MSA analysis</strong>: Repeat the steps above with <strong>this FASTA file: <a href="datasets/S.fa">S.fa</a></strong>. This second set of sequences is from the SARS-CoV-2 surface glycoprotein, also called the “spike” protein. Notice how the similarity of these sequences differs from the first set.</p>
+<ul>
+<li>Again configure the view settings and explore the length.</li>
+<li>How does the length of this protein compare to the first?</li>
+<li>How do the two trees compare to each other? Look specifically at the scale bar at the bottom. Which sequence represents MORE genetic change?</li>
+<li>Look at the times these sequences were collected in the sequence names. Do the sequences cluster by year collected?</li>
+<li>Find the node associated with the cluster of sequences from 2019/2020 and reroot the tree. Do these clusters in time make sense?</li>
+</ul></li>
+<li><p><strong>Algorithm comparison</strong>: Download the FASTA file <a href="datasets/hbb.fa">hbb.fa</a> and go to the <a href="https://www.ebi.ac.uk/jdispatcher/msa">multiple alignment</a> page on the EBI platform. Select an MSA tool (e.g., CLUSTALW, MAFFT, MUSCLE) and upload the sequences to submit the job.</p>
+<ul>
+<li>Like with COBALT, explore different color schemes for viewing the MSA.</li>
+<li>Look at the resulting phylogenetic tree. Work with others in the class to compare your results across different alignment tools.</li>
+<li>Compare the results to conservation patterns you would expect for hemoglobin based on its function. Do highly conserved regions correspond to functionally important domains?</li>
+<li>Try the same alignment with a second tool. Where do the two alignments differ? Which differences might matter for downstream phylogenetic or structural analyses?</li>
+</ul></li>
+<li><p><strong>Margaret Dayhoff tribute</strong>: Margaret Dayhoff is credited with developing the single-letter abbreviation system for amino acids, similar to ASCII codes used for quality scores of genome sequences in FASTQ files covered in Chapter 3.</p>
+<ul>
+<li>For fun, convert your name to a “protein.” If any letters in your name do not match amino acids, either remove them or choose your middle or last name (or a nickname—this is really just for fun!). <em>For example, I translated my name to “LAVRIE,” replacing the U for the letter V.</em></li>
+<li>Take your “name protein” and submit it to BLAST. Select the tool Protein BLAST or “blastp”. For the Search set, leave it as the “ClusteredNR” which is the non-redundant set of protein sequences in NCBI.</li>
+<li>Examine your top hits. Do they make biological sense, or are they spurious matches driven by low complexity? What does this exercise reveal about the importance of query length and composition in database searches?</li>
+</ul></li>
+</ol>
+</section>
+<section id="reflection-questions" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="reflection-questions"><span class="header-section-number">5.6</span> Reflection Questions</h2>
+<ol type="1">
+<li><p><strong>Substitution matrices and biological interpretation</strong>: How does understanding where substitution matrices and gap penalties come from change the way you interpret BLAST or MSA output? Think about a gene or protein you care about—would you learn more from global or local alignments when comparing it across species, and why?</p></li>
+<li><p><strong>Conservation patterns and functional inference</strong>: In the MSA problem sets above, how does your knowledge of the N and S proteins from SARS-CoV-2 match the conservation patterns you observed in their alignments? Most PCR-based tests for SARS-CoV-2 detection target the N protein, with few targeting the S protein. Why do you think the N protein makes a better universal target for detection? In cases where the spike protein is used for detection, what information do you think it provides beyond positive or negative for infection?</p></li>
+<li><p><strong>Algorithm persistence and modern genomics</strong>: Many genome-alignment tools were developed decades after Needleman–Wunsch and Smith–Waterman but still rely on their core ideas. What do you think enabled these early algorithms to remain so influential in modern genomics, even as sequencing technologies and computational power have advanced dramatically?</p></li>
+<li><p><strong>MSA tool choice and uncertainty</strong>: When you see conflicting alignments from different tools (e.g., CLUSTALW vs.&nbsp;MAFFT vs.&nbsp;COBALT), how will you decide which to trust, and how much does that uncertainty matter for the biological inferences you intend to draw? What additional information (structural data, domain annotations, phylogenetic context) might help resolve ambiguities?</p></li>
+<li><p><strong>Cross-chapter connections</strong>: How do the conservation tracks you explored in UCSC and Ensembl (Chapter 4) relate to the MSA algorithms and benchmarking datasets discussed in this chapter? What are the advantages and limitations of using whole-genome MSAs displayed in browsers compared to protein-level MSAs you generate yourself with tools like MAFFT or COBALT?</p></li>
+</ol>
+</section>
+<section id="references" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="references"><span class="header-section-number">5.7</span> References</h2>
+
+
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-pevsner2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Pevsner, J. <em>Bioinformatics and Functional Genomics</em>. (Wiley, 2015).</div>
+</div>
+<div id="ref-park1998" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Park, J., Teichmann, S. A., Hubbard, T. &amp; Chothia, C. <a href="https://doi.org/10.1006/jmbi.1998.1712">Intermediate sequences increase the detection of homology between sequences</a>. <em>Journal of Molecular Biology</em> <strong>278</strong>, 847–867 (1998).</div>
+</div>
+<div id="ref-needleman1970" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Needleman, S. B. &amp; Wunsch, C. D. <a href="https://doi.org/10.1016/0022-2836(70)90057-4">A general method applicable to the search for similarities in the amino acid sequence of two proteins</a>. <em>Journal of Molecular Biology</em> <strong>48</strong>, 443–453 (1970).</div>
+</div>
+<div id="ref-smith1981" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Smith, T. F. &amp; Waterman, M. S. <a href="https://doi.org/10.1016/0022-2836(81)90087-5">Identification of common molecular subsequences</a>. <em>Journal of Molecular Biology</em> <strong>147</strong>, 195–197 (1981).</div>
+</div>
+<div id="ref-dayhoff1978" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Dayhoff, M. O., Schwartz, R. M. &amp; Orcutt, B. C. A model of evolutionary change in proteins. <em>Atlas of Protein Sequence and Structure</em> <strong>5</strong>, 345–352 (1978).</div>
+</div>
+<div id="ref-henikoff1992" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Henikoff, S. &amp; Henikoff, J. G. <a href="https://doi.org/10.1073/pnas.89.22.10915">Amino acid substitution matrices from protein blocks</a>. <em>Proceedings of the National Academy of Sciences of the USA</em> <strong>89</strong>, 10915–10919 (1992).</div>
+</div>
+<div id="ref-deborah_thurtle-schmidt_global_2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Deborah Thurtle-Schmidt. <a href="https://www.youtube.com/watch?v=LhpGz5--isw">Global sequence alignment</a>. (2018).</div>
+</div>
+<div id="ref-tel-aviv_tutorials_how_2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Tel-Aviv Tutorials. <a href="https://www.youtube.com/watch?v=F1YId_z4pc8"><span>HOW</span> <span>TO</span> <span>Sequence</span> <span>Alignment</span> (<span>Local</span>) - <span>SMITH</span> <span>WATERMAN</span></a>. (2019).</div>
+</div>
+<div id="ref-altschul1990" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline">Altschul, S. F., Gish, W., Miller, W., Myers, E. W. &amp; Lipman, D. J. <a href="https://doi.org/10.1016/S0022-2836(05)80360-2">Basic local alignment search tool</a>. <em>Journal of Molecular Biology</em> <strong>215</strong>, 403–410 (1990).</div>
+</div>
+<div id="ref-camacho2009" class="csl-entry" role="listitem">
+<div class="csl-left-margin">10. </div><div class="csl-right-inline">Camacho, C. <em>et al.</em> <a href="https://doi.org/10.1186/1471-2105-10-421"><span>BLAST+</span>: Architecture and applications</a>. <em>BMC Bioinformatics</em> <strong>10</strong>, 421 (2009).</div>
+</div>
+<div id="ref-chothia1986" class="csl-entry" role="listitem">
+<div class="csl-left-margin">11. </div><div class="csl-right-inline">Chothia, C. &amp; Lesk, A. M. The relation between the divergence of sequence and structure in proteins. <em>EMBO Journal</em> <strong>5</strong>, 823–826 (1986).</div>
+</div>
+<div id="ref-finn2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">12. </div><div class="csl-right-inline"><span class="nocase">Finn, R. D., Bateman, A., Clements, J., <em>et al.</em></span> <a href="https://doi.org/10.1093/nar/gkt1223">Pfam: The protein families database</a>. <em>Nucleic Acids Research</em> <strong>42</strong>, D222–D230 (2014).</div>
+</div>
+<div id="ref-letunic2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">13. </div><div class="csl-right-inline">Letunic, I., Doerks, T. &amp; Bork, P. <a href="https://doi.org/10.1093/nar/gkr931">SMART 7: Recent updates to the protein domain annotation resource</a>. <em>Nucleic Acids Research</em> <strong>40</strong>, D302–D305 (2012).</div>
+</div>
+<div id="ref-hunter2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">14. </div><div class="csl-right-inline"><span class="nocase">Hunter, S., Jones, P., Mitchell, A., <em>et al.</em></span> <a href="https://doi.org/10.1093/nar/gkr948">InterPro in 2011: New developments in the family and domain prediction database</a>. <em>Nucleic Acids Research</em> <strong>40</strong>, D306–D312 (2012).</div>
+</div>
+<div id="ref-marchler2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">15. </div><div class="csl-right-inline"><span class="nocase">Marchler-Bauer, A., Derbyshire, M. K., Gonzales, N. R., <em>et al.</em></span> <a href="https://doi.org/10.1093/nar/gku1221">CDD: <span>NCBI</span>’s conserved domain database</a>. <em>Nucleic Acids Research</em> <strong>43</strong>, D222–D226 (2015).</div>
+</div>
+<div id="ref-siepel2005" class="csl-entry" role="listitem">
+<div class="csl-left-margin">16. </div><div class="csl-right-inline"><span class="nocase">Siepel, A., Bejerano, G., Pedersen, J. S., <em>et al.</em></span> <a href="https://doi.org/10.1101/gr.3715005">Evolutionarily conserved elements in vertebrate, insect, worm, and yeast genomes</a>. <em>Genome Research</em> <strong>15</strong>, 1034–1050 (2005).</div>
+</div>
+<div id="ref-pollard2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">17. </div><div class="csl-right-inline">Pollard, K. S., Hubisz, M. J., Rosenbloom, K. R. &amp; Siepel, A. <a href="https://doi.org/10.1101/gr.097857.109">Detection of nonneutral substitution rates on mammalian phylogenies</a>. <em>Genome Research</em> <strong>20</strong>, 110–121 (2010).</div>
+</div>
+<div id="ref-davydov2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">18. </div><div class="csl-right-inline"><span class="nocase">Davydov, E. V., Goode, D. L., Sirota, M., <em>et al.</em></span> <a href="https://doi.org/10.1371/journal.pcbi.1001025">Identifying a high fraction of the human genome to be under selective constraint using <span>GERP++</span></a>. <em>PLoS Computational Biology</em> <strong>6</strong>, e1001025 (2010).</div>
+</div>
+<div id="ref-blanchette2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">19. </div><div class="csl-right-inline"><span class="nocase">Blanchette, M., Kent, W. J., Riemer, C., <em>et al.</em></span> <a href="https://doi.org/10.1101/gr.1933104">Aligning multiple genomic sequences with the threaded blockset aligner</a>. <em>Genome Research</em> <strong>14</strong>, 708–715 (2004).</div>
+</div>
+<div id="ref-paten2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">20. </div><div class="csl-right-inline">Paten, B., Herrero, J., Beal, M. K., Fitzgerald, S. &amp; Birney, E. <a href="https://doi.org/10.1101/gr.076554.108">Enredo and pecan: Genome-wide mammalian consistency-based multiple alignment with paralogs</a>. <em>Genome Research</em> <strong>18</strong>, 1814–1828 (2008).</div>
+</div>
+<div id="ref-feng1987" class="csl-entry" role="listitem">
+<div class="csl-left-margin">21. </div><div class="csl-right-inline">Feng, D.-F. &amp; Doolittle, R. F. <a href="https://doi.org/10.1007/BF02603120">Progressive sequence alignment as a prerequisite to correct phylogenetic trees</a>. <em>Journal of Molecular Evolution</em> <strong>25</strong>, 351–360 (1987).</div>
+</div>
+<div id="ref-feng1990" class="csl-entry" role="listitem">
+<div class="csl-left-margin">22. </div><div class="csl-right-inline">Feng, D.-F. &amp; Doolittle, R. F. <a href="https://doi.org/10.1016/0076-6879(90)83024-9">Progressive sequence alignment and phylogenetic tree construction with the <span>CLUSTAL</span> program</a>. <em>Methods in Enzymology</em> <strong>183</strong>, 375–387 (1990).</div>
+</div>
+<div id="ref-thompson1994" class="csl-entry" role="listitem">
+<div class="csl-left-margin">23. </div><div class="csl-right-inline">Thompson, J. D., Higgins, D. G. &amp; Gibson, T. J. <a href="https://doi.org/10.1093/nar/22.22.4673"><span>CLUSTAL W</span>: Improving the sensitivity of progressive multiple sequence alignment through sequence weighting, position-specific gap penalties and weight matrix choice</a>. <em>Nucleic Acids Research</em> <strong>22</strong>, 4673–4680 (1994).</div>
+</div>
+<div id="ref-larkin2007" class="csl-entry" role="listitem">
+<div class="csl-left-margin">24. </div><div class="csl-right-inline"><span class="nocase">Larkin, M. A., Blackshields, G., <em>et al.</em></span> <a href="https://doi.org/10.1093/bioinformatics/btm404"><span>Clustal W</span> and <span>Clustal X</span> version 2.0</a>. <em>Bioinformatics</em> <strong>23</strong>, 2947–2948 (2007).</div>
+</div>
+<div id="ref-edgar2004a" class="csl-entry" role="listitem">
+<div class="csl-left-margin">25. </div><div class="csl-right-inline">Edgar, R. C. <a href="https://doi.org/10.1093/nar/gkh340"><span>MUSCLE</span>: Multiple sequence alignment with high accuracy and high throughput</a>. <em>Nucleic Acids Research</em> <strong>32</strong>, 1792–1797 (2004).</div>
+</div>
+<div id="ref-katoh2005" class="csl-entry" role="listitem">
+<div class="csl-left-margin">26. </div><div class="csl-right-inline">Katoh, K., Kuma, K.-I., Toh, H. &amp; Miyata, T. <a href="https://doi.org/10.1093/nar/gki198">MAFFT version 5: Improvement in accuracy of multiple sequence alignment</a>. <em>Nucleic Acids Research</em> <strong>33</strong>, 511–518 (2005).</div>
+</div>
+<div id="ref-katoh2009" class="csl-entry" role="listitem">
+<div class="csl-left-margin">27. </div><div class="csl-right-inline">Katoh, K. &amp; Toh, H. <a href="https://doi.org/10.1093/bib/bbn013">Recent developments in the <span>MAFFT</span> multiple sequence alignment program</a>. <em>Briefings in Bioinformatics</em> <strong>9</strong>, 286–298 (2008).</div>
+</div>
+<div id="ref-edgar2004b" class="csl-entry" role="listitem">
+<div class="csl-left-margin">28. </div><div class="csl-right-inline">Edgar, R. C. <a href="https://doi.org/10.1186/1471-2105-5-113"><span>MUSCLE</span>: A multiple sequence alignment method with reduced time and space complexity</a>. <em>BMC Bioinformatics</em> <strong>5</strong>, 113 (2004).</div>
+</div>
+<div id="ref-notredame2000" class="csl-entry" role="listitem">
+<div class="csl-left-margin">29. </div><div class="csl-right-inline">Notredame, C., Higgins, D. G. &amp; Heringa, J. <a href="https://doi.org/10.1006/jmbi.2000.4042"><span>T-Coffee</span>: A novel method for fast and accurate multiple sequence alignment</a>. <em>Journal of Molecular Biology</em> <strong>302</strong>, 205–217 (2000).</div>
+</div>
+<div id="ref-do2005" class="csl-entry" role="listitem">
+<div class="csl-left-margin">30. </div><div class="csl-right-inline">Do, C. B., Mahabhashyam, M. S. P., Brudno, M. &amp; Batzoglou, S. <a href="https://doi.org/10.1101/gr.2821705">ProbCons: Probabilistic consistency-based multiple sequence alignment</a>. <em>Genome Research</em> <strong>15</strong>, 330–340 (2005).</div>
+</div>
+<div id="ref-armougom2006" class="csl-entry" role="listitem">
+<div class="csl-left-margin">31. </div><div class="csl-right-inline">Armougom, F. <em>et al.</em> <a href="https://doi.org/10.1093/nar/gkl092"><span>Expresso</span>: Automatic incorporation of structural information in multiple sequence alignments using <span>3D</span>-<span>Coffee</span></a>. <em>Nucleic Acids Research</em> <strong>34</strong>, W604–W608 (2006).</div>
+</div>
+<div id="ref-thompson1999" class="csl-entry" role="listitem">
+<div class="csl-left-margin">32. </div><div class="csl-right-inline">Thompson, J. D., Plewniak, F. &amp; Poch, O. <a href="https://doi.org/10.1093/nar/27.13.2682">A comprehensive comparison of multiple sequence alignment programs</a>. <em>Nucleic Acids Research</em> <strong>27</strong>, 2682–2690 (1999).</div>
+</div>
+<div id="ref-lassmann2005" class="csl-entry" role="listitem">
+<div class="csl-left-margin">33. </div><div class="csl-right-inline">Lassmann, T. &amp; Sonnhammer, E. L. L. <a href="https://doi.org/10.1016/j.febslet.2005.11.036">Quality assessment of multiple alignment programs</a>. <em>FEBS Letters</em> <strong>579</strong>, 681–685 (2005).</div>
+</div>
+<div id="ref-blankenberg2011" class="csl-entry" role="listitem">
+<div class="csl-left-margin">34. </div><div class="csl-right-inline">Blankenberg, D., Taylor, J., Nekrutenko, A. &amp; Galaxy Team, the. <a href="https://doi.org/10.1093/bioinformatics/btr398">Making whole genome multiple alignments usable for biologists</a>. <em>Bioinformatics</em> <strong>27</strong>, 2426–2428 (2011).</div>
+</div>
+<div id="ref-flicek2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">35. </div><div class="csl-right-inline"><span class="nocase">Flicek, P., Amode, M. R., Barrell, D., <em>et al.</em></span> <a href="https://doi.org/10.1093/nar/gkt1196">Ensembl 2014</a>. <em>Nucleic Acids Research</em> <strong>42</strong>, D749–D755 (2014).</div>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch04-browsers-databases.html" class="pagination-link" aria-label="Genome Databases and Browsers">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch06-genome-align-assembly.html" class="pagination-link" aria-label="Genome Alignment and Genome Assembly">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Genome Alignment and Genome Assembly</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
