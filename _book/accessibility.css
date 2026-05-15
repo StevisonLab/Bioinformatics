@@ -1,9 +1,0 @@
-/* Fix figure caption contrast */
-  figcaption, .figure-caption {
-    color: #000000 !important; /* Pure black for maximum contrast */
-  }
-
-/* Simplified TOC without broken ARIA */
-nav[role="doc-toc"] {
-  role: navigation;
-}
