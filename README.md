@@ -9,3 +9,6 @@ The field of Bioinformatics moves fast — back when I was in graduate school, I
 I am making this resource public with the goal that other educators can use and adopt this for their own courses. The use of a custom-online textbook avoids costly fees for students, increasing accessibility of students from any background, and removes the dependence of faculty on LMS platforms such as Canvas. If you find anything factually incorrect or out of date, please let me know. My goal is to make updates each time I teach my Bioinformatics course and publish updated versions. 
 
 Whether you are a fellow teacher or a student, I hope you find this resource useful! Thanks for your interest.
+
+Citation: Laurie Stevison. (2026). StevisonLab/Bioinformatics: First Edition (v1.0). Zenodo. https://doi.org/10.5281/zenodo.20218119. [![DOI](https://zenodo.org/badge/1128534260.svg)](https://doi.org/10.5281/zenodo.20218118)
+
