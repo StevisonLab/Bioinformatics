@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 lang: en-US
 
@@ -58,14 +59,3 @@ format:
     anchor-sections: true
     smooth-scroll: true
     css: accessibility.css
-  pdf:    
-    toc: true
-    number-sections: true
-    cite-method: biblatex
-    biblatexoptions:
-      - style=apa
-      - backend=biber
-      - refsection=chapter
-    include-in-header:
-      text: |
-        \usepackage{hyperref}

@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>23&nbsp; Lab09: IGV Genome Visualization Lab Activity – Reading Genomes: A Companion to Bioinformatics and Genome Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Lab10.html" rel="next">
+<link href="./Lab08.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-975e726794ce811e14261b5ab5acfd7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-axe/axe-check.js" type="module"></script>
+<script id="quarto-axe-checker-options" type="text/plain">dHJ1ZQ==</script>
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-24950670649d35549c6a1355d7402e2b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="accessibility.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lab01.html">Lab Manual</a></li><li class="breadcrumb-item"><a href="./Lab09.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reading Genomes: A Companion to Bioinformatics and Genome Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Companion Chapters</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-reading-genomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Reading Genomes: What Bioinformatics Is For</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-sequencing-tech.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sequencing Technologies and Data Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch03-formats-qc-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">File Formats and Quality Control in Genome Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04-browsers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-seq-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-genome-align-assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Genome Alignment and Genome Assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-project-mgmt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-alt-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Alternative Post‑Alignment Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch09-hmms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hidden Markov Models in Biology</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Variant Calling and Filtering with GATK</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-grants-funding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Grant Funding and the Scientific Enterprise</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch12-popgen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Population Genomics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-motifs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Sequence Motif Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-where-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Where to Go Next: Synthesis, Emerging Frontiers, and Lifelong Learning in Genomics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lab Manual</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Lab01: Find and describe a Genome Analysis Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lab02: Design a Genome Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Lab03: Genome Browsers and Databases</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Lab04: Genome Sequence Indexing and Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Lab05: BLAST on the Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Lab06: HMMs in Predicting Gene Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Lab07: Variant Calling via GATK Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab09.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lab 10: Population Genomics using the 1000 Genomes Dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix: How to Read Scientific Literature</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Appendix: Semester Research Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Appendix: Yeast Experimental Evolution Dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Appendix: Resources for Future Learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">23.1</span> Overview</a></li>
+  <li><a href="#step-1-download-and-install-igv" id="toc-step-1-download-and-install-igv" class="nav-link" data-scroll-target="#step-1-download-and-install-igv"><span class="header-section-number">23.2</span> Step 1 — Download and Install IGV</a></li>
+  <li><a href="#step-2-load-data-into-igv" id="toc-step-2-load-data-into-igv" class="nav-link" data-scroll-target="#step-2-load-data-into-igv"><span class="header-section-number">23.3</span> Step 2 — Load Data into IGV</a></li>
+  <li><a href="#step-3-examine-variants-in-depth" id="toc-step-3-examine-variants-in-depth" class="nav-link" data-scroll-target="#step-3-examine-variants-in-depth"><span class="header-section-number">23.4</span> Step 3 — Examine Variants in Depth</a></li>
+  <li><a href="#deliverables" id="toc-deliverables" class="nav-link" data-scroll-target="#deliverables"><span class="header-section-number">23.5</span> Deliverables</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">23.6</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<a href="#quarto-content" class="skip-nav">Skip to main content</a>
+<style>
+.skip-nav {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-nav:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  z-index: 9999;
+}
+</style>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Lab01.html">Lab Manual</a></li><li class="breadcrumb-item"><a href="./Lab09.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">23.1</span> Overview</h2>
+<p>Throughout this course, you have been building a complete NGS variant-calling workflow using a real experimental evolution dataset. In Lab 4, you downloaded whole-genome sequencing reads from the <em>Saccharomyces cerevisiae</em> population SRR1693691<span class="citation" data-cites="burke_standing_2014"><sup><a href="#ref-burke_standing_2014" role="doc-biblioref">1</a></sup></span>, trimmed them, and aligned them to the sacCer3 reference genome using BWA to produce a sorted BAM file. In Lab 7, you ran the GATK best practices pipeline on those alignments: you marked PCR duplicates, called variants with HaplotypeCaller, examined quality-score distributions using VCFtools density plots, and applied hard filters to separate high-confidence SNPs from technical noise. Together, those two labs took you from raw FASTQ files all the way to a filtered VCF.</p>
+<p>This lab is the final step of that journey. Here you will load the same files—the pre-filtering BAM, the duplicate-marked BAM, and the unfiltered VCF—into the <strong>Integrative Genomics Viewer (IGV)</strong> and look at the raw read evidence underneath each variant call. As discussed in <em>Chapter 10</em>, automated filtering is powerful but imperfect: visual inspection of alignments at candidate variant sites remains an essential validation step, letting you recognize patterns such as strand bias, duplicate stacking, and low mapping quality that are difficult to catch with thresholds alone<span class="citation" data-cites="Robinson2011IGV"><sup><a href="#ref-Robinson2011IGV" role="doc-biblioref">2</a></sup></span>. You will also connect the sequence changes you observe to the biological dataset described in <strong>Appendix C</strong>—a pooled yeast population that experienced hundreds of generations of selection—and reason about whether specific SNPs could represent adaptive allele-frequency shifts.</p>
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Load and configure a multi-track IGV session combining a reference genome, BAM alignment files, and a VCF.</li>
+<li>Distinguish high-confidence SNPs from likely artifacts based on visual read evidence (strand balance, mapping quality, duplicate patterns, base quality).</li>
+<li>Apply Human Genome Variation Society (HGVS) standardized variant nomenclature to describe DNA and protein sequence changes.</li>
+<li>Interpret whether a called SNP falls in a coding region and assess its potential amino acid and functional consequences.</li>
+<li>Reflect on how your filtering choices in Lab 7 relate to what you see in the read pileups.</li>
+</ul>
+<hr>
+</section>
+<section id="step-1-download-and-install-igv" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="step-1-download-and-install-igv"><span class="header-section-number">23.2</span> Step 1 — Download and Install IGV</h2>
+<p>The software IGV is available from the Broad Institute (which also hosts GATK). IGV stands for <strong>Integrative Genomics Viewer</strong> and allows you to upload a variety of genome file formats to view on your desktop machine. It runs on Java, so you may need to update your version of Java to run it.</p>
+<ol type="1">
+<li><p><a href="https://software.broadinstitute.org/software/igv/downloadLinks">Download IGV from here</a> (make sure to scroll to the appropriate distribution based on your OS). Linux users will download the binary distribution, which can be launched directly from the terminal using Java.</p></li>
+<li><p>Follow the instructions to install the software on your main OS.</p></li>
+<li><p>Make sure after you install it that it loads properly before getting started on the exercise below.</p></li>
+</ol>
+</section>
+<section id="step-2-load-data-into-igv" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="step-2-load-data-into-igv"><span class="header-section-number">23.3</span> Step 2 — Load Data into IGV</h2>
+<p>The goal of this step is to load the datasets we have worked with in Labs 4 and 7 into IGV so we can visualize the variants and the read evidence that supports them. Recall from <strong><a href="./appendixC.html">Appendix C</a></strong> that these files represent a single <em>S. cerevisiae</em> population sequenced from a pooled, evolve-and-resequence experiment; because the sample is pooled rather than a single diploid individual, you will see a range of allele frequencies at variant sites rather than clean 50/100% het/hom patterns.</p>
+<ol type="1">
+<li><p>Download files from <a href="https://auburn.instructure.com/files/275453972/download?download_frd=1">IGV_files.zip</a> from Canvas.</p></li>
+<li><p>Open IGV. Refer to the slides from this <a href="https://auburn.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=51da88a9-e569-4453-b414-b29d0125a0ac">tutorial</a> if needed throughout.</p></li>
+<li><p>First, we need to load the genome file. At the top left, select the dropdown menu with the human genome and select the option “Click for more”.</p>
+<p align="center" width="20%">
+</p><p><img width="25%" src="images/Lab09_Fig_genomes1b.jpg" alt="Screenshot of the IGV genome selection dropdown menu."></p>
+<p align="center" width="20%">
+</p><p><img width="25%" src="images/Lab09_Fig_genomes1.jpg" alt="Screenshot of IGV genome selection dropdown menu showing the click for more option highlighted."></p>
+<p></p></li>
+<li><p>From the pop-up menu, scroll to the genome for <em>S. cerevisiae (sacCer3)</em> and click OK to load it into the current session. This is the same sacCer3 reference (NCBI assembly R64) you indexed with BWA in Lab 4 and used for all downstream analyses.</p>
+<p align="center" width="20%">
+</p><p><img width="40%" src="images/Lab09_Fig_genomes2.jpg" alt="Screenshot of IGV popup menu with sacCer3 genome highlighted in blue."></p>
+<p></p></li>
+<li><p>Next, at the top left, select “File” and “Load from File” to import your raw sequence alignment (pre-filtering). The file should be named <code>SRR1693691.sorted.bam</code> and have a corresponding index file named <code>SRR1693691.sorted.bam.bai</code>. Make sure not to select the index, but only verify it exists in the same directory. IGV will search for it and give an error if it is not there.</p></li>
+<li><p>Repeat step 5 on the duplicate-marked BAM file (post-filtering). The file should be named <code>SRR1693691.markdup.bam</code> and have a corresponding index file named <code>SRR1693691.markdup.bai</code>. As discussed in <a href="./ch10-variant-calling.html">Chapter 10</a>, <em>marking</em> duplicates rather than removing them lets you see the flagged reads in IGV and verify that the duplicate-calling algorithm behaved reasonably.</p></li>
+<li><p>Finally, you will load the VCF file you generated (pre-filtering). At the top left, select “File” and “Load from File” to import the file <code>SRR1693691.SNPs.vcf.gz</code>. This file does not have an index but should still load.</p></li>
+<li><p>Configure your view in the following ways:</p>
+<ul>
+<li><p>In the sorted BAM panel, right-click and scroll to “Color alignments by” and in the pull-out menu, select “read strand”. This color-codes reads by forward and reverse, which is essential for detecting strand bias—a key artifact signal discussed in <a href="./ch10-variant-calling.html">Chapter 10</a>.</p>
+<p align="center" width="20%">
+</p><p><img width="50%" src="images/Lab09_Fig_strands.jpg" alt="Screenshot of IGV dropdown menu showing how to color alignments by read strand."></p>
+<p></p></li>
+<li><p>In the markdup BAM panel, right-click and scroll to “Duplicates” and select “texture duplicates”. This makes PCR and optical duplicates visually distinct rather than hiding them, so you can see how many reads at each site are flagged.</p>
+<p align="center" width="20%">
+</p><p><img width="50%" src="images/Lab09_Fig_dups.jpg" alt="Screenshot of IGV dropdown menu for adding texture to duplicate reads."></p>
+<p></p></li>
+<li><p>In the Sequence panel, click to show the standard translation panel of the amino acids. This will allow you to determine immediately whether a coding SNP changes the amino acid sequence.</p>
+<p align="center" width="20%">
+</p><p>&lt;img width=“50%” src=images/Lab09_Fig_translation.jpg alt=“Screenshot of IGV window with toggle for amino acid translation.&gt;</p>
+<p></p></li>
+</ul></li>
+<li><p>When you are done configuring your session, save it so you can return to this configuration in the future. Under “File” select “Save Session” and name your session Lab 9.</p></li>
+</ol>
+</section>
+<section id="step-3-examine-variants-in-depth" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="step-3-examine-variants-in-depth"><span class="header-section-number">23.4</span> Step 3 — Examine Variants in Depth</h2>
+<p>The goal of this step is to navigate to specific variants and evaluate the raw read evidence that supports—or does not support—each as a real, biologically relevant SNP. This mirrors the visual validation workflow described in <a href="./ch10-variant-calling.html">Chapter 10</a>, where IGV is used to recognize artifact patterns (duplicate stacking, strand-biased reads, low mapping quality, base-end clustering) versus signatures of a high-confidence true variant (balanced strands, high MQ, consistent base quality throughout reads).</p>
+<ol type="1">
+<li><p>Now that you have the genome and two BAM tracks loaded into IGV, use the tutorial slides as a guide and navigate to the following regions. Zoom in enough to see individual reads and any SNP variants validated in your VCF:</p>
+<ul>
+<li>Region 1: chrII:598117–598156</li>
+<li>Region 2: chrV:430725–431072</li>
+<li>Region 3: chrXV:468250–468449</li>
+</ul></li>
+<li><p>For each region, answer: how many apparent mismatches (potential variants) are visible in the <strong>raw sorted BAM</strong>? How many remain in the <strong>markdup BAM</strong>? And how many of those are called in the <strong>VCF</strong>? Think about why these three numbers differ.</p></li>
+<li><p>For each variant present in the VCF within each window, assess the read evidence:</p>
+<ul>
+<li>What is the depth of coverage at that site?</li>
+<li>Are reads supporting the alternate allele present on both forward and reverse strands?</li>
+<li>Are the supporting bases near the middle of reads (high confidence) or clustered at read ends (potential artifact)?</li>
+</ul>
+<p>To better evaluate, sort the reads by base at each variant position:</p>
+<p align="center" width="20%">
+</p><p><img width="50%" src="images/Lab09_Fig_base.jpg" alt="Screenshot of IGV dropdown menu for sorting alignments by the base position."></p>
+<p></p></li>
+<li><p>Are there any apparent mismatches (or potential sequencing errors) in the BAM that are <strong>not</strong> “called” as variants in the VCF? Which features of those sites—coverage, strand distribution, read position, base quality—might explain why HaplotypeCaller did not “call” them as variants?</p></li>
+<li><p>For the variants that <strong>are</strong> called in the VCF, based on the visual evidence (strand balance, mapping quality, duplicate patterns), do you expect that each variant “Passed” the hard filters you applied at the end of Lab 7? Recall the key thresholds from <a href="./ch10-variant-calling.html">Chapter 10</a>: QD &gt; 2.0, MQ ≥ 40, FS &lt; 60, SOR &lt; 3.0, and ReadPosRankSum &gt; −8.0.</p></li>
+<li><p>Pick one variant and test your prediction by using <code>less</code> on the command line to search for that chromosome and position in your filtered VCF file.</p></li>
+<li><p>Does the filtered VCF support or reject your prediction? Based on this comparison, would you adjust any of your filtering thresholds? In what direction, and why?</p></li>
+<li><p>For each called SNP in the VCF, return to IGV: is the SNP located within a protein-coding exon? Use the gene annotation track and amino acid translation track to check.</p></li>
+<li><p>If a SNP falls in a coding region, does the nucleotide change alter the amino acid? What effect—if any—do you think this amino acid change might have on the function of the gene? Remember that variants rising to high frequency in this experimental evolution dataset may reflect adaptive changes selected over hundreds of generations.</p></li>
+<li><p>Using the HGVS naming conventions introduced in <a href="./ch05-seq-alignment.html">Chapter 5</a>, write out the sequence changes for each variant you identified:</p>
+<ul>
+<li>A prefix of <strong><code>g.</code></strong> is used for a genomic sequence change (e.g., g.69A&gt;T for an A-to-T substitution at genomic position 69).</li>
+<li>A prefix of <strong><code>p.</code></strong> is used for a protein sequence change using the one-letter amino acid code (e.g., p.K23Y for a lysine-to-tyrosine substitution at position 23 in the protein).</li>
+<li>If the SNP is synonymous (silent), note that as well—synonymous changes are still described with <code>g.</code> notation.</li>
+</ul></li>
+<li><p>Feel free to explore additional regions on your own:</p>
+<ul>
+<li>chrII:486633–487123</li>
+<li>chrV:553052–553399</li>
+<li>chrXIV:39075–39311</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="deliverables" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="deliverables"><span class="header-section-number">23.5</span> Deliverables</h2>
+<p>Upload the following to Canvas for a final grade:</p>
+<ul>
+<li><strong>Screenshots</strong> of each of the three required regions showing your configured view (strand coloring, duplicate texturing, and translation track visible).</li>
+<li><strong>Written answers</strong> to the questions in Step 3 (questions 2–9), clearly numbered.</li>
+<li><strong>HGVS variant notation</strong> for each variant you identified in the three required regions (question 10), indicating both genomic (<code>g.</code>) and, where applicable, protein (<code>p.</code>) level changes.</li>
+</ul>
+<hr>
+<p>IGV is a powerful way to visually validate specific variants and develop intuition for what real biological signal looks like versus noise. As you complete this lab, you are closing the loop on the entire variant-calling workflow you have built across this course: from raw FASTQ reads in Lab 4, through alignment and GATK processing in Lab 7, to biological interpretation here. The ability to move fluidly between a filtered VCF, the raw read alignments behind it, and the gene annotation context is a core skill in modern genomics.</p>
+</section>
+<section id="references" class="level2" data-number="23.6">
+<h2 data-number="23.6" class="anchored" data-anchor-id="references"><span class="header-section-number">23.6</span> References</h2>
+
+
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-burke_standing_2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Burke, M. K., Liti, G. &amp; Long, A. D. <a href="https://doi.org/10.1093/molbev/msu256">Standing <span>Genetic</span> <span>Variation</span> <span>Drives</span> <span>Repeatable</span> <span>Experimental</span> <span>Evolution</span> in <span>Outcrossing</span> <span>Populations</span> of <span>Saccharomyces</span> cerevisiae</a>. <em>Molecular Biology and Evolution</em> <strong>31</strong>, 3228–3239 (2014).</div>
+</div>
+<div id="ref-Robinson2011IGV" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Robinson, J. T. <em>et al.</em> <a href="https://doi.org/10.1038/nbt.1754">Integrative genomics viewer</a>. <em>Nature Biotechnology</em> <strong>29</strong>, 24–26 (2011).</div>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Lab08.html" class="pagination-link" aria-label="Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Lab10.html" class="pagination-link" aria-label="Lab 10: Population Genomics using the 1000 Genomes Dataset">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lab 10: Population Genomics using the 1000 Genomes Dataset</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Genome Databases and Browsers – Reading Genomes: A Companion to Bioinformatics and Genome Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ch05-seq-alignment.html" rel="next">
+<link href="./ch03-formats-qc-design.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-975e726794ce811e14261b5ab5acfd7c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/quarto-axe/axe-check.js" type="module"></script>
+<script id="quarto-axe-checker-options" type="text/plain">dHJ1ZQ==</script>
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-24950670649d35549c6a1355d7402e2b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="accessibility.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Companion Chapters</a></li><li class="breadcrumb-item"><a href="./ch04-browsers-databases.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reading Genomes: A Companion to Bioinformatics and Genome Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Companion Chapters</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01-reading-genomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Reading Genomes: What Bioinformatics Is For</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch02-sequencing-tech.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Sequencing Technologies and Data Formats</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch03-formats-qc-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">File Formats and Quality Control in Genome Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch04-browsers-databases.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch05-seq-alignment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch06-genome-align-assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Genome Alignment and Genome Assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch07-project-mgmt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Project Management and Writing Methods</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch08-alt-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Alternative Post‑Alignment Workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch09-hmms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Hidden Markov Models in Biology</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch10-variant-calling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Variant Calling and Filtering with GATK</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch11-grants-funding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Grant Funding and the Scientific Enterprise</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch12-popgen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Population Genomics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch13-motifs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Sequence Motif Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch14-where-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Where to Go Next: Synthesis, Emerging Frontiers, and Lifelong Learning in Genomics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Lab Manual</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Lab01: Find and describe a Genome Analysis Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Lab02: Design a Genome Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Lab03: Genome Browsers and Databases</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Lab04: Genome Sequence Indexing and Alignment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Lab05: BLAST on the Command Line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Lab06: HMMs in Predicting Gene Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Lab07: Variant Calling via GATK Best Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Lab08: Beyond GATK – Benchmarking Variant Calling Pipelines</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Lab09: IGV Genome Visualization Lab Activity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Lab10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Lab 10: Population Genomics using the 1000 Genomes Dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix: How to Read Scientific Literature</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Appendix: Semester Research Project</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Appendix: Yeast Experimental Evolution Dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Appendix: Resources for Future Learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#genome-databases-and-browsers" id="toc-genome-databases-and-browsers" class="nav-link active" data-scroll-target="#genome-databases-and-browsers"><span class="header-section-number">4.1</span> Genome Databases and Browsers</a></li>
+  <li><a href="#historical-overview" id="toc-historical-overview" class="nav-link" data-scroll-target="#historical-overview"><span class="header-section-number">4.2</span> Historical Overview</a></li>
+  <li><a href="#major-databases" id="toc-major-databases" class="nav-link" data-scroll-target="#major-databases"><span class="header-section-number">4.3</span> Major Databases</a>
+  <ul class="collapse">
+  <li><a href="#ncbi-as-a-genome-browser" id="toc-ncbi-as-a-genome-browser" class="nav-link" data-scroll-target="#ncbi-as-a-genome-browser"><span class="header-section-number">4.3.1</span> NCBI as a Genome Browser</a></li>
+  <li><a href="#ensembl-and-comparative-genomics" id="toc-ensembl-and-comparative-genomics" class="nav-link" data-scroll-target="#ensembl-and-comparative-genomics"><span class="header-section-number">4.3.2</span> Ensembl and Comparative Genomics</a></li>
+  <li><a href="#ucsc-genome-browser" id="toc-ucsc-genome-browser" class="nav-link" data-scroll-target="#ucsc-genome-browser"><span class="header-section-number">4.3.3</span> UCSC Genome Browser</a></li>
+  <li><a href="#organism-specific-model-organism-databases" id="toc-organism-specific-model-organism-databases" class="nav-link" data-scroll-target="#organism-specific-model-organism-databases"><span class="header-section-number">4.3.4</span> Organism-Specific Model Organism Databases</a></li>
+  </ul></li>
+  <li><a href="#sequence-read-archive-sra" id="toc-sequence-read-archive-sra" class="nav-link" data-scroll-target="#sequence-read-archive-sra"><span class="header-section-number">4.4</span> Sequence Read Archive (SRA)</a>
+  <ul class="collapse">
+  <li><a href="#depositing-data-into-sra" id="toc-depositing-data-into-sra" class="nav-link" data-scroll-target="#depositing-data-into-sra"><span class="header-section-number">4.4.1</span> Depositing Data into SRA</a></li>
+  <li><a href="#retrieving-data-from-sra-srr518692-example" id="toc-retrieving-data-from-sra-srr518692-example" class="nav-link" data-scroll-target="#retrieving-data-from-sra-srr518692-example"><span class="header-section-number">4.4.2</span> Retrieving Data from SRA (SRR518692 Example)</a></li>
+  <li><a href="#sra-toolkit-for-command-line-retrieval" id="toc-sra-toolkit-for-command-line-retrieval" class="nav-link" data-scroll-target="#sra-toolkit-for-command-line-retrieval"><span class="header-section-number">4.4.3</span> SRA Toolkit for Command Line Retrieval</a></li>
+  <li><a href="#sra-metadata-and-its-evolution" id="toc-sra-metadata-and-its-evolution" class="nav-link" data-scroll-target="#sra-metadata-and-its-evolution"><span class="header-section-number">4.4.4</span> SRA Metadata and Its Evolution</a></li>
+  </ul></li>
+  <li><a href="#visualizing-fasta-alignments-and-tree-files" id="toc-visualizing-fasta-alignments-and-tree-files" class="nav-link" data-scroll-target="#visualizing-fasta-alignments-and-tree-files"><span class="header-section-number">4.5</span> Visualizing FASTA Alignments and Tree Files</a></li>
+  <li><a href="#galaxy-as-a-web-based-genome-analysis-workbench" id="toc-galaxy-as-a-web-based-genome-analysis-workbench" class="nav-link" data-scroll-target="#galaxy-as-a-web-based-genome-analysis-workbench"><span class="header-section-number">4.6</span> Galaxy as a web-based genome analysis workbench</a>
+  <ul class="collapse">
+  <li><a href="#historical-development-and-design-goals" id="toc-historical-development-and-design-goals" class="nav-link" data-scroll-target="#historical-development-and-design-goals"><span class="header-section-number">4.6.1</span> Historical development and design goals</a></li>
+  <li><a href="#doing-bioinformatics-in-the-browser" id="toc-doing-bioinformatics-in-the-browser" class="nav-link" data-scroll-target="#doing-bioinformatics-in-the-browser"><span class="header-section-number">4.6.2</span> Doing bioinformatics in the browser</a></li>
+  <li><a href="#reproducible-workflows-and-provenance" id="toc-reproducible-workflows-and-provenance" class="nav-link" data-scroll-target="#reproducible-workflows-and-provenance"><span class="header-section-number">4.6.3</span> Reproducible workflows and provenance</a></li>
+  <li><a href="#transparency-sharing-and-galaxy-pages" id="toc-transparency-sharing-and-galaxy-pages" class="nav-link" data-scroll-target="#transparency-sharing-and-galaxy-pages"><span class="header-section-number">4.6.4</span> Transparency, sharing, and Galaxy Pages</a></li>
+  </ul></li>
+  <li><a href="#data-sharing-policies-in-genomics" id="toc-data-sharing-policies-in-genomics" class="nav-link" data-scroll-target="#data-sharing-policies-in-genomics"><span class="header-section-number">4.7</span> Data Sharing Policies in Genomics</a>
+  <ul class="collapse">
+  <li><a href="#from-bermuda-to-managed-access" id="toc-from-bermuda-to-managed-access" class="nav-link" data-scroll-target="#from-bermuda-to-managed-access"><span class="header-section-number">4.7.1</span> From Bermuda to managed access</a></li>
+  <li><a href="#human-genomics-and-the-medical-information-commons" id="toc-human-genomics-and-the-medical-information-commons" class="nav-link" data-scroll-target="#human-genomics-and-the-medical-information-commons"><span class="header-section-number">4.7.2</span> Human genomics and the medical information commons</a></li>
+  <li><a href="#consortia-tiered-access-and-embargoes" id="toc-consortia-tiered-access-and-embargoes" class="nav-link" data-scroll-target="#consortia-tiered-access-and-embargoes"><span class="header-section-number">4.7.3</span> Consortia, tiered access, and embargoes</a></li>
+  <li><a href="#practical-guidance-for-working-with-genome-data-today" id="toc-practical-guidance-for-working-with-genome-data-today" class="nav-link" data-scroll-target="#practical-guidance-for-working-with-genome-data-today"><span class="header-section-number">4.7.4</span> Practical guidance for working with genome data today</a></li>
+  </ul></li>
+  <li><a href="#reflection-questions" id="toc-reflection-questions" class="nav-link" data-scroll-target="#reflection-questions"><span class="header-section-number">4.8</span> Reflection Questions</a></li>
+  <li><a href="#problem-sets" id="toc-problem-sets" class="nav-link" data-scroll-target="#problem-sets"><span class="header-section-number">4.9</span> Problem Sets</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">4.10</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<a href="#quarto-content" class="skip-nav">Skip to main content</a>
+<style>
+.skip-nav {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-nav:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  z-index: 9999;
+}
+</style>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Companion Chapters</a></li><li class="breadcrumb-item"><a href="./ch04-browsers-databases.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Genome Databases and Browsers</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="genome-databases-and-browsers" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="genome-databases-and-browsers"><span class="header-section-number">4.1</span> Genome Databases and Browsers</h2>
+<p>Genome databases and browsers form the foundation of modern bioinformatics, providing access to reference assemblies, annotations, and experimental data across thousands of species. These resources evolved from early sequence repositories like GenBank (established 1982) to sophisticated platforms integrating comparative genomics, functional annotations, and interactive visualization<span class="citation" data-cites="pevsner2015"><sup><a href="#ref-pevsner2015" role="doc-biblioref">1</a></sup></span>. This chapter traces their historical development while emphasizing practical skills for data retrieval, sharing policies, visualization, and reproducible workflows.</p>
+<p>Three main sites that have been responsible for storing nucleotide sequence data from 1982 to the present. These are:</p>
+<ol type="1">
+<li>GenBank at the National Center for Biotechnology Information (NCBI) of the National Institutes of Health (NIH);</li>
+<li>The European Molecular Biology Laboratory (EMBL)-Bank Nucleotide Sequence Database (EMBL-Bank), part of the European Nucleotide Archive (ENA) at the European Bioinformatics Institute (EBI); and</li>
+<li>The DNA Database of Japan (DDBJ) at the National Institute of Genetics.</li>
+</ol>
+<p>All three are coordinated by the International Nucleotide Sequence Database Collaboration (INSDC), and they share their data daily. GenBank, EMBL-Bank, and DDBJ are organized as databases within NCBI, EBI, and DDBJ which offer many dozens of other resources for the study of sequence data. GenBank exceeds 10^12 bases (2025), with daily releases.</p>
+<p>In addition to these nucleotide sequence databases, there are three major genome portals that we will cover in this course. First, NCBI which is directly connected to GenBank. Second, is <a href="https://www.ensembl.org/index.html">Ensembl</a>, started before the human genome was completed with a goal of annotating genomes and providing a comparative genomic database. Third, the University of California, San Cruz <a href="https://genome.ucsc.edu/">(UCSC) Genome Browser</a> which was started in 2000 concurrent with the human genome project. The latter two are heavily focused on vertebrate genomes. In addition to these three, there are several organism-specific databases. Each database and browser has unique strengths in curation, annotation depth, and visualization.</p>
+<p>In addition to web genome browsers and databases, this chapter will introduce tools for retrieving data from databases, tools for visualizing data retrieved, and an online platform for genome analysis called “Galaxy”. Web interfaces like browsers enable exploration, while platforms like Galaxy transition to scripted workflows for scalability. Finally, this chapter concludes with a section on data sharing policies.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Lab connections
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="./Lab03.html">Lab 3</a>) will involve an exploratory activity to engage with three different genome databases to give a practical hands-on opportunity to explore, customize and export genome data. You will get a chance to engage with UCSC and Ensembl, as well as an organism-specific database for fruit flies.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="historical-overview" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="historical-overview"><span class="header-section-number">4.2</span> Historical Overview</h2>
+<p>The Human Genome Project (HGP, 1990–2003) catalyzed genome database development, necessitating standardized repositories for massive sequence data. GenBank initially stored ~600 sequences; by HGP completion, it held billions of bases. Parallel efforts produced EMBL (Europe, 1980) and DDBJ (Japan, 1987) formed the International Nucleotide Sequence Database Collaboration (INSDC).</p>
+<p>Genome browsers emerged to visualize assemblies: UCSC Genome Browser (2000) displayed the draft human genome with tracks for genes and clones. Ensembl (2000) followed, focusing on automated annotation for vertebrates. NCBI’s Map Viewer (1999) integrated genetic/physical maps. Organism-specific resources filled gaps: FlyBase (1992) for Drosophila, WormBase (2000) for <em>C. elegans</em>. These various browsers align data to linear chromosomes using 1-based “human-readable” coordinates (e.g.&nbsp;chr1:1,000,000). The display of various tracks stack hierarchically with the compression ranging from dense (blocks), to squish (arrows), to a full view of annotation features.</p>
+</section>
+<section id="major-databases" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="major-databases"><span class="header-section-number">4.3</span> Major Databases</h2>
+<section id="ncbi-as-a-genome-browser" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="ncbi-as-a-genome-browser"><span class="header-section-number">4.3.1</span> NCBI as a Genome Browser</h3>
+<p>NCBI is best known as the home of GenBank, RefSeq, and the Sequence Read Archive, but it also provides a full-featured genome browser called <strong><a href="https://www.ncbi.nlm.nih.gov/genome/gdv">Genome Data Viewer (GDV)</a></strong> that sits at the center of the NCBI ecosystem. Where Ensembl is built around automated comparative annotation, NCBI’s browser is tightly integrated with RefSeq, SRA, GEO, ClinVar, and other NCBI resources, so that you can move smoothly from a gene or variant record to its precise genomic context and back again. In practice, GDV is somewhat clunkier and less visually polished than UCSC or Ensembl, but it often exposes the most up-to-date RefSeq annotations and assemblies, including patch releases and alternate haplotypes, making it a valuable default choice when you care about current reference models and NCBI’s own curation decisions.</p>
+<p>NCBI’s older “Map Viewer” historically provided karyotype-style chromosome overviews and access to multiple map types, but this has been superseded by Genome Data Viewer and the related Comparative Genome Viewer. GDV retains the same basic idea: a high-level chromosome view that you can use to orient yourself, combined with a detailed sequence view with multiple tracks. The chromosome ideogram (or karyogram) appears as a vertical strip, with bands arranged from top to bottom, in contrast to UCSC’s default left-to-right orientation that you will encounter later in this chapter.</p>
+<p>A typical workflow with GDV begins with choosing a species and assembly using the tree or table on the left (for example, <em>Homo sapiens</em> GRCh38.p14) and then either type a gene symbol, coordinate range, or variant ID into the search box to jump to your region of interest. Alternatively, if you start from either the <strong>Gene</strong> database or from a BLAST result page, there is usually a link labeled “Open in Genome Data Viewer” (or a browser icon) that sends you directly into GDV at the appropriate coordinates.</p>
+<p>Once the browser is open to a particular locus, GDV’s main panel is divided into a <strong>Sequence Viewer</strong> region and several context widgets. The Sequence Viewer shows tracks stacked horizontally, each track corresponding to a different kind of annotation or data: RefSeq gene models, mRNA and protein alignments, dbSNP and ClinVar variants, structural variants from dbVar, expression or coverage tracks, and optionally your own custom tracks or BLAST hits. Zoom controls allow you to move from a gene-wide view down to individual exons, and the “Exon Navigator” widget provides a schematic representation of exons for the selected transcript; clicking on a particular exon in this widget updates the Sequence Viewer to center on that exon and can even open a pop-up with its genomic sequence in FASTA format. Right-click menus within tracks provide additional options, such as viewing feature details, linking back to the corresponding Gene or Nucleotide records, or copying sequence with or without flanking regions.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Connection to Assigned Reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the paper you were assigned last week<span class="citation" data-cites="bogan2025"><sup><a href="#ref-bogan2025" role="doc-biblioref">2</a></sup></span>, they generated several novel genome assemblies. In their methods, they list the GCF accesssion id’s for their six genomes. Look up ONE of these in NCBI and open GDV. Once there, search for the antifreeze protein (AFP) gene region to look at it more closely. <strong>How does this visualization help to better understand the major findings of this study?</strong></p>
+</div>
+</div>
+<p>One of GDV’s strengths is its tight integration with other NCBI analysis tools. From within the Sequence Viewer toolbar, you can launch <strong>Primer-BLAST</strong> to design primers flanking your region, access BLAST to align a query sequence against the current assembly, or export the underlying sequence and annotation for downstream use. The “Tracks” configuration dialog allows you to add or remove NCBI-provided tracks such as dbSNP common variants, ClinVar pathogenic variants, GWAS hits, and structural variants from dbVar, as well as upload your own track files (e.g., BED or BigWig) or display data from an SRA alignment. Because GDV draws on RefSeq as its primary annotation source, the gene models you see there will usually represent NCBI’s current “official” interpretation of a gene’s structure for that assembly, and they are updated as new evidence accumulates.</p>
+<p>For extracting data, GDV supports several levels of detail. At the most basic, you can select a genomic interval and choose “Download sequence” to obtain a FASTA file of the reference sequence for the current view. For more structured downloads, GDV links out to <strong>NCBI Datasets</strong>, a service that lets you download entire genomes, chromosomes, annotation tables, or gene sets as zipped packages via a web interface or a command-line client. You can also follow links back to the Gene or Nucleotide databases, where the same region can be exported in formats such as GenBank flat files or GFF3 for annotation pipelines. For variation analysis, clicking on individual variant markers (e.g., a SNP or structural variant in a GDV track) takes you to dbSNP, ClinVar, or dbVar records with richer metadata and allele frequency information. In this way, GDV serves both as a visualization layer and as a routing hub into the broader NCBI resource network.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Box 4.1: NCBI Genome Browser in the Gene Annotation Project
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the manual gene annotation project later in the semester, you will use NCBI’s genome browser as the primary environment for building a custom gene model for an unannotated PRDM9 locus in a non-model reference genome. Starting from the appropriate assembly, you will use the Genome Data Viewer’s Sequence Viewer, exon navigation, and linked tools to identify putative exons, splice sites, and coding regions, applying basic principles of gene anatomy (start and stop codons, splice donor and acceptor motifs, reading frame continuity, and domain structure) to propose a gene model. You will then compare your proposed annotation with existing RefSeq or GenBank entries and document the evidence you used, practicing the same skills you will later apply at scale using automated pipelines.</p>
+</div>
+</div>
+</section>
+<section id="ensembl-and-comparative-genomics" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="ensembl-and-comparative-genomics"><span class="header-section-number">4.3.2</span> Ensembl and Comparative Genomics</h3>
+<p><a href="https://www.ensembl.org">Ensembl</a> is a genome browser and database that emphasizes automated annotation and comparative genomics across many species, rather than only serving as a static repository of a single reference genome<span class="citation" data-cites="herrero_ensembl_2016 aken_ensembl_2017"><sup><a href="#ref-herrero_ensembl_2016" role="doc-biblioref">3</a>,<a href="#ref-aken_ensembl_2017" role="doc-biblioref">4</a></sup></span>. Where NCBI’s RefSeq project focuses on providing a curated, largely non-redundant set of reference sequences, Ensembl’s Compara pipeline systematically compares gene and genome sequences across species to infer homology relationships, build gene trees, and identify conserved syntenic blocks. This makes Ensembl particularly useful when you are interested in questions about gene family evolution, orthologous relationships between species, or the conservation of genomic neighborhoods rather than just the annotation of a single gene in a single organism.</p>
+<p>A central concept in Ensembl is the distinction between orthologs and paralogs. Orthologs are genes in different species that diverged through a speciation event, and they often (though not always) retain similar functions after divergence. Paralogs are genes that arose by duplication within a species (or within a lineage) and may have diverged in sequence, expression, or function as they evolve independently. Ensembl infers these relationships using gene trees: for each gene, a representative protein sequence is aligned against all other proteins, a phylogenetic tree is built, and duplication versus speciation nodes are labeled to classify relationships as orthologous or paralogous. These inferred homologies are then exposed through the web browser (e.g., “Orthologues” and “Paralogues” views), through BioMart for bulk downloads, and via programmatic interfaces.</p>
+<p>From a practical standpoint, using Ensembl for a gene-centric analysis usually begins with the home page and the species selector. For example, to investigate the human PRDM9 gene, you would choose <em>Homo sapiens</em> as the species, type “PRDM9” into the search box, and follow the link to the <strong>Gene</strong> page. This gene page serves as a hub with multiple tabs (or left-hand menu entries) such as “Summary,” “Transcript table,” “Sequence,” “Variation,” and “Comparative genomics.” The summary tab provides basic information about coordinates, transcripts, protein domains, and links out to external resources like UniProt, while the comparative genomics section is where Ensembl’s strengths in cross-species analysis become particularly apparent.</p>
+<p>Within the comparative genomics section of a gene page, the “Orthologues” view lists predicted orthologs of the selected gene across other species, often grouped into taxonomic categories such as primates, mammals, sauropsids, or teleost fish. For each ortholog, Ensembl shows the target gene ID, percent identity, coverage statistics, and an orthology type (e.g., one-to-one, one-to-many, many-to-many), which can be used to infer if a gene has been duplicated in one lineage but not another. The “Paralogues” view similarly lists duplicated copies within the focal species, providing insight into gene family expansions or subfunctionalization events. A separate “Gene tree” view displays a phylogenetic tree of the gene family, marking speciation and duplication nodes explicitly. Because these displays are driven by Ensembl’s Compara pipeline, they update as new assemblies and species are added.</p>
+<p>Ensembl also offers synteny and whole-genome alignment views that extend comparative genomics beyond individual genes. Synteny, in this context, refers to the conserved order of genomic blocks between species; Ensembl calculates synteny from pairwise genome alignments and then displays it in a dedicated “Synteny” view. In that view, the central chromosome strip typically corresponds to your species of interest, and aligned segments in a second species are shown as colored blocks on smaller chromosome representations, indicating regions where gene order and orientation are preserved. This is particularly useful when evaluating whether a gene’s genomic neighborhood is conserved across species (syntenic orthologs) or has been rearranged, which can have implications for regulatory conservation and for interpreting complex orthology relationships that involve duplications and losses. For more fine-grained comparisons, the “Region in detail” view can be configured to display conservation tracks and pairwise or multiple genome alignments, allowing you to visually inspect conservation at the level of exons, introns, or regulatory regions.</p>
+<p>Beyond these visualization tools, Ensembl provides several practical ways to retrieve data. Directly from the gene page, you can download DNA or protein sequences for a gene or a specific transcript in FASTA format, including flanking regions or UTRs, using the “Sequence” or “Export data” options. You can also export alignments of a gene region across multiple species as a multiple sequence alignment, which is useful for downstream phylogenetic analysis or motif discovery. For large-scale or systematic analyses, the BioMart interface (accessible via the “BioMart” link in the top navigation) allows you to build queries such as “all human genes with mouse orthologs,” “all ortholog pairs between human and zebrafish with one-to-one relationships,” or “all paralogs of a given gene family with their percent identity,” and then export results as tab-delimited tables suitable for R or Python. Programmatic access via Ensembl’s REST API and direct downloads of Compara databases provide further options for scripting and reproducible analyses, but those are beyond the scope of this chapter.</p>
+<p>One limitation students will encounter, especially in research projects that involve non-model species or unusual gene families, is that Ensembl’s coverage of orthology relationships is incomplete and varies across taxa. Although Ensembl Genomes now includes plants, fungi, and many other clades, not all assemblies are annotated at the same depth, and not every gene has a confidently inferred ortholog in every species of interest. The PRDM9 gene provides a useful example: in humans, Ensembl offers a well-annotated PRDM9 gene with domain structure and some orthology relationships, but if you search for PRDM9 orthologs in many of the taxa used in the semester-long research project—particularly among certain fish, amphibians, or non-model vertebrates—you will find gaps, partial annotations, or missing entries. This reflects real biological phenomena, such as repeated losses and domain truncations of PRDM9 in vertebrate evolution, but it also highlights technical limitations of current annotations and the underlying assemblies. Students should therefore treat the absence of an ortholog in Ensembl with caution: it may mean that the gene was lost, that it is present but not annotated, or that it falls below Ensembl’s thresholds for confident homology prediction.</p>
+<p>Finally, Ensembl’s automated annotation and comparative resources are most powerful when combined with a clear understanding of what kinds of data you can and cannot extract. You can reliably obtain current gene models for supported assemblies, predicted orthologs and paralogs within the scope of Ensembl’s Compara pipeline, whole-genome alignment-based conservation scores, and synteny summaries for species that have been included in pairwise or multiple alignments. You cannot expect Ensembl to provide high-quality homology relationships for species with draft or fragmented assemblies, to capture every lineage-specific gene, or to resolve highly complex gene families perfectly across all taxa.</p>
+</section>
+<section id="ucsc-genome-browser" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="ucsc-genome-browser"><span class="header-section-number">4.3.3</span> UCSC Genome Browser</h3>
+<p>The UCSC Genome Browser is one of the longest-standing and most widely used genome browsers, distinguished by its rich catalogue of annotation tracks and its highly configurable display. Where NCBI’s Genome Data Viewer emphasizes tight integration with RefSeq and the broader NCBI ecosystem, UCSC focuses on flexible visualization of many independent annotation layers on top of a reference assembly. In the browser, genes, variants, regulatory elements, conservation scores, experimental datasets, and user-defined features are all represented as tracks aligned along the chromosome. You can turn tracks on and off, change their display mode and order, and save track configurations as sessions, which makes UCSC particularly powerful for exploratory work and for troubleshooting complex analysis pipelines that generate interval-based results such as BED or BigWig files.</p>
+<p>UCSC’s main interface is organized around a horizontal chromosome view, in contrast to the vertical karyogram-style overview in NCBI’s Genome Data Viewer. After selecting a genome and assembly from the top menu (for example, <em>Homo sapiens</em> → GRCh38/hg38, or <em>Drosophila melanogaster</em> → dm6), you can search by gene name, genomic coordinates, or keyword to move to a region of interest. The top of the page shows the current coordinates and a navigational “position bar” that includes zoom and scroll controls, while the main panel displays stacked annotation tracks across this interval. Below the viewer is a long list of track groups, organized into sections such as “Mapping and Sequencing,” “Genes and Gene Predictions,” “Variation,” “Regulation,” and “Comparative Genomics,” each with individual tracks that can be set to hide, dense, squish, pack, or full display modes. These modes control the level of detail and the vertical space tracks occupy, allowing you to tailor the browser to your current question—for example, switching gene tracks to “pack” to see exon structures clearly, while showing dense conservation or variant tracks as simple stacked bars.</p>
+<p>One of the strengths you will encounter in Lab 3 is UCSC’s suite of conservation tracks, which are particularly useful. UCSC provides multi-species alignments generated by tools like MultiZ, and from these alignments computes conservation scores such as phastCons and phyloP for each base across the genome. In the browser, the “Comparative Genomics” section includes tracks like “Conservation” and “MultiZ alignments,” which display conservation as a wiggle plot or as stacked alignment blocks between the reference and other species. When you zoom in on a gene such as <code>rdl</code> or <code>dsx</code> in <em>D. melanogaster</em>, turning on these conservation tracks reveals patterns such as highly conserved exons contrasted with more rapidly evolving introns and intergenic regions, or conserved noncoding elements that may correspond to regulatory sequences.</p>
+<p>Beyond the built-in tracks, UCSC’s support for custom tracks and data hubs allows you to visualize your own analysis results directly in the browser, making it a useful companion to command-line tools like bedtools. Any dataset that can be expressed as genomic intervals or scores—classically in BED, bedGraph, BigBed, or BigWig formats—can be uploaded and displayed as a custom track on top of the reference genome. For small files, you can paste the BED content directly into the “add custom tracks” dialog or upload a file from your computer, specifying track attributes such as name, description, color, and visibility. For larger datasets, especially those hosted on a web or cloud server, you can create “track hubs” that point UCSC to remotely hosted BigBed or BigWig files; the browser streams only the portions needed for the current view, keeping interactions responsive even with gigabyte-scale datasets.</p>
+<p>For this course, a critical connection is the interplay between bedtools-based workflows and the UCSC browser, which can make it immediately obvious whether the problem lies in coordinate conventions, strand handling, file sorting, or an upstream step. Literally “seeing” where your intervals fall along the genome makes these debugging tasks far more intuitive than staring at raw tables in a terminal.</p>
+<p>As with Ensembl and NCBI, UCSC has limitations and design choices that you should keep in mind. The browser is optimized for a curated set of assemblies and track collections, historically biased toward human and major model organisms; while many additional species and assemblies are available, coverage and annotation depth are variable. The default gene tracks prioritize UCSC and GENCODE models, which sometimes differ in subtle ways from RefSeq or Ensembl annotations, so careful attention to which gene set you are using is essential when interpreting exon structures or designing experiments. Finally, while UCSC’s flexibility is a major strength, the sheer number of tracks and configuration options can be overwhelming initially.</p>
+</section>
+<section id="organism-specific-model-organism-databases" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="organism-specific-model-organism-databases"><span class="header-section-number">4.3.4</span> Organism-Specific Model Organism Databases</h3>
+<p>Before the rise of today’s large, integrated portals, many community databases emerged around individual model organisms, often inspired by early efforts at The Institute for Genomic Research (TIGR). TIGR developed a suite of gene indices and repeat databases in the late 1990s and early 2000s, such as the TIGR Gene Indices and the TIGR Plant Repeat Databases, to cluster ESTs, construct consensus “virtual transcripts,” and catalog repetitive elements in key plant genomes. These TIGR resources provided some of the first species-focused, integrative views of genes, repeats, and expression data, and they helped set the pattern for organism-specific databases that tightly couple genome sequences with curated biological knowledge for a particular research community.</p>
+<p>Over the past three decades, a number of such organism-specific databases have become indispensable anchors for model organism genetics and genomics. A non-exhaustive list of major examples includes:</p>
+<ul>
+<li><p><strong><a href="https://flybase.org">FlyBase</a></strong>, established early 1990s, funded from 1992 by the U.S. National Human Genome Research Institute of NIH<br>
+FlyBase is the primary database for <em>Drosophila</em> genetics and genomics, providing curated information on genes, alleles, phenotypes, stocks, transposons, and bibliography. It integrates genome sequence data with genetic maps, expression, and mutant information, and serves as the historical record for <em>Drosophila</em> nomenclature and community resources.</p></li>
+<li><p><strong><a href="https://www.informatics.jax.org">Mouse Genome Informatics (MGI)</a></strong>, origins in late 1980s / early 1990s<br>
+MGI is the central knowledgebase for the laboratory mouse, maintained at The Jackson Laboratory. It integrates genome features, gene function, expression data, phenotypes, and human disease models, and provides standardized gene, allele, and strain nomenclature. The resource evolved from early NIH-funded efforts to merge several Jackson Laboratory databases into a single visualization and analysis system for the mouse genome.</p></li>
+<li><p><strong><a href="https://zfin.org">Zebrafish Information Network (ZFIN)</a></strong>, established 1994 ZFIN is the community database for <em>Danio rerio</em>, the zebrafish model system. It curates genetic, genomic, and developmental data, including mutants, transgenes, markers, expression patterns, and phenotypes. ZFIN also maintains zebrafish nomenclature standards and provides links to sequence and ortholog information in other genomic resources.</p></li>
+<li><p><strong><a href="https://wormbase.org">WormBase</a></strong>, origins in the 1990s, formal web-based resource by early 2000s<br>
+WormBase began as a web interface to the ACeDB database for <em>Caenorhabditis elegans</em> and now covers multiple nematode species. It integrates genetic and physical maps, gene models, expression, phenotypes, and RNAi and CRISPR resources, supporting both classical genetics and high-throughput functional genomics in worms.</p></li>
+<li><p><strong><a href="https://www.yeastgenome.org">Saccharomyces Genome Database (SGD)</a></strong> , established mid-1990s SGD is the primary database for the budding yeast <em>Saccharomyces cerevisiae</em>, providing the reference genome sequence, gene catalog, functional annotations, and curated literature for each gene. It plays a major role in biocuration, systematically extracting experimental results from the yeast literature and capturing them in structured fields.</p></li>
+<li><p><strong><a href="https://phytozome-next.jgi.doe.gov">Phytozome</a></strong>, launched late 2000s<br>
+Phytozome, hosted by the U.S. Department of Energy Joint Genome Institute, is a comparative genomics portal for green plants. It aggregates genome assemblies and annotations for dozens of plant species, offering orthology assignments, gene family clustering, and synteny views that support both crop improvement and basic plant biology.</p></li>
+</ul>
+<p>In addition to these, many other community resources exist, such as PomBase for fission yeast, TAIR and Araport for <em>Arabidopsis thaliana</em>, Xenbase for <em>Xenopus</em>, and Rat Genome Database (RGD) for rat, each tailored to the needs and conventions of its respective research community. Together, these organism-specific databases encode not only sequences and annotations but also decades of accumulated experimental knowledge, nomenclature standards, and community practices that are not easily replicated in generic multi-species portals.</p>
+<section id="funding-for-organism-databases" class="level4" data-number="4.3.4.1">
+<h4 data-number="4.3.4.1" class="anchored" data-anchor-id="funding-for-organism-databases"><span class="header-section-number">4.3.4.1</span> Funding for Organism Databases</h4>
+<p>A common thread across these databases is their reliance on sustained scientific funding, often through a mix of national research agencies and institutional support. FlyBase, for example, has historically been funded by NIH (via the National Human Genome Research Institute and related institutes) to support the <em>Drosophila</em> community; similar NIH or international funding supports WormBase, ZFIN, MGI, and SGD. These grants pay for database infrastructure, software development, and, critically, expert biocurators who read the literature, integrate new data types, and maintain nomenclature standards. Despite their central importance, these community databases face recurring funding uncertainties as grant cycles end, program priorities shift, and funders weigh investments in organism-specific resources against broader, centralized efforts. The long-term sustainability of some of these databases remains unclear, especially for taxa with smaller research communities or those outside the major human-health-focused models.</p>
+<p>For researchers, however, the value of these organism-specific databases is hard to overstate. They provide deep, historically informed context that is often missing from more general resources: allele series and classic mutant phenotypes in FlyBase, detailed recombinase resources and phenotype ontologies in MGI, lineage and fate maps in ZFIN and WormBase, and exhaustive gene function summaries in SGD. These resources effectively encode the collective memory of their respective fields, linking early classical genetics papers to modern genomic datasets and making it possible to interpret new high-throughput experiments in light of decades of accumulated knowledge.</p>
+</section>
+</section>
+</section>
+<section id="sequence-read-archive-sra" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sequence-read-archive-sra"><span class="header-section-number">4.4</span> Sequence Read Archive (SRA)</h2>
+<p>The <a href="https://www.ncbi.nlm.nih.gov/sra/docs/">Sequence Read Archive</a> (SRA) is NCBI’s repository for <em>raw</em> high-throughput sequencing data and is part of the same ecosystem as GenBank and RefSeq. Whereas GenBank focuses on assembled sequences and RefSeq on curated reference sequences, SRA stores the unprocessed reads and alignments that underlie those assemblies and publications. This design enables other researchers to reanalyze published data, test new methods, and improve genome annotations without having to regenerate the raw data themselves. Like GenBank, SRA is synchronized with partner archives at EMBL-EBI and DDBJ as part of the International Nucleotide Sequence Database Collaboration.</p>
+<p>An SRA record is typically linked to a <strong>BioProject</strong> (study-level description), one or more BioSamples (biological sources), and then to one or more SRA runs that correspond to specific sequencing libraries or lanes. In practice, you will usually interact with SRA at the “run” level via accessions like SRR518692 (Auburn <em>Aeromonas hydrophila</em> sequencing), which you can download as FASTQ and then process through your own pipeline.</p>
+<section id="depositing-data-into-sra" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="depositing-data-into-sra"><span class="header-section-number">4.4.1</span> Depositing Data into SRA</h3>
+<p>For anyone with a free MyNCBI account, the web-based Submission Portal Wizard is used to deposit sequencing data into SRA. First, prepare your raw fastq files (*.fastq.gz or split based on read groups if paired), and include a basic study description (project title, abstract-like summary, organism). Next, you will need to include metadata for your sample (strain, tissue, treatment, etc.) and the sequencing runs (library information, sequencing platform, lane information, etc.). If you have a lot of samples, consider downloading the BioSample worksheet template that you can fill out locally.</p>
+<p>Upon depsositing data, you will need to make a decision about data access. I strongly recommend making an appointment with your <a href="https://libguides.auburn.edu/subjectlibrarians">subject librarian</a>. Subject librarians offer discipline-specific services designed to help Auburn University students, faculty, and staff access information resources and use them effectively. These include research consultations and discipline-specific support for using the Innovation and Research Commons (I&amp;RC). Alternatively, you can contact the <a href="https://www.lib.auburn.edu/people/alicia-krzton.php">research data management librarian</a> directly.</p>
+</section>
+<section id="retrieving-data-from-sra-srr518692-example" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="retrieving-data-from-sra-srr518692-example"><span class="header-section-number">4.4.2</span> Retrieving Data from SRA (SRR518692 Example)</h3>
+<p>As an example of how to retrieve public data from SRA, let’s walk through downloading the <em>Aeromonas hydrophila</em> dataset SRR518692 via the NCBI web interface (manual download). First, go to the <a href="https://www.ncbi.nlm.nih.gov/sra">SRA home page</a> and paste “SRR518692” into the search box and hit search. The Run page for SRR518692 shows links to the related BioProject/BioSample and basic metadata (organism, instrument, library layout). In the “Data access” or “Send to” section, look for links to either “FASTQ” via the NCBI Run Selector or “SRA file download”. Keep in mind that for this small file, you can download the compressed FASTQ directly through the browser, but for reproducible workflows and large datasets you should use the SRA Toolkit instead, which we will cover later in Lab 4.</p>
+</section>
+<section id="sra-toolkit-for-command-line-retrieval" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="sra-toolkit-for-command-line-retrieval"><span class="header-section-number">4.4.3</span> SRA Toolkit for Command Line Retrieval</h3>
+<p>The SRA Toolkit is a set of command-line programs that allow you to download and convert SRA runs to FASTQ or FASTA. The two most relevant tools for this course are:</p>
+<ul>
+<li>fastq-dump: older, widely used tool to convert SRA to FASTQ (now deprecated, but still available).</li>
+<li>fasterq-dump: newer tool that is significantly faster and more memory-efficient, recommended by NCBI.</li>
+</ul>
+<p>On HPC, always check local documentation for preferred options and scratch storage guidelines.</p>
+</section>
+<section id="sra-metadata-and-its-evolution" class="level3" data-number="4.4.4">
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="sra-metadata-and-its-evolution"><span class="header-section-number">4.4.4</span> SRA Metadata and Its Evolution</h3>
+<p>SRA metadata has evolved alongside sequencing technologies and community practices, gradually moving from sparse, free-text descriptions toward more structured, machine-readable formats. Early submissions often contained minimal or inconsistent sample information, which makes reuse and integration across studies difficult, especially when key fields such as strain, host, or geographic origin are missing or encoded only in narrative text. In response, NCBI introduced structured <strong>BioSample packages</strong> with controlled fields like host, isolation_source, and collection_date, strengthened the links between SRA runs and their associated BioProject and BioSample records, and issued recommendations to rely more consistently on standard vocabularies and ontologies where possible.</p>
+<p>Despite these improvements, the overall metadata landscape in SRA remains <strong>heterogeneous</strong>, particularly when older accessions are considered alongside newer submissions. Historical datasets may lack important fields or use idiosyncratic labels for the same concept (for example, one group might use “treatment” while another uses “condition” for similar variables), and some submitters rely heavily on file names or free-text notes to convey crucial information about experimental design, which complicates downstream harmonization. As a result, researchers reusing SRA data often need to spend substantial effort cleaning, relabeling, and normalizing metadata before they can perform robust comparative analyses across runs or projects.</p>
+<p>For your own work, it is helpful to treat SRA metadata as part of the primary scientific output rather than an afterthought. Choosing the correct BioSample package for your experiment and filling out all recommended fields produces records that are easier for both humans and software to interpret. Consistent naming of samples across local files, lab notebooks, and SRA accessions reduces confusion later. Thoroughly documenting library preparation kits, read lengths, sequencing platforms, and any unusual processing steps both in the SRA submission and in your methods section further improves transparency and reproducibility.</p>
+<p>When mining existing SRA datasets for reanalysis, it is wise to assume that metadata will require curation. A practical approach is to download the run table or associated metadata, normalize field names to a consistent internal schema, and explicitly check key variables such as organism, library type, read layout, and sequencing platform before combining runs into a single analysis. Older submissions, in particular, should be treated cautiously; verifying sample identities and experimental conditions by cross-referencing the associated publication, or contacting the original authors when necessary, can prevent serious misinterpretation of results. Ultimately, this variability in SRA metadata is not just an annoyance but a concrete illustration of why data literacy, careful documentation, and explicit provenance tracking are essential skills for modern genome research.</p>
+</section>
+</section>
+<section id="visualizing-fasta-alignments-and-tree-files" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="visualizing-fasta-alignments-and-tree-files"><span class="header-section-number">4.5</span> Visualizing FASTA Alignments and Tree Files</h2>
+<p>Many of the databases introduced in this chapter provide downloadable data that you can explore locally using desktop tools. At a minimum, you will frequently encounter two key file types: FASTA files, which store raw or aligned sequences, and <strong>Newick files</strong>, which encode phylogenetic trees in a plain-text parenthetical format. FASTA files can be downloaded from NCBI, Ensembl, and from organism-specific databases such as FlyBase, SGD, or Phytozome. Newick tree files are produced by many phylogenetic tools, but you can also download precomputed gene trees from Ensembl’s “Gene tree” view for individual gene families, or species timetrees from resources like <a href="https://timetree.org/">TimeTree</a>, which builds species-level divergence trees from curated literature and provides them in Newick format for downstream visualization.</p>
+<p>A typical workflow is to obtain sequence FASTA from a genome database, generate a multiple sequence alignment locally, infer a tree using a phylogenetic software package, and then inspect the resulting Newick tree in a dedicated tree viewer. For working with alignments, I recommend AliView, a free, cross-platform alignment viewer and editor designed to handle large phylogenetic datasets efficiently<span class="citation" data-cites="larsson_aliview_2014"><sup><a href="#ref-larsson_aliview_2014" role="doc-biblioref">5</a></sup></span>. AliView reads many of the formats you will encounter (FASTA, PHYLIP, NEXUS, etc.), renders the alignment with color schemes that highlight nucleotide or amino acid patterns, and supports basic editing operations such as trimming poorly aligned ends, removing problematic sequences, and reordering taxa.</p>
+<p>To use AliView in a typical gene-family analysis, you would first download FASTA sequences for your gene of interest from NCBI, Ensembl, or an organism-specific database, then open them in AliView and, if necessary, pass them through an external aligner such as MAFFT (AliView can be configured to call external programs). Once an alignment has been generated and inspected, AliView can export the alignment in formats suitable for phylogenetic inference, such as FASTA or PHYLIP, which can then be used as input for tree-building software. Because AliView is lightweight and easy to install on laptops, it serves as an accessible bridge between database downloads and more advanced phylogenetic tools.</p>
+<p>To move from an alignment to a tree, a commonly used tool is FastTree, which infers approximately maximum-likelihood phylogenetic trees for large nucleotide or protein alignments. FastTree is designed to be much faster than traditional maximum-likelihood programs while maintaining good accuracy, making it ideal for large gene families or species sets where more computationally intensive methods would be impractical. A typical command might look like running FastTree with a nucleotide alignment in FASTA format, specifying an appropriate model such as GTR for nucleotides, and writing the resulting tree to a file in Newick format. AliView includes an “external interface” feature that can be configured to send the current alignment to FastTree, wait for the program to finish, and then automatically launch a tree viewer on the resulting Newick file. In this way, you can go from a database-derived FASTA file to a tree-ready Newick file in just a few integrated steps.</p>
+<p>For visualizing and manipulating Newick trees, the standard tool recommended here is FigTree, a graphical tree viewer and “tree figure drawing” tool designed for interactive exploration and the production of publication-ready figures. FigTree can open Newick files exported from FastTree, BEAST, RAxML, or downloaded directly from Ensembl gene trees or TimeTree species timetrees, and allows you to re-root trees, collapse or expand clades, recolor branches, and label tips or internal nodes based on metadata. A common workflow starts with a Newick tree either generated locally from a multiple sequence alignment or downloaded directly—for example, Ensembl’s gene tree for PRDM9 or a species tree from TimeTree built from a list of species names—and then uses FigTree to adjust the layout (rectangular vs.&nbsp;radial), annotate clades, and export vector graphics for inclusion in reports or slides. For gene trees, this allows you to interactively inspect relationships among paralogs and orthologs, compare branch lengths, and connect the patterns you see with the comparative genomics views in Ensembl and the conservation tracks in genome browsers.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 4.1. Ali View External Tool Integration
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-aliview" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Screenshot of alivew settings for tool integration.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-aliview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Fig_4.2_AliView.jpg" class="img-fluid figure-img" alt="Screenshot of alivew settings for tool integration.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-aliview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: AliView Integration
+</figcaption>
+</figure>
+</div>
+<p>AliView, FastTree, and FigTree can all be combined into a simple, <a href="https://ormbunkar.se/aliview/#FEATURE_LIST">semi-automated pipeline</a>. AliView’s external command configuration supports defining custom commands that take the current alignment, pipe it to FastTree to infer a tree, and then open the resulting Newick file in FigTree. This simple integration enables the ability to move fluidly from raw sequences downloaded from NCBI, Ensembl, or model organism databases to alignments and tree visualizations that you can manipulate and interpret on your own laptop.</p>
+</div>
+</div>
+</section>
+<section id="galaxy-as-a-web-based-genome-analysis-workbench" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="galaxy-as-a-web-based-genome-analysis-workbench"><span class="header-section-number">4.6</span> Galaxy as a web-based genome analysis workbench</h2>
+<p>Though not a genome broswser, this chapter would not be complete without touching on the web-based tool <a href="https://galaxy-main.usegalaxy.org/">Galaxy</a>. Galaxy is a web-based workbench that allows researchers to perform complex genome analyses through a browser without writing code, addressing the “informatics crisis” created by high-throughput sequencing<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol Blankenberg2010FastqGalaxy"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a>,<a href="#ref-Blankenberg2010FastqGalaxy" role="doc-biblioref">7</a></sup></span>. By wrapping command-line tools in a consistent graphical interface and automatically managing compute infrastructure and file formats, Galaxy makes bioinformatics workflows accessible to experimentalists who might never log into a cluster or install analysis software<span class="citation" data-cites="Blankenberg2010GalaxyExperimentalists"><sup><a href="#ref-Blankenberg2010GalaxyExperimentalists" role="doc-biblioref">8</a></sup></span>.</p>
+<section id="historical-development-and-design-goals" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="historical-development-and-design-goals"><span class="header-section-number">4.6.1</span> Historical development and design goals</h3>
+<p>Galaxy originated in the mid-to-late 2000s in response to the rapid expansion of microarray and next-generation sequencing data, when many biologists lacked the training or infrastructure to analyze their own data<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol Blankenberg2010FastqGalaxy"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a>,<a href="#ref-Blankenberg2010FastqGalaxy" role="doc-biblioref">7</a></sup></span>. Early papers described Galaxy as a “web-based genome analysis tool for experimentalists” and emphasized a central design goal: making large-scale analyses biologist-friendly by providing a unified, web-based interface to powerful tools while hiding computational details<span class="citation" data-cites="Blankenberg2010GalaxyExperimentalists"><sup><a href="#ref-Blankenberg2010GalaxyExperimentalists" role="doc-biblioref">8</a></sup></span>.</p>
+</section>
+<section id="doing-bioinformatics-in-the-browser" class="level3" data-number="4.6.2">
+<h3 data-number="4.6.2" class="anchored" data-anchor-id="doing-bioinformatics-in-the-browser"><span class="header-section-number">4.6.2</span> Doing bioinformatics in the browser</h3>
+<p>Galaxy’s analysis workspace allows users to upload their own files or import data from integrated sources, then chain tools together by passing the output of one step directly into the next, constructing multi-step workflows entirely via point-and-click interfaces<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Figure 4.2. Galaxy analysis workspace
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div id="fig-galaxy" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Screenshot of Galaxy web page with three panels. A sample fastq file is in the middle panel.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-galaxy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/Fig_4.1_Galaxy.png" class="img-fluid figure-img" alt="Screenshot of Galaxy web page with three panels. A sample fastq file is in the middle panel.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-galaxy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Galaxy Workflow
+</figcaption>
+</figure>
+</div>
+<p><strong>Galaxy analysis workspace</strong>. The Galaxy analysis workspace is where users perform genomic analyses. The workspace has four areas: the navigation bar, tool panel (left column), detail panel (middle column), and history panel (right column). The navigation bar provides links to Galaxy’s major components, including the analysis workspace, workflows, data libraries, and user repositories (histories, workflows, Pages). The tool panel lists the analysis tools and data sources available to the user. The detail panel displays interfaces for tools selected by the user. The history panel shows data and the results of analyses performed by the user, as well as automatically tracked metadata and user-generated annotations. Every action by the user generates a new history item, which can then be used in subsequent analyses, downloaded, or visualized. Galaxy’s history panel helps to facilitate reproducibility by showing provenance of data and by enabling users to extract a workflow from a history, rerun analysis steps, visualize output datasets, tag datasets for searching and grouping, and annotate steps with information about their purpose or importance. Here, a download FASTQ file is being viewed in the detail panel by simply clicking the eyeball button on the file in the history panel.</p>
+</div>
+</div>
+<p>The Galaxy toolkit illustrates how basic NGS data preparation can be done entirely in the browser<span class="citation" data-cites="Blankenberg2010FastqGalaxy"><sup><a href="#ref-Blankenberg2010FastqGalaxy" role="doc-biblioref">7</a></sup></span>. Tools such as the FASTQ Groomer, quality summary, trimmer, quality-based filters, and paired-end joiner/splitter allow users to: convert between FASTA/QUAL and all common FASTQ variants; compute per-base quality statistics and visualize them; trim low-quality ends; filter reads by length or quality; and perform complex pattern-based manipulations including reverse complementing and adapter handling<span class="citation" data-cites="Blankenberg2010FastqGalaxy"><sup><a href="#ref-Blankenberg2010FastqGalaxy" role="doc-biblioref">7</a></sup></span>. These tasks, traditionally the domain of custom scripts, become reproducible “first steps” in a teaching-friendly, GUI-based workflow that can be reused across projects.</p>
+<p>Beyond early QC, Galaxy supports complete analysis pipelines in many domains, including RNA-seq, ChIP-seq, variant calling, and metagenomics<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>. Tool wrappers encapsulate standard command-line software (e.g., mapping, peak calling, quantification) so that a novice user can execute sophisticated end-to-end workflows by selecting tools and parameters, rather than composing shell commands<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Box 4.2: Using SRA Toolkit inside Galaxy
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Many Galaxy instances provide command line tools like “Faster Download and Extract Reads in FASTQ” (a wrapper for fasterq-dump) or “NCBI SRA Tools: fastq-dump”. For example, as mentioned above you retrieve the <em>Aeromonas hydrophila</em> dataset SRR518692 in Galaxy directly:</p>
+<ul>
+<li>Select the SRA tool in Galaxy.</li>
+<li>Enter SRR518692 as the accession.</li>
+<li>Choose “Split files” for paired-end.</li>
+<li>Run the job to produce FASTQ datasets directly in your Galaxy history ( <a href="#fig-galaxy" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>).</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="reproducible-workflows-and-provenance" class="level3" data-number="4.6.3">
+<h3 data-number="4.6.3" class="anchored" data-anchor-id="reproducible-workflows-and-provenance"><span class="header-section-number">4.6.3</span> Reproducible workflows and provenance</h3>
+<p>A distinctive feature of Galaxy is its emphasis on reproducible computational research<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>. Every tool execution generates provenance metadata that include the input datasets, tool identity and version, parameter values, and resulting outputs, all stored as steps in the user’s history<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>. Users can inspect any intermediate dataset, rerun individual steps with modified parameters, and branch analyses by copying histories, making it straightforward to revise or expand an existing analysis.</p>
+</section>
+<section id="transparency-sharing-and-galaxy-pages" class="level3" data-number="4.6.4">
+<h3 data-number="4.6.4" class="anchored" data-anchor-id="transparency-sharing-and-galaxy-pages"><span class="header-section-number">4.6.4</span> Transparency, sharing, and Galaxy Pages</h3>
+<p>Galaxy also functions as a publishing medium for computational analyses<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>. Any dataset, history, or workflow can be shared with collaborators, made accessible via a stable URL, or published in a public repository where other users can search, view metadata, and import items into their own workspaces.<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span> This sharing model turns workflows into community resources and promotes convergence on best-practice pipelines.</p>
+<p>Galaxy Pages extend this concept by documenting an entire computational experiment—from raw reads to final figures. For example, a metagenomic study of “windshield splatter” used Galaxy to build a complete NGS pipeline for phylogenetic profiling, then published a Page that exposes the full workflow and histories as an executable online supplement<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>. In practice, this means that a methods section and supplementary material can be instantiated as a live, executable artifact rather than static text<span class="citation" data-cites="Goecks2010GalaxyGenomeBiol"><sup><a href="#ref-Goecks2010GalaxyGenomeBiol" role="doc-biblioref">6</a></sup></span>.</p>
+</section>
+</section>
+<section id="data-sharing-policies-in-genomics" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="data-sharing-policies-in-genomics"><span class="header-section-number">4.7</span> Data Sharing Policies in Genomics</h2>
+<p>Genome data sharing policies have evolved from idealistic commitments to rapid open release toward more nuanced systems that balance broad access, participant protection, and the interests of data producers<span class="citation" data-cites="jones_bermuda_2018 nicol_data_2024"><sup><a href="#ref-jones_bermuda_2018" role="doc-biblioref">9</a>,<a href="#ref-nicol_data_2024" role="doc-biblioref">10</a></sup></span>. This section traces that trajectory, uses the baboon genome as a case study in embargo-related bottlenecks, and offers guidance on navigating current policies across human and non‑human genomics.</p>
+<section id="from-bermuda-to-managed-access" class="level3" data-number="4.7.1">
+<h3 data-number="4.7.1" class="anchored" data-anchor-id="from-bermuda-to-managed-access"><span class="header-section-number">4.7.1</span> From Bermuda to managed access</h3>
+<p>The Bermuda Principles (1996) emerged from the Human Genome Project (HGP) and mandated that publicly funded human and model-organism sequence be deposited in public databases within 24 hours, with daily <strong>pre‑publication</strong> release into the public domain<span class="citation" data-cites="jones_bermuda_2018"><sup><a href="#ref-jones_bermuda_2018" role="doc-biblioref">9</a></sup></span>. This approach framed genomic sequence as part of a scientific commons and was explicitly justified as a way to accelerate discovery and to limit restrictive gene patenting by using rapid release as prior art.</p>
+<p>Follow‑on statements such as the Fort Lauderdale agreement (2003) reaffirmed early deposition but added clearer expectations that downstream users respect the interests of data producers, especially large sequencing centers and consortia. These early policies were designed in an era when sequence data were mostly de‑identified, largely non‑clinical, and generated by a relatively small number of centers, which made it easier to sustain almost fully open release with only informal norms to protect the “first use” of the data by generators. This also meant that researchers largely understood the sequencing bottleneck (see <a href="ch01-reading-genomes.html#fig-bottleneck" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>) and were pro-active in moving the science forward.</p>
+</section>
+<section id="human-genomics-and-the-medical-information-commons" class="level3" data-number="4.7.2">
+<h3 data-number="4.7.2" class="anchored" data-anchor-id="human-genomics-and-the-medical-information-commons"><span class="header-section-number">4.7.2</span> Human genomics and the medical information commons</h3>
+<p>As whole‑genome and exome sequencing became embedded in clinical care, the notion of a medical information commons (MIC) reframed genome data as one component of large, integrated resources containing genomic, phenotypic, and environmental information. Cook‑Deegan and McGuire argue that building a MIC requires going beyond Bermuda’s simple “sequence into GenBank” model toward federated systems that respect privacy, regulatory heterogeneity, and data donors’ expectations while still enabling large‑scale reuse<span class="citation" data-cites="cook-deegan_moving_2017 cook-deegan_sharing_2017"><sup><a href="#ref-cook-deegan_moving_2017" role="doc-biblioref">11</a>,<a href="#ref-cook-deegan_sharing_2017" role="doc-biblioref">12</a></sup></span>.</p>
+<p>In the modern genome database landscape, “open” human genomic data are increasingly rare; instead, most large‑scale human datasets are subject to tiered or managed access, often governed by Data Access Committees that vet applications, require data use agreements, and sometimes impose limits on re‑identification, clinical interpretation, or re‑contact. This shift reflects: (1) recognition that genomic data are inherently identifying; (2) expansion to more diverse and often more vulnerable populations; and (3) the embedding of genomic data within linked EHRs and biobanks, making them qualitatively different from the relatively “flat” HGP sequences of the 1990s<span class="citation" data-cites="cook-deegan_sharing_2017"><sup><a href="#ref-cook-deegan_sharing_2017" role="doc-biblioref">12</a></sup></span>.</p>
+</section>
+<section id="consortia-tiered-access-and-embargoes" class="level3" data-number="4.7.3">
+<h3 data-number="4.7.3" class="anchored" data-anchor-id="consortia-tiered-access-and-embargoes"><span class="header-section-number">4.7.3</span> Consortia, tiered access, and embargoes</h3>
+<p>Modern genomic consortia—spanning cancer, rare disease, population genomics, agriculture, and microbial surveillance—use a wide variety of access arrangements. Nicol, Nielsen, and Archer surveyed 98 genomic consortia and identified twelve distinct access patterns, including simple models such as open access, consortium‑only access, managed access, and registered access, plus tiered combinations such as “consortium + managed + open.” Tiered arrangements often allow: privileged access for consortium members, managed access for qualified external users, and fully open release of a summary or low‑risk subset of data<span class="citation" data-cites="nicol_data_2024"><sup><a href="#ref-nicol_data_2024" role="doc-biblioref">10</a></sup></span>.</p>
+<p>Funding policies encode similar logic. The NIH Genomic Data Sharing (GDS) Policy<span class="citation" data-cites="NIH_GDSP"><sup><a href="#ref-NIH_GDSP" role="doc-biblioref">13</a></sup></span> requires submission of large‑scale human genomic data to approved repositories (e.g., dbGaP) and typically defers broad release of controlled human data for about six months after quality control, but explicitly rejects long publication embargoes in favor of relatively rapid sharing with no formal guarantee of “first publication rights.” For non‑human genomic data, NIH expects submission no later than the time of publication, with fewer privacy constraints but similar expectations that sequence and metadata be deposited in recognized repositories.</p>
+<p>Embargoes and “privileged access” periods remain widespread in consortia as a way to recognize the investment of data producers. The tiered access model can, in principle, honor rapid pre‑publication release while giving generating groups a limited window to publish primary analyses, but the effectiveness of this approach depends heavily on clear documentation of embargo conditions and on the pace at which data producers can move through their own analysis bottlenecks<span class="citation" data-cites="nicol_data_2024"><sup><a href="#ref-nicol_data_2024" role="doc-biblioref">10</a></sup></span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Box 4.3: A cautionary tale - The Baboon Genome Project
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The baboon genome illustrates how informal embargo practices can stall downstream science and even incentivize duplication of effort. Baylor produced a reference assembly for the olive baboon (<em>Papio anubis</em>) “Panu_3.0” and deposited under an informal embargo beginning around 2008, with access constrained under Fort Lauderdale–style expectations that expected external researchers to defer primary genome‑scale analyses to the generating group. While Rogers and colleagues at Baylor’s Human Genome Sequencing Center ultimately published this reference genome, it was not until 2019<span class="citation" data-cites="rogers_comparative_2019"><sup><a href="#ref-rogers_comparative_2019" role="doc-biblioref">14</a></sup></span>, over a decade after making it widely available.</p>
+<p>In parallel, Wall et al.&nbsp;published a 2016 study of admixture and divergence in wild baboons using low‑coverage whole‑genome sequencing<span class="citation" data-cites="wall_genomewide_2016"><sup><a href="#ref-wall_genomewide_2016" role="doc-biblioref">15</a></sup></span>. Because use of the Baylor reference assembly for primary analyses was constrained by embargo conditions, the group generated its own de novo reference, allowing it to publish genome‑wide results without violating Fort Lauderdale norms or undermining the Baylor team’s planned flagship paper. A later paper from the same team presented a new olive baboon assembly (Panubis1.0) explicitly noting that Panu_3.0 had “negligible” scientific influence in part because it was effectively embargoed for more than a decade, despite being the primary reference for the species<span class="citation" data-cites="batra_accurate_2020"><sup><a href="#ref-batra_accurate_2020" role="doc-biblioref">16</a></sup></span>. The result was a situation in which NIH‑funded sequencing efforts supported two separate reference‑quality assemblies and duplicated core aspects of the work, with the later Panubis1.0 paper arguing that several large syntenic discrepancies between Panu_3.0 and Panubis1.0 reflect genuine assembly errors in Panu_3.0.</p>
+<p>This case study illustrates several key points about data sharing and publication timing:</p>
+<ul>
+<li>Long, informal embargoes can effectively remove a reference genome from the scientific arena, even when the sequence is technically deposited at NCBI or similar repositories<span class="citation" data-cites="batra_accurate_2020"><sup><a href="#ref-batra_accurate_2020" role="doc-biblioref">16</a></sup></span>.</li>
+<li>When primary producers cannot move from sequencing to analysis and publication quickly, other groups may either avoid the dataset entirely or reproduce the underlying sequencing effort in order to publish their own work<span class="citation" data-cites="wall_genomewide_2016 batra_accurate_2020"><sup><a href="#ref-wall_genomewide_2016" role="doc-biblioref">15</a>,<a href="#ref-batra_accurate_2020" role="doc-biblioref">16</a></sup></span>.</li>
+<li>Embargo‑protected references can interact poorly with the rapid pace of high‑throughput sequencing: the sequencing bottleneck has largely disappeared, but the analysis bottleneck remains, creating a period during which data exist but cannot be freely used for the most scientifically valuable questions<span class="citation" data-cites="cook-deegan_moving_2017"><sup><a href="#ref-cook-deegan_moving_2017" role="doc-biblioref">11</a></sup></span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="practical-guidance-for-working-with-genome-data-today" class="level3" data-number="4.7.4">
+<h3 data-number="4.7.4" class="anchored" data-anchor-id="practical-guidance-for-working-with-genome-data-today"><span class="header-section-number">4.7.4</span> Practical guidance for working with genome data today</h3>
+<p>Across both human and non‑human genomics, the early‑deposit norm means that reference genomes, resequencing data, and large cohort datasets often appear in repositories months to years before the corresponding flagship papers. This practice accelerates method development, cross‑project integration, and secondary discovery, but it also raises concrete risks for researchers who do not carefully assess data‑use conditions (see Box 4.1 above for cautionary tale).</p>
+<p>When working with human or non‑human genomic datasets, it is important to:</p>
+<ul>
+<li>Check the data‑sharing policy and access tier. Repositories such as GenBank, SRA, ENA, and non‑human assemblies in NCBI usually host genuinely open sequence, but human genomic datasets in dbGaP or EGA are almost always subject to managed or registered access, with explicit Data Access Committee oversight and data use limitations<span class="citation" data-cites="nicol_data_2024"><sup><a href="#ref-nicol_data_2024" role="doc-biblioref">10</a></sup></span>.</li>
+<li>Examine whether any publication embargo, moratorium, or “first publication” expectation applies, particularly for data labeled as coming from a consortium, a sequencing center, or a flagship project<span class="citation" data-cites="nicol_data_2024"><sup><a href="#ref-nicol_data_2024" role="doc-biblioref">10</a></sup></span>.</li>
+<li>Look for documentation that specifies which analyses are reserved for the generating consortium (e.g., full genome‑wide association analyses, primary pan‑genome construction, or first comprehensive comparative genomics) and which are encouraged for external users<span class="citation" data-cites="nicol_data_2024"><sup><a href="#ref-nicol_data_2024" role="doc-biblioref">10</a></sup></span>.</li>
+<li>Cross‑check whether closely related genome projects are underway that might produce overlapping analyses; in light of cases like the baboon reference, investigators considering large investments in new assemblies or resequencing may wish to contact data generators and funders early to clarify expectations and avoid inadvertent duplication<span class="citation" data-cites="batra_accurate_2020"><sup><a href="#ref-batra_accurate_2020" role="doc-biblioref">16</a></sup></span>.</li>
+</ul>
+<p>For students and trainees, an important lesson is that “open” in genomics is not a single category. Sequence reads in an NCBI project may be technically accessible but still subject to norms, policies, or formal embargoes that shape what is considered appropriate use. At the same time, as Cook‑Deegan and McGuire emphasize, the long‑term goal remains a more robust medical information commons and comparable shared infrastructure for non‑human genomics, in which broad, responsible data sharing supports both collective discovery and fair recognition of the labor and resources that generate large genomic datasets<span class="citation" data-cites="nicol_data_2024 cook-deegan_moving_2017 cook-deegan_sharing_2017"><sup><a href="#ref-nicol_data_2024" role="doc-biblioref">10</a>–<a href="#ref-cook-deegan_sharing_2017" role="doc-biblioref">12</a></sup></span>.</p>
+</section>
+</section>
+<section id="reflection-questions" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="reflection-questions"><span class="header-section-number">4.8</span> Reflection Questions</h2>
+<ol type="1">
+<li><p><strong>Genome database evolution and curation trade-offs</strong>: Trace the evolution from GenBank to RefSeq; why does NCBI curate specific entries like HBB NM_000518 rather than simply accepting all submissions? What are the trade-offs between GenBank’s archival comprehensiveness and RefSeq’s non-redundant, reviewed models, and when might you prefer one over the other in your own research?</p></li>
+<li><p><strong>Orthology interpretation in comparative genomics</strong>: Compare the PRDM9 orthologs shown in UCSC and Ensembl; why does Ensembl label some relationships as “1:many” rather than simple one-to-one, and how does this reflect the underlying gene tree inference process?</p></li>
+<li><p><strong>Coordinate systems and variant reporting</strong>: How do coordinate shifts between hg19 and hg38 (or other major builds) affect variant reporting, such as the position of HBB? Using a specific example from GDV or UCSC, explain how you would verify the exact position of a variant across builds and why this matters for reproducibility.</p></li>
+<li><p><strong>Browser choice for specific questions</strong>: NCBI GDV, Ensembl, and UCSC each excels in different areas; when would you choose GDV over Ensembl for annotating PRDM9 in a newly sequenced genome, and what limitations might make you pivot to UCSC for custom track visualization?</p></li>
+<li><p><strong>Data sharing policies and rapid deposition</strong>: Should we deposit ALL sequencing data immediately upon generation, even before publication? Why or why not? Is it surprising that early genomics followed the Bermuda Principles (24-hour data release), while modern consortia use tiered access? What factors changed (e.g., clinical privacy, commercial interests), and how does this impact reproducibility in model organism research?</p></li>
+</ol>
+</section>
+<section id="problem-sets" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="problem-sets"><span class="header-section-number">4.9</span> Problem Sets</h2>
+<ol type="1">
+<li><p><strong>NCBI Gene and EDirect</strong>: Search NCBI Gene for “DSX Drosophila”; use EDirect to fetch the FASTA sequence for the primary transcript (<code>esearch -db gene -query "DSX[Gene] AND Drosophila" | efetch -format fasta</code>). Load into AliView and identify the number of isoforms; document the stable RefSeq ID and how it differs from GenBank accessions.</p></li>
+<li><p><strong>UCSC Conservation in Drosophila</strong>: In UCSC (<em>D. melanogaster</em> dm6), navigate to the <code>rdl</code> gene; enable MultiZ alignments for 4 species (<em>D. simulans</em>, <em>D. pseudoobscura</em>, <em>D. grimshawi</em>) and phyloP tracks. Zoom to exons and interpret how conservation profiles differ between coding vs.&nbsp;non-coding regions; export a screenshot or BED of conserved elements and explain their potential function.</p></li>
+<li><p><strong>Galaxy SRA Pipeline</strong>: In Galaxy, retrieve SRR518692 (<em>Aeromonas hydrophila</em>); run FASTQC to perform quality control on the files downloaded.<br>
+</p></li>
+<li><p><strong>FlyBase Synteny</strong>: In FlyBase JBrowse (<em>D. melanogaster</em>), explore Muller elements synteny table; compare chromosome rearrangements across <em>D. grimshawi</em> and <em>D. pseudoobscura</em>. Export orthologs for ADH as FASTA and align in AliView.</p></li>
+<li><p><strong>Phytozome Pectinase Phylogeny</strong>: In Phytozome, search “Pectinesterase” in Brassicaceae; download FASTA for 10-20 hits. Download the protein sequences and import into AliView. As shown in <a href="#fig-aliview" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> align the downloaded sequences and run FastTree → FigTree. Compare the resulting gene tree to species tree; hypothesize duplication timing and test with Ensembl orthologs.</p></li>
+</ol>
+</section>
+<section id="references" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="references"><span class="header-section-number">4.10</span> References</h2>
+
+
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-pevsner2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Pevsner, J. <em>Bioinformatics and Functional Genomics</em>. (Wiley, 2015).</div>
+</div>
+<div id="ref-bogan2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Bogan, S. N. <em>et al.</em> <a href="https://doi.org/10.1093/molbev/msaf219">Temperature and pressure shaped the evolution of antifreeze proteins in polar and deep sea zoarcoid fishes</a>. <em>Molecular Biology and Evolution</em> <strong>42</strong>, msaf219 (2025).</div>
+</div>
+<div id="ref-herrero_ensembl_2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Herrero, J. <em>et al.</em> <a href="https://doi.org/10.1093/database/bav096">Ensembl comparative genomics resources</a>. <em>Database: The Journal of Biological Databases and Curation</em> <strong>2016</strong>, bav096 (2016).</div>
+</div>
+<div id="ref-aken_ensembl_2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Aken, B. L. <em>et al.</em> <a href="https://doi.org/10.1093/nar/gkw1104">Ensembl 2017</a>. <em>Nucleic Acids Research</em> <strong>45</strong>, D635–D642 (2017).</div>
+</div>
+<div id="ref-larsson_aliview_2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Larsson, A. <a href="https://doi.org/10.1093/bioinformatics/btu531"><span>AliView</span>: A fast and lightweight alignment viewer and editor for large datasets</a>. <em>Bioinformatics</em> <strong>30</strong>, 3276–3278 (2014).</div>
+</div>
+<div id="ref-Goecks2010GalaxyGenomeBiol" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Goecks, J., Nekrutenko, A., Taylor, J. &amp; Team, T. G. <a href="https://doi.org/10.1186/gb-2010-11-8-r86">Galaxy: A comprehensive approach for supporting accessible, reproducible, and transparent computational research in the life sciences</a>. <em>Genome Biology</em> <strong>11</strong>, R86 (2010).</div>
+</div>
+<div id="ref-Blankenberg2010FastqGalaxy" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline">Blankenberg, D. <em>et al.</em> <a href="https://doi.org/10.1093/bioinformatics/btq281">Manipulation of <span>FASTQ</span> data with <span>Galaxy</span></a>. <em>Bioinformatics</em> <strong>26</strong>, 1783–1785 (2010).</div>
+</div>
+<div id="ref-Blankenberg2010GalaxyExperimentalists" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline">Blankenberg, D. <em>et al.</em> <a href="https://doi.org/10.1002/0471142727.mb1910s89">Galaxy: A web-based genome analysis tool for experimentalists</a>. <em>Current Protocols in Molecular Biology</em> <strong>89</strong>, 19.10.1–19.10.21 (2010).</div>
+</div>
+<div id="ref-jones_bermuda_2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline">Jones, K. M., Ankeny, R. A. &amp; Cook-Deegan, R. <a href="https://doi.org/10.1007/s10739-018-9538-7">The <span>Bermuda</span> <span>Triangle</span>: <span>The</span> <span>Pragmatics</span>, <span>Policies</span>, and <span>Principles</span> for <span>Data</span> <span>Sharing</span> in the <span>History</span> of the <span>Human</span> <span>Genome</span> <span>Project</span></a>. <em>Journal of the history of biology</em> <strong>51</strong>, 693–805 (2018).</div>
+</div>
+<div id="ref-nicol_data_2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">10. </div><div class="csl-right-inline">Nicol, D., Nielsen, J. &amp; Archer, M. <a href="https://doi.org/10.1038/s41598-024-72653-z">Data access arrangements in genomic research consortia</a>. <em>Scientific Reports</em> <strong>14</strong>, 21685 (2024).</div>
+</div>
+<div id="ref-cook-deegan_moving_2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">11. </div><div class="csl-right-inline">Cook-Deegan, R. &amp; McGuire, A. L. <a href="https://doi.org/10.1101/gr.216911.116">Moving beyond <span>Bermuda</span>: Sharing data to build a medical information commons</a>. <em>Genome Research</em> <strong>27</strong>, 897–901 (2017).</div>
+</div>
+<div id="ref-cook-deegan_sharing_2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">12. </div><div class="csl-right-inline">Cook-Deegan, R., Ankeny, R. A. &amp; Jones, K. M. <a href="https://doi.org/10.1146/annurev-genom-083115-022515">Sharing <span>Data</span> to <span>Build</span> a <span>Medical</span> <span>Information</span> <span>Commons</span>: <span>From</span> <span>Bermuda</span> to the <span>Global</span> <span>Alliance</span></a>. <em>Annual Review of Genomics and Human Genetics</em> <strong>18</strong>, 389–415 (2017).</div>
+</div>
+<div id="ref-NIH_GDSP" class="csl-entry" role="listitem">
+<div class="csl-left-margin">13. </div><div class="csl-right-inline"><a href="https://grants.nih.gov/grants/guide/notice-files/not-od-14-124.html"><span>NOT</span>-<span>OD</span>-14-124: <span>NIH</span> <span>Genomic</span> <span>Data</span> <span>Sharing</span> <span>Policy</span></a>.</div>
+</div>
+<div id="ref-rogers_comparative_2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">14. </div><div class="csl-right-inline">Rogers, J. <em>et al.</em> <a href="https://doi.org/10.1126/sciadv.aau6947">The comparative genomics and complex population history of <span>Papio</span> baboons</a>. <em>Science Advances</em> <strong>5</strong>, eaau6947 (2019).</div>
+</div>
+<div id="ref-wall_genomewide_2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">15. </div><div class="csl-right-inline">Wall, J. D. <em>et al.</em> <a href="https://doi.org/10.1111/mec.13684">Genomewide ancestry and divergence patterns from low-coverage sequencing data reveal a complex history of admixture in wild baboons</a>. <em>Molecular Ecology</em> <strong>25</strong>, 3469–3483 (2016).</div>
+</div>
+<div id="ref-batra_accurate_2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">16. </div><div class="csl-right-inline">Batra, S. S. <em>et al.</em> <a href="https://doi.org/10.1093/gigascience/giaa134">Accurate assembly of the olive baboon (<span>Papio</span> anubis) genome using long-read and <span>Hi</span>-<span>C</span> data</a>. <em>GigaScience</em> <strong>9</strong>, giaa134 (2020).</div>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ch03-formats-qc-design.html" class="pagination-link" aria-label="File Formats and Quality Control in Genome Workflows">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">File Formats and Quality Control in Genome Workflows</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ch05-seq-alignment.html" class="pagination-link" aria-label="Sequence Alignment">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sequence Alignment</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
