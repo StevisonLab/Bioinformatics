@@ -1,0 +1,19 @@
+/*-- scss:defaults --*/
+
+$body-color: #212529;       /* ratio ~16:1 */
+$link-color: #0047AB;       /* ratio ~7.6:1 */
+$code-color: #9D1B4A;       /* ratio ~6.2:1 */
+$text-muted: #595959;       /* ratio ~7:1   */
+
+/*-- scss:rules --*/
+
+.text-muted {
+  color: #595959 !important;
+}
+
+.sidebar-navigation a { color: #0047AB; }
+.sidebar-navigation a:hover { color: #003080; }
+
+.header-section-number { color: #595959; }
+
+pre code { color: #212529; }

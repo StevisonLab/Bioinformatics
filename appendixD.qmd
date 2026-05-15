@@ -1,0 +1,28 @@
+---
+title: "Appendix: Resources for Future Learning"
+bibliography: references.bib
+csl: nature.csl
+lang: en-US
+---
+
+## Resources
+
+This appendix lists web resources that can help you continue building your bioinformatics and data analysis skills after the course. Each site offers a different way to strengthen your understanding, from genomics and R programming to visualization and reproducible analysis.
+
+- [Computational Genomics with R](https://compgenomr.github.io/book/) is a practical, book-length resource for learning computational genomics concepts in R. It is especially useful for students who want to connect sequence analysis with data analysis workflows.
+
+- [Plants and Python](https://plantsandpython.github.io/PlantsAndPython/00_Opening_page.html) introduces Python through examples grounded in plant biology and genomics. It is a good starting point for students who want a gentle, biology-centered introduction to programming.
+
+- [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) provides clear guidance on making effective scientific figures. It is especially helpful for learning how to choose appropriate plot types and present data honestly and clearly.
+
+- [R for Data Science learning materials](https://edav.info/learning_R.html) collects resources for learning R and data analysis. This page is useful for students who want to continue developing skills in data wrangling, visualization, and statistical thinking.
+
+- [Bioinformatics Data Skills Resources](https://bdsr.stephenturner.us/) offers tutorials and practical guidance for working with biological data. It is a strong next step for students who want to learn more about file formats, command-line tools, and reproducible analysis.
+
+- [Installing IGV](https://bioinformatics.ccr.cancer.gov/docs/b4b/Module2_RNA_Sequencing/installing_igv/) explains how to install the Integrative Genomics Viewer, a widely used tool for exploring genome alignments and annotation tracks. This is a useful reference for students who want to inspect sequencing data visually.
+
+- [Data Science for Librarians, Archivists, and Humanists](https://kevinlanning.github.io/DataSciLibArts/preface.html) offers an accessible introduction to data science concepts and workflows. Although it is not specific to biology, it is useful for building general computational confidence and good analytical habits.
+
+- [GATK Workflow Overview](https://hpc.nih.gov/training/gatk_tutorial/workflow-overview.html) provides an overview of a common variant-calling workflow using the Genome Analysis Toolkit. It is a helpful resource for students who want to understand how sequencing reads are processed into biologically interpretable results.
+
+These resources are not required course materials, but they can help you keep learning after the semester ends and give you a broader view of how bioinformatics is practiced in research settings.

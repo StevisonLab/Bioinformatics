@@ -52,9 +52,7 @@ For the next part of the lab, we will use an excel spreadsheet provided by Anton
 
 2. The first sheet in the workbook, appropriately named "Simple Model", demonstrates the calculations involved in building an HMM to determine the exact location of an exon/intron boundary.  The user enters a short DNA sequence and sets model parameters.  The workbook then uses these values to compute the likelihood of each potential 5' splice site location.
 
-   <p align="center" width="20%">
-   	<img width="50%" src="images/SimpleModel.png">
-	</p>
+![Simple Model](images/SimpleModel.png){#fig-simple width="75%" fig-alt="Screenshot of the excel worksheet for the lab with labels for each section in yellow pop out boxes."}
 
    - Cells **B2–B4** contain the probabilities that the DNA sequence begins in different regions of a gene.  In HMM parlance, these regions are described as states of the model. 
    - Cells **F4–I6** give the probability per nucleotide of moving from one state to another.  For example, if G4 = 0.60, then a nucleotide in the gene's exon has a 60% chance of being followed by a nucleotide in the splice site.  This model focuses only on 5' splice sites, so states will always occur in the order Exon – Splice – Intron – End. 
@@ -148,9 +146,7 @@ In this part of the lab, you will explore how modifications to the HMM affect it
 
 The second sheet of the "Hidden Markov Model" workbook contains an exact replica of the HMM described by Eddy (2004) [@eddy_what_2004]. This sheet can be reached using the navigation tabs at the bottom of the Excel workspace. Eddy's HMM is designed to handle DNA sequences up to 26 bp in length; moreover, under the initial settings, the splice site can occur at either an A or a G, although the latter is far more likely.
 
-   <p align="center" width="20%">
-   	<img width="75%" src="images/FullModel.jpg">
-	</p>
+![Full Model](images/FullModel.jpg){#fig-full-hmm width="75%" fig-alt="Screenshot of excel workbook for the full hmm model."}
 
 **Key differences from the Simple Model:**
 

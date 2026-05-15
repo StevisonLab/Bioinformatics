@@ -42,11 +42,12 @@ book:
         - appendixA.qmd
         - appendixB.qmd
         - appendixC.qmd  
+        - appendixD.qmd
 
 format:
   html:
     colorlinks: true
-    theme: default
+    theme: [default, custom.scss]
     highlight-style: a11y
     toc: true
     number-sections: true

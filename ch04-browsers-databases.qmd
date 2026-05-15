@@ -170,7 +170,7 @@ For visualizing and manipulating Newick trees, the standard tool recommended her
 ::: {.callout-note}
 ### Figure 4.1. Ali View External Tool Integration 
 
-![AliView Integration](images/Fig_4.2_AliView.jpg){#fig-aliview}
+![AliView Integration](images/Fig_4.2_AliView.jpg){#fig-aliview fig-alt="Screenshot of alivew settings for tool integration."}
 
 AliView, FastTree, and FigTree can all be combined into a simple, [semi-automated pipeline](https://ormbunkar.se/aliview/#FEATURE_LIST).  AliView’s external command configuration supports defining custom commands that take the current alignment, pipe it to FastTree to infer a tree, and then open the resulting Newick file in FigTree. This simple integration  enables the ability to move fluidly from raw sequences downloaded from NCBI, Ensembl, or model organism databases to alignments and tree visualizations that you can manipulate and interpret on your own laptop.
 :::
@@ -187,7 +187,7 @@ Galaxy’s analysis workspace allows users to upload their own files or import d
 ::: {.callout-note}
 ### Figure 4.2. Galaxy analysis workspace 
 
-![Galaxy Workflow](images/Fig_4.1_Galaxy.png){#fig-galaxy}
+![Galaxy Workflow](images/Fig_4.1_Galaxy.png){#fig-galaxy fig-alt="Screenshot of Galaxy web page with three panels. A sample fastq file is in the middle panel."}
 
 **Galaxy analysis workspace**. The Galaxy analysis workspace is where users perform genomic analyses. The workspace has four areas: the navigation bar, tool panel (left column), detail panel (middle column), and history panel (right column). The navigation bar provides links to
 Galaxy’s major components, including the analysis workspace, workflows, data libraries, and user repositories (histories, workflows, Pages). The tool panel lists the analysis tools and data sources available to the user. The detail panel displays interfaces for tools selected by the user. The history panel shows data and the results of analyses performed by the user, as well as automatically tracked metadata and user-generated annotations. Every action by the user generates a new history item, which can then be used in subsequent analyses, downloaded, or visualized. Galaxy’s history panel helps to facilitate reproducibility by showing provenance of data and by enabling users to extract a workflow from a history, rerun analysis steps, visualize output datasets, tag datasets for searching and grouping, and annotate steps with information about their purpose or importance. Here, a download FASTQ file is being viewed in the detail panel by simply clicking the eyeball button on the file in the history panel.

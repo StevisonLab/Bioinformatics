@@ -15,7 +15,7 @@ Bioinformatics projects are inherently complex: they involve large datasets, man
 ::: callout-note
 #### Figure 7.1 – Importance of Digital Organization
 
-![Contrasting cluttered and organized lab benches; how does organization make you feel?](images/Figure_7-1_Organization.png){#fig-organization width="50%"}
+![Contrasting cluttered and organized lab benches; how does organization make you feel?](images/Figure_7-1_Organization.png){#fig-organization width="50%" fig-alt="Three photographs of clean and messy lab environments."}
 
 Just as a cluttered bench slows down wet‑lab work, a chaotic directory structure makes simple computational tasks stressful and error‑prone. Your goal is to make your digital lab bench feel like the image on the right and now those on the left.
 :::
@@ -234,7 +234,7 @@ Deciding what goes in the main methods section versus supplementary materials re
 ::: callout-note 
 ## Figure 7.3 - Main text → Supplement → GitHub
 
-![Continuum of methods detail from brief main-text description, to more detailed supplement, to most detailed external documentation (e.g., GitHub).](images/Figure_7-3_Detail_Strategies.jpg){#fig-detail width="75%"}
+![Continuum of methods detail from brief main-text description, to more detailed supplement, to most detailed external documentation (e.g., GitHub).](images/Figure_7-3_Detail_Strategies.jpg){#fig-detail width="75%" fig-alt="Grey box indicating reproducibility of a study based on methods section in main text and the supplement with an additional blue box outside for external documentation such as GitHub."}
 
 This chapter assumes a tiered approach to documentation where the main text provides a readable overview, the supplement adds enough detail for reproduction, and external resources such as GitHub hold the most granular, evolving record.
 :::

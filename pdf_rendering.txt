@@ -1,3 +1,17 @@
+format:
+  html:
+    colorlinks: true
+    theme: default
+    highlight-style: arrow
+    toc: true
+    number-sections: true
+    csl: nature.csl
+    axe: true
+    include-before-body: skip-nav.html
+    toc-title: "Table of Contents"
+    anchor-sections: true
+    smooth-scroll: true
+    css: accessibility.css
   pdf:    
     toc: true
     number-sections: true
