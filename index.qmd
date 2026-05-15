@@ -6,9 +6,7 @@ lang: en-US
 
 # Preface {.unnumbered}
 
-This is a Quarto book. This companion textbook is a draft teaching resource created specifically for students enrolled in BIOL 5860/6860: Bioinformatics and Genome Analysis at Auburn University during the Spring 2026 term. The content integrates instructor-written material, published references, and AI-assisted drafting that has been reviewed and edited for use in this course, with sources and AI assistance acknowledged. 
-
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+This companion textbook is a draft teaching resource created specifically for students enrolled in BIOL 5860/6860: Bioinformatics and Genome Analysis at Auburn University during the Spring 2026 term. The content integrates instructor-written material, published references, and AI-assisted drafting that has been reviewed and edited for use in this course, with sources and AI assistance acknowledged. 
 
 ## Why This Course? Why This Book?
 
@@ -106,6 +104,7 @@ Each chapter includes “Lab connections” callouts that point to relevant labs
 
 ## Key Dates
 ::: {.smaller style="overflow-x: auto;"}
+*Schedule shown is for Spring 2026 at Auburn University; adapt as needed.*
 | Assignment | Description | Due Date | Points | Percent course completed |
 |---|---|---|---|---|
 | Lab 1 | Find and describe a genome analysis paper | 15-Jan | 25 | 3% |
@@ -145,9 +144,57 @@ Let's read some genomes together.
 
 *Dr. Laurie Stevison - Your Steward in Genomics* *December 2025*
 
+## How to Cite This Book
+
+Stevison, L. (2026). *Reading Genomes: A Companion to Bioinformatics 
+and Genome Analysis* (v1.0). Zenodo. https://doi.org/10.5281/zenodo.20218119. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20218119.svg)](https://doi.org/10.5281/zenodo.20218119)
+
+## For Instructors
+
+This book is designed to be freely adopted, adapted, and reused under a 
+[CC0 1.0 Universal license](https://creativecommons.org/publicdomain/zero/1.0/). 
+You are welcome to use it as-is or modify it to fit your course without 
+restriction or attribution requirement, though citation is appreciated.
+
+### Adopting This Book
+
+The full source is available on [GitHub](https://github.com/StevisonLab/Bioinformatics). 
+To render your own copy:
+
+1. Clone or fork the repository
+2. Install [Quarto](https://quarto.org) (v1.9 or later)
+3. Run `quarto render` in the project root
+4. Customize chapters, labs, and the semester schedule to fit your course
+
+### Structure
+
+The book is organized into three parallel tracks designed to work together 
+or independently:
+
+- **Companion Chapters** — conceptual background and workflows for each topic
+- **Lab Manual** — hands-on exercises tied to chapter content
+- **Appendices** — reference material including a semester research project 
+framework, a yeast genomics dataset, and guidance on reading scientific literature
+
+### Adapting for Your Course
+
+The semester schedule and assessment structure in the Preface reflect a 
+specific Spring 2026 offering at Auburn University. Chapter content, labs, 
+and appendices are written to be broadly applicable across institutions and 
+course formats. Instructors are encouraged to swap in their own datasets, 
+adjust pacing, and tailor the group project framework in Appendix B to 
+their local HPC environment.
+
+### Feedback and Contributions
+
+Bug reports, typo fixes, and suggested improvements are welcome via 
+[GitHub Issues](https://github.com/StevisonLab/Bioinformatics/issues). 
+If you adopt or adapt this resource, the author would love to hear about 
+it — reach out via the [Stevison Lab website](https://sites.google.com/site/lstevison/).
+
 ## Acknowledgments
 
-Portions of this book were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content.
+Portions of this book were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content. I also want to give a huge heart-felt thank you to my students over the years who have helped to refine the course materials and assignments. I want to especially thank the Spring 2026 cohort that had patience to be the first readers of this textbook with me posting chapters throughout the semester! I appreciate your patience.
 
 ------------------------------------------------------------------------
 
