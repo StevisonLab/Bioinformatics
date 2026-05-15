@@ -103,8 +103,9 @@ Each chapter includes “Lab connections” callouts that point to relevant labs
 :::
 
 ## Key Dates
-::: {.smaller style="overflow-x: auto;"}
 *Schedule shown is for Spring 2026 at Auburn University; adapt as needed.*
+
+::: {.smaller style="overflow-x: auto;"}
 | Assignment | Description | Due Date | Points | Percent course completed |
 |---|---|---|---|---|
 | Lab 1 | Find and describe a genome analysis paper | 15-Jan | 25 | 3% |
@@ -194,7 +195,7 @@ it — reach out via the [Stevison Lab website](https://sites.google.com/site/ls
 
 ## Acknowledgments
 
-Portions of this book were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content. I also want to give a huge heart-felt thank you to my students over the years who have helped to refine the course materials and assignments. I want to especially thank the Spring 2026 cohort that had patience to be the first readers of this textbook with me posting chapters throughout the semester! I appreciate your patience.
+Portions of this book were drafted and revised with the assistance of an AI‑based writing tool. The instructor reviewed, edited, and is responsible for the final content. I also want to give a huge heart-felt thank you to my students over the years who have helped to refine the course materials and assignments. I want to especially thank the Spring 2026 cohort that had the patience to be the first readers of this textbook with me posting chapters throughout the semester! 
 
 ------------------------------------------------------------------------
 
